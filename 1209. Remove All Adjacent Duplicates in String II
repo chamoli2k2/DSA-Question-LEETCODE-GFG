@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string removeDuplicates(string &s1, int k) {
+    string s=s1;
+        stack<pair<char,int>> st;
+        for(int i=s.length()-1;i>=0;i--){
+            char a=s[i];
+            if(!st.empty() and st.top().first==a){
+                st.top().second++;
+                if(st.top().second==k){
+                    st.pop();
+                }
+            }else{
+                st.push({a,1});
+            }
+        }
+        string ans="";
+        while(!st.empty()){
+            ans.append(st.top().second,st.top().first);
+            st.pop();
+        }
+        return ans;
+}
+};
