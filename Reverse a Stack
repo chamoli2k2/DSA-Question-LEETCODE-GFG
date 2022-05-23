@@ -1,0 +1,24 @@
+class Solution{
+private:
+    void solve(stack<int> &st){
+        if(st.empty()){
+            return ;
+        }
+        
+        int num=st.top();
+        st.pop();
+        Reverse(st);
+        
+        st.push(num);
+    }
+public:
+    vector<int> Reverse(stack<int> st){
+        vector<int> ans;
+        solve(st);
+        while(!st.empty()){
+            ans.push_back(st.top());
+            st.pop();
+        }
+        return ans;
+    }
+};
