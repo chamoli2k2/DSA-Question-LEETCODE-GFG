@@ -1,0 +1,74 @@
+class Solution{
+  private:
+    int maxarea(vector<int> arr){
+        stack<pair<long long,int>>  st;
+        vector<int> ls;
+        vector<int> rs;
+        int n=arr.size();
+        // step 1 find previous smaller element from left side
+        for(int i=0;i<n;i++){
+            long long num=arr[i];
+            while(!st.empty() and st.top().first>=num){
+                st.pop();
+            }
+            
+            if(st.empty()){
+                ls.push_back(-1);
+            }else{
+                ls.push_back(st.top().second);
+            }
+            
+            st.push({num,i});
+        }
+        
+        // emptying the stack
+        while(!st.empty()){
+            st.pop();
+        }
+        // step 1 find previous smaller element from right side
+        for(int i=n-1;i>=0;i--){
+            long long num=arr[i];
+            while(!st.empty() and st.top().first>=num){
+                st.pop();
+            }
+            
+            if(st.empty()){
+                rs.push_back(n);
+            }else{
+                rs.push_back(st.top().second);
+            }
+            
+            st.push({num,i});
+        }
+        
+        // Reversing the rs
+        reverse(rs.begin(),rs.end());
+        
+        // calculating the area
+        int ans=0;
+        
+        for(int i=0;i<n;i++){
+            int area=(rs[i]-ls[i]-1)*arr[i];
+            ans=max(ans,area);
+        }
+        
+        // returning the finally answer
+        return ans;
+    }
+  public:
+    int maxArea(int a[MAX][MAX], int n, int m) {
+        vector<int> temp(m);
+        int maxi=INT_MIN;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(a[i][j]==1){
+                    temp[j]=temp[j]+1;
+                }else{
+                    temp[j]=0;
+                }
+            }
+            maxi=max(maxi,maxarea(temp));
+        }
+        return maxi;
+    }
+};
