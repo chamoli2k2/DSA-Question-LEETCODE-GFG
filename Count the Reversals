@@ -1,0 +1,40 @@
+int countRev (string s)
+{
+    int n=s.length();
+    
+    // Step 1 : checking if length of string is odd or not
+    if(n%2!=0){
+        return -1;
+    }
+    stack<char> st;
+    
+    // Step 2 : removing all balanced paranthesis 
+    for(int i=0;i<n;i++){
+        char ch=s[i];
+        if(ch=='{'){
+            st.push(ch);
+        }else{
+            if(!st.empty() and st.top()=='{'){
+                st.pop();
+            }else{
+                st.push(ch);
+            }
+        }
+    }
+    
+    // counting number of open and close bracket in final stack
+    int no=0;  // no of open brackets
+    int nc=0;  // no of closed brackets
+    while(!st.empty()){
+        char ch=st.top();
+        if(ch=='{'){
+            no++;
+        }else{
+            nc++;
+        }
+        st.pop();
+    }
+    
+    int ans=(no+1)/2 + ((nc+1)/2);   // formula to remember 
+    return ans;
+}
