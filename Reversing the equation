@@ -1,0 +1,32 @@
+class Solution
+{
+  public:
+    string reverseEqn (string s)
+        {
+            // Size of string intialisation
+            int n=s.size();
+            stack<char> st;
+            string ans="";
+            
+            for(int i=n-1;i>=0;i--){
+                // Checking for any arithmetic operator 
+                if(s[i]=='+' or s[i]=='-' or s[i]=='*' or s[i]=='/'){
+                    while(!st.empty()){
+                        ans.push_back(st.top());
+                        st.pop();
+                    }
+                    ans.push_back(s[i]);
+                }else{                // if s[i]!=arithmetic operator we pushed it to stack
+                    st.push(s[i]);
+                }
+                
+                if(i==0){
+                    while(!st.empty()){
+                        ans.push_back(st.top());
+                        st.pop();
+                    }
+                }
+            }
+            return ans;
+        }
+};
