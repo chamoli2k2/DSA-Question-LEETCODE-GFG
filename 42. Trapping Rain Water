@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int trap(vector<int>& arr) {
+        vector<int> ls;
+        vector<int> rs;
+        int n=arr.size();
+        int k=arr[0];
+        ls.push_back(k);
+        for(int i=1;i<n;i++){
+            int temp=arr[i];
+            if(k<temp){
+                k=temp;
+            }
+            ls.push_back(k);
+        }
+        k=arr[n-1];
+        rs.push_back(k);
+        for(int i=n-2;i>=0;i--){
+            int temp=arr[i];
+            if(k<temp){
+                k=temp;
+            }
+            rs.push_back(k);
+        }
+        reverse(rs.begin(),rs.end());
+        int water=0;
+        for(int i=1;i<n-1;i++){
+            int temp=min(ls[i],rs[i])-arr[i];
+            water+=temp;
+        }
+        return water;
+    }
+};
