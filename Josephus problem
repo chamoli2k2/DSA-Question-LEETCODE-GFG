@@ -1,0 +1,20 @@
+class Solution
+{
+    public:
+    int josephus(int n, int k)
+    {
+       vector<int> ans;
+       
+       for(int i=1;i<=n;i++){
+           ans.push_back(i);
+       }
+       int j=k-1;
+       while(ans.size()!=1){
+           j=j%ans.size();
+           ans.erase(ans.begin()+j);
+           j=(j+k-1)%ans.size();
+       }
+       int left=ans[0];
+       return left;
+    }
+};
