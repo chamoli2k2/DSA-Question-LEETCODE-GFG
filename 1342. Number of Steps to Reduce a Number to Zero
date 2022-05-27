@@ -1,0 +1,22 @@
+class Solution {
+private:
+    void solve(int num,int &count){
+        if(num==0){
+            return;
+        }
+        
+        if((num&1)){
+            num-=1;
+        }else{
+            num/=2;
+        }
+        count++;
+        solve(num,count);
+    }
+public:
+    int numberOfSteps(int num) {
+        int count=0;
+        solve(num,count);
+        return count;
+    }
+};
