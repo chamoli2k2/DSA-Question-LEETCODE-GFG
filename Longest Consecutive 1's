@@ -1,0 +1,22 @@
+class Solution
+{
+    public:
+    int maxConsecutiveOnes(int n)
+    {
+        int count=0;
+        int ans=0;
+        while(n){
+            if((n&1)){
+                count++;
+            }else{
+                ans=max(count,ans);
+                count=0;
+            }
+            n>>=1;
+        }
+        if(count>ans){
+            ans=count;
+        }
+        return ans;
+    }
+};
