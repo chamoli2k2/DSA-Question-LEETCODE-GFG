@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int missingNumber(vector<int>& a) {
+        int n=a.size();
+        int sum=0;
+        // finding sum of interger [0,n]
+        for(int i=1;i<=n;i++){
+            sum=sum+i;
+        }
+        
+        // finding sum of num in the vector 'a'
+        int realsum=0;
+        for(int i=0;i<n;i++){
+            realsum=realsum+a[i];
+        }
+        
+        // ans=sum-realsum;
+        int ans=sum-realsum;
+        
+        return ans;
+    }
+};
