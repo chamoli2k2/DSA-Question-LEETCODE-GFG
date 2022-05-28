@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool digitCount(string num) {
+        unordered_map<char,int> mp;
+        for(int i=0;i<num.length();i++){
+            mp[num[i]]++;
+        }
+        for(int i=0;i<num.length();i++){
+            if(mp.find(i+'0')==mp.end() and num[i]==0){
+                continue;
+            }
+            if(mp[i+'0']!=(num[i]-'0')){
+                return false;
+            }
+        }
+        return true;
+    }
+};
