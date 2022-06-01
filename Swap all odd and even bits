@@ -1,0 +1,14 @@
+class Solution
+{
+    public:
+    //Function to swap odd and even bits.
+    unsigned int swapBits(unsigned int n)
+    {
+    	int even=n & 2863311530; // 2863311530(decimal) = 10101010101.....  (32 bit no)
+        even>>=1;          // Right shift by 1
+        int odd=n & (1431655765);  // 1431655765(decimal) = 010101010101... (32 bit no) 
+        odd<<=1;               // left shift by 1
+        int swapped=even | odd;  // taking '&' for final answer
+        return swapped;
+    }
+};
