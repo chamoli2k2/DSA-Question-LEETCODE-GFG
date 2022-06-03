@@ -1,0 +1,25 @@
+class Solution{
+public:	
+	
+	int countTriplet(int arr[], int n)
+	{
+	    sort(arr,arr+n);
+	    int count=0;
+	    for(int i=n-1;i>1;i--){
+	        int j=i-1;
+	        int k=0;
+	        while(k<j){
+	            if(arr[i]==arr[k]+arr[j]){
+	                count++;
+	                j--;
+	                k++;
+	            }else if(arr[i]>arr[k]+arr[j]){
+	                k++;
+	            }else{
+	                j--;
+	            }
+	        }
+	    }
+	    return count;
+	}
+};
