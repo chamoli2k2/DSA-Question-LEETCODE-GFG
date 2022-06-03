@@ -1,0 +1,38 @@
+class Solution {
+  public:
+    // Function to return the count of the number of elements in
+    // the intersection of two arrays.
+    int NumberofElementsInIntersection(int a[], int b[], int n, int m) {
+        unordered_map<int,bool> mp;
+        int count=0;
+        if(m<=n){
+            for(int i=0;i<m;i++){
+                if(mp.find(b[i])==mp.end()){
+                    mp[b[i]]=true;
+                }
+            }
+            
+            for(int i=0;i<n;i++){
+                if(mp.find(a[i])!=mp.end()){
+                    count++;
+                    mp.erase(a[i]);
+                }
+            }
+        }else{
+            for(int i=0;i<n;i++){
+                if(mp.find(a[i])==mp.end()){
+                    mp[a[i]]=true;
+                }
+            }
+            
+            for(int i=0;i<m;i++){
+                if(mp.find(b[i])!=mp.end()){
+                    count++;
+                    mp.erase(b[i]);
+                }
+            }
+        }
+        
+        return count;
+    }
+};
