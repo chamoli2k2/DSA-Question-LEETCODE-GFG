@@ -1,0 +1,36 @@
+class Solution
+{
+    private:
+    pair<bool,int> solve(Node* root){
+        if(root==NULL){
+            pair<bool,int> p = make_pair(true,0);
+            return p;
+        }
+        
+        if(root->left==NULL and root->right==NULL){
+            pair<bool,int> p = make_pair(true,root->data);
+            return p;
+        }
+        
+        pair<bool,int> left = solve(root->left);
+        pair<bool,int> right = solve(root->right);
+        
+        bool ls = left.first;
+        bool rs = right.first;
+        bool sum = left.second+right.second == root->data;
+        
+        pair<bool,int> ans;
+        if(ls and rs and sum){
+            ans.first=true;
+            ans.second= 2*root->data;
+        }else{
+            ans.first=false;
+        }
+        return ans;
+    }
+    public:
+    bool isSumTree(Node* root)
+    {
+         return solve(root).first;
+    }
+};
