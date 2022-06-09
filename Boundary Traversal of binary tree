@@ -1,0 +1,68 @@
+class Solution {
+private:
+void leftBoundary(Node* root,vector<int> &ans){
+    if((root == NULL) or (root->left ==NULL and root->right == NULL)){
+        return;
+    }
+    
+    ans.push_back(root->data);
+    if(root->left){
+        leftBoundary(root->left,ans);
+    }else{
+        leftBoundary(root->right,ans);
+    }
+}
+
+void NodesPrint(Node* root,vector<int> &ans){
+    if((root == NULL)){
+        return;
+    }
+    
+    if(root->left == NULL and root->right == NULL){
+        ans.push_back(root->data);
+    }
+    
+    // root kay left may traverse karo
+    NodesPrint(root->left,ans);
+    
+    // root kay right may traverse karo
+    NodesPrint(root->right,ans);
+}
+
+void rightBoundary(Node* root,vector<int> &ans){
+    if((root==NULL) or (root->left == NULL and root->right == NULL)){
+        return;
+    }
+    
+    if(root->right){
+        rightBoundary(root->right,ans);
+    }else{
+        rightBoundary(root->left,ans);
+    }
+    
+    ans.push_back(root->data);
+    
+}
+public:
+    vector <int> boundary(Node *root)
+    {
+        vector<int> ans;
+        if(root==NULL){
+            return ans;
+        }
+        
+        ans.push_back(root->data);
+        
+        // left boundary
+        leftBoundary(root->left,ans);
+        
+        // Nodes printing
+        NodesPrint(root->left,ans);
+        NodesPrint(root->right,ans);
+        
+        // Right boundary
+        rightBoundary(root->right,ans);
+        
+        return ans;
+    }
+};
