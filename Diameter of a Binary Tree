@@ -1,0 +1,36 @@
+class Solution {
+  private:
+  pair<int,int> solve(Node* root){
+      if(root == NULL){
+          pair<int,int> p = make_pair(0,0);
+          return p;
+      }
+      
+      // first step left part may search karo max diameter
+      pair<int,int> left = solve(root->left);
+      
+      // second step right part may search karo max diameter
+      pair<int,int> right = solve(root->right);
+      
+      // left ka diameter max h
+      int op1 = left.first;
+      // right ka diameter max h
+      int op2 = right.first;
+      
+      // left and right say bane tree ka diameter max h
+      int op3 = left.second + 1 + right.second;
+      
+      pair<int,int> ans;
+      // answer kay first may max diameter store hoga 
+      ans.first = max(op1,max(op2,op3));
+      // ans kay second may max of hight store hoga
+      ans.second = max(left.second,right.second)+1;
+      
+      return ans;
+  }
+  public:
+    // Function to return the diameter of a Binary Tree.
+    int diameter(Node* root) {
+        return solve(root).first;
+    }
+};
