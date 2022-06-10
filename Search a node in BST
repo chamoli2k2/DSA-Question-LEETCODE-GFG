@@ -39,3 +39,20 @@ bool search(Node* root, int x) {
         search(root->right,x);
     }
 }
+
+Approach 3 :
+bool search(Node* root, int x) {
+    while(root != NULL){
+        if(root->data == x){
+            return true;
+        }
+        
+        if(root->data > x){
+            root = root->left;
+        }else{
+            root = root->right;
+        }
+    }
+    
+    return false;
+}
