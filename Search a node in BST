@@ -1,0 +1,22 @@
+void solve(Node* root,int x,bool &flag1,bool &flag2){
+    if(root == NULL){
+        return;
+    }
+    
+    if(root->data == x){
+        flag1 = true;
+    }
+    solve(root->left,x,flag1,flag2);
+    if(root->data == x){
+        flag1 = true;
+    }
+    solve(root->right,x,flag1,flag2);
+    
+    flag2 = (flag2 or flag1);
+}
+bool search(Node* root, int x) {
+    bool flag1 = false;
+    bool flag2 = false;
+    solve(root,x,flag1,flag2);
+    return flag2;
+}
