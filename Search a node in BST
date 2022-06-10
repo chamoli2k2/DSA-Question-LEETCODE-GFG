@@ -1,3 +1,5 @@
+Approach 1 :
+
 void solve(Node* root,int x,bool &flag1,bool &flag2){
     if(root == NULL){
         return;
@@ -19,4 +21,21 @@ bool search(Node* root, int x) {
     bool flag2 = false;
     solve(root,x,flag1,flag2);
     return flag2;
+}
+
+Approach 2 :
+bool search(Node* root, int x) {
+    if(root == NULL){
+        return false;
+    }
+    
+    if(root->data == x){
+        return true;
+    }
+    
+    if(root->data > x){
+        search(root->left,x);
+    }else{
+        search(root->right,x);
+    }
 }
