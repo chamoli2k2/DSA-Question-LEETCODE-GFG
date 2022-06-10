@@ -1,0 +1,33 @@
+    int find(int d,int n1,int ini[]){
+        for(int i=0;i<n1;i++){
+            if(ini[i]==d){
+                return i;
+            }
+        }
+        return -1;
+    }
+    Node* solve(int in[],int post[],int n,int &postOrderIndex,int stin,int edin){
+        if(postOrderIndex<0 or stin>edin){
+            return NULL;
+        }
+        
+        int data = post[postOrderIndex--];
+        int position = find(data,n,in);
+        
+        Node* root = new Node(data);
+        
+        // right call
+        root->right = solve(in,post,n,postOrderIndex,position+1,edin);
+        
+        // left call
+        root->left = solve(in,post,n,postOrderIndex,stin,position-1);
+        
+        
+        return root; 
+    }
+Node *buildTree(int in[], int post[], int n) {
+        Node* ans;
+        int postOrderIndex = n-1;
+        ans = solve(in,post,n,postOrderIndex,0,n-1);
+        return ans;
+}
