@@ -1,0 +1,22 @@
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* n1, TreeNode* n2) {
+        // base case
+        if(root == NULL){
+            return NULL;
+        }
+        
+        
+        // if root->data is greater than both number than search in left part 
+        if(root->val > n1->val and root->val > n2->val){
+            return lowestCommonAncestor(root->left,n1,n2);
+        }
+        
+        // if root->data is smaller than both number than search in right part
+        if(root->val < n1->val and root->val < n2->val){
+            return lowestCommonAncestor(root->right,n1,n2);
+        }
+        
+        return root;
+    }
+};
