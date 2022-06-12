@@ -1,0 +1,46 @@
+// creating custom comperator for min heap
+class compare{
+    public:
+    bool operator()(Node* a,Node* b){
+        return a->data > b->data;
+    }
+};
+
+class Solution{
+  public:
+    //Function to merge K sorted linked list.
+    Node * mergeKLists(Node *arr[], int k)
+    {
+        // creating a min heap with custom comparator
+         priority_queue<Node*,vector<Node*>,compare> pq;
+         
+         
+         // pushing "k" node in min heap
+         for(int i=0;i<k;i++){
+             pq.push(arr[i]);
+         }
+         
+         Node* head = NULL;
+         Node* tail = NULL;
+         
+         while(!pq.empty()){
+             Node* top = pq.top();
+             pq.pop();
+             
+             // checking if next node is present or not.. if present than pushing it in heap
+             if(top->next != NULL){
+                 pq.push(top->next);
+             }
+             
+             if(head == NULL){
+                 head = top;
+                 tail = top;
+             }else{
+                 tail->next = top;
+                 tail = top;
+             }
+         }
+         
+         return head;
+    }
+};
