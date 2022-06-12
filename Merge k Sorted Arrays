@@ -1,0 +1,23 @@
+class Solution
+{
+    public:
+    //Function to merge k sorted arrays.
+    vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+    {
+        map<int,int> mp;
+        for(auto i : arr){
+            for(auto j : i){
+                mp[j]++;
+            }
+        }
+        
+        vector<int> ans;
+        int i = 0;
+        for(auto it=mp.begin();it!=mp.end();it++){
+            ans.insert(ans.begin()+i,it->second,it->first);
+            i = i + it->second;
+        }
+        
+        return ans;
+    }
+};
