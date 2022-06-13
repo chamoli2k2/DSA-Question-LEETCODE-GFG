@@ -1,0 +1,22 @@
+class Solution
+{
+    public:
+    //Function to return max value that can be put in knapsack of capacity W.
+    int knapSack(int w, int wt[], int val[], int n) 
+    { 
+       // base case 
+       if(n == 0 or w == 0){
+           return 0;
+       }
+       
+       // Now we have two choices either to include the weight in knapsack or leave it.
+       // From both situation we have to find the condition in which we are getting maximum value
+       // for that we have to check if weight at "ith" index is less than knapsack capacity 
+       
+       if(wt[n-1] <= w){
+           return max(val[n-1]+knapSack(w-wt[n-1],wt,val,n-1),knapSack(w,wt,val,n-1));
+       }else if(wt[n-1] > w){
+           return knapSack(w,wt,val,n-1);
+       }
+    }
+};
