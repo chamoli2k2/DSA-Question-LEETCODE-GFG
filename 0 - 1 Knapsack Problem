@@ -56,7 +56,7 @@ class Solution
     }
     int knapSack(int w, int wt[], int val[], int n) 
     { 
-        // Declaring the memorize variable
+        // Declaring the memorize variable (we decide size by seeing what is changing in matrix)
         vector<vector<int>> t(w+1,vector<int>(n+1,-1)); // t[w][n];
         return solve(w,wt,val,n,t);
     }
