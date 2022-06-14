@@ -1,0 +1,48 @@
+class Solution{
+
+  public:
+	int minDifference(int arr[], int n)  { 
+	    // finding range for answer 
+	    int range = 0;
+	    range = accumulate(arr,arr+n,range);
+	    
+	    // initialising a DP matrix to store the valid answer 
+	    vector<vector<bool>> dp(n+1,vector<bool>(range+1,false));
+	    
+	    // making col-> 0 true
+	    for(int i=0;i<n+1;i++){
+	        dp[i][0] = true;
+	    }
+	    
+	    // evaluating the valid answers 
+	    for(int i=1;i<n+1;i++){
+	        for(int j=1;j<range+1;j++){
+	            if(arr[i-1] <= j){
+	                dp[i][j] = dp[i-1][j-arr[i-1]] or dp[i-1][j];
+	            }else{
+	                dp[i][j] = dp[i-1][j];
+	            }
+	        }
+	    }
+	    
+	    // storing answer of last row in vector
+	    vector<int> ans;
+	    for(int j=0;j<range+1/2;j++){
+	        if(dp[n][j]){
+	            ans.push_back(j);
+	        }
+	    }
+	    
+	    // finally initialising minimum variable to store answer
+	    // ans = range - 2*S1 here S1 is sum
+	    int minimum = INT_MAX;
+	    
+	    for(int i=0;i<ans.size();i++){
+	        int num = abs(range - 2*ans[i]);
+	        minimum = min(minimum,num);
+	    }
+	    
+	    // returning the final answer
+	    return minimum;
+	} 
+};
