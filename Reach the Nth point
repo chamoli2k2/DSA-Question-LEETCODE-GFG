@@ -1,0 +1,32 @@
+class Solution{
+    private:
+       int solve(int n,vector<int> &dp){
+           // base case
+           // if n == 0 and n == 1 there are only one way to go nth way
+           if(n <= 1){
+               dp[n] = 1;
+               return dp[n];
+           }
+           
+           // checking if answer is already there in dp vector or not
+           if(dp[n] != -1){
+               return dp[n];
+           }
+            
+           // Answer is big so in quesn we told to take modulus of answer with 1e9 + 7
+            int mod = 1e9 + 7;
+            
+           // if answer is not there in dp vector than computing it
+           dp[n] = (solve(n-1,dp) + solve(n-2,dp)) % mod;
+           
+           // returning the answer
+           return dp[n];
+       }
+	public:
+		int nthPoint(int n){
+		    // defining a Dp vector
+		    vector<int> dp(n+1,-1);
+		    
+		    return solve(n,dp);
+		}
+};
