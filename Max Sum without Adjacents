@@ -1,0 +1,31 @@
+class Solution{
+private:
+    int solve(int *arr,int n,vector<int> &dp){
+        // base case
+        if(n <= 0){
+            return 0;
+        }
+        
+        if(dp[n] != -1){
+            return dp[n];
+        }
+        
+        // picking the index element
+        // here we do "n-2" because in question it is given that there should be no adjacent 
+        // if we pick index "n-1" than we need to solve the same for index "n-2"
+        int picking = arr[n-1] + solve(arr,n-2,dp);
+        
+        // not picking the index
+        int not_picking = solve(arr,n-1,dp);
+        
+        dp[n] = max(picking,not_picking);
+        
+        return dp[n];
+    }
+public:	
+	// calculate the maximum sum with out adjacent
+	int findMaxSum(int *arr, int n) {
+	    vector<int> dp(n+1,-1);
+	    return solve(arr,n,dp);
+	}
+};
