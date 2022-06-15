@@ -1,0 +1,31 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,int n,vector<int> &dp){
+        // base case
+        if(n <= 0){
+            return 0;
+        }
+        
+        // checking if answer is present in dp array or not
+        if(dp[n] != -1){
+            return dp[n];
+        }
+        
+        // pick
+        int pick = nums[n-1] + solve(nums,n-2,dp);
+        
+        // not pick
+        int notPick = solve(nums,n-1,dp);
+        
+        dp[n] = max(pick,notPick);
+        
+        return dp[n];
+    }
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n+1,-1);
+        
+        return solve(nums,n,dp);
+    }
+};
