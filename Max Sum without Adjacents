@@ -29,3 +29,26 @@ public:
 	    return solve(arr,n,dp);
 	}
 };
+
+
+Approach 2 : Tabulation approach
+class Solution{
+public:	
+	// calculate the maximum sum with out adjacent
+	int findMaxSum(int *arr, int n) {
+	    
+	    vector<int> dp(n,-1);
+	    dp[0] = arr[0];
+	    dp[1] = max(arr[0],arr[1]);
+	    for(int i=2;i<n;i++){
+	        // pick
+	        int pick = arr[i] + dp[i-2];
+	        
+	        // not pick
+	        int notPick = dp[i-1];
+	        
+	        dp[i] = max(pick,notPick);
+	    }
+	    return dp[n-1];
+	}
+};
