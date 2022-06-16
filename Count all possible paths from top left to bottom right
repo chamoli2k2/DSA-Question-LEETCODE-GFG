@@ -1,0 +1,43 @@
+Simple C++ solution 
+TC & SC→ O(n*m) and execution time → 0.02 secs
+
+ 
+
+class Solution {
+ private:
+   long long int solve(int left,int up,vector<vector<long long int>> &dp){
+       // base case 
+       // if left and up both equal to zero than it is a valid path
+       if(left == 0 and up == 0){
+           return 1;
+       }
+       
+       // if left < 0 or up < 0 means we are out of boundary than we don't inculde that case
+       if(left < 0 or up < 0){
+           return 0;
+       }
+       
+       // checking if answer is present in dp array or not
+       if(dp[left][up] != -1){
+           return dp[left][up];
+       }
+       
+       int mod = 1e9 + 7;
+       
+       // taking left path 
+       long long int ls = solve(left-1,up,dp) % mod;
+       // taking up path
+       long long int us = solve(left,up-1,dp) % mod;
+       
+       dp[left][up] = (ls + us) % mod;
+       
+       return dp[left][up];
+   }
+ public:
+   long long int numberOfPaths(int m, int n){
+       // making a dp array 
+       vector<vector<long long int>> dp(m,vector<long long int>(n,-1));
+       
+       return solve(m-1,n-1,dp);
+   }
+};
