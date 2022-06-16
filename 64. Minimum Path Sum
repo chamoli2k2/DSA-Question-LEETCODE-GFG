@@ -1,0 +1,43 @@
+class Solution {
+private:
+    int solve(int left,int up,vector<vector<int>> &dp,vector<vector<int>> &matrix){
+        // base case
+        if (up == 0  and left == 0){
+            return matrix[left][up];
+        }
+        
+        // checking if we are out of bound or not
+        // we are returning very high value here because we need to negelect this answer , so we are maximizing the answer
+        // Hence when we find min of ls and us then it will be neglected
+        if(up < 0 or left < 0 ){
+            return 1e9;
+        }
+        
+        // checking if array already the answer
+        if(dp[left][up] != -1){
+            return dp[left][up];
+        }
+        // going up
+        int us = matrix[left][up] + solve(left,up-1,dp,matrix);
+        
+        // going left
+        int ls = matrix[left][up] + solve(left-1,up,dp,matrix);
+        
+        // storing the ans
+        dp[left][up] = min(us,ls);
+    
+        return dp[left][up];
+    }
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        
+        // finding row and col
+        int row = grid.size();
+        int col = grid[0].size();
+        
+        // declaring the dp matrix
+        vector<vector<int>> dp(row,vector<int>(col,-1));
+        
+        return solve(row-1,col-1,dp,grid);
+    }
+};
