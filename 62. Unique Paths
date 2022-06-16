@@ -1,0 +1,36 @@
+class Solution {
+private:
+    int solve(int left,int up,vector<vector<long long int>> &dp){
+        // base case 
+        // if left and up both equal to zero than it is a valid path
+        if(left == 0 and up == 0){
+            return 1;
+        }
+        
+        // if left < 0 or up < 0 means we are out of boundary than we don't inculde that case
+        if(left < 0 or up < 0){
+            return 0;
+        }
+        
+        // checking if answer is present in dp array or not
+        if(dp[left][up] != -1){
+            return dp[left][up];
+        }
+        
+        // taking left path 
+        long long int ls = solve(left-1,up,dp);
+        // taking up path
+        long long int us = solve(left,up-1,dp);
+        
+        dp[left][up] = (ls + us);
+        
+        return dp[left][up];
+    }
+public:
+    int uniquePaths(int m, int n) {
+        // making a dp array 
+        vector<vector<long long int>> dp(m,vector<long long int>(n,-1));
+        
+        return solve(m-1,n-1,dp);
+    }
+};
