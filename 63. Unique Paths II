@@ -1,0 +1,53 @@
+class Solution {
+private:
+    int solve(int left,int up,vector<vector<int>> &grid,vector<vector<int>> &dp){
+        // base case 
+        if(left == 0 and up == 0){
+            return 1;
+        }
+        
+        if(left < 0 or up < 0 or grid[left][up] == 1){
+            return 0;
+        }
+        
+        // checking if answer is in dp array
+        if(dp[left][up] != -1){
+            return dp[left][up];
+        }
+        
+        
+        int ls,rs;
+        
+        // going left 
+        ls = solve(left-1,up,grid,dp);
+        
+        // going up
+        rs = solve(left,up-1,grid,dp);
+        
+        // storing answer in dp array
+        dp[left][up] = (ls + rs);
+        
+        // returning the value
+        return dp[left][up];
+    }
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        // finding row and col of grid matrix . so we can find our end points
+        int row = grid.size();
+        int col = grid[0].size();
+        
+        // checking if the end point is blocked or not
+        if(grid[row-1][col-1] == 1){
+            return 0;
+        }
+        
+        // checking if starting point is blocked or not
+        if(grid[0][0] == 1){
+            return 0;
+        }
+        
+        // creating a dp array
+        vector<vector<int>> dp(row,vector<int>(col,-1));
+        return solve(row-1,col-1,grid,dp);
+    }
+};
