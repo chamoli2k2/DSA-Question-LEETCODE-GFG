@@ -1,0 +1,70 @@
+class Solution {
+private:
+    // row for both robot will be same hence we use only one variable "i" for that 
+    int solve(vector<vector<int>> &grid,vector<vector<vector<int>>> &dp,int i,int j1,int j2,int n,int m){
+        
+        // checking if Robot1 and Robot2 is out of bound or not
+        if(j1 < 0 or j2 < 0 or j2 >= m or j1 >= m){
+            // returning very low value such that this answer got neglected from final answer
+            // as we need to find maximum answer that's why we are returning low value here
+            return -1e8;
+        }
+        
+        // base case
+        if(i == n-1){
+            // Robot1 and Robot2 are on same position than we need to include that answer only once.
+            if(j1 == j2){
+                return grid[i][j1];
+            }
+            // otherwise include both individual answers.
+            else{
+                int num = grid[i][j1] + grid [i][j2];
+                return num;
+            }
+        }
+        
+        
+        // checking if answer is already there in dp or not
+        if(dp[i][j1][j2] != -1){
+            return dp[i][j1][j2];
+        }
+        
+        
+        int maxi = INT_MIN;
+        
+        for(int dj1=-1;dj1<2;dj1++){
+            for(int dj2=-1;dj2<2;dj2++){
+                int val = 0;
+                
+                if(j1 == j2){
+                    val = grid[i][j1];
+                }else{
+                    val = grid[i][j1] + grid[i][j2];
+                }
+                
+                // calling function again or further evaluation
+                val = val + solve(grid,dp,i+1,j1+dj1,j2+dj2,n,m);
+                
+                // finding maximum
+                maxi = max(maxi,val);
+            }
+        } 
+        
+         // returning the value
+         dp[i][j1][j2] = maxi;
+            
+         return dp[i][j1][j2];
+    }
+public:
+    int cherryPickup(vector<vector<int>>& grid) {
+        // step 1 : finding the row and col of grid
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        // step 2 : creating dp vector (3D vector) dp[i][j][k]
+        vector<vector<vector<int>>>dp(n, vector<vector<int>>(m, vector<int>(m, -1)));     
+        
+        // step 3 
+        return solve(grid,dp,0,0,m-1,n,m);
+    }
+};
