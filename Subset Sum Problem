@@ -27,3 +27,37 @@ public:
         return dp[n][sum]; 
     }
 };
+
+Approach 2 : 
+bool solve(vector<int> &arr,vector<vector<int>> &dp,int idx,int target){
+    // base case
+    if(target == 0){
+        return true;
+    }
+    if(idx == 0){
+        return (arr[0] == target);
+    }
+    
+    // checking if element is there in dp array of not
+    if(dp[idx][target] != -1){
+        return dp[idx][target];
+    }
+    
+    // picking element 
+    bool pick = false;
+    
+    if(arr[idx] <= target){
+         pick = solve(arr,dp,idx-1,target-arr[idx]);
+    }
+    
+    // not picking element 
+    bool notPick = solve(arr,dp,idx-1,target);
+   
+    dp[idx][target] = pick | notPick;
+    
+    return dp[idx][target];
+}
+bool subsetSumToK(int n, int k, vector<int> &arr) {
+    vector<vector<int>> dp(n+1,vector<int>(k+1,-1));
+    return solve(arr,dp,n-1,k);
+}
