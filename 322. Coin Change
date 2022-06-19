@@ -1,0 +1,56 @@
+class Solution {
+private:
+    int solve(vector<int> &coins,vector<vector<int>> &dp,int amount,int n){
+        /* base case 
+         if n = 0 that means array countain only 1 element 
+         if that element is multiple of amount than only we can get a valid answer otherwise that means this case is not a valid 
+         answer */
+        
+        if(n == 0){
+            if(amount % coins[0] == 0){
+                return amount / coins[0]; // suppose amount left = 21 and last element is 7 than we can take 3 times 7 to make target zer0
+            }else{
+                return 1e9;
+            }
+        }
+        
+        if(dp[n][amount] != -1){
+            return dp[n][amount];
+        }
+        
+        // picking the element 
+        int pick = INT_MAX;
+        
+        if(coins[n] <= amount){
+            pick = 1 + solve(coins,dp,amount-coins[n],n); // checking if their any possiblity with new amount from that index
+        }
+        
+        int notPick = solve(coins,dp,amount,n-1);
+        
+        dp[n][amount] = min(pick,notPick);
+        
+        return dp[n][amount];
+    }
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        
+        // step 1: Initialising the dp vector
+        vector<vector<int>> dp(n,vector<int>(amount+1,-1));
+        
+        // In the dp vector above there are 'n' rows and 'amount+1' cols 
+        // Why we took amount+1 as row no ?
+        // We did it because as we all know indexing in array start from '0' in most of programing language hence 
+        // (amount+1)th index will represent the amount 
+        
+        int ans = solve(coins,dp,amount,n-1);
+        
+        // Why this step?
+        // if answer is bigger than 1e9 that means there is no possibilities of finding amount with given denominations of coins
+        if(ans >= 1e9){
+            return -1;
+        }
+        
+        return ans;
+    }
+};
