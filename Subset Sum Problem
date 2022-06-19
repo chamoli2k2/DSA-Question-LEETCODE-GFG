@@ -58,6 +58,6 @@ bool solve(vector<int> &arr,vector<vector<int>> &dp,int idx,int target){
     return dp[idx][target];
 }
 bool subsetSumToK(int n, int k, vector<int> &arr) {
-    vector<vector<int>> dp(n+1,vector<int>(k+1,-1));
+    vector<vector<int>> dp(n,vector<int>(k+1,-1));
     return solve(arr,dp,n-1,k);
 }
