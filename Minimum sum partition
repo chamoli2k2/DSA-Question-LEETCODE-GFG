@@ -46,3 +46,37 @@ class Solution{
 	    return minimum;
 	} 
 };
+
+
+Approach 2 : 
+#include<bits/stdc++.h>
+int minSubsetSumDifference(vector<int>& arr, int n)
+{
+	int sum = 0;
+    sum = accumulate(arr.begin(),arr.end(),sum);
+    
+    vector<vector<bool>> dp(n,vector<bool>(sum+1,false));
+    for(int i=0;i<n;i++){
+        dp[i][0] = true;
+    }
+    
+    dp[0][arr[0]] = true;
+    for(int i=1;i<n;i++){
+        for(int j=1;j<sum+1;j++){
+            if(arr[i] <= j){
+                dp[i][j] = dp[i-1][j-arr[i]] or dp[i-1][j];
+            }else{
+                dp[i][j] = dp[i-1][j];
+            }
+        }
+    }
+    
+    int mini = INT_MAX;
+    for(int s1=0;s1<=sum/2;s1++){
+        if(dp[n-1][s1]){
+            int num = abs(sum - (2*s1));
+            mini = min(num,mini);
+        }
+    }
+    return mini;
+}
