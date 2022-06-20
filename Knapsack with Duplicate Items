@@ -1,0 +1,43 @@
+class Solution{
+private:
+    int solve(int val[],int wt[],vector<vector<int>> &dp,int n,int w){
+        // base case
+        // if w == 0
+        if(w == 0){
+            return 0;
+        }
+        
+        if(n == 0){
+            if(w >= wt[0]){
+                return int(w/wt[0])*val[0];
+            }
+            
+            return 0;
+        }
+        
+        if(dp[n][w] != -1){
+            return dp[n][w];
+        }
+        
+        // Picking the element
+        int pick = 0;
+        if(wt[n] <= w){
+            pick = val[n] + solve(val,wt,dp,n,w-wt[n]);
+        }
+        
+        // not picking
+        int notPick = solve(val,wt,dp,n-1,w);
+        
+        dp[n][w] = max(pick,notPick);
+        
+        return dp[n][w];
+    }
+public:
+    int knapSack(int n, int w, int val[], int wt[])
+    {
+        // decleration of dp vector
+        vector<vector<int>> dp(n,vector<int>(w+1,-1));
+        
+        return solve(val,wt,dp,n-1,w);
+    }
+};
