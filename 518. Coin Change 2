@@ -1,0 +1,39 @@
+class Solution {
+private:
+    int solve(vector<int> &coins,vector<vector<int>> &dp,int n,int amount){
+        // base case
+        if(n == 0){
+            if(amount % coins[0] == 0){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+        
+        if(dp[n][amount] != -1){
+            return dp[n][amount];
+        }
+        
+        int pick = 0;
+        //  Logic is simple we are just checking if we pick a coin is it will be a valid answer or not
+        // and if don't pick that coint will it be a valid answer or not;
+        // and combining the result if we pick and don't pick the coin we will get all combinations
+        if(coins[n] <= amount){
+            pick = solve(coins,dp,n,amount-coins[n]);
+        }
+        
+        int notPick = solve(coins,dp,n-1,amount);
+        
+        dp[n][amount] = pick + notPick;
+        
+        return dp[n][amount];
+    }
+public:
+    int change(int amount, vector<int>& coins) {
+        int n = coins.size();
+        // creating the dp vector
+        vector<vector<int>> dp(n,vector<int>(amount+1,-1));
+        
+        return solve(coins,dp,n-1,amount);
+    }
+};
