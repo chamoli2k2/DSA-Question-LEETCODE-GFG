@@ -1,0 +1,71 @@
+TLE in commented code
+
+// class Solution{
+//   private:
+//     int solve(string &s1,string &s2,vector<vector<int>> &dp,int n,int m){
+//         // base case
+//         if(n == 0 or m == 0){
+//             return 0;
+//         }
+        
+//         if(dp[n][n] != -1){
+//             return dp[n][m];
+//         }
+        
+//         if(s1[n-1] == s2[m-1]){
+//             dp[n][m] = 1 + solve(s1,s2,dp,n-1,m-1);
+//         }else{
+//             // case 1 :
+//             int case1 = solve(s1,s2,dp,n-1,m);
+            
+//             // case 2 :
+//             int case2 = solve(s1,s2,dp,n,m-1);
+            
+//             dp[n][m] = max(case1,case2);
+//         }
+        
+//         return dp[n][m];
+//     }
+//   public:
+//     int longestPalinSubseq(string s1) {
+//         string s2 = s1;
+//         int n = s1.size();
+//         reverse(s2.begin(),s2.end());
+        
+//         vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
+//         return solve(s1,s2,dp,n,n);
+//     }
+// };
+
+Doubt:
+
+class Solution{
+ public:
+ int dp[1001][1001];
+ 
+ int recursion(int i , int j , string &A ,string &B)
+ {
+     if(i==A.size() || j == B.size())
+     return 0;
+     if(dp[i][j]!=-1)
+     return dp[i][j];
+     if(A[i]==B[j])
+     return dp[i][j] = 1+recursion(i+1,j+1,A,B);
+     int ans1 = recursion(i+1,j,A,B);
+     int ans2 = recursion(i,j+1,A,B);
+     return dp[i][j] = max(ans1,ans2);
+     
+ }
+   int longestPalinSubseq(string &A) {
+       //code here
+       string B= A;
+       reverse(A.begin(),A.end());
+       for(int i =0; i<A.size(); i++)
+       for(int j =0 ; j<B.size(); j++)
+       dp[i][j] = -1;
+       
+       return recursion(0,0,A,B);
+       
+       
+   }
+};
