@@ -1,0 +1,43 @@
+class Solution {
+private:
+    int solve(string &text1,string &text2,vector<vector<int>> &dp,int n,int m){
+        // base case 
+        // if n = 0 or m = 0 (that means there is no element in string)
+        
+        if(n ==0 or m == 0){
+            return 0;
+        }
+        
+        // Checking if we already have answer in dp or not
+        if(dp[n][m] != -1){
+            return dp[n][m];
+        }
+        
+    
+        if(text1[n-1] == text2[m-1]){
+            dp[n][m] = 1 + solve(text1,text2,dp,n-1,m-1);
+            
+        }else{
+            // we have two cases in this 
+            // case 1 : 
+            int case1 = solve(text1,text2,dp,n-1,m);
+            
+            // case 2 : 
+            int case2 = solve(text1,text2,dp,n,m-1);
+            
+            dp[n][m] = max(case1,case2);
+        }
+        
+        
+        return dp[n][m];
+    }
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        int n = text1.size();
+        int m = text2.size();
+        // creating the dp array 
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        
+        return solve(text1,text2,dp,n,m);
+    }
+};
