@@ -1,0 +1,35 @@
+class Solution{
+    public:
+    int ans = 0;
+    int solve(string &s1,string &s2,vector<vector<int>> &dp,int n,int m){
+        // base case
+        if(n == 0 or m == 0){
+            return 0;
+        }
+        
+        int count1 = 0;
+        if(dp[n][m] != -1){
+            return dp[n][m];
+        }
+        
+        if(s1[n-1] == s2[m-1]){
+            count1 = 1 + solve(s1,s2,dp,n-1,m-1);
+        }
+        
+        int count2 = solve(s1,s2,dp,n-1,m);
+        int count3 = solve(s1,s2,dp,n,m-1);
+        
+        ans=max({ans,count1,count2,count3});
+        
+        return dp[n][m] = count1;
+    }
+    
+    int longestCommonSubstr (string s1, string s2, int n, int m)
+    {
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        
+        solve(s1,s2,dp,n,m);
+
+        return ans;
+    }
+};
