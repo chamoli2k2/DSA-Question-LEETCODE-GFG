@@ -1,0 +1,41 @@
+Approach 1 : mine brute force approach
+
+class Solution {
+public:
+    bool checkPossibility(vector<int>& nums) {
+        int count = 0;
+        
+        // checking if array has only one element of not
+        int n = nums.size();
+        
+        if(n == 1){
+            return true;
+        }
+        
+        // temperory vaiable for storing the index where the problem starts
+        int temp;
+        
+        for(int i=1;i<n;i++){
+            if(nums[i] < nums[i-1]){
+                count++;
+                temp = i-1;
+            } 
+        }
+        
+        if(temp !=0 and count == 1){
+            if(nums[temp-1] > nums[temp+1] and nums[temp] >= nums[temp+2] and temp+1 != n-1){
+                return false;
+            }
+        }
+        
+        cout<< count ;
+        
+        // if count > 1
+        if(count > 1){
+            return false;
+        }
+        
+        return true;
+    }
+};
+
