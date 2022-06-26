@@ -1,0 +1,41 @@
+class Solution {
+private:
+    void Painter(vector<vector<int>> &image,int i,int j,int color,int row,int col,int validColor){
+        
+        // base case
+        // checking if we are out of bound or image we are on is already visited or we stand on wrong pixel
+        
+        if(i < 0 or j < 0 or i >= row or j >= col or image[i][j] != validColor){
+            return;
+        }
+        
+        // if image is valid image , than paint it
+        image[i][j] = color;
+        
+        // travel 
+        Painter(image,i-1,j,color,row,col,validColor); // Up
+        Painter(image,i+1,j,color,row,col,validColor); // down
+        Painter(image,i,j-1,color,row,col,validColor); // left
+        Painter(image,i,j+1,color,row,col,validColor); // right
+        
+    }
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        // size of row and col
+        int row = image.size();
+        int col = image[0].size();
+        
+        // valid color which can be colored
+        int validColor = image[sr][sc];
+        
+        // if source is already painted
+        if(validColor == color){
+            return image;
+        } 
+        
+        // calling painter function for help
+        Painter(image,sr,sc,color,row,col,validColor);
+        
+        return image;
+    }
+};
