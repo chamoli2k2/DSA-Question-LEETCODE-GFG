@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minPartitions(string n) {
+        // Solving Problem with Brute force
+        int size = n.length();
+        
+        int outPut = INT_MIN;
+        
+        for(int i=size-1;i>=0;i--){
+            // finding the number to compute
+            int num = n[i] - '0';
+            
+            // finding max digit
+            outPut = max(outPut,num);
+            
+        }
+        
+        return outPut;
+    }
+};
