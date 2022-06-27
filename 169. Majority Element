@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        // This is Moore's voting algorithm
+        
+        int count = 1;
+        int idx = 0;
+        
+        for(int i=0;i<nums.size();i++){
+            if(nums[idx] == nums[i]){
+                count++;
+            }else{
+                count--;
+            }
+            
+            if(count == 0){
+                count = 1;
+                idx = i;
+            }
+            
+        }
+        
+        return nums[idx];
+    }
+};
