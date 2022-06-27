@@ -1,0 +1,32 @@
+class Solution
+{
+    public:
+    //Function to find a continuous sub-array which adds up to a given number.
+    vector<int> subarraySum(int arr[], int n, long long s)
+    {
+        long long i = 0 ,j = 0;
+        
+        long long sum = arr[0];
+        vector<int> ans;
+        
+        while(j < n){
+            
+            if(sum == s){
+                ans.push_back(i+1);
+                ans.push_back(j+1);
+                return ans;
+                
+            }else if(sum > s){
+                sum = sum - arr[i];
+                i++;
+            }else{
+                j++;
+                sum = sum + arr[j];
+            }
+        }
+        
+        ans.push_back(-1);
+        
+        return ans;
+    }
+};
