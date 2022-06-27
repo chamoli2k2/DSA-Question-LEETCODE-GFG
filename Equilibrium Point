@@ -1,0 +1,35 @@
+class Solution{
+   public:
+   // Function to find equilibrium point in the array.
+   // a: input array
+   // n: size of array
+   int equilibriumPoint(long long nums[], int n) {
+       if(n == 1){
+           return n;
+       }
+       long long totalSum = 0;
+       
+       for(int i=0;i<n;i++){
+           totalSum += nums[i];
+       }
+       
+       // Now we have total sum, We need to maintain left side and right side sum too for algorithm
+       long long leftSum = 0;
+       long long rightSum = 0;
+       
+       
+       for(int i=0;i<n;i++){
+           rightSum = totalSum - nums[i] - leftSum;
+           leftSum = totalSum - nums[i] - rightSum;
+           
+           if(rightSum == leftSum){
+               return i+1;
+           }else{
+               leftSum += nums[i];
+           }
+       }
+       
+       return -1;
+       
+   }
+};
