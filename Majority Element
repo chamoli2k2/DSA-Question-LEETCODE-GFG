@@ -1,0 +1,42 @@
+class Solution{
+  public:
+     // Function to find majority element in the array
+    // a: input array
+    // size: size of input array
+    int majorityElement(int nums[], int n)
+    {
+        // Step 1 : finding majority element by Moores voting algo
+        int count = 1;
+        int idx = 0;
+        
+        for(int i=0;i<n;i++){
+            if(nums[idx] == nums[i]){
+                count++;
+            }else{
+                count--;
+            }
+            
+            if(count == 0){
+                count = 1;
+                idx = i;
+            }
+        }
+        
+        // step 2 : checking if answer is correct or not
+        int ans = nums[idx];
+        count = 0;
+        
+        for(int i=0;i<n;i++){
+            if(ans == nums[i]){
+                count++;
+            }
+            
+            if(count > n/2){
+                return ans;
+            }
+        }
+        
+        return -1;
+        
+    }
+};
