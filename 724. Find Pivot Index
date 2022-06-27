@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        // Algorithm first find total sum of the array than check try to find the middle element
+        
+        int totalSum = 0;
+        for(auto i : nums){
+            totalSum += i;
+        }
+        
+        // Now we have total sum, We need to maintain left side and right side sum too for algorithm
+        int leftSum = 0;
+        int rightSum = 0;
+        
+        int n = nums.size();
+        
+        for(int i=0;i<n;i++){
+            rightSum = totalSum - nums[i] - leftSum;
+            leftSum = totalSum - nums[i] - rightSum;
+            
+            if(rightSum == leftSum){
+                return i;
+            }else{
+                leftSum += nums[i];
+            }
+        }
+        
+        return -1;
+    }
+};
