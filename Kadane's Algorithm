@@ -7,14 +7,23 @@ class Solution{
         int curSum = 0;
         int maxSum = INT_MIN;
         
+        // Dry run for the test case 1) a[] = {-5,-2,-8,-1,-4} 
+        // You got the algo in your head
+        
         for(int i=0;i<n;i++){
             
+            // evalutaing the current sum
             curSum = curSum + arr[i];
             
+            // if cur sum became greater the max sum then store it 
             if(curSum > maxSum){
                 maxSum = curSum;
                 
             }
+            
+            // if cursum is less than 0 than set it to zero as
+            // we need max sum so don't need to -ve if cursum become -ve
+            
             
             if(curSum < 0){
                 curSum = 0;
