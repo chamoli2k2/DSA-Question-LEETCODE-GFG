@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void merge(vector<int>& arr1, int m, vector<int>& arr2, int n) {
+        // Applying two pointer approach to solve the question
+        int p1 = m-1;
+        int p2 = n-1;
+        int i = m+n-1;
+        
+        // base cases
+        
+        
+        while(p2 >= 0){
+            if(p1 >=0 and arr1[p1] > arr2[p2]){
+                arr1[i] = arr1[p1];
+                p1--;
+                i--;
+            }else{
+                arr1[i] = arr2[p2];
+                p2--;
+                i--;
+            }
+        }
+    }
+};
