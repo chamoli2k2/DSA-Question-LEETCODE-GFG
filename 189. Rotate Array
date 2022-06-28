@@ -1,0 +1,32 @@
+class Solution {
+private:
+    void reverse(vector<int> &arr,int start,int end){
+        int k = 0;
+        for(int i=start;i<=(start+end)/2;i++){
+            swap(arr[i],arr[end-k]);
+            k++;
+        }
+    }
+public:
+    void rotate(vector<int>& nums, int k) {
+        // No of times array get rotated 
+        // if k > nums.size() we have to take care of that case too
+        int n = nums.size();
+        int rTimes = k % n;
+        
+        if(rTimes == 0 or rTimes == n){
+            return;
+        }
+        
+        // reversing the complete array
+        reverse(nums,0,n-1);
+        
+        // reversing the first half 
+        reverse(nums,0,rTimes-1);
+        
+        // reversing the second half
+        reverse(nums,rTimes,n-1);
+        
+        
+    }
+};
