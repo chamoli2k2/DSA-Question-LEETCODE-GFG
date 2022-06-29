@@ -1,0 +1,20 @@
+void reverse(int arr[],int starting,int end){
+    int k = 0;
+    int mid = (starting + end) / 2;
+    
+    for(int i=starting;i<=mid;i++){
+        swap(arr[i],arr[end-k]);
+        k++;
+    }
+}
+void rotate(int arr[], int n)
+{
+    // for rotating in clockwise direction
+    reverse(arr,0,n-1);
+    
+    // reversing the left part
+    reverse(arr,0,0);
+    
+    // reversing the right part
+    reverse(arr,1,n-1);
+}
