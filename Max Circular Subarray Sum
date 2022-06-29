@@ -1,0 +1,77 @@
+class Solution{
+    private:
+    int kandaneAlgo(int arr[],int n){
+        int maxSum = INT_MIN;
+        int currSum = 0;
+        
+        for(int i=0;i<n;i++){
+            
+            currSum += arr[i];
+            
+            if(currSum > maxSum){
+                maxSum = currSum;
+            }
+            
+            if(currSum < 0){
+                currSum = 0;
+            }
+            
+        }
+        
+        return maxSum;
+    }
+    public:
+    // arr: input array
+    // num: size of array
+    //Function to find maximum circular subarray sum.
+    int circularSubarraySum(int arr[], int num){
+        // Approach : Applying the Kandane's Algorithm to find minimum sum of subarray
+        
+        // We know how to find maximum sum of subarray using the Kandane's Algo
+        // How min sum ?
+        // Simple just negate the all element and apply the kandane algo
+        // the sum will be your min sum
+        
+        // max circular sum will be = (Total subarray sum - min subarray sum)
+        
+        // base case : 
+        int count = 0;
+        int max = INT_MIN;
+        for(int i=0;i<num;i++){
+            if(arr[i] < 0){
+                count++;
+            }
+            
+            if(arr[i] > max){
+                max = arr[i];
+            }
+        }
+        
+        if(count == num){
+            return max;
+        }
+        
+        // Case 1 : finding kandaneSum (wihtout wrapping of array)
+        int kandaneSum = kandaneAlgo(arr,num);
+        
+        
+        // case 2 : finding maxsum (with wrapping)
+        int totalSum = 0;
+        // finding totalSum
+        for(int i=0;i<num;i++){
+            totalSum += arr[i];
+            arr[i] = -arr[i];
+        }
+        
+        // We multiply below function with negative sign as we changed the sign of element to find min sum
+        // hence changing sign
+        int minSubarraySum = kandaneAlgo(arr,num);
+        
+        // maxcircularSubarray sum = total subarray sum - min subarray sum
+        
+        int withWrapping = (totalSum + minSubarraySum);
+        
+        // taking maximum of case 1 and case 2
+        return kandaneSum > withWrapping ? kandaneSum : withWrapping;
+    }
+};
