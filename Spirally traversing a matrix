@@ -1,0 +1,53 @@
+class Solution
+{   
+    public: 
+    //Function to return a list of integers denoting spiral traversal of matrix.
+    vector<int> spirallyTraverse(vector<vector<int> > arr, int r, int c) 
+    {
+        // creating ans bucket to store data
+        vector<int> ans;
+        
+        // making the pointer for track
+        int left = 0;
+        int right = c-1;
+        int top = 0;
+        int bottom = r-1;
+        
+        while(left <= right and top <= bottom){
+            // Step 1 : move leftward
+            for(int i=left;i<=right;i++){
+                ans.push_back(arr[top][i]);
+            }
+            // increasing top
+            top++;
+            
+            // Step 2 : moving downward
+            for(int i=top;i<=bottom;i++){
+                ans.push_back(arr[i][right]);
+            }
+            // decreasing right
+            right--;
+            
+            // Step 3 : moving leftward
+            // Checking if Top <= bottom
+            if(top <= bottom){
+                for(int i=right;i>=left;i--){
+                    ans.push_back(arr[bottom][i]);
+                }
+                // decreasing bottom
+                bottom--;
+            }
+            
+            // Step 4 : moving upward
+            // checking left <= right
+            if(left <= right){
+                for(int i=bottom;i>=top;i--){
+                    ans.push_back(arr[i][left]);
+                }
+                left++;
+            }
+        }
+        
+        return ans;
+    }
+};
