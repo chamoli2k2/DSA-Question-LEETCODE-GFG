@@ -1,14 +1,26 @@
 class Solution{
 public:
     int remove_duplicate(int a[],int n){
-        int i=0;
-        for(int j=1;j<n;j++){
-            if(a[i]!=a[j]){
+        // Solving this by two pointer approach
+        int i = 0, j = 1;
+        
+        // 2 pointer se chalu karo ek 0th index pe dusra 1st pe
+        // Agr a[i] != A[j] tb i++ kr de
+        // Aur a[i] pe a[j] ki value dal de
+        // Agr dono equal aate h
+        // To j++ krta rh
+        // Jb tk diff nhi aate
+        
+        while(j < n){
+            
+            if(a[i] != a[j]){
                 i++;
-                a[i]=a[j];
+                a[i] = a[j];
             }
+            
+            j++;
         }
+        
         return i+1;
     }
-    
 };
