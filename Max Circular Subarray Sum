@@ -32,7 +32,7 @@ class Solution{
         // Simple just negate the all element and apply the kandane algo
         // the sum will be your min sum
         
-        // max circular sum will be = (Total subarray sum - min subarray sum)
+        // max circular sum will be = (Total subarray sum(actual) + min subarray sum)
         
         // base case : 
         int count = 0;
@@ -63,11 +63,9 @@ class Solution{
             arr[i] = -arr[i];
         }
         
-        // We multiply below function with negative sign as we changed the sign of element to find min sum
-        // hence changing sign
         int minSubarraySum = kandaneAlgo(arr,num);
         
-        // maxcircularSubarray sum = total subarray sum - min subarray sum
+        // maxcircularSubarray sum = total subarray sum + min subarray sum
         
         int withWrapping = (totalSum + minSubarraySum);
         
