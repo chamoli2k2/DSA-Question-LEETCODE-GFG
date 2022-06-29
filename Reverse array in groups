@@ -1,0 +1,27 @@
+class Solution{
+private:
+    void reverse(vector<long long> &arr,int starting,int ending){
+        int k = 0;
+        int mid = starting + (ending - starting) / 2;
+        
+        for(int i=starting;i<=mid;i++){
+            swap(arr[i],arr[ending-k]);
+            k++;
+        }
+    }
+public:
+    //Function to reverse every sub-array group of size k.
+    void reverseInGroups(vector<long long>& arr, int n, int k){
+        int i = 0;
+        while(i < n){
+            
+            if(i+k-1 < n){
+                reverse(arr,i,i+k-1);
+            }else{
+                reverse(arr,i,n-1);
+            }
+            
+            i = i + k;
+        }
+    }
+};
