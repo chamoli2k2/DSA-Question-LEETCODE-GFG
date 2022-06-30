@@ -1,0 +1,22 @@
+class Solution{
+    public:
+    int kthElement(int arr1[], int arr2[], int n, int m, int k)
+    {
+        // Concept merge two sorted array
+        for(int i=n-1,j=0;i>=0 and j<m;i--,j++){
+            if(arr1[i] > arr2[j]){
+                swap(arr1[i],arr2[j]);
+            }
+        }
+        
+        // sort the both array
+        sort(arr1,arr1+n);
+        sort(arr2,arr2+m);
+        
+        if(k <= n){
+            return arr1[k-1];
+        }
+        
+        return arr2[k-n-1];
+    }
+};
