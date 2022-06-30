@@ -1,0 +1,32 @@
+class Solution{   
+public:
+    //Function to partition the array around the range such 
+    //that array is divided into three parts.
+    void threeWayPartition(vector<int>& arr,int a, int b)
+    {
+        // Dutch National Flag Algorithm
+        
+        int low = 0;
+        int mid = 0;
+        int high = arr.size()-1;
+        
+        while(mid <= high){
+            // if element is less than equal to a
+            if(arr[mid] < a){
+                swap(arr[low],arr[mid]);
+                mid++;
+                low++;
+            }
+            // if element is more than b
+            else if(arr[mid] > b){
+                swap(arr[mid],arr[high]);
+                high--;
+            }
+            // otherwise
+            else{
+                mid++;
+            }
+        }
+        
+    }
+};
