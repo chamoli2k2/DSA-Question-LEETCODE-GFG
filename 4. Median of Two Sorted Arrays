@@ -1,0 +1,83 @@
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& arr1, vector<int>& arr2) {
+        // Approach 1 : Merge sorted array concept;
+        
+        int n = arr1.size();
+        int m = arr2.size();
+        // base cases
+        // B1 : if arr1 -> empty
+        if(n == 0){
+            if(m & 1){
+                return arr2[m/2];
+            }
+            int k = m/2;
+            double ans = ((double)arr2[k] + (double)arr2[k - 1]) / 2;
+            return ans;
+        }
+        
+        // B2 : if arr2 -> empty
+        if(m == 0){
+            if(n & 1){
+                return arr1[n/2];
+            }
+            int k = n/2;
+            double ans = ((double)arr1[k] + (double)arr1[k - 1]) / 2;
+            return ans;
+        }
+        
+        // Step 1 : shift the smaller element in array 1 
+        for(int i=n-1,j=0;i>=0 and j<m;j++,i--){
+            if(arr1[i] > arr2[j]){
+                swap(arr1[i],arr2[j]);
+            }
+        }
+        
+        // Step 2 : sort both array
+        sort(arr1.begin(),arr1.end());
+        sort(arr2.begin(),arr2.end());
+        
+        /* Step 3 : Checking if size of merged array is even or odd
+          if size is even then we have to do additional calculation as in that case there are two median and we have 
+          to take their average as final value
+         In case of odd median is only middle value so easy to compute
+        */
+        
+        double ans;
+        int num = n + m;
+        
+        // working 
+        if(num & 1){
+            // case 1 : if num is odd
+            
+            int k = num / 2;
+            if(k < n){
+                ans = arr1[k];
+                return ans;
+            }
+            
+            ans = arr2[k-n];
+            return ans;
+            
+        }else{
+          // if num is even
+            
+            // median lie in arr1
+            int k = num / 2;
+            if(k < n){
+                ans = arr1[k] + arr1[k-1];
+                return ans/2;
+            }
+            
+            // if median consist of both array
+            if(k-n == 0){
+                ans = arr2[0] + arr1[n-1];
+                return ans/2;
+            }
+            
+            // median lie in arr2
+            ans = arr2[k-n] + arr2[k-n-1];
+            return ans/2;
+        }
+    }
+};
