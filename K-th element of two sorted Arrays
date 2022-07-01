@@ -20,3 +20,47 @@ class Solution{
         return arr2[k-n-1];
     }
 };
+
+Approach 2 : By using two pointer approach
+
+class Solution{
+    public:
+    int kthElement(int arr1[], int arr2[], int n, int m, int k)
+    {
+        // Trying to solve the question by two pointer approach
+        int i = 0;
+        int j = 0;
+        int count = 0;
+        while(i < n and j < m){
+            if(arr1[i] <= arr2[j]){
+                count ++;
+                if(count == k){
+                    return arr1[i];
+                }
+                i++;
+            }else{
+                count ++;
+                if(count == k){
+                    return arr2[j];
+                }
+                j++;
+            }
+        }
+        
+        while(i < n){
+            count++;
+            if(count == k){
+                return arr1[i];
+            }
+            i++;
+        }
+        
+        while(j < m){
+            count++;
+            if(count == k){
+                return arr2[j];
+            }
+            j++;
+        }
+    }
+};
