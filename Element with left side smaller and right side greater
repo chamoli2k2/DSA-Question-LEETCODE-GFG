@@ -1,0 +1,36 @@
+int findElement(int arr[], int n) {
+    // Finding left minimum
+    vector<int> leftMax(n);
+    vector<int> rightMin(n);
+    
+    // finding left minimum at every index
+    leftMax[0] = arr[0];
+    int maxi = arr[0];
+    for(int i=1;i<n;i++){
+        if(maxi < arr[i]){
+            maxi = arr[i];
+        }
+        leftMax[i] = maxi;
+    }
+    
+    // finding right maximum at every index
+    rightMin[n-1] = arr[n-1];
+    int mini = arr[n-1];
+    for(int i=n-2;i>=0;i--){
+        if(mini > arr[i]){
+            mini = arr[i];
+        }
+        rightMin[i] = mini;
+    }
+    
+    int ans = -1;
+    for(int i=1;i<n-1;i++){
+        if(arr[i] >= leftMax[i-1] and arr[i] <= rightMin[i+1]){
+            ans = arr[i];
+            break;
+        }
+    }
+    
+    return ans;
+    
+}
