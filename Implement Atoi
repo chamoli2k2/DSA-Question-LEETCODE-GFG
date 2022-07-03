@@ -1,0 +1,32 @@
+class Solution{
+  public:
+    /*You are required to complete this method */
+    int atoi(string str) {
+        int ans = 0;
+        int num;
+        int i;
+        
+        if(str[0] == '-'){
+            i = 1;
+        }else{
+            i = 0;
+        }
+        
+        while(str[i] != '\0'){
+            if(str[i] - '0' < 0 or str[i] - '0' > 9){
+                ans = -1;
+                return ans;
+            }
+
+            num = str[i] - '0';
+            ans = ans * 10 + num;
+            i++;
+        }
+        
+        if(str[0] == '-'){
+            ans = -ans;
+        }
+        
+        return ans;
+    }
+};
