@@ -1,0 +1,113 @@
+class Solution{
+  public:
+    /*You are required to complete below function */
+    string multiplyStrings(string s1, string s2) {
+        // base case
+        // case 1 : s1 or s2 is 0
+        
+        if((s1.length() == 1 and s1[0] == '0') or (s2.length() == 1 and s2[0] == '0')){
+            // return 0 at this case
+            string ans = "0";
+            return ans;
+        }
+         
+        // case 2 : checking if no is -ve or not
+        int flag = 1;
+        if(s1[0] == '-'){
+            s1.erase(s1.begin());
+            flag = flag * -1;
+        }
+        
+        if(s2[0] == '-'){
+            s2.erase(s2.begin());
+            flag = flag * -1;
+        }
+        
+        // basic variable defining
+        int ival = s1.length() - 1;
+        int jval = s2.length() - 1;
+        int k = s1.length() + s2.length();
+        vector<char> ans(k,'(');
+        k--;
+        
+        // evaluating 
+        while(jval >= 0){
+            int carry = 0;
+            // udating the ival
+            ival = s1.length() - 1;
+            int k1 = k;
+            int num2 = s2[jval] - '0';
+            int m;
+            while(ival >= 0){
+                
+                // converting both number in integers
+                int num1 = s1[ival] - '0';
+                
+                // finding the answer 
+                m = (num1 * num2) + carry;
+                
+                // storing in ans bucket
+                if(ans[k1] == '('){
+                    ans[k1] = '0' + m % 10;
+                }
+                else{
+                    m = (m + ans[k1] - '0');
+                    ans[k1] = '0' + m % 10;
+                }
+                
+                
+                // updating carry
+                carry = m / 10;
+                
+                // uddating k1
+                k1--;
+                
+                // updating ival
+                ival--;
+            }
+            
+            // checking we have carry left over or not
+            if(carry != 0){
+                if(ans[k1] == '('){
+                    ans[k1] = '0' + carry;
+                }
+                else{
+                    ans[k1] = '0' + (carry + ans[k1] - '0');
+                }
+            }
+            
+            // updating iterators
+            jval --;
+            
+            // updating k
+            k--;
+        }
+        
+        // removing extra '(' if left
+        int it = 0;
+        while(ans[it] == '('){
+            ans.erase(ans.begin());
+            it++;
+        }
+        
+        it = 0;
+        while(ans[it] == '0'){
+            ans.erase(ans.begin());
+            it++;
+        }
+        
+        // checking if flag is -1 or not
+        // if flag is -1 then putting '-' sign at front
+        if(flag == -1){
+            ans.insert(ans.begin(),'-');
+        }
+        
+        string result = "";
+        for(int i=0;i<ans.size();i++){
+            result.push_back(ans[i]);
+        }
+        
+        return result;
+    }
+
+};
