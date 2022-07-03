@@ -1,0 +1,53 @@
+class Solution
+{
+    private:
+    void reverse(string &str,int s,int e){
+        int k = 0;
+        for(int i=s;i<=(s+e)/2;i++){
+            swap(str[i],str[e-k]);
+            k++;
+        }
+    }
+    
+    bool check(string &s1,string &s2){
+        for(int i=0;i<s1.length();i++){
+            if(s1[i] != s2[i]){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    public:
+    //Function to check if a string can be obtained by rotating
+    //another string by exactly 2 places.
+    bool isRotated(string str1, string str2)
+    {
+        // main logic is string is rotated by 2 positon 
+        // we just need to rotate string 1 to anticlockwise direction to check
+        if(str1.length() != str2.length()) return false;
+        string str1Backup = str1;
+        // reversing the string 1 by 2 place 
+        // step 1 :
+        reverse(str1,0,1);
+        //step 2 : 
+        reverse(str1,2,str1.length()-1);
+        // step 3 : 
+        reverse(str1,0,str1.length()-1);
+        
+        // reversing the 2nd string
+        // step 1:
+        reverse(str1Backup,0,str1.length()-1);
+        // step 2 :
+        reverse(str1Backup,0,1);
+        //step 3 : 
+        reverse(str1Backup,2,str1.length()-1);
+        
+        if(check(str1,str2) or check(str1Backup,str2)){
+            return true;
+        }
+        return false;
+        
+    }
+
+};
