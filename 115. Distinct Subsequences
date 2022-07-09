@@ -1,0 +1,71 @@
+class Solution {
+private:
+    int solve(string &s,string &t,vector<vector<int>> &dp,int n,int m){
+        // base case
+        // case 1 :
+        if(m < 0){
+            return 1;
+        }
+        // case 2 :
+        if(n < 0){
+            return 0;
+        }
+        
+        // checking dp array
+        if(dp[n][m] != -1){
+            return dp[n][m];
+        }
+        
+        
+        if(s[n] == t[m]){
+            dp[n][m] = solve(s,t,dp,n-1,m-1) + solve(s,t,dp,n-1,m);
+        }else{
+            dp[n][m] = solve(s,t,dp,n-1,m);
+
+        }
+        
+        
+        return dp[n][m];
+    }
+public:
+    int numDistinct(string s, string t) {
+        int n = s.size();
+        int m = t.size();
+        vector<vector<int>> dp(n,vector<int>(m,-1));
+        return solve(s,t,dp,n-1,m-1);
+    }
+};
+
+class Solution {
+public:
+    
+   
+    int numDistinct(string s, string t) {
+        
+        int n=s.length(), m=t.length();
+        return helper(s,t,n,m,0,0);
+    }
+    
+    
+    int helper(string s, string t, int n, int m, int i, int j){
+        
+         double dp[1002][1002];
+        
+        for(int i=0;i<=m;i++)
+            dp[0][i]=0;
+        
+        for(int i=0;i<=n;i++)
+            dp[i][0]=1;
+        
+        
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(s[i-1]==t[j-1])
+                    dp[i][j]= dp[i-1][j-1] + dp[i-1][j];
+                else
+                    dp[i][j]=dp[i-1][j];
+            }
+        }
+        return dp[n][m];
+    }
+};
