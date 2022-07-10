@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<vector<int>>& arr) {
+        // Algorithm
+
+        sort(arr.begin(),arr.end());
+        
+        int n = arr.size();
+        int left = 0;
+        int right = 1;
+        int count = 0;
+        
+        while(right < n){
+            // case 1 : if no overlapping
+            if(arr[left][1] <= arr[right][0]){
+                left = right;
+                right ++;
+            }
+            // case 2 : if overlapping is not complete we delete the one with larger ending
+            else if(arr[left][1] <= arr[right][1]){
+                right ++;
+                count ++;
+            }
+            else if(arr[left][1] > arr[right][1]){
+                count ++;
+                left = right;
+                right ++;
+            }
+        }
+        
+        return count;
+    }
+};
