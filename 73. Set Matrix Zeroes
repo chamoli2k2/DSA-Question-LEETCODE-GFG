@@ -1,0 +1,37 @@
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& arr) {
+        set<int> row;
+        set<int> col;
+        
+        
+        int n = arr.size();
+        int m = arr[0].size();
+        
+        // searching for element zero in matrix and if found then saving its row and col index in set
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(arr[i][j] == 0){
+                    row.insert(i);
+                    col.insert(j);
+                }
+            }
+        }
+        
+        // changing every row to 1
+        for(auto it=row.begin();it!=row.end();it++){
+            int num = *it;
+            for(int j=0;j<m;j++){
+                arr[num][j] = 0;
+            }
+        }
+        
+        // changing every col to 1
+        for(auto it=col.begin();it!=col.end();it++){
+            int num = *it;
+            for(int j=0;j<n;j++){
+                arr[j][num] = 0;
+            }
+        }
+    }
+};
