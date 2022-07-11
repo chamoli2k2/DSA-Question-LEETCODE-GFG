@@ -1,24 +1,32 @@
 class Solution {
 public:
-    void merge(vector<int>& arr1, int m, vector<int>& arr2, int n) {
-        // Applying two pointer approach to solve the question
-        int p1 = m-1;
-        int p2 = n-1;
-        int i = m+n-1;
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        // Two pointer appraoch
+        // make pointer i , j , k
+        // i -> points last filed index of nums1 
+        // j -> points last filed index of nums2
+        // k -> points last or size of nums1 (actuall size)
         
-        // base cases
+        int i = m - 1;
+        int j = n - 1;
+        int k = nums1.size() - 1;
         
+        // compare element at index i and j 
+        // if nums[i] <= num[j] copy the jth index at nums[k] and decrease both k and j
+        // if nums[i] > nums[j] copy the ith index at kth index and decrement both k and i
+        // loop will run untill any of i and j is greater than 0
         
-        while(p2 >= 0){
-            if(p1 >=0 and arr1[p1] > arr2[p2]){
-                arr1[i] = arr1[p1];
-                p1--;
-                i--;
+        while(i >= 0 and j >= 0){
+            if(nums1[i] <= nums2[j]){
+                nums1[k--] = nums2[j--];
             }else{
-                arr1[i] = arr2[p2];
-                p2--;
-                i--;
+                nums1[k--] = nums1[i--];
             }
+        }
+        
+        // if there is any value left in nums2
+        while(j >= 0){
+            nums1[k--] = nums2[j--];
         }
     }
 };
