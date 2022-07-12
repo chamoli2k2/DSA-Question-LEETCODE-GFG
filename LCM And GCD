@@ -1,0 +1,19 @@
+class Solution {
+  private:
+   long long gcd(int a,int b){
+       // base case
+       if(a == 0){
+           return b;
+       }
+       
+       return gcd(b%a,a);
+   }
+  public:
+    vector<long long> lcmAndGcd(long long A , long long B) {
+        vector<long long> ans(2);
+        ans[1] = gcd(A,B);
+        ans[0] = (A * B) / ans[1];
+        
+        return ans;
+    }
+};
