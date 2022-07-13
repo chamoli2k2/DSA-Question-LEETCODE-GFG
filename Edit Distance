@@ -1,0 +1,57 @@
+class Solution {
+  private:
+    int solve(string s,string t,int n,int m,vector<vector<int>> &dp){
+        // base case
+        // case 1 : if String 's' got exhausted than we need to perform insert operation equal
+        // to how many character left in string t
+        if(n < 0){
+            return m + 1;
+        }
+        
+        // case 2 : if string 't' got exhausted than we need to perform delete operation equal 
+        // to no of character left in string 's'
+        if(m < 0){
+            return n + 1;
+        }
+        
+        // checking dp array
+        if(dp[n][m] != -1){
+            return dp[n][m];
+        }
+        
+        
+        // if string matches
+        if(s[n] == t[m]){
+            dp[n][m] = 0 + solve(s,t,n-1,m-1,dp);
+        }
+        // if strings doesn't match
+        else{
+            // delete the character from s
+            int del = 1 + solve(s,t,n-1,m,dp);
+            
+            // insert character
+            int ins = 1 + solve(s,t,n,m-1,dp);
+            
+            // replace character
+            int rep = 1 + solve(s,t,n-1,m-1,dp);
+            
+            dp[n][m] = min(del,min(ins,rep));
+        }
+        
+        
+        // returning the answer
+        return dp[n][m];
+    }
+  public:
+    int editDistance(string s, string t) {
+        // Finding the size of string 
+        int n = s.size();
+        int m = t.size();
+        
+        // creating dp array
+        vector<vector<int>> dp(n,vector<int>(m,-1));
+        
+        return solve(s,t,n-1,m-1,dp);
+        
+    }
+};
