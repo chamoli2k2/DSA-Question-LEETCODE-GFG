@@ -71,25 +71,25 @@ int maxProfit(vector<int>& prices) {
                     if(buy){
                         // take the stocks
                         // we took prices as -ve as if we buy the stocks we have to give money hence -ve
-                        int take = -prices[idx] + solve(prices,dp,idx+1,0,cap);
+                        int take = -prices[idx] + dp[idx+1][0][cap];
 
                         // not taken the stocks
-                        int notTake = 0 + solve(prices,dp,idx+1,1,cap);
+                        int notTake = 0 + dp[idx+1][1][cap];
 
                         dp[idx][buy][cap] = max(take,notTake);
                     }
                     else{
                         // sell the stock
                         // if are selling the stock so price is +ve
-                        int sell = prices[idx] + solve(prices,dp,idx+1,1,cap-1);
+                        int sell = prices[idx] + dp[idx+1][1][cap-1];
 
                         // not selling the stocks
-                        int notSell = 0 + solve(prices,dp,idx+1,0,cap);
+                        int notSell = 0 + dp[idx+1][0][cap];
                         
                         dp[idx][buy][cap] = max(sell,notSell);
                     }
+                }
             }
-        }
         }
         
         return dp[0][1][2];
