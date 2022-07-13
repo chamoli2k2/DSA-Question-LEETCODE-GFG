@@ -14,3 +14,91 @@ public:
         return profit;
     }
 };
+
+
+Approach 1 : Memomization
+class Solution {
+private:
+    int solve(vector<int> &prices,vector<vector<int>> &dp,int i,int buy){
+        // base case
+        if(i == prices.size()){
+            return 0;
+        }
+        
+        if(dp[i][buy] != -1){
+            return dp[i][buy];
+        }
+        
+        int profit = 0;
+        
+        if(buy){
+            // take stocks
+            int take = -prices[i] + solve(prices,dp,i+1,0);
+            
+            // not take stock
+            int notTake = 0 + solve(prices,dp,i+1,1);
+            
+            dp[i][buy] = max(take,notTake);
+        }
+        else{
+            // sell stocks
+            int sell = prices[i] + solve(prices,dp,i+1,1);
+            
+            // hold the stocks
+            int hold = 0 + solve(prices,dp,i+1,0);
+            
+            dp[i][buy] = max(sell,hold);
+        }
+        
+        
+        return dp[i][buy];
+    }
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        
+        // initialising the dp vector
+        // size is 2 because either we can buy stocks or sell stocks 
+        // buy stocks -> 1 & sell stocks -> 0
+        vector<vector<int>> dp(n+1,vector<int>(2,0));
+        
+        return solve(prices,dp,0,1);
+	}
+};
+Approach 2 : Tabulation :
+int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        
+        // initialising the dp vector
+        // size is 2 because either we can buy stocks or sell stocks 
+        // buy stocks -> 1 & sell stocks -> 0
+        vector<vector<int>> dp(n+1,vector<int>(2,0));
+        
+        //return solve(prices,dp,0,1);
+        
+        for(int i=n-1;i>=0;i--){
+            for(int j=0;j<=1;j++){
+                int profit = 0;
+                if(j){
+                    // take stocks
+                    int take = -prices[i] + dp[i+1][0];
+
+                    // not take stock
+                    int notTake = 0 + dp[i+1][1];
+
+                    dp[i][j] = max(take,notTake);
+                }
+                else{
+                    // sell stocks
+                    int sell = prices[i] + dp[i+1][1];
+
+                    // hold the stocks
+                    int hold = 0 + dp[i+1][0];
+
+                    dp[i][j] = max(sell,hold);
+                }
+            }
+        }
+        
+        return dp[0][1];
+    }
