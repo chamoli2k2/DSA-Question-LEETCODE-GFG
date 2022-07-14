@@ -1,0 +1,82 @@
+Approach 1 : Memomization
+class Solution {
+private:
+    int solve(vector<int> &prices,vector<vector<int>> &dp,int idx,int n,int buy){
+        // base case
+        if(idx >= n){
+            return 0;
+        }
+        
+        // if data is already available in dp array
+        if(dp[idx][buy] != -1){
+            return dp[idx][buy];
+        }
+        
+        
+        // Main algo
+        if(buy){
+            // take
+            int take = -prices[idx] + solve(prices,dp,idx+1,n,0);
+            
+            // not take
+            int notTake = 0 + solve(prices,dp,idx+1,n,1);
+            
+            dp[idx][buy] = max(take,notTake);
+        }
+        else{
+            // sell
+            int sell = prices[idx] + solve(prices,dp,idx+2,n,1);
+            
+            // not sell 
+            int notSell = 0 + solve(prices,dp,idx+1,n,0);
+            
+            dp[idx][buy] = max(sell,notSell);
+        }
+        
+        
+        return dp[idx][buy];
+    }
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        
+        vector<vector<int>> dp(n,vector<int>(2,-1));
+        
+        
+        return solve(prices,dp,0,n,1);
+    }
+};
+Approach 2 : Tabulation
+int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        
+        vector<vector<int>> dp(n+2,vector<int>(2,0));
+        
+        
+        //return solve(prices,dp,0,n,1);
+        
+        for(int idx=n-1;idx>=0;idx--){
+            for(int buy=0;buy<=1;buy++){
+                if(buy){
+                    // take
+                    int take = -prices[idx] + dp[idx+1][0];
+
+                    // not take
+                    int notTake = 0 + dp[idx+1][1];
+
+                    dp[idx][buy] = max(take,notTake);
+                }
+                else{
+                    // sell
+                    int sell = prices[idx] + dp[idx+2][1];
+                    
+                    // not sell 
+                    int notSell = 0 + dp[idx+1][0];
+
+                    dp[idx][buy] = max(sell,notSell);
+                }
+            }
+        }
+        
+        return dp[0][1];
+    }
