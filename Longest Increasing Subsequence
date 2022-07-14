@@ -1,0 +1,42 @@
+class Solution
+{
+    private:
+    int solve(int* a,vector<vector<int>> &dp,int idx,int prev,int n){
+        // base case
+        if(idx == n){
+            return 0;
+        }
+        
+        
+        if(dp[idx][prev+1] != -1){
+            return dp[idx][prev+1];
+        }
+        
+        // not take 
+        int notTake = solve(a,dp,idx+1,prev,n);
+        
+        int len = notTake;
+        // taking idx
+        int take;
+        if(prev == -1 or a[idx] > a[prev]){
+            take = 1 + solve(a,dp,idx+1,idx,n);
+            
+            len = max(take,notTake);
+        } 
+        
+        
+        dp[idx][prev+1] = len;
+        
+        
+        return dp[idx][prev+1];
+        
+    }
+    public:
+    //Function to find length of longest increasing subsequence.
+    int longestSubsequence(int n, int a[])
+    {
+        vector<vector<int>> dp(n,vector<int>(n+1,-1));
+        
+        return solve(a,dp,0,-1,n);
+    }
+};
