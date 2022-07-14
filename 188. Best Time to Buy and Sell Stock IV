@@ -1,0 +1,105 @@
+Approach 1 : Tabulation
+**```
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        
+        // Creating the 3-D Dp
+        // 3D -> 2D -> 1D
+        
+        // 2 is showing state where we can buy or sell
+        // 3 is showing the capacity of stocks either 0 stocks are bought or 1 or k stocks are bought
+        vector<vector<vector<int>>> dp(n+1,vector<vector<int>>(2,vector<int>(k+1,0)));
+        
+        for(int idx=n-1;idx>=0;idx--){
+            for(int buy=0;buy<=1;buy++){
+                for(int cap=1;cap<=k;cap++){
+                    if(buy){
+                        // take the stocks
+                        // we took prices as -ve as if we buy the stocks we have to give money hence -ve
+                        int take = -prices[idx] + dp[idx+1][0][cap];
+
+                        // not taken the stocks
+                        int notTake = 0 + dp[idx+1][1][cap];
+
+                        dp[idx][buy][cap] = max(take,notTake);
+                    }
+                    else{
+                        // sell the stock
+                        // if are selling the stock so price is +ve
+                        int sell = prices[idx] + dp[idx+1][1][cap-1];
+
+                        // not selling the stocks
+                        int notSell = 0 + dp[idx+1][0][cap];
+                        
+                        dp[idx][buy][cap] = max(sell,notSell);
+                    }
+                }
+            }
+        }
+        
+        return dp[0][1][k];
+    }
+};**
+
+
+# Approach 2 : Memomization
+
+
+
+
+class Solution {
+private:
+    int solve(vector<int> &prices,vector<vector<vector<int>>> &dp,int idx,int buy,int cap){
+        // base case 
+        // eithere all stocks are traversed or we bought desired no of stacks
+        if(idx == prices.size() || cap == 0){
+            return 0;
+        }
+        
+        // checking dp array
+        if(dp[idx][buy][cap] != -1){
+            return dp[idx][buy][cap];
+        }
+        
+        if(buy){
+            // take the stocks
+            // we took prices as -ve as if we buy the stocks we have to give money hence -ve
+            int take = -prices[idx] + solve(prices,dp,idx+1,0,cap);
+            
+            // not taken the stocks
+            int notTake = 0 + solve(prices,dp,idx+1,1,cap);
+            
+            dp[idx][buy][cap] = max(take,notTake);
+        }
+        else{
+            // sell the stock
+            // if are selling the stock so price is +ve
+            int sell = prices[idx] + solve(prices,dp,idx+1,1,cap-1);
+            
+            // not selling the stocks
+            int notSell = 0 + solve(prices,dp,idx+1,0,cap);
+            
+            dp[idx][buy][cap] = max(sell,notSell);
+        }
+        
+        
+        // returning the value
+        return dp[idx][buy][cap];
+        
+    }
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        
+        // Creating the 3-D Dp
+        // 3D -> 2D -> 1D
+        
+        // 2 is showing state where we can buy or sell
+        // 3 is showing the capacity of stocks either 0 stocks are bought or 1 or k stocks are bought
+        vector<vector<vector<int>>> dp(n,vector<vector<int>>(2,vector<int>(k+1,-1)));
+        
+        return solve(prices,dp,0,1,k);
+    }
+};
