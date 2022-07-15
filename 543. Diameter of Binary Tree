@@ -1,0 +1,64 @@
+Approach 1 : TC : O(N)
+
+class Solution {
+private:
+    pair<int,int> solve(TreeNode* root){
+        // base case
+        if(root == NULL){
+            pair<int,int> p = {0,0};
+            return p;
+        }
+        
+        // Searching Max diameter in left part of tree 
+        pair<int,int> ls = solve(root->left);
+        
+        // Searching Max diameter in right part of tree
+        pair<int,int> rs = solve(root->right);
+        
+        // Left sub tree diameter is max
+        int op1 = ls.first;
+        
+        // right sub tree diameter is max
+        int op2 = rs.first;
+        
+        // left and right sub tree say bane tree ka diameter max h
+        int op3 = ls.second + rs.second;
+        
+        pair<int,int> ans;
+        
+        // storing maximum diameter at ans.first
+        ans.first = max(op3,max(op1,op2));
+        
+        // storing maximum height at ans.second
+        ans.second = 1 + max(ls.second,rs.second);
+        
+        return ans;
+    }
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        return solve(root).first;
+    }
+};
+
+
+Approach 2 : TC : O(N2)
+
+class Solution {
+public:
+    int height(TreeNode* root){
+        if(root==NULL){
+            return 0;
+        }
+        
+        return 1+max(height(root->left),height(root->right));
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(root==NULL){
+            return 0;
+        }
+        int op1=diameterOfBinaryTree(root->left);
+        int op2=diameterOfBinaryTree(root->right);
+        int op3=height(root->left)+height(root->right);
+        return max(op1,max(op2,op3));
+    }
+};
