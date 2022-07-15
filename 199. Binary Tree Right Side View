@@ -1,0 +1,70 @@
+Approach 1 : Recursive TC O(N) & SC : O(height)
+
+class Solution {
+private:
+    void solve(TreeNode* root,vector<int> &ans,int lvl){
+        // base case
+        if(root == NULL){
+            return;
+        }
+
+        if(ans.size() == lvl){
+            // add the node data in ans
+            ans.push_back(root->val);
+        }
+        
+        // move right
+        solve(root->right,ans,lvl+1);
+
+        // move left
+        solve(root->left,ans,lvl+1);
+
+    }
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        
+        solve(root,ans,0);
+        
+        return ans;
+    }
+};
+# Approach 2 : Iterative TC : O(N) and SC : O(Max no. of node in a lvl)
+
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        if(root == NULL){
+            return ans;
+        }
+        
+        queue<TreeNode*> q;
+        q.push(root);
+        
+        while(!q.empty()){
+            int n = q.size();
+            
+            // for iterating over the entire lvl 
+            for(int i=1;i<=n;i++){
+                TreeNode* temp = q.front();
+                q.pop();
+                
+                if(i == n){
+                    ans.push_back(temp->val);
+                }
+                
+                // putting new value
+                if(temp->left != NULL){
+                    q.push(temp->left);
+                }
+                
+                if(temp->right != NULL){
+                    q.push(temp->right);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
