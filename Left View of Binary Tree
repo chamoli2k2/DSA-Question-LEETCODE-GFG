@@ -1,3 +1,5 @@
+Approach 1 : Iterative approach
+
 vector<int> leftView(Node *root)
 {
    vector<int> ans;
@@ -31,6 +33,35 @@ vector<int> leftView(Node *root)
    for(auto j : mp){
        ans.push_back(j.second);
    }
+   
+   return ans;
+}
+
+Approach 2 : Recursion
+
+//Function to return a list containing elements of left view of the binary tree.
+void solve(Node* root,vector<int> &ans,int lvl){
+    // base case
+    if(root == NULL){
+        return;
+    }
+    
+    if(ans.size() == lvl){
+        // add the node data in ans
+        ans.push_back(root->data);
+    }
+    
+    // move left
+    solve(root->left,ans,lvl+1);
+        
+    // move right
+    solve(root->right,ans,lvl+1);
+     
+}
+vector<int> leftView(Node *root)
+{
+   vector<int> ans;
+   solve(root,ans,0);
    
    return ans;
 }
