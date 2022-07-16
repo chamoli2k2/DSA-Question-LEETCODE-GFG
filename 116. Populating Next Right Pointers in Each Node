@@ -1,0 +1,34 @@
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root == NULL){
+            return NULL;
+        }
+        // Trying to solve this question with level order traversal
+        queue<Node*> q;
+        q.push(root);
+        
+        // simple implementation of level order traversal
+        while(!q.empty()){
+            int n = q.size();
+            for(int i=1;i<=n;i++){
+                Node* temp = q.front();
+                q.pop();
+                
+                if(i != n){
+                    temp->next = q.front();
+                }
+                
+                if(temp->left){
+                    q.push(temp->left);
+                }
+                
+                if(temp->right){
+                    q.push(temp->right);
+                }
+            }
+        }
+        
+        return root;
+    }
+};
