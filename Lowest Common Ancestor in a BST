@@ -34,3 +34,34 @@ Node* LCA(Node *root, int n1, int n2)
         }
   }
 }
+
+
+Approach 3 :
+
+Node* solve(Node* root,int n1,int n2){
+    // base case
+    if(root == NULL || root->data == n1 || root->data == n2){
+        return root;
+    }
+    
+    Node* left = solve(root->left,n1,n2);
+    Node* right = solve(root->right,n1,n2);
+    
+    if(left == NULL){
+        return right;
+    }
+    else if(right == NULL){
+        return left;
+    }
+    
+    return root;
+}
+
+Node* LCA(Node *root, int n1, int n2)
+{
+   if(root == NULL){
+       return NULL;
+   }
+   
+   return solve(root,n1,n2);
+}
