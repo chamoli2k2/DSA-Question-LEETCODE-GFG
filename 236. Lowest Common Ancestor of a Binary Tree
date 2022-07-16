@@ -1,0 +1,27 @@
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // Algorithm
+        // if you get either of node or NULL return it
+        if((root == NULL) || (root == p) or (root == q)){
+            return root;
+        }
+        
+        TreeNode* left = lowestCommonAncestor(root->left,p,q);
+        TreeNode* right = lowestCommonAncestor(root->right,p,q);
+        
+        // Checking if either of left or root is NULL , if one is NULL return other
+        // if left is NULL
+        if(left == NULL){
+            return right;
+        }
+        // if right is NULL
+        else if(right == NULL){
+            return left;
+        }
+        // if both left and right is not NULL that means we got LCA so we can return that node
+        else{
+            return root;
+        }
+    }
+};
