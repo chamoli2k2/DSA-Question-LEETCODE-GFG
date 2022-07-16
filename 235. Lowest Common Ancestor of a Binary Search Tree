@@ -1,22 +1,29 @@
+// If this helps plz consider upvote :)
+ 
 class Solution {
 public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* n1, TreeNode* n2) {
-        // base case
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // Logic is simple 
+        // first point where we can't able to determine whether node is on left or right part of tree is the our LCA
         if(root == NULL){
             return NULL;
         }
         
+        int curr = root->val;
         
-        // if root->data is greater than both number than search in left part 
-        if(root->val > n1->val and root->val > n2->val){
-            return lowestCommonAncestor(root->left,n1,n2);
+        // curr value is less than value of both q and p go on right sub tree
+        if(curr < p->val && curr < q->val){
+            return lowestCommonAncestor(root->right,p,q);
         }
         
-        // if root->data is smaller than both number than search in right part
-        if(root->val < n1->val and root->val < n2->val){
-            return lowestCommonAncestor(root->right,n1,n2);
+        // curr value is greater than both q and p then search on left sub tree;
+        if(curr > p->val && curr > q->val){
+            return lowestCommonAncestor(root->left,p,q);
         }
+        
         
         return root;
     }
 };
+
+ // If this helps plz consider upvote :)
