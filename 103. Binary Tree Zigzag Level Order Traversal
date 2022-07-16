@@ -2,40 +2,45 @@ class Solution {
 public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
         vector<vector<int>> ans;
-        if(root==NULL){
+        // base case
+        if(root == NULL){
             return ans;
         }
+        
         queue<TreeNode*> q;
         q.push(root);
+        
+        // Algorithm is basic 90 % similar to how we print things in lvl order traversal 
+        // Just in this we need to manage a extra variable to keep track in which direction we are moving
         bool leftToright = true;
-        int index;
+        
         while(!q.empty()){
-            int size = q.size();
-            vector<int> temp(size);
+            int n = q.size();
             
-            for(int i=0;i<size;i++){
-                TreeNode* node = q.front();
+            vector<int> row(n);
+            for(int i=0;i<n;i++){
+                TreeNode* temp = q.front();
                 q.pop();
                 
-                if(leftToright){
-                    index=i;
-                }else{
-                    index=size-1-i;
+                int idx = leftToright ? i : n - 1 - i;
+                
+                row[idx] = temp->val;
+                
+                //checking left child
+                if(temp->left){
+                    q.push(temp->left);
                 }
                 
-                temp[index]=node->val;
-                
-                if(node->left){
-                    q.push(node->left);
-                }
-                
-                if(node->right){
-                    q.push(node->right);
+                // checking right child
+                if(temp->right){
+                    q.push(temp->right);
                 }
             }
             
+            // Changing direction
             leftToright = !leftToright;
-            ans.push_back(temp);
+            
+            ans.push_back(row);
         }
         
         return ans;
