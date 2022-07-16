@@ -1,0 +1,57 @@
+class info{
+    public:
+    // Data member
+    int maxi;
+    int mini;
+    bool isBst;
+    int size;
+    int key;
+};
+
+info solve(TreeNode* root,int &ans){
+    // base case
+    if(root == NULL){
+        // We need to return {maxi,mini,isBst,size} 
+        // We treat Null as Bst and size is consider as 0
+        
+        return {INT_MIN,INT_MAX,true,0,0};
+    }
+    
+    // Doing postorder traversal
+    info left = solve(root->left,ans);
+    info right = solve(root->right,ans);
+    
+    info currentNode;
+    // storing maximum and minimum from left and right and current root
+    currentNode.maxi = max(right.maxi,root->val);
+    currentNode.mini = min(left.mini,root->val);
+    currentNode.size = left.size + right.size + 1;
+    
+    currentNode.key = left.key + right.key + root->val;
+    
+    // checking if current node is valid BST or not
+    if(left.isBst && right.isBst && root->val > left.maxi && root->val < right.mini){
+        currentNode.isBst = true;
+    }
+    else{
+        currentNode.isBst = false;
+    }
+    
+    // updating answer
+    if(currentNode.isBst){
+        ans = max(ans,currentNode.key);
+    }
+    
+    return currentNode;
+}
+
+class Solution {
+public:
+    int maxSumBST(TreeNode* root) {
+        int ans = 0;
+        
+        solve(root,ans);
+        
+        return ans;
+    }
+};
