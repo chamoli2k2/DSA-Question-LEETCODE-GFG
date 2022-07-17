@@ -1,0 +1,79 @@
+class Solution {
+private:
+    int length(ListNode* l){
+        int len = 0;
+        while(l){
+            l = l->next;
+            len++;
+        }
+        return len;
+    }
+
+    // Function to add the linked list
+    ListNode* add(ListNode* &l1,ListNode* &l2){
+        ListNode* temp1 = l1;
+        ListNode* temp2 = l2;
+
+        int carry = 0;
+
+        while(temp2){
+            int num = temp1->val + temp2->val + carry;
+
+            // putting data in temp1
+            temp1->val = num % 10;
+            carry = num / 10;
+
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+
+        // Checking is carry is left
+        if(carry != 0){
+                while(temp1 && carry){
+                    int num = temp1->val + carry;
+                    temp1->val = num % 10;
+                    carry = num / 10;
+                    temp1 = temp1->next;
+                }
+                
+                if(carry){
+                    temp1 = l1;
+                    while(temp1->next != NULL){
+                        temp1 = temp1->next;
+                    }
+
+                    ListNode* temp = new ListNode(carry);
+                    temp1->next = temp;
+                }
+                
+        }
+        
+        return l1;
+        
+    }
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        
+        // base cases
+        if(l1 == NULL and l2 != NULL){
+            return l2;
+        }
+        else if(l2 == NULL and l1 != NULL){
+            return l1;
+        }
+        else if(l1 == NULL and l2 == NULL){
+            return NULL;
+        }
+        
+        // finding length of the lists 
+        int len1 = length(l1);
+        int len2 = length(l2);
+      
+        // calling function to add the linked list
+        if(len1 >= len2){
+            return add(l1,l2);
+        }
+
+        return add(l2,l1);
+    }
+};
