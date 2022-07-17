@@ -1,31 +1,53 @@
+I will try my best to explain the approach to you :)
+Algorithm :
+
+make a map and store last occurance of every character of string in it
+Make a stack and tracker-map
+stack is used to check if previous char is greater than current char or not, If yes than check if the last
+of previous element is greater than current index or not. if all condition satisfy pop the previous element out from stack. (Before checking this 3rd step check if current element is present in tracker or not , if present in stack continue iterating don't evaluate for current index.)
+put the new element in stack and tracker.
+
+// If it helps plz consider upvote :)
+
 class Solution {
 public:
     string removeDuplicateLetters(string s) {
-        unordered_map<char,int> mp;
-        unordered_map<char,bool> visited;
-        stack<char> st;
-        string ans="";
+        // Logic 
+        // We need a map to store last occurance of every element
         
-        for(int i=0;i<s.length();i++){
-            mp[s[i]]++;
+        unordered_map<char,int> mp;
+        int n = s.size();
+        
+        // Storing last occurance of every character in map
+        for(int i=0;i<n;i++){
+            mp[s[i]] = i;
         }
         
-        for(int i=0;i<s.size();i++){
-            char ch=s[i];
-            mp[ch]--;
-            if(visited[ch]){
+        stack<char> st;
+        unordered_map<char,int> tracker;
+        
+        
+        for(int i=0;i<n;i++){
+            char ch = s[i];
+            
+            if(tracker.find(ch) != tracker.end()){
                 continue;
             }
-            while(!st.empty() and st.top()>ch and mp[st.top()]>0){
-                visited[st.top()]=false;
+            
+            while(!st.empty() and st.top() > ch and mp[st.top()] > i){
+                char key = st.top();
                 st.pop();
+                tracker.erase(key);
             }
-    
-                st.push(ch);
-                visited[ch]=true;
+            
+            tracker[ch]++;
+            st.push(ch);
         }
+        
+        string ans = "";
         while(!st.empty()){
-            ans.push_back(st.top());
+            char ch = st.top();
+            ans += st.top();
             st.pop();
         }
         reverse(ans.begin(),ans.end());
