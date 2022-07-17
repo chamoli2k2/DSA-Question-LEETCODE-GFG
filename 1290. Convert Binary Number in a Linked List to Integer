@@ -1,0 +1,26 @@
+// If it helps plz upvote :)
+
+class Solution {
+public:
+    int getDecimalValue(ListNode* head) {
+        ListNode* previous = NULL;
+        ListNode* current = head;
+
+        while(current){
+            ListNode* temp = current->next;
+            current->next = previous;
+            previous = current;
+            current = temp;
+        }
+
+        int binary = 0;
+        int i = 0;
+        while(previous){
+            binary = binary + (previous->val) * pow(2,i);
+            i++;
+            previous = previous->next;
+        }
+        return binary;
+    }
+};
+// If it helps plz upvote :)
