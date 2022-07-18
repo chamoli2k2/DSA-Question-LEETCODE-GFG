@@ -1,0 +1,60 @@
+// If it help plz upvote :)
+
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        // base case
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+        // code here
+        ListNode* even = NULL;
+        ListNode* odd = NULL;
+        ListNode* e = NULL;
+        ListNode* o = NULL;
+        
+        // finding length of linked list
+        int length = 0;
+        ListNode* temp = head;
+        while(temp){
+            length++;
+            temp = temp->next;
+        }
+        
+        for(int i=1;i<=length;i++){
+            if(i & 1){
+                if(odd == NULL){
+                    odd = head;
+                    o = odd;
+                }else{
+                    o->next = head;
+                    o = o->next;
+                }
+            }
+            else{
+                if(even == NULL){
+                    even = head;
+                    e = even;
+                }else{
+                    e->next = head;
+                    e = e->next;
+                }
+            }
+            
+            head = head->next;
+        }
+        
+        if(odd){
+            o->next = even;
+        }
+        
+        if(even){
+            e->next = NULL;
+            return odd;
+        }
+        
+        return even;
+    }
+};
+
+// If it help plz upvote :)
