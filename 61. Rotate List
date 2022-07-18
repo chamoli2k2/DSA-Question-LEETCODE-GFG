@@ -1,0 +1,40 @@
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        // base cases
+        if(head == NULL){
+            return head;
+        }
+        
+        // Finding length of linked list
+        int len = 0;
+        ListNode* temp = head;
+        
+        while(temp->next != NULL){
+            temp = temp->next;
+            len++;
+        }
+        // Actual length of LL
+        len = len + 1; // as we didn't count the last node
+        
+        
+        // making linked list circular
+        temp->next = head;
+        
+        // if k > len then 
+        int it = k % len;
+        
+        temp = head;
+        int i = 0;
+        while(i < (len - it -1)){
+            temp = temp->next;
+            i++;
+        }
+        
+        ListNode* ans = temp->next;
+        temp->next = NULL;
+        
+        return ans;
+    }
+};
