@@ -1,0 +1,107 @@
+class Solution {
+private:
+    // function to reverse the LL
+    ListNode* reverse(ListNode* head){
+        ListNode* current = head;
+        ListNode* previous = NULL;
+        
+        while(current){
+            ListNode* temp = current->next;
+            current->next = previous;
+            previous = current;
+            current = temp;
+        }
+        
+        return previous; 
+    }
+    
+    void print(ListNode* head){
+        while(head){
+            cout<<head->val<<" ";
+            head = head->next;
+        }
+        cout<<endl;
+    }
+public:
+    void reorderList(ListNode* head) {
+        // Approach : 
+        // Case 1 : Even string 
+        // 1->2->3->4->5->6->7->8->NULL
+        // find middle and seperate the linked the linked list from middle and reverse the second half of linked list
+        // After seperation and reverse
+        // 1->2->3->4->NULL
+        // 8->7->6->5->NULL
+        // Bang now just connect the linked list
+        
+        // Case 2 : Odd String
+        // 1->2->3->4->5->6->7->NULL
+        // Find middle and seperate the linked list from middle and reverse the second half
+        // After seperation and reverse
+        // 1->2->3->NULL
+        // 7->6->5->4->NULL
+        // Now connect same as we connect the linked list
+        
+        // Only problem is now is find logic to connect the linked list :)
+        
+        // base case
+        if(head == NULL || head->next == NULL){
+            return;
+        }
+        
+        // Finding length of linked list
+        int length = 0;
+        ListNode* temp = head;
+        while(temp){
+            length++;
+            temp = temp->next;
+        }
+        
+        // finding middle
+        int mid = length / 2;
+        
+        int i = 0;
+        temp = head;
+        while(i < mid-1){
+            temp = temp->next;
+            i++;
+        }
+        
+        // Seperating 1st and 2nd half and reversing 2nd half
+        ListNode* secondHalf = reverse(temp->next);;
+        temp->next = NULL;
+        
+        
+        // Till now We have done two step and ready for main logic how to change list pointers :)
+        
+        ListNode* firstHalf = head;
+        
+        // Carrying a previous second 
+        ListNode* pSecond = NULL;
+        while(firstHalf){
+            // To track the first pointer so that it will not lost
+            // for eg : 1->2->2...  Here firstHalf is Node 1 and temp is tracking node 2 so that we don't loose 
+            // track of firstHalf next pointer
+            ListNode* temp1 = firstHalf->next;
+            
+            // Conecting first and second half
+            firstHalf->next = secondHalf;
+            // Now connecting Seond half to firstHalf next pointer i.e, temp 
+            // Befroe doing that we need to keep track of second half next pointer
+            ListNode* temp2 = secondHalf->next;
+            // Now connecting secondHalf with temp
+            pSecond = secondHalf;
+            secondHalf->next = temp1;
+            
+            // Updating first and Second half
+            firstHalf = temp1;
+            secondHalf = temp2;
+        }
+        
+        // this is important step , if odd length LL then we need to do this
+        // Just Dry run for Sample test cases given you will get the feel of solution
+        if(secondHalf){
+            pSecond->next = secondHalf;
+        }
+   
+    }
+};
