@@ -1,0 +1,56 @@
+class Solution
+{
+    public:
+    void rearrangeEvenOdd(Node *head)
+    {
+       // base case
+        if(head == NULL || head->next == NULL){
+            return;
+        }
+        // code here
+        Node* even = NULL;
+        Node* odd = NULL;
+        Node* e = NULL;
+        Node* o = NULL;
+        
+        // finding length of linked list
+        int length = 0;
+        Node* temp = head;
+        while(temp){
+            length++;
+            temp = temp->next;
+        }
+        
+        for(int i=1;i<=length;i++){
+            if(i & 1){
+                if(odd == NULL){
+                    odd = head;
+                    o = odd;
+                }else{
+                    o->next = head;
+                    o = o->next;
+                }
+            }
+            else{
+                if(even == NULL){
+                    even = head;
+                    e = even;
+                }else{
+                    e->next = head;
+                    e = e->next;
+                }
+            }
+            
+            head = head->next;
+        }
+        
+        if(odd){
+            o->next = even;
+        }
+        
+        if(even){
+            e->next = NULL;
+        }
+        
+    }
+};
