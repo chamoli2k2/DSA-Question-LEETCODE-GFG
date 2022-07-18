@@ -1,0 +1,79 @@
+// if it help plz upvote :)
+
+class Solution {
+private:
+    ListNode* solve(ListNode* head1,ListNode* head2){
+        ListNode* temp1 = head1;
+        ListNode* temp2 = head2;
+
+        ListNode* ans = NULL;
+        ListNode* curr = NULL;
+        while(temp1 and temp2){
+            if(temp1->val <= temp2->val){
+                if(ans == NULL){
+                    ans = temp1;
+                    curr = ans;
+                }
+                else{
+                    curr->next = temp1;
+                    curr = curr->next;
+                }
+                temp1 = temp1->next;
+            }
+            else{
+                if(ans == NULL){
+                    ans = temp2;
+                    curr = ans;
+                }
+                else{
+                    curr->next = temp2;
+                    curr = curr->next;
+                }
+                temp2 = temp2->next;
+            }
+        }
+
+        while(temp1){
+            curr->next = temp1;
+            temp1 = temp1->next;
+            curr = curr->next;
+        }
+
+        while(temp2){
+            curr->next = temp2;
+            temp2 = temp2->next;
+            curr = curr->next;
+        }
+
+        return ans;
+}
+
+int lengther(ListNode* head){
+    int length = 0;
+    while(head){
+        length++;
+        head = head->next;
+    }
+    
+    return length;
+}
+public:
+    ListNode* mergeTwoLists(ListNode* head1, ListNode* head2) {
+        // base case
+        if(head1 == NULL){
+            return head2;
+        }
+        else if(head2 == NULL){
+            return head1;
+        }
+
+        int len1 = lengther(head1);
+        int len2 = lengther(head2);
+
+        if(len1 >= len2){
+            return solve(head1,head2);
+        }
+
+        return solve(head2,head1);
+    }
+};
