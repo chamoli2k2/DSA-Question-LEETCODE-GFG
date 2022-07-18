@@ -1,0 +1,48 @@
+// if it help plz upvote :)
+
+class Solution {
+public:
+    int evalRPN(vector<string>& s) {
+        
+        // base case
+        if(s.size() == 1){
+            return stoi(s[0]);
+        }
+        
+        int op1;
+        int op2;
+        int ans = 0;
+        int n = s.size();
+        stack<int> st;
+        for(int i=0;i<n;i++){
+            if((s[i][0] == '+' || s[i][0] == '-' || s[i][0] == '*' || s[i][0] == '/') && s[i].size() == 1){
+                op1 = st.top();
+                st.pop();
+                op2 = st.top();
+                st.pop();
+                
+                if(s[i][0] == '+'){
+                    ans = (op2 + op1);
+                }
+                else if(s[i][0] == '*'){
+                    ans = (op2 * op1);
+                }
+                else if(s[i][0] == '-'){
+                    ans = (op2 - op1);
+                }
+                else{
+                    ans = (op2 / op1);
+                }
+                
+                st.push(ans);
+            }
+            else{
+                st.push(stoi(s[i]));
+            }
+        }
+        
+        return ans;
+    }
+};
+
+// if it helps plz upvote :)
