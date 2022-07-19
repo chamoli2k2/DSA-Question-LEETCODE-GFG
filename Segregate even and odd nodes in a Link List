@@ -41,6 +41,9 @@ public:
         
         if(even){
             e->next = odd;
+        }
+        
+        if(odd){
             return even;
         }
         
