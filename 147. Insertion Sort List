@@ -1,0 +1,47 @@
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        // base case
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+        
+        // Making a dummy node so that Question become easy and we don't need to take care of end case
+        // We will initialise dummy node will minimum value so that no node can be smaller than that 
+        // Now we just need to insert node between two nodes
+        
+        ListNode* current = head->next;
+        ListNode* previous = head;
+        
+        // making dummy node
+        ListNode* dum = new ListNode(INT_MIN);
+        dum->next = head;
+        
+        while(current){
+            ListNode* temp = dum;
+            if(previous->val > current->val){
+                while(temp->next->val < current->val){
+                    temp = temp->next;
+                }
+                // taking backup of temp->next
+                ListNode* tbackup = temp->next;
+                // taking backup of current->next and put it into previous next
+                ListNode* cbackup = current->next;
+                previous->next = cbackup;
+                
+                // putting current in temp->next & current->next as tbackup
+                temp->next = current;
+                current->next = tbackup;
+                
+                // updating current;
+                current = previous->next;
+            }else{
+                previous = current;
+                current = current->next;
+            }
+        }
+        head = dum->next;
+        delete dum;
+        return head;
+    }
+};
