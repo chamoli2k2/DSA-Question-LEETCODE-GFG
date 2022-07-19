@@ -1,0 +1,106 @@
+class Solution {
+private:
+    // Function to find out length of linked list
+    int lengther(ListNode* head){
+        int length = 0;
+        while(head){
+            head = head->next;
+            length++;
+        }
+        
+        return length;
+    }
+    
+    // Function to reverse the linked list
+    ListNode* reverse(ListNode* &head){
+        ListNode* previous = NULL;
+        ListNode* current = head;
+        
+        while(current){
+            ListNode* temp = current->next;
+            current->next = previous;
+            previous = current;
+            current = temp;
+        }
+        
+        return previous;
+    }
+    
+    // Adding two linked list
+    ListNode* adder(ListNode* head1,ListNode* head2){
+        ListNode* temp1 = head1;
+        ListNode* temp2 = head2;
+        int carry = 0;
+        
+        while(temp2){
+            int num = temp1->val + temp2->val + carry;
+            
+            // adding the data in temp1
+            temp1->val = num % 10;
+            
+            // updating carry vro :)
+            carry = num / 10;
+            
+            // updating pointers
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+        
+        // if carry is not zero then we need to add it 
+        if(carry){
+            while(carry){
+                while(temp1){
+                    int num = temp1->val + carry;
+                    temp1->val = num % 10;
+                    carry = num / 10;
+                    temp1 = temp1->next;
+                }
+                
+                if(carry){
+                    // making new node for carry
+                    ListNode* temp = new ListNode(carry);
+
+                    // now attaching the list temp node to main node
+                    temp1 = head1;
+                    while(temp1->next){
+                        temp1 = temp1->next;
+                    }
+
+                    temp1->next = temp;
+                }
+                
+                carry = 0;
+            }
+        }
+        
+        return head1;
+    }
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        
+        // base case
+        if(l1 == NULL){
+            return l2;
+        }
+        else if(l2 == NULL){
+            return l1;
+        }
+        // finding length of both  linked list
+        int len1 = lengther(l1);
+        int len2 = lengther(l2);
+        
+        // reversing the linked list
+        l1 = reverse(l1);
+        l2 = reverse(l2);
+        
+        if(len1 >= len2){
+            l1 = adder(l1,l2);
+            l1 = reverse(l1);
+            return l1;
+        }
+        
+        l2 = adder(l2,l1);
+        l2 = reverse(l2);
+        return l2;
+    }
+};
