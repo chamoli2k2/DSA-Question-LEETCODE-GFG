@@ -1,0 +1,54 @@
+// If it helps plz upvote :)
+
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        // base case
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+        // Logic we make left and right as two different list and finally we just merge them together
+        ListNode* left = NULL;
+        ListNode* right = NULL;
+        ListNode* l = NULL;
+        ListNode* r = NULL;
+        
+        while(head){
+            if(head->val < x){
+                if(left == NULL){
+                    left = head;
+                    l = left;
+                }else{
+                    l->next = head;
+                    l = l->next;
+                }
+            }
+            else{
+                if(right == NULL){
+                    right = head;
+                    r = right;
+                }else{
+                    r->next = head;
+                    r = r->next;
+                }
+            }
+            
+            head = head->next;
+        }
+        
+        // Now just attaching the both list
+        // checking if left list exist or not
+        if(left){
+            l->next = right;
+        }
+        if(right){
+            r->next = NULL;
+        }
+        
+        if(left){
+            return left;
+        }
+        
+        return right;
+    }
+};
