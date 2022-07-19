@@ -1,0 +1,39 @@
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        
+        // base case 
+        if(head == NULL or head->next == NULL){
+            return head;
+        }
+        
+        // Creating dummy node so we don't need to consider those edge cases
+        ListNode* dummy = new ListNode(-69);
+        dummy->next = head;
+        ListNode* previous = dummy;
+        
+        while(head){
+            if(head->next && head->val == head->next->val){
+                while(head->next && head->val == head->next->val){
+                    ListNode* temp = head;
+                    head = head->next;
+                    delete temp;
+                }
+                
+                previous->next = head->next;
+                ListNode* temp = head;
+                head = head->next;
+                delete temp;
+            }
+            else{
+                previous = head;
+                head = head->next;
+            }
+        }
+        
+        head = dummy->next;
+        delete dummy;
+        
+        return head;
+    }
+};
