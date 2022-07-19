@@ -1,0 +1,64 @@
+class Solution
+{
+    public:
+    //Function to remove duplicates from unsorted linked list.
+    Node * removeDuplicates( Node *head) 
+    {
+        // base case
+        if(head == NULL && head->next == NULL){
+            return head;
+        }
+        
+        unordered_map<int,int> mp;
+        Node* p = NULL;
+        Node* c = head;
+        
+        // reversing the linked list
+        while(c){
+            Node* temp = c->next;
+            mp[c->data]++;
+            c->next = p;
+            p = c;
+            c = temp;
+        }
+        
+        head = p;
+        
+        // making dummy node and attaching it to head;
+        Node* dummy = new Node(INT_MIN);
+        dummy->next = head;
+        Node* previous = dummy;
+        Node* current = head;
+        while(current){
+            int num = current->data;
+            if(mp[num] > 1){
+                Node* temp = current;
+                previous->next = current->next;
+                current = current->next;
+                delete temp;
+                mp[num]--;
+            }else{
+                previous = current;
+                current = current->next;
+            }
+        }
+        
+        head = dummy->next;
+        delete dummy;
+        
+        // reversing the linked list again
+        p = NULL;
+        c = head;
+        
+        while(c){
+            Node* temp = c->next;
+            c->next = p;
+            p = c;
+            c = temp;
+        }
+        
+        head = p;
+        
+        return head;
+    }
+};
