@@ -1,0 +1,26 @@
+// Same as count subarray with sum equal to k
+
+class Solution{
+    public:
+    //Function to count subarrays with sum equal to 0.
+    ll findSubarray(vector<ll> arr, int n ) {
+        ll ans = 0;
+        unordered_map<int,int> mp;
+        int sum = 0;
+        int count = 0;
+        int k = 0;
+        mp[0]++;
+        
+        for(int i=0;i<n;i++){
+            sum = sum + arr[i];
+            int presum = sum - k;
+            
+            if(mp.find(presum) != mp.end()){
+                count = count + mp[presum];
+            }
+            mp[sum]++;
+        }
+        
+        return count;
+    }
+};
