@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> relativeSortArray(vector<int>& A1, vector<int>& A2) {
+        
+        int N = A1.size();
+        int M = A2.size();
+        
+        map<int,int> mp;
+        for(int i=0;i<N;i++){
+            mp[A1[i]]++;
+        }
+        
+        vector<int> ans;
+        for(int i=0;i<M;i++){
+            if(mp.find(A2[i]) != mp.end()){
+                int kTimes = mp[A2[i]];
+                ans.insert(ans.end(),kTimes,A2[i]);
+                mp.erase(A2[i]);
+            }
+        }
+        
+        for(auto it=mp.begin();it!=mp.end();it++){
+            ans.insert(ans.end(),it->second,it->first);
+        }
+        
+        return ans;
+    }
+};
