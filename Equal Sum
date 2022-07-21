@@ -1,0 +1,26 @@
+class Solution {
+  public:
+    string equilibrium(int *arr, int n) {
+        // finding total sum 
+        int totalSum = 0;
+        for(int i=0;i<n;i++){
+            totalSum += arr[i];
+        }
+        
+        int leftSum = arr[0];
+        
+        for(int i=1;i<n-1;i++){
+            int right = totalSum - leftSum - arr[i];
+            int left = totalSum - right - arr[i];
+            
+            if(left == right){
+                return "YES";
+            }
+            else{
+                leftSum = leftSum + arr[i];
+            }
+        }
+        
+        return "NO";
+    }
+};
