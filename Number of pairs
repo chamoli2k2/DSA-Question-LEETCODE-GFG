@@ -1,0 +1,63 @@
+long long countPairs(int X[], int Y[], int M, int N)
+    {
+        long long int ans = 0;
+        sort(X,X+M);
+        sort(Y,Y+N);
+       
+        // Array to store the the no of 0,1,2,3,4
+        vector<int> fck(5,0);
+        for(int i=0;i<N;i++){
+            if(Y[i] == 0 || Y[i] == 1 || Y[i] == 2 || Y[i] == 3 || Y[i] == 4){
+                fck[Y[i]]++;
+            }
+        }
+        
+        for(int j=0;j<M;j++){
+            // case 1 : if x[j] = 0 then there is nothing added to ans
+            if(X[j] == 0){
+                continue;
+            }
+            // case 2 : if x[j] = 1 
+            else if(X[j] == 1){
+                ans += fck[0];
+            }
+            // case 3 : if x[j] = 2
+            else if(X[j] == 2){
+                int idx = BS(Y,N,2);
+                if(idx != -1){
+                    ans += N - idx;
+                }
+                
+                // subtracting the case which don't follow the condn
+                ans -= fck[3];
+                ans -= fck[4];
+                
+                ans += fck[0] + fck[1];
+            }
+            // case 4 : if x[j] = 3
+            else if(X[j] == 3){
+                int idx = BS(Y,N,3);
+                if(idx != -1){
+                    ans += N - idx;
+                }
+                
+                // for 3 there is special case
+                ans += fck[2];
+                
+                ans += fck[0] + fck[1];
+            }
+            // case 5 :  if x[j] = any no other than above
+            else{
+                int idx = BS(Y,N,X[j]);
+                if(idx != -1){
+                    ans += N - idx;
+                }
+                
+                ans += fck[0] + fck[1];
+            }
+        }
+        
+       
+       return ans;
+    }
+};
