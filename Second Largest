@@ -1,0 +1,29 @@
+class Solution{
+public:	
+	// Function returns the second
+	// largest elements
+	int print2largest(int arr[], int n) {
+	    int smax = INT_MIN;
+	    int maxi = INT_MIN;
+	    if(n <= 1){
+	        return -1;
+	    }
+	    
+	    for(int i=0;i<n;i++){
+	        if(maxi < arr[i]){
+	            smax = maxi;
+	            maxi = arr[i];
+	        }
+	        
+	        if(smax < arr[i] && maxi > arr[i]){
+	            smax = arr[i];
+	        }
+	    }
+	    
+	    if(smax == INT_MIN){
+	        return -1;
+	    }
+	    
+	    return smax;
+	}
+};
