@@ -1,0 +1,42 @@
+class Solution
+{
+    public:
+        string UncommonChars(string a, string b)
+        {
+            int n = a.size();
+            int m = b.size();
+            set<char> st;
+            
+            unordered_map<char,bool> mp;
+            
+            for(int i=0;i<n;i++){
+                mp[a[i]] = true;
+            }
+            
+            for(int i=0;i<m;i++){
+                if(mp[b[i]] == false){
+                    st.insert(b[i]);
+                }
+            }
+            
+            mp.clear();
+            
+            for(int i=0;i<m;i++){
+                mp[b[i]] = true;
+            }
+            
+            for(int i=0;i<n;i++){
+                if(mp[a[i]] == false){
+                    st.insert(a[i]);
+                }
+            }
+            
+            string ans(st.begin(),st.end());
+            
+            if(ans.size() == 0){
+                return "-1";
+            }
+            
+            return ans;
+        }
+};
