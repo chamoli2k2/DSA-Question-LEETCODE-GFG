@@ -1,0 +1,36 @@
+class Solution {
+	public:
+		string FirstNonRepeating(string s){
+		    string ans = "";
+		    int n = s.size();
+		    if(n == 0){
+		        return "#";
+		    }
+		    
+		    // creating character freq
+		    unordered_map<char,int> mp;
+		    queue<char> q;
+		    
+		    for(int i=0;i<n;i++){
+		        char ch = s[i];
+		        mp[ch]++;
+		        q.push(ch);
+		        
+		        while(!q.empty()){
+		            if(mp[q.front()] > 1){
+		                q.pop();
+		            }
+		            else{
+		                ans.push_back(q.front());
+		                break;
+		            }
+		        }
+		        if(q.empty()){
+		            ans.push_back('#');
+		        }
+		    }
+		    
+		    return ans;
+		}
+
+};
