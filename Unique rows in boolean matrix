@@ -1,0 +1,25 @@
+/*You are required to complete this function*/
+vector<vector<int>> uniqueRow(int M[MAX][MAX],int row,int col)
+{
+    unordered_set<string> set1;
+    vector<vector<int>> ans;
+    
+    for(int i=0;i<row;i++){
+        string temp = "";
+        for(int j=0;j<col;j++){
+            temp += M[i][j] + '0';
+        }
+        
+        if(set1.find(temp) == set1.end()){
+            vector<int> k;
+            for(auto it : temp){
+                k.push_back(it - '0');
+            }
+            set1.insert(temp);
+            ans.push_back(k);
+        }
+    }
+    
+    
+    return ans;
+}
