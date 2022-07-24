@@ -1,0 +1,24 @@
+string printSequence(string s)
+{
+    vector<string> mapping = {" ","1","ABC","DEF","GHI","JKL","MNO","PQRS","TUV","WXYZ"};
+    unordered_map<char,pair<int,int>> mp;
+    
+    for(int i=0;i<10;i++){
+        int m = mapping[i].size();
+        for(int j=1;j<=m;j++){
+            mp[mapping[i][j-1]] = {i,j};
+        }
+    }
+    
+    int n = s.size();
+    string ans;
+    
+    for(int i=0;i<n;i++){
+        auto p = mp[s[i]];
+        int kTimes = p.second;
+        int num = p.first;
+        ans.insert(ans.end(),kTimes,num + '0');
+    }
+    
+    return ans;
+}
