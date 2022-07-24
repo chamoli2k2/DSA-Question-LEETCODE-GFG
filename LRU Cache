@@ -1,0 +1,84 @@
+class LRUCache
+{
+    public:
+    // making Node for DLL
+    class Node{
+        public:
+        // Data member
+        int key;
+        int val;
+        Node* previous;
+        Node* next;
+        
+        Node(int k,int v){
+            this->key = k;
+            this->val = v;
+            previous = next = NULL;
+        }
+    };
+    
+    // making dummy nodes
+    Node* head = new Node(-1,-1);
+    Node* tail = new Node(-1,-1);
+    int capacity;
+    unordered_map<int,Node*> cache;
+    
+    // adding node
+    void addNode(Node* newNode){
+        Node* temp = tail->previous;
+        temp->next = newNode;
+        newNode->previous = temp;
+        newNode->next = tail;
+        tail->previous = newNode;
+    }
+    
+    // deleting the node
+    void delNode(Node* goNode){
+        Node* temp = goNode->previous;
+        temp->next = goNode->next;
+        goNode->next->previous = temp;
+    }
+    
+    //Constructor for initializing the cache capacity with the given value.
+    LRUCache(int cap)
+    {
+        capacity = cap;
+        head->next = tail;
+        tail->previous = head;
+    }
+    
+    //Function to return value corresponding to the key.
+    int get(int key)
+    {
+        if(cache.find(key) != cache.end()){
+            Node* temp = cache[key];
+            int ans = temp->val;
+            cache.erase(key);
+            delNode(temp);
+            addNode(temp);
+            cache[key] = tail->previous;
+            return ans;
+        }
+        
+        return -1;
+    }
+    
+    //Function for storing key-value pair.
+    void set(int key, int value)
+    {
+        if(cache.find(key) != cache.end()){
+            Node* temp = cache[key];
+            cache.erase(key);
+            delNode(temp);
+        }  
+        
+        if(capacity == cache.size()){
+            cache.erase(head->next->key);
+            delNode(head->next);
+        }
+        
+        Node* node = new Node(key,value);
+        addNode(node);
+        cache[key] = tail->previous;
+    }
+};
