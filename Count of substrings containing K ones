@@ -1,0 +1,24 @@
+class Solution{
+    public:
+    
+    long long int countOfSubstringWithKOnes(string arr, int k){
+        int n = arr.size();
+        int sum = 0;
+        int ans = 0;
+        unordered_map<int,int> mp;
+        mp[0]++;
+        
+        for(int i=0;i<n;i++){
+            sum += arr[i] - '0';
+            int preSum = sum - k;
+            
+            if(mp.find(preSum) != mp.end()){
+                ans += mp[preSum];
+            }
+            
+            mp[sum]++;
+        }
+        
+        return ans;
+    }
+};
