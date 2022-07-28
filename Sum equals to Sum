@@ -1,0 +1,20 @@
+class Solution
+{
+  public:
+    int findPairs(long long arr[], long long n)
+    {
+        unordered_map<int,bool> mp;
+
+        for(long long i=0;i<n;i++){
+
+            for(int j=i+1;j<n;j++){
+                if(mp.find(arr[i] + arr[j]) != mp.end()){
+                    return true;
+                }
+                mp[arr[i] + arr[j]] = true;
+            }
+        }
+        
+        return false;
+    }
+};
