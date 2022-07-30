@@ -1,0 +1,26 @@
+void solve(Node* root,long long &ans,long long num){
+    // base case
+    if(root == NULL){
+        return;
+    }
+    
+    // preorder traversal
+    num = num * 10 + root->data;
+    
+    if(root->left==NULL && root->right==NULL){
+       ans += num;
+       return;
+   }
+   
+    solve(root->left,ans,num);
+    solve(root->right,ans,num);
+    
+}
+/*You are required to complete below method */
+long long treePathsSum(Node *root)
+{
+    long long ans = 0;
+    long long num = 0;
+    solve(root,ans,num);
+    return ans;
+}
