@@ -1,0 +1,23 @@
+class Solution {
+private:
+    void solve(TreeNode* &root){
+        // base case 
+        if(root == NULL){
+            return;
+        }
+        
+        TreeNode* temp = root->left;
+        root->left = root->right;
+        root->right = temp;
+        
+        // now solve for tree left 
+        solve(root->left);
+        solve(root->right);
+        
+    }
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        solve(root);
+        return root;
+    }
+};
