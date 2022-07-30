@@ -1,0 +1,31 @@
+int max_length;
+
+class Solution {
+private:
+    void helper(TreeNode* root,char ch,int length){
+        if(root == NULL){
+            return;
+        }
+        
+        
+        max_length = max(max_length,length);
+        
+        if(ch == 'l'){
+            helper(root->right,'r',length+1);
+            helper(root->left,'l',1);
+        }
+        else{
+            helper(root->left,'l',length+1);
+            helper(root->right,'r',1);
+        }
+        
+    }
+public:
+    int longestZigZag(TreeNode* root) {
+        max_length = 0;
+        helper(root->left,'l',1);
+        helper(root->right,'r',1);
+        
+        return max_length;
+    }
+};
