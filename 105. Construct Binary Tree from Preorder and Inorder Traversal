@@ -1,0 +1,43 @@
+class Solution {
+private:
+    int find(vector<int> &in,int target,int n){
+        int ans = -1;
+        
+        for(int i=0;i<n;i++){
+            if(in[i] == target){
+                ans = i;
+                break;
+            }
+        }
+        
+        return ans;
+    }
+    
+    TreeNode* Buildtree(vector<int> &in,vector<int> &pre,int &preIdx,int inStart,int inEnd,int n){
+        // base case
+        if(preIdx >= n || inStart > inEnd){
+            return NULL;
+        }
+        
+        int element = pre[preIdx++];
+        TreeNode* temp = new TreeNode(element);
+        int position = find(in,element,n);
+        
+        temp->left = Buildtree(in,pre,preIdx,inStart,position-1,n);
+        temp->right = Buildtree(in,pre,preIdx,position+1,inEnd,n);
+        
+        
+        return temp;
+    }
+public:
+    TreeNode* buildTree(vector<int>& pre, vector<int>& in) {
+        int preIndex = 0;
+        int inStart = 0;
+        int n = in.size();
+        int inEnd = n-1;
+        
+        TreeNode* ans = Buildtree(in,pre,preIndex,inStart,inEnd,n);
+        
+        return ans;
+    }
+};
