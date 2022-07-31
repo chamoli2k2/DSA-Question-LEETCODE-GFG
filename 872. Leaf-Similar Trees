@@ -1,0 +1,38 @@
+class Solution {
+private:
+    void helper(TreeNode* root,vector<int> &k){
+        if(root == NULL){
+            return;
+        }
+
+        if(root->left == NULL && root->right == NULL){
+            k.push_back(root->val);
+            return;
+        }
+
+        // left
+        helper(root->left,k);
+        // right
+        helper(root->right,k); 
+    }
+public:
+    bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+        vector<int> k1;
+        vector<int> k2;
+        
+        helper(root1,k1);
+        helper(root2,k2);
+
+        if(k1.size() != k2.size()){
+            return false;
+        }
+        
+        for(int i=0;i<k1.size();i++){
+            if(k1[i] != k2[i]){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+};
