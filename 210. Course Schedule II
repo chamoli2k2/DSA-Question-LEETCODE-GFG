@@ -1,0 +1,60 @@
+class Solution {
+private:
+    bool kahnAlgo(unordered_map<int,list<int>> &adj,vector<int> &indegree,int n,vector<int> &ans){
+        // making a queue and store all element with indegree equal to zero
+        queue<int> q;
+        int count = 0;
+        for(int i=0;i<n;i++){
+            if(indegree[i] == 0){
+                q.push(i);
+            }
+        }
+        
+        while(!q.empty()){
+            int curr = q.front();
+            q.pop();
+            
+            // disconnecting the connection
+            for(auto i : adj[curr]){
+                indegree[i]--;
+                if(indegree[i] == 0){
+                    q.push(i);
+                }
+            }
+            
+            
+            ans.push_back(curr);
+            count++;
+        }
+        
+        if(count == n){
+            return true;
+        }
+        
+        return false;
+    }
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> ans;
+        
+        // making the adjacency list
+        unordered_map<int,list<int>> adj;
+        // indegree tracker
+        vector<int> indegree(numCourses,0);
+        for(auto i : prerequisites){
+            int x = i[0];
+            int y = i[1];
+            
+            adj[y].push_back(x);
+            indegree[x]++;
+        }
+        
+        if(kahnAlgo(adj,indegree,numCourses,ans)){
+            return ans;
+        }
+        
+        // If cyclic is there
+        vector<int> empty;
+        return empty;
+    }
+};
