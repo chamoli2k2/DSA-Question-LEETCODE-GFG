@@ -1,0 +1,30 @@
+class Solution{
+private:
+    Node* solve(int preorder[],int min,int max,int &i,int n){
+        // base case 
+        if(i >= n){
+            return NULL;
+        }
+        
+        if(preorder[i] <= min or preorder[i] >= max){
+            return NULL;
+        }
+        
+        Node* temp = (Node *)malloc( sizeof( Node ) );
+        temp->data = preorder[i++];
+        
+        
+        temp->left = solve(preorder,min,temp->data,i,n);
+        temp->right = solve(preorder,temp->data,max,i,n);
+        return temp;
+    }
+public:
+    //Function that constructs BST from its preorder traversal.
+    Node* post_order(int pre[], int size)
+    {
+        int min = INT_MIN;
+        int max = INT_MAX;
+        int i = 0;
+        return solve(pre,min,max,i,size);
+    }
+};
