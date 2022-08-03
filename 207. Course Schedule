@@ -1,0 +1,46 @@
+class Solution {
+private:
+    bool DsfRec(unordered_map<int,list<int>> &adj,unordered_map<int,bool> &visited,int i,unordered_map<int,bool> &dsfVisited){
+        visited[i] = true;
+        dsfVisited[i] = true;
+        
+        for(auto it : adj[i]){
+            if(visited[it] == false){
+                if(DsfRec(adj,visited,it,dsfVisited)){
+                    return true;
+                }
+            }
+            else if(dsfVisited[it]){
+                return true;
+            }
+        }
+        
+        dsfVisited[i] = false;
+        return false;
+    }
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int,list<int>> adj;
+        unordered_map<int,bool> visited;
+        unordered_map<int,bool> dsfVisited;
+        
+        for(auto i : prerequisites){
+            int x = i[0];
+            int y = i[1];
+            
+            adj[y].push_back(x);
+        }
+        
+        int n = numCourses;
+        
+        for(int i=0;i<n;i++){
+            if(visited[i] == false){
+                if(DsfRec(adj,visited,i,dsfVisited)){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+};
