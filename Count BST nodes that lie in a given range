@@ -1,0 +1,21 @@
+class Solution{
+private:
+    void solve(Node* root,int l,int h,int &ans){
+        if(root == NULL){
+            return;
+        }
+        
+        if(root->data >= l && root->data <= h){
+            ans++;
+        }
+        solve(root->left,l,h,ans);
+        solve(root->right,l,h,ans);
+    }
+public:
+    int getCount(Node *root, int l, int h)
+    {
+       int ans = 0;
+       solve(root,l,h,ans);
+       return ans;
+    }
+};
