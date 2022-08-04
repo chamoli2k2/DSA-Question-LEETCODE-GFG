@@ -1,0 +1,60 @@
+void solve(Node* root,int &count){
+    if(root == NULL){
+        return;
+    }
+    
+    count++;
+    solve(root->left,count);
+    solve(root->right,count);
+}
+
+void odd(Node* root,int &i,int count,float &ans){
+    if(root == NULL){
+        return;
+    }
+    
+    odd(root->left,i,count,ans);
+    i++;
+    if(i  == (count + 1) / 2){
+        ans = root->data;
+        return;
+    }
+    odd(root->right,i,count,ans);
+}
+
+void even(Node* root,int &i,int count,float &ans){
+    if(root == NULL){
+        return;
+    }
+    
+    even(root->left,i,count,ans);
+    i++;
+    
+    if(i  == count / 2){
+        ans = root->data;
+    }
+    
+    if(i == (count/2) + 1){
+        ans += root->data;
+        ans = ans / 2;
+    }
+    even(root->right,i,count,ans);
+}
+
+float findMedian(struct Node *root)
+{
+      int count = 0;
+      solve(root,count);
+      //cout<<count<<endl;
+      float ans = 0;
+      int i = 0;
+      
+      if(count & 1){
+          odd(root,i,count,ans);
+      }
+      else{
+          even(root,i,count,ans);
+      }
+      
+      return ans;
+}
