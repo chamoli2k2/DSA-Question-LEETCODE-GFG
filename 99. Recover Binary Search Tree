@@ -1,0 +1,45 @@
+class Solution {
+private:
+    void solve(TreeNode* root,TreeNode* &first,TreeNode* &mid,TreeNode* &last,TreeNode* &previous){
+        if(root == NULL){
+            return;
+        }
+        
+        // left
+        solve(root->left,first,mid,last,previous);
+        
+        if(root->val < previous->val){
+            if(first == NULL){
+                first = previous;
+                mid = root;
+            }
+            else{
+                last = root;
+            }
+        }
+        previous = root;
+        
+        // right
+        solve(root->right,first,mid,last,previous);
+    }
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode* prev = new TreeNode(INT_MIN);
+        TreeNode* first = NULL;
+        TreeNode* mid = NULL;
+        TreeNode* last = NULL;
+        
+        solve(root,first,mid,last,prev);
+        
+        if(last == NULL){
+            int temp = first->val;
+            first->val = mid->val;
+            mid->val = temp;
+        }
+        else{
+            int temp = last->val;
+            last->val = first->val;
+            first->val = temp;
+        }
+    }
+};
