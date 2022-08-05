@@ -1,0 +1,25 @@
+class Solution
+{
+    private:
+    void solve(Node* root,int &sum,int previous){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        // Doing inorder traversal
+        solve(root->right,sum,previous);
+        previous = root->data;
+        root->data = sum;
+        sum = sum + previous;
+        solve(root->left,sum,previous);
+        
+    }
+    public:
+    void transformTree(struct Node *root)
+    {
+        int sum = 0;
+        int previous = 0;
+        solve(root,sum,previous);
+    }
+};
