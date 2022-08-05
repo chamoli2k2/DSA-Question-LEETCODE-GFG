@@ -1,0 +1,24 @@
+void solve(Node* root,int &k,int &ans){
+    if(root == NULL){
+        return;
+    }
+    
+    solve(root->left,k,ans);
+    
+    if(k > 0){
+        ans += root -> data;
+    }else{
+        return;
+    }
+    
+    k--;
+    
+    solve(root->right,k,ans);
+}
+int sum(Node* root, int k) 
+{ 
+    int ans = 0;
+    solve(root,k,ans); 
+    
+    return ans;
+} 
