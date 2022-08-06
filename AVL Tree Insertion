@@ -1,0 +1,57 @@
+class Solution{
+    int height(Node *node){
+        if(!node)
+            return 0;
+        return max(height(node->left),height(node->right))+1;
+    }
+    int BF(Node *node){
+        if(!node)
+            return -1;
+        else
+            return height(node->left)-height(node->right);
+    }
+    Node *lr(Node *node){
+        Node *parent=node->left;
+        Node *temp=parent->right;
+        parent->right=node;
+        node->left=temp;
+        return parent;
+    }
+    Node *rr(Node *node){
+        Node *parent=node->right;
+        Node *temp=parent->left;
+        parent->left=node;
+        node->right=temp;
+        return parent;
+    }
+  public:
+    Node* insertToAVL(Node* node, int data)
+    {
+        if(!node)
+            return new Node(data);
+            
+        if(node->data<data)
+            node->right= insertToAVL(node->right,data);
+        else if(node->data>data)
+            node->left=insertToAVL(node->left,data);
+        else
+            return node;
+        
+        int bf=BF(node);
+        if(bf>1 and data<node->left->data){
+            return lr(node);
+        }
+        if(bf<-1 and data>node->right->data){
+            return rr(node);
+        }
+        if(bf>1 and data>node->left->data){
+            node->left=rr(node->left);
+            return lr(node);
+        }
+        if(bf<-1 and data<node->right->data){
+            node->right=lr(node->right);
+            return rr(node);
+        }
+        return node;
+    }
+};
