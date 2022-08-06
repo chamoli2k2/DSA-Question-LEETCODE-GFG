@@ -1,0 +1,30 @@
+class Solution {
+  private:
+    void solve(Node* root,long long pdt,long long &ans){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        if(root->left == NULL && root->right == NULL){
+            pdt = pdt * root->data;
+            if(pdt > ans){
+                ans = pdt;
+            }
+        }
+        
+        pdt = pdt * root->data;
+        solve(root->left,pdt,ans);
+        solve(root->right,pdt,ans);
+    }
+  public:
+    //Function to return maximum path product from any node in a tree.
+    long long findMaxScore(Node* root)
+    {
+        long long pdt = 1;
+        long long ans = INT_MIN;
+        solve(root,pdt,ans);
+        
+        return ans;
+    }
+};
