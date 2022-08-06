@@ -1,0 +1,50 @@
+class Node{
+    public:
+    int data;
+    Node* left;
+    Node* right;
+    
+    // constructor
+    Node(int data){
+        this->data = data;
+        this->left = NULL;
+        this->right = NULL;
+    }
+};
+
+class Solution{
+    private:
+    Node* buildBST(Node* root,int k,Node* &succ){
+        if(root == NULL){
+            return new Node(k);
+        }
+        
+        if(root->data > k){
+            succ = root;
+            root->left = buildBST(root->left,k,succ);
+        }
+        else if(root->data <= k){
+            root->right = buildBST(root->right,k,succ);
+        }
+        
+        return root;
+    }
+    public:
+    vector<int> findLeastGreater(vector<int>& arr, int n) {
+        Node* root = NULL;
+        
+        for(int i=n-1;i>=0;i--){
+            Node* succ = NULL;
+            root = buildBST(root,arr[i],succ);
+            
+            if(succ){
+                arr[i] = succ->data;
+            }
+            else{
+                arr[i] = -1;
+            }
+        }
+        
+        return arr;
+    }
+};
