@@ -1,0 +1,39 @@
+pair<long,long> indexes(vector<long long> v, long long x)
+   {
+       // code here
+       int firstO=-1,lastO=-1,mid,l=0,h=v.size()-1;
+       
+       //find first Occurrence
+       while(l<=h)
+       {
+           mid = l+(h-l)/2;
+           if(v[mid]==x)
+           {
+               firstO=mid;
+               h=mid-1;
+           }
+           else if(v[mid]<x)
+               l=mid+1;
+           else 
+               h=mid-1;
+       }
+       
+       //find last Occurrence
+       l=0;
+       h=v.size()-1;
+         while(l<=h)
+       {
+           mid = l+(h-l)/2;
+           if(v[mid]==x)
+           {
+               lastO=mid;
+               l=mid+1;
+           }
+           else if(v[mid]<x)
+               l=mid+1;
+           else 
+               h=mid-1;
+       }
+       
+       return {firstO,lastO};
+   }
