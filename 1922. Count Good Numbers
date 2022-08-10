@@ -1,0 +1,39 @@
+class Solution {
+private:
+    long long Power(long long n,long long pow){
+        // base case
+        long long mod = 1e9 + 7;
+        if(pow == 0){
+            return 1;
+        }
+        
+        if(pow == 1){
+            return n;
+        }
+        
+        long long halfAnswer = Power(n,pow/2) % mod;
+        
+        if(pow & 1){
+            return (halfAnswer * halfAnswer * n) % mod;
+        }
+        
+        return (halfAnswer * halfAnswer) % mod;
+    }
+public:
+    int countGoodNumbers(long long n) {
+        long long int ePow;
+        long long int oPow;
+        long long mod = 1e9 + 7;
+        oPow = n / 2;
+        
+        // Finding power
+        if(n & 1){
+            ePow = (n / 2) + 1;
+        }
+        else{
+            ePow = n / 2;
+        }
+        
+        return (Power(5,ePow) *1LL* Power(4,oPow)) % mod;
+    }
+};
