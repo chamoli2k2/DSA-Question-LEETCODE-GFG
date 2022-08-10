@@ -1,0 +1,41 @@
+class Solution{
+private:
+    bool isSafe(bool graph[101][101],vector<int> &klr,int node,int color,int vertex){
+        for(int adj=0;adj<vertex;adj++){
+            if(graph[node][adj] == 1 && klr[adj] == color){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    bool solve(bool graph[101][101],vector<int> &klr,int m,int V,int node){
+        // base case 
+        // If all nodes are checked 
+        if(node == V){
+            return true;
+        }
+        
+        for(int color=0;color<m;color++){
+            // checking if color is safe to fill 
+            if(isSafe(graph,klr,node,color,V)){
+                klr[node] = color;
+                if(solve(graph,klr,m,V,node+1)){
+                    return true;
+                }
+                klr[node] = -1;
+            }
+        }
+        
+        return false;
+    }
+public:
+    // Function to determine if graph can be coloured with at most M colours such
+    // that no two adjacent vertices of graph are coloured with same colour.
+    bool graphColoring(bool graph[101][101], int m, int n) {
+        // Making color tracker
+        vector<int> klr(n,-1);
+        
+        return solve(graph,klr,m,n,0);
+    }
+};
