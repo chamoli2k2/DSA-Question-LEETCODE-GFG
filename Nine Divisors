@@ -1,0 +1,49 @@
+// If a number have 9 divisor than
+// p^2 * q^2 = N (p,q is prime)
+// p^8 = N (p is prime)
+
+class Solution{   
+public:
+    long long int nineDivisors(long long int N){
+        long long int limit = sqrt(N);
+        // Using Prime seive to find prime no
+        vector<long long int> prime;
+        vector<bool> sieve(limit+1,1);
+        
+        for(long long int i=2;i<=limit;i++){
+            // Checking if prime
+            if(sieve[i]){
+                // pushing number in prime bucket
+                prime.push_back(i);
+                
+                // Now marking all divisors of prime no as false
+                for(long long int j=i*i;j<=limit;j+=i){
+                    sieve[j] = 0;
+                }
+            }
+        }
+        
+        // Now checking the above condtions
+        long long int count = 0;
+        long long int n = prime.size();
+        for(long long int i=0;i<n;i++){
+            
+            long long int p = prime[i];
+            
+            // conditon 1 
+            if(pow(p,8) <= N){
+                count++;
+            }
+            
+            // condition 2
+            for(long long int j=i+1;j<n;j++){
+                long long int q = prime[j];
+                if(pow(p,2) * pow(q,2) <= N){
+                    count++;
+                }
+            }
+        }
+        
+        return count;
+    }
+};
