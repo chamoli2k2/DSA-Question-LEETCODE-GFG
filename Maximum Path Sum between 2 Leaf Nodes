@@ -1,0 +1,38 @@
+class Solution {
+private:
+    int solve(Node* root,int &ans){
+        // base case
+        if(root == NULL){
+            return 0;
+        }
+        
+        if(root->left == NULL && root->right == NULL){
+            return root->data;
+        }
+        
+        int left = solve(root->left,ans);
+        int right = solve(root->right,ans);
+        
+        if(root->left && root->right){
+            ans = max(ans,(left + root->data + right));
+            
+            return root->data + max(left,right);
+        }
+        
+        if(root->left == NULL){
+            return right + root->data;
+        }
+        
+        return left + root->data;
+    
+    }
+public:
+    int maxPathSum(Node* root)
+    {
+        int ans = INT_MIN;
+        int x = solve(root,ans);
+         if (root->left == NULL || root->right == NULL)
+            return max(ans,x);
+        return ans;
+    }
+};
