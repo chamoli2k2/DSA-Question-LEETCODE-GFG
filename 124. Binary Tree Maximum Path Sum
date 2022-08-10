@@ -1,0 +1,25 @@
+class Solution {
+private:
+    int solve(TreeNode* root,int &maxi){
+        // base case
+        if(root == NULL){
+            return 0;
+        }
+        
+        // solving left and right path and finding maximum path in it
+        int leftSum = max(0,solve(root->left,maxi));
+        int rightSum = max(0,solve(root->right,maxi));
+        
+        //  Evaluting maximum till current code
+        maxi = max(maxi,leftSum+root->val+rightSum);
+        
+        // returning the maximum path
+        return root->val + max(leftSum,rightSum);
+    }
+public:
+    int maxPathSum(TreeNode* root) {
+        int maxi = INT_MIN;
+        solve(root,maxi);
+        return maxi;
+    }
+};
