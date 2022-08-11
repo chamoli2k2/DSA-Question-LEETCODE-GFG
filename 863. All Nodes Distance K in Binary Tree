@@ -1,0 +1,78 @@
+class Solution {
+private:
+    // Function to store parent 
+    void solve1(TreeNode* root,unordered_map<TreeNode*,TreeNode*> &parent,TreeNode* p){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        // marking parent of node
+        parent[root] = p;
+        
+        // moving left
+        solve1(root->left,parent,root);
+        // moving right
+        solve1(root->right,parent,root);
+    }
+    
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        // base case
+        vector<int> ans;
+        if(root == NULL){
+            return ans;
+        }
+        // map to store parent pointer of every node
+        unordered_map<TreeNode*,TreeNode*> parent;
+        // dummy parent ptr
+        TreeNode* p = NULL;
+        solve1(root,parent,p);
+        // doing BFS traversal
+        queue<TreeNode*> q;
+        q.push(target);
+        // making visited array
+        unordered_map<TreeNode*,bool> visited;
+        visited[target] = true;
+        int currLvl = 0;
+        while(!q.empty()){
+            if(currLvl == k){
+                break;
+            }
+            
+            currLvl ++;
+            int n = q.size();
+            
+            for(int i=0;i<n;i++){
+                TreeNode* temp = q.front();
+                q.pop();
+                
+                // pushing left child to queue
+                if(temp->left && visited[temp->left] == false){
+                    visited[temp->left] = true;
+                    q.push(temp->left);
+                }
+                
+                // pushing right child to queue
+                if(temp->right && visited[temp->right] == false){
+                    visited[temp->right] = true;
+                    q.push(temp->right);
+                }
+                
+                // pushing ancestor
+                if(parent[temp] != NULL && visited[parent[temp]] == false){
+                    visited[parent[temp]] = true;
+                    q.push(parent[temp]);
+                }
+            }
+        }
+        
+        // storing answer 
+        while(!q.empty()){
+            ans.push_back(q.front()->val);
+            q.pop();
+        }
+        
+        return ans;
+    }
+};
