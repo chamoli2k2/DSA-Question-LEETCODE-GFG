@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(vector<int> &arr,vector<vector<int>> &dp,int i,int j){
+        // base case
+        if(i > j){
+            return 0;
+        }
+        
+        // checking if answer is stored in dp
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        
+        // case 1 : picking from starting
+        int sPick = arr[i] + min(solve(arr,dp,i+1,j-1),solve(arr,dp,i+2,j));
+        
+        // case 2 : picking from ending
+        int ePick = arr[j] + min(solve(arr,dp,i,j-2),solve(arr,dp,i+1,j-1));
+        
+        return dp[i][j] = max(sPick,ePick);
+}
+public:
+    int maxCoins(vector<int>&arr,int n)
+    {
+	    vector<vector<int>> dp(n,vector<int>(n,-1));
+        return solve(arr,dp,0,n-1);
+    }
+};
