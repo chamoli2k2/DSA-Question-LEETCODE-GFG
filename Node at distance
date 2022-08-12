@@ -1,0 +1,45 @@
+//Function to return count of nodes at a given distance from leaf nodes.
+void solve(Node* root,unordered_map<Node*,Node*> &parent,vector<Node*> &leaf,Node* p){
+    // base case
+    if(root == NULL){
+        return;
+    }
+
+    // if leaf node incountered
+    if(root->left == NULL && root->right == NULL){
+        leaf.push_back(root);
+    }
+    parent[root] = p;
+    // left
+    solve(root->left,parent,leaf,root);
+    // right
+    solve(root->right,parent,leaf,root);
+}
+
+int printKDistantfromLeaf(Node* root, int k)
+{
+	// parent node
+	Node* p = newNode(-1);
+	unordered_map<Node*,Node*> parent;
+	vector<Node*> leaf;
+	solve(root,parent,leaf,p);
+	parent.erase(root);
+	
+	// making queue and visited array 
+	set<Node*> st;
+	int m = leaf.size();
+	
+	for(int i=0;i<m;i++){
+	    auto l = leaf[i];
+        
+        int x = k;
+        while(x-- && l) {
+            l = parent[l];
+        }
+        
+        if(l) {
+            st.insert(l);
+        }
+	}
+	return st.size();
+}
