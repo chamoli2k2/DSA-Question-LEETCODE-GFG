@@ -1,0 +1,28 @@
+class Solution {
+  private:
+    void dfs(vector<int> adj[],vector<int> &ans,unordered_map<int,bool> &visited,int k){
+        visited[k] = true;
+        ans.push_back(k);
+        
+        for(auto i : adj[k]){
+            if(!visited[i]){
+                dfs(adj,ans,visited,i);
+            }
+        }
+    }
+    
+  public:
+    // Function to return a list containing the DFS traversal of the graph.
+    vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+        unordered_map<int,bool> visited;
+        vector<int> ans;
+        
+        for(int i=0;i<V;i++){
+            if(!visited[i]){
+                dfs(adj,ans,visited,i);
+            }
+        }
+        
+        return ans;
+    }
+};
