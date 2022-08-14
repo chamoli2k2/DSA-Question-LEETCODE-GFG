@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& arr) {
+        int minPdt = 1;
+        int maxPdt = 1;
+        int maxi = INT_MIN;
+        
+        
+        for(int i=0;i<arr.size();i++){
+            if(arr[i] < 0){
+                swap(minPdt,maxPdt);
+            }
+            
+            maxPdt = max(arr[i],maxPdt * arr[i]);
+            minPdt = min(arr[i],minPdt * arr[i]);
+            
+            maxi = max(maxi,maxPdt);
+        }
+        
+        return maxi;
+    }
+};
