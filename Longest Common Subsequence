@@ -1,0 +1,34 @@
+class Solution
+{
+    private:
+    int solve(string &s1,string &s2,vector<vector<int>> &dp,int i,int j){
+        // base case
+        if(i == 0 || j == 0){
+            return 0;
+        }
+        
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        
+        // case 1 : if ith and jth index of strings are same than
+        if(s1[i-1] == s2[j-1]){
+            return dp[i][j] = 1 + solve(s1,s2,dp,i-1,j-1);
+        }
+        
+        // case 2 : if ith and jth index is not same
+        // than there will occur two case too.
+        int c1 = solve(s1,s2,dp,i-1,j);
+        int c2 = solve(s1,s2,dp,i,j-1);
+        
+        return dp[i][j] = max(c1,c2);
+    }
+    public:
+    //Function to find the length of longest common subsequence in two strings.
+    int lcs(int x, int y, string s1, string s2)
+    {
+        vector<vector<int>> dp(x+1,vector<int>(y+1,-1));
+        
+        return solve(s1,s2,dp,x,y);
+    }
+};
