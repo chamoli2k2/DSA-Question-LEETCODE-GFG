@@ -1,0 +1,77 @@
+class Solution{
+private:
+    TreeNode* LCA(TreeNode* root,int s,int e){
+        // base case
+        if(root == NULL || root->val == s || root->val == e){
+            return root;
+        }
+        
+        TreeNode* left = LCA(root->left,s,e);
+        TreeNode* right = LCA(root->right,s,e);
+        
+        if(left == NULL){
+            return right;
+        }
+        
+        if(right == NULL){
+            return left;
+        }
+        
+        return root;
+    }
+    
+    bool find(TreeNode* root,string &ans,int target){
+        // base case
+        if(root == NULL){
+            return false;
+        }
+        
+        // if we got the target node
+        if(root->val == target){
+            return true;
+        }
+        
+        // checking if answer is in left subtree 
+        ans.push_back('L');
+        if(find(root->left,ans,target)){
+            return true;
+        }
+        
+        // if we don't find the answer in left subtree than
+        // We backtrack and remove the 'L' form string
+        ans.pop_back();
+        
+        // Checking the answer in right subtree
+        ans.push_back('R');
+        if(find(root->right,ans,target)){
+            return true;
+        }
+        // if not found in right subtree also than backtrack and pop the 'R' from string
+        ans.pop_back();
+        
+        // If we don't find answer in both sub tree
+        return false;
+    }
+public:
+    string getDirections(TreeNode* root, int startValue, int endValue) {
+        TreeNode* lca = LCA(root,startValue,endValue);
+        
+        string lcaToS = "";
+        string lcaToe = "";
+        
+        // Traversing the node and finding start value
+        find(lca,lcaToS,startValue);
+        // Traversing the node and finding end value
+        find(lca,lcaToe,endValue);
+        
+        // We know from start we need to go UP to find LCA so we need to convert all char in lcaToS to 'U'
+        for(auto &it : lcaToS){
+            it = 'U';
+        }
+        
+        // concating the both string 
+        string ans = lcaToS + lcaToe;
+        
+        return ans;
+    }
+};
