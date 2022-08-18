@@ -1,0 +1,42 @@
+class Solution{
+  private:
+    int solve(string &a,string &b,string &c,vector<vector<int>> &dp,int i,int j,int len){
+        // base case
+        if(len == 0){
+            return 1;
+        }
+        
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        
+        int x = 0;
+        if(i-1 >= 0 && a[i-1] == c[len-1]){
+            x = solve(a,b,c,dp,i-1,j,len-1);
+        }
+        
+        int y = 0;
+        if(j-1 >=0 && b[j-1] == c[len-1]){
+            y = solve(a,b,c,dp,i,j-1,len-1);
+        }
+        
+        return dp[i][j] = x or y;
+    }
+  public:
+    /*You are required to complete this method */
+    bool isInterleave(string a, string b, string c) 
+    {
+        int n = a.size();
+        int m = b.size();
+        
+        // base case 
+        if(n + m != c.size()){
+            return false;
+        }
+        int length = c.size();
+        
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        return solve(a,b,c,dp,n,m,length);
+    }
+
+};
