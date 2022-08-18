@@ -1,0 +1,32 @@
+class Solution
+{
+    private:
+    int solve(vector<int> &dp,int n){
+        // base case
+        if(n == 0){
+            return 1;
+        }
+        
+        if(dp[n] != -1){
+            return dp[n];
+        }
+        
+        int c1 = 0;
+        if(n-1 >= 0){
+            c1 = solve(dp,n-1);
+        }
+        int c2 = 0;
+        if(n-2 >= 0){
+            c2 = solve(dp,n-2);
+        }
+        
+        return dp[n] = (c1 + c2) % int(1e9 + 7);
+    }
+    public:
+    //Function to count number of ways to reach the nth stair.
+    int countWays(int n)
+    {
+        vector<int> dp(n+1,-1);
+        return solve(dp,n);
+    }
+};
