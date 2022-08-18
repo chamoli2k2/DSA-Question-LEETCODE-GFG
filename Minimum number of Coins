@@ -1,0 +1,35 @@
+class Solution{
+private:
+    
+public:
+    vector<int> minPartition(int N)
+    {
+        vector<int> curr(10,0);
+        curr[0] = 1, curr[1] = 2;
+        curr[2] = 5, curr[3] = 10;
+        curr[4] = 20, curr[5] = 50;
+        curr[6] = 100, curr[7] = 200;
+        curr[8] = 500, curr[9] = 2000;
+        
+        vector<int> ans;
+        while(N){
+            int idx = lower_bound(curr.begin(),curr.end(),N) - curr.begin();
+            if(idx < 10 && N % curr[idx] == 0){
+                int k = N / curr[idx];
+                ans.insert(ans.end(),k,curr[idx]);
+                break;
+            }
+            else if(idx == 10 && N % curr[idx-1] == 0){
+                int k = N / curr[idx-1];
+                ans.insert(ans.end(),k,curr[idx-1]);
+            }
+            else{
+                int num = curr[idx-1];
+                ans.push_back(num);
+                N = N - num;
+            }
+        }
+        
+        return ans;
+    }
+};
