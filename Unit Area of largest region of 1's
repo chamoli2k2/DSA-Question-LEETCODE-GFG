@@ -1,0 +1,43 @@
+class Solution
+{
+    private:
+    void dfs(vector<vector<int>> &grid,vector<vector<int>> &visited,int i,int j,int n,int m,int &area){
+        if(i < 0 || j < 0 || i >= n || j >= m || visited[i][j] == 1 || grid[i][j] == 0){
+            return;
+        }
+        
+        // marking visited
+        visited[i][j] = 1;
+        area++;
+        
+        // covering other area
+        dfs(grid,visited,i+1,j,n,m,area); // down
+        dfs(grid,visited,i-1,j,n,m,area); // up
+        dfs(grid,visited,i,j+1,n,m,area); // right
+        dfs(grid,visited,i,j-1,n,m,area); // left
+        dfs(grid,visited,i+1,j+1,n,m,area); //down-right
+        dfs(grid,visited,i+1,j-1,n,m,area); // down-left
+        dfs(grid,visited,i-1,j+1,n,m,area); // up-right
+        dfs(grid,visited,i-1,j-1,n,m,area); // up-left
+        
+    }
+    public:
+    //Function to find unit area of the largest region of 1s.
+    int findMaxArea(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        int ans = 0;
+        vector<vector<int>> visited(n,vector<int>(m,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(visited[i][j] == 0 && grid[i][j] == 1){
+                    int temp = 0;
+                    dfs(grid,visited,i,j,n,m,temp);
+                    ans = max(ans,temp);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
