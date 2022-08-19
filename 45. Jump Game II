@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int solve(vector<int> &arr,vector<int> &dp,int idx,int n){
+        // base case
+        if(idx >= n-1){
+            return 0;
+        }
+        
+        if(dp[idx] != -1){
+            return dp[idx];
+        }
+        
+        if(arr[idx] == 0){
+            return 1e6;
+        }
+        
+        int ans = 1e6;
+        for(int j=1;j<=arr[idx];j++){
+            int temp = 1 + solve(arr,dp,idx+j,n);
+            ans = min(ans,temp);
+        }
+        
+        dp[idx] = ans;
+        return dp[idx];
+    }
+    int jump(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> dp(n,-1);
+        int ans = solve(arr,dp,0,n);
+        if(ans < 1e6){
+            return ans;
+        }
+        
+        return -1;
+    }
+};
