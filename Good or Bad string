@@ -1,0 +1,28 @@
+class Solution {
+  public:
+    int isGoodorBad(string s) {
+        // vowel checker
+        int vowel = 0;
+        int con = 0;
+        for(int i=0;i<s.length();i++){
+            if(s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){
+                vowel++;
+                con = 0;
+            }
+            else if(s[i] == '?'){
+                con++;
+                vowel;
+            }
+            else{
+                vowel = 0;
+                con++;
+            }
+            
+            if(vowel == 6 || con == 4){
+                return 0;
+            }
+        }
+        
+        return 1;
+    }
+};
