@@ -11,7 +11,7 @@ class Solution {
             }
             else if(s[i] == '?'){
                 con++;
-                vowel;
+                vowel++;
             }
             else{
                 vowel = 0;
