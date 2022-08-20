@@ -1,0 +1,12 @@
+class Solution {
+  public:
+    int chocolates(int n, vector<int> &arr) {
+        int mini = INT_MAX;
+        for(auto i : arr){
+            if(mini > i){
+                mini = i;
+            }
+        }
+        return mini;
+    }
+};
