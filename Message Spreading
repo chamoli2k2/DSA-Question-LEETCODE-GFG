@@ -1,0 +1,7 @@
+class Solution{   
+public:
+    int minimumMessages(int n){
+        // base case 
+        return n*2 - 2;
+    }
+};
