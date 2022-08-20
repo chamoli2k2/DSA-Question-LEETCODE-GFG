@@ -1,0 +1,13 @@
+class Solution{
+public:
+    int minStep(int H, int U, int D){
+        int step = 1;
+        int height = U;
+        while(height <= H){
+            height -= D;
+            step ++;
+            height += U;
+        }
+        return step;
+    }
+};
