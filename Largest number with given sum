@@ -1,0 +1,35 @@
+class Solution
+{
+    public:
+    //Function to return the largest possible number of n digits
+    //with sum equal to given sum.
+    string largestNumber(int n, int sum)
+    {
+        // base case
+        if(9 * n < sum){
+            return "-1";
+        }
+        
+        string password = "";
+        int count = 0;
+        
+        // case 1 : if sum is less than 10
+        if(sum < 10){
+            password += to_string(sum);
+            count ++;
+            while(count < n){
+                password += to_string(0);
+                count ++;
+            }
+            
+            return password;
+        }
+        
+        // case 2 : if sum is greater than 10
+        password += to_string(9);
+        sum = sum - 9;
+        
+        
+        return password + largestNumber(n-1,sum);
+    }
+};
