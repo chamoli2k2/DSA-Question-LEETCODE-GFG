@@ -1,0 +1,33 @@
+class Solution {
+private:
+    int solve(vector<int> &obj,vector<vector<int>> &dp,int idx,int lane,int n){
+        // base case
+        if(idx == n){
+            return 0;
+        }
+        
+        if(dp[idx][lane] != -1){
+            return dp[idx][lane];
+        }
+        
+        if(obj[idx+1] != lane){
+            return dp[idx][lane] = solve(obj,dp,idx+1,lane,n);
+        }
+        
+        int ans = INT_MAX;
+        for(int l=1;l<=3;l++){
+            if(l != obj[idx] && l != lane){
+                ans = min(ans,(1 + solve(obj,dp,idx,l,n)));
+            }
+        }
+        
+        return dp[idx][lane] = ans;
+    }
+public:
+    int minSideJumps(vector<int>& obstacles) {
+        int n = obstacles.size();
+        vector<vector<int>> dp(n,vector<int>(4,-1));
+        
+        return solve(obstacles,dp,0,2,n-1);
+    }
+};
