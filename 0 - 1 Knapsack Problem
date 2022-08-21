@@ -27,7 +27,6 @@ Approach 2 : Using memonizing techinque or top-down technique (DP)
 
 class Solution
 {
-    
     public:
     //Function to return max value that can be put in knapsack of capacity W.
     int solve(int w, int wt[], int val[], int n, vector<vector<int>> &t){
