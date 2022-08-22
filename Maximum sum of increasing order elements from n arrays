@@ -1,0 +1,25 @@
+int maximumSum( int n,int m, vector<vector<int>> &arr) {
+    for(int i=0;i<n;i++){
+        sort(arr[i].begin(),arr[i].end());
+    }
+    
+    int sum = arr[n-1][m-1];
+    int pre = sum;
+    for(int i=n-2;i>=0;i--){
+        int flag = 1;
+        for(int j=m-1;j>=0;j--){
+            if(arr[i][j] < pre){
+                sum += arr[i][j];
+                pre = arr[i][j];
+                flag = 0;
+                break;
+            }
+        }
+        
+        if(flag){
+            return 0;
+        }
+    }
+    
+    return sum;
+}
