@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        unordered_map<int,int> mp;
+        for(auto i : arr){
+            mp[i]++;
+        }
+        
+        unordered_map<int,bool> vis;
+        for(auto i : mp){
+            int num = i.second;
+            if(vis.find(num) != vis.end()){
+                return false;
+            }
+            else{
+                vis[num] = true;
+            }
+        }
+        
+        return true;
+    }
+};
