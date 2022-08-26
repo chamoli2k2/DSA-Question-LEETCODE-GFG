@@ -10,9 +10,16 @@ public:
         
         int k = s1.size();
         int n = s2.size();
+        string temp = s2.substr(0,k);
+        string bkup = temp;
+        sort(temp.begin(),temp.end());
+        if(temp == s1) return true;
         
-        for(int i=0;i<=n-k;i++){
-            string temp = s2.substr(i,k);
+        for(int i=1;i<=n-k;i++){
+            temp = bkup;
+            temp.erase(temp.begin()+0);
+            temp += s2[i+k-1];
+            bkup = temp;
             sort(temp.begin(),temp.end());
             if(temp == s1){
                 return true;
