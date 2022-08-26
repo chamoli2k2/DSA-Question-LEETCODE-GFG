@@ -1,0 +1,51 @@
+class Solution {
+private:
+    void permute(vector<int> &per,vector<vector<int>> &dp,int idx){
+        if(idx == per.size()){
+            if(per[0] == 0 || per[idx-1] % 2 != 0){
+                return;
+            }
+            
+            dp.push_back(per);
+            return;
+        }
+        
+        for(int i=idx;i<per.size();i++){
+            swap(per[i],per[idx]);
+            permute(per,dp,idx+1);
+            swap(per[i],per[idx]);
+        }
+    }
+public:
+    bool reorderedPowerOf2(int n) {
+        if(n == 1){
+            return true;
+        }
+        // basic technique is to first generate all possible number
+        vector<int> per;
+        int temp = n;
+        while(temp){
+            per.push_back(temp % 10);
+            temp /= 10;
+        }
+        
+        vector<vector<int>> dp;
+        permute(per,dp,0);
+        
+        // checking if any of no is digit 
+        for(auto i : dp){
+            temp = 0;
+            for(auto j : i){
+                temp = temp * 10 + j;
+            }
+            
+            if(!(temp & (temp - 1)) && temp){
+                return true;
+            }
+        }
+        
+        
+        return false;
+        
+    }
+};
