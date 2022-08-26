@@ -1,3 +1,12 @@
+Brute Force
+This is a very good question, it helps you to revise multiple concepts like Permutation of number , How to check power of two.
+
+Steps to solve the question :
+
+Find out all the permutation & according to question save only possible answer of permutation in the dp array
+Now check the given permutation is power of two of not.
+// If it helps plz upvote :)
+
 class Solution {
 private:
     void permute(vector<int> &per,vector<vector<int>> &dp,int idx){
@@ -49,3 +58,39 @@ public:
         
     }
 };
+
+// if it helps plz upvote :)
+
+Optimised Approach
+In this approach we are finding every power of 2 and comparing it with current number if all digits in number and any power of 2 are equal than we are returning true.
+
+// If is helps plz upvote :)
+
+class Solution {
+public:
+    bool reorderedPowerOf2(int n) {
+        // base case 
+        if(n == 1){
+            return true;
+        }
+        
+        // converting number into string so we can sort it
+        string num1 = to_string(n);
+        sort(num1.begin(),num1.end());
+        
+        // Finding out all power of 2 & we know there are 32 bits in integer
+        for(int i=0;i<31;i++){
+            int pow = (1 << i);
+            // converting the number into string so we can compare them
+            string num2 = to_string(pow);
+            sort(num2.begin(),num2.end());
+            if(num1 == num2){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+};
+
+// If it helps plz upvote :)
