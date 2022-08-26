@@ -1,0 +1,44 @@
+class Solution
+{
+    private:
+    static bool comparator(vector<int> &p1,vector<int> &p2){
+        // case 1 : if p1 end < p2 end;
+        if(p1[0] < p2[0]){
+            return true;
+        }
+        else if(p1[0] > p2[0]){
+            return false;
+        }
+        
+        if(p1[2] < p2[2]){
+            return true;
+        }
+        
+        return false;
+    }
+    public:
+    //Function to find the maximum number of activities that can
+    //be performed by a single person.
+    int activitySelection(vector<int> start, vector<int> end, int n)
+    {
+        vector<vector<int>> pr(n,vector<int>(3,-1));
+         for(int i=0;i<n;i++){
+             pr[i][0] = end[i];
+             pr[i][1] = start[i];
+             pr[i][2] = i;
+         }
+         
+         sort(pr.begin(),pr.end(),comparator);
+         
+         int limit = pr[0][0];
+         int count = 1;
+         for(int i=1;i<n;i++){
+             if(pr[i][1] > limit){
+                 count ++;
+                 limit = pr[i][0];
+             }
+         }
+         
+         return count;
+    }
+};
