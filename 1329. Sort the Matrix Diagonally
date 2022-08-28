@@ -1,0 +1,52 @@
+class Solution {
+public:
+    vector<vector<int>> diagonalSort(vector<vector<int>>& mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+        priority_queue<int,vector<int>,greater<int>> pq;
+        
+        // sorting the row '0'
+        for(int j=0;j<m;j++){
+            int k = j;
+            int i = 0;
+            // putting all diagonal element in priority queue
+            while(i < n && k < m){
+                pq.push(mat[i][k]);
+                i++;
+                k++;
+            }
+            
+            k = j;
+            i = 0;
+            while(!pq.empty()){
+                mat[i][k] = pq.top();
+                pq.pop();
+                i++;
+                k++;
+            }
+        }
+        
+        // sorting the col '0'
+        for(int i=1;i<n;i++){
+            int k = i;
+            int j = 0;
+            while(k < n && j < m){
+                pq.push(mat[k][j]);
+                j++;
+                k++;
+            }
+            
+            k = i;
+            j = 0;
+            
+            while(!pq.empty()){
+                mat[k][j] = pq.top();
+                pq.pop();
+                j++;
+                k++;
+            }
+        }
+        
+        return mat;
+    }
+};
