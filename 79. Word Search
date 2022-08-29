@@ -1,0 +1,48 @@
+class Solution {
+private:
+    bool dfs(vector<vector<char>> &board,vector<vector<int>> &visited,int i,int j,int n,int m,int idx,string &word){
+        // base case
+        if(idx == word.size()){
+            return true;
+        }
+        
+        if(i < 0 || j < 0 || j >= m || i >= n || board[i][j] != word[idx] || visited[i][j] == 1){
+            return false;
+        }
+        
+        // marking the visited
+        visited[i][j] = 1;
+        
+        // now 
+        int c1 = dfs(board,visited,i+1,j,n,m,idx+1,word); // down
+        int c2 = dfs(board,visited,i-1,j,n,m,idx+1,word); // up
+        int c3 = dfs(board,visited,i,j+1,n,m,idx+1,word); // right
+        int c4 = dfs(board,visited,i,j-1,n,m,idx+1,word); // left
+        
+        if(c1 || c2 || c3 || c4){
+            return true;
+        }
+        
+        visited[i][j] = 0;
+        return false;
+    }
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int n = board.size();
+        int m = board[0].size();
+        
+        vector<vector<int>> visited(n,vector<int>(m,0));
+        // Using Dfs algorithm 
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(board[i][j] == word[0]){
+                    if(dfs(board,visited,i,j,n,m,0,word)){
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+};
