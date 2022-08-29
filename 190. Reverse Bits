@@ -1,0 +1,33 @@
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        unsigned int ans = 0;
+        unsigned int num = n;
+        string temp = "";
+        int i = 0;
+        while(num){
+            if(n & (1 << i)){
+                temp += '1';
+            }
+            else{
+                temp += '0';
+            }
+            num = num >> 1;
+            i++;
+        }
+        
+        temp.insert(temp.end(),32-i,'0');
+        
+        int j = 0;
+        for(int i=temp.size()-1;i>=0;i--){
+            char ch = temp[i];
+            if(ch == '1'){
+                ans = ans | (1 << j);
+            }
+            j++;
+        }
+        
+        
+        return ans;
+    }
+};
