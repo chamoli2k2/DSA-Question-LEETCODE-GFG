@@ -1,0 +1,38 @@
+class Solution 
+{
+    private:
+    static bool cmp(Job &p1,Job &p2){
+        return p1.profit > p2.profit;
+    }
+    
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        sort(arr,arr+n,cmp);
+        vector<int> deadlines(101,-1);
+        int fyda = 0;
+        int jobs = 0;
+        
+        for(int i=0;i<n;i++){
+            int deadline = arr[i].dead;
+            int profit = arr[i].profit;
+            int id = arr[i].id;
+            
+            for(int k=deadline;k>=1;k--){
+                if(deadlines[k] == -1){
+                    deadlines[k] = id;
+                    fyda += profit;
+                    jobs++;
+                    break;
+                }
+            }
+        }
+        
+        vector<int> ans(2,0);
+        ans[0] = jobs;
+        ans[1] = fyda;
+        
+        return ans;
+    } 
+};
