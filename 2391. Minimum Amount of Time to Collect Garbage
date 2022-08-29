@@ -1,0 +1,86 @@
+class Solution {
+public:
+    int garbageCollection(vector<string>& garbage, vector<int>& travel) {
+        int metal = 0;
+        // case 1 : Time taken to collect metal garbage
+        int n = garbage.size();
+        vector<int> payedM(travel.size(),0);
+        
+        for(int i=0;i<n;i++){
+            string s = garbage[i];
+            // now checking if metal is there in garbage
+            int m = s.size();
+            int flag = 0;
+            for(int j=0;j<m;j++){
+                if(s[j] == 'M'){
+                    flag = 1;
+                    metal += 1;
+                    
+                }
+            }
+            // Calculating traveling time
+            if(flag){
+                int k = i;
+                while(k >=1 && payedM[k-1] == 0){
+                    metal += travel[k-1];
+                    payedM[k-1] = 1;
+                    k--;
+                }
+            }
+        }
+        
+        // case 2 : Time taken to collect paper garbage
+        int paper = 0;
+        vector<int> payedP(travel.size(),0);
+        for(int i=0;i<n;i++){
+            string s = garbage[i];
+            // now checking if paper is there in garbage
+            int m = s.size();
+            int flag = 0;
+            for(int j=0;j<m;j++){
+                if(s[j] == 'P'){
+                    flag = 1;
+                    paper += 1;
+                    
+                }
+            }
+            // Calculating traveling time
+            if(flag){
+                int k = i;
+                while(k >=1 && payedP[k-1] == 0){
+                    paper += travel[k-1];
+                    payedP[k-1] = 1;
+                    k--;
+                }
+            }
+        }
+        
+        // case 3 : Time taken to collect Glass garbage
+        int glass = 0;
+        vector<int> payedG(travel.size(),0);
+        for(int i=0;i<n;i++){
+            string s = garbage[i];
+            // now checking if glass is there in garbage
+            int m = s.size();
+            int flag = 0;
+            for(int j=0;j<m;j++){
+                if(s[j] == 'G'){
+                    flag = 1;
+                    glass += 1;
+                    
+                }
+            }
+            // Calculating traveling time
+            if(flag){
+                int k = i;
+                while(k >=1 && payedG[k-1] == 0){
+                    glass += travel[k-1];
+                    payedG[k-1] = 1;
+                    k--;
+                }
+            }
+        }
+        
+        return (glass + paper + metal);
+    }
+};
