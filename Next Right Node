@@ -1,0 +1,41 @@
+class Solution
+{
+public:
+    Node *nextRight(Node *root, int key)
+    {
+        queue<Node*> q;
+        q.push(root);
+        
+        
+        while(!q.empty()){
+            int n = q.size();
+            int flag = 0;
+            for(int i=0;i<n;i++){
+                Node* temp = q.front();
+                q.pop();
+                
+                if(flag){
+                   return temp; 
+                }
+                
+                if(temp->data == key){
+                    flag = 1;
+                }
+                
+                if(temp->left){
+                    q.push(temp->left);
+                }
+                
+                if(temp->right){
+                    q.push(temp->right);
+                }
+            }
+            
+            if(flag){
+                return new Node(-1);
+            }
+        }
+        
+        return new Node(-1);
+    }
+};
