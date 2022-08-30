@@ -1,0 +1,16 @@
+int sumLeaf(Node* root)
+{
+    // base case
+    if(root == NULL){
+        return 0;
+    }
+    
+    if(root->left == NULL && root->right == NULL){
+        return root->data;
+    }
+    
+    int ls = sumLeaf(root->left);
+    int rs = sumLeaf(root->right);
+    
+    return ls + rs;
+}
