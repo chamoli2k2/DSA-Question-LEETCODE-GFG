@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        // Using BFS Traversal to solve the question
+        queue<pair<TreeNode*,int>> q;
+        q.push({root,0});
+        int ans = 0;
+        while(!q.empty()){
+            int n = q.size();
+            int minIDX = q.front().second;
+            int first,last;
+            // Now doing traversal lvl by lvl
+            for(int i=0;i<n;i++){
+                TreeNode* temp = q.front().first;
+                int idx = q.front().second - minIDX;
+                q.pop();
+                
+                if(i == 0){
+                    first = idx;
+                }
+                
+                if(i == n-1){
+                    last = idx;
+                }
+                
+                if(temp->left){
+                    int k = (long long)2 * idx + 1;
+                    q.push({temp->left,k});
+                }
+                
+                if(temp->right){
+                    int k = (long long)2 * idx + 2;
+                    q.push({temp->right,k});
+                }
+            }
+            
+            ans = max(ans,last - first + 1);
+        }
+        
+        return ans;
+    }
+};
