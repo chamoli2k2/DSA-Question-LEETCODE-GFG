@@ -1,0 +1,18 @@
+class Solution
+{
+    public:
+    bool hasPathSum(Node *root, int targetSum) {
+        if(root == NULL){
+            return false;
+        }
+        
+        if(root->left == NULL && root->right == NULL){
+            return targetSum == root->data;
+        }
+        
+        bool ls = hasPathSum(root->left,targetSum-root->data);
+        bool rs = hasPathSum(root->right,targetSum-root->data);
+        
+        return ls | rs;
+    }
+};
