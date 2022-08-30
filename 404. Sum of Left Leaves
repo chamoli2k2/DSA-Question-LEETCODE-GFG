@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int sumOfLeftLeaves(TreeNode* root,bool isLeft = false) {
+        // base case
+        if(root == NULL){
+            return 0;
+        }
+        
+        if(root->left == NULL && root->right == NULL){
+            return isLeft ? root->val : 0;
+        }
+        
+        int ls = sumOfLeftLeaves(root->left,true);
+        int rs = sumOfLeftLeaves(root->right,false);
+        
+        return ls + rs;
+        
+    }
+};
