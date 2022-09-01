@@ -1,0 +1,29 @@
+class Solution
+{
+public:
+    vector<pair<int, int>> findPairsWithGivenSum(Node *head, int target)
+    {
+        Node* temp = head;
+        vector<pair<int,int>> ans;
+        // setting the pointer at last node
+        while(temp->next){
+            temp = temp->next;
+        }
+        
+        while(head != temp && head->prev != temp){
+            if(head->data + temp->data == target){
+                ans.push_back({head->data,temp->data});
+                head = head->next;
+                temp = temp->prev;
+            }   
+            else if(head->data + temp->data > target){
+                temp = temp->prev;
+            }
+            else{
+                head = head->next;
+            }
+        }
+        
+        return ans;
+    }
+};
