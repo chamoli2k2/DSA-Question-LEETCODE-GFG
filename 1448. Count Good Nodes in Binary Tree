@@ -1,0 +1,24 @@
+class Solution {
+private:
+    void solve(TreeNode* root,int &count,int maxi){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        if(root->val >= maxi){
+            count++;
+            maxi = root->val;
+        }
+        
+        solve(root->left,count,maxi);
+        solve(root->right,count,maxi);
+    }
+public:
+    int goodNodes(TreeNode* root) {
+        int maxi = root->val;
+        int count = 0;
+        solve(root,count,maxi);
+        return count;
+    }
+};
