@@ -1,0 +1,22 @@
+class Solution {
+private:
+    void solve(TreeNode* root,int &sum){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        // inorder traversal (reverse)
+        solve(root->right,sum);
+        sum = sum + root->val;
+        root->val = sum;
+        solve(root->left,sum);
+    }
+public:
+    TreeNode* bstToGst(TreeNode* root) {
+        // look we need to just do reverse inorder traversal 
+        int sum = 0;
+        solve(root,sum);
+        return root;
+    }
+};
