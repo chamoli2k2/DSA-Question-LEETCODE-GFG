@@ -1,0 +1,29 @@
+class BSTIterator {
+private:
+    stack<TreeNode*> st;
+public:
+    BSTIterator(TreeNode* root) {
+        pushAll(root);
+    }
+    
+    int next() {
+        TreeNode* temp = st.top();
+        st.pop();
+        // checking if right is present or not
+        pushAll(temp->right);
+        
+        return temp->val;
+    }
+    
+    bool hasNext() {
+        return st.empty() ? false : true;
+    }
+    
+    void pushAll(TreeNode* root){
+        // pushing all left into the stack
+        while(root){
+            st.push(root);
+            root = root->left;
+        }
+    }
+};
