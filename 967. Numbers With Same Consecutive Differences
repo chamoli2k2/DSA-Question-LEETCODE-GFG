@@ -1,0 +1,40 @@
+class Solution {
+private:
+    void dfs(vector<int> &ans,int num,int n,int k){
+        // base case
+        if(n == 0){
+            ans.push_back(num);
+            return;
+        }
+        
+        // finding last digit of previous answer
+        int last_digit = num % 10;
+        if(last_digit + k < 10){
+            dfs(ans,num*10 + (last_digit + k),n-1,k);
+        }
+        
+        if(last_digit - k >= 0 && k != 0){
+            dfs(ans,num*10 + (last_digit - k),n-1,k);
+        }
+    }
+public:
+    vector<int> numsSameConsecDiff(int n, int k) {
+        // if n = 1 than we have to return all digit [0,9];
+        vector<int> ans;
+        // base case
+        if(n == 1){
+            for(int i=0;i<=9;i++){
+                ans.push_back(i);
+            }
+            return ans;
+        }
+        
+        // Doing dfs traversal 
+        for(int i=1;i<=9;i++){
+            dfs(ans,i,n-1,k);
+        }
+        
+        
+        return ans;
+    }
+};
