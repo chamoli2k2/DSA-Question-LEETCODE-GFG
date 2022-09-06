@@ -1,0 +1,49 @@
+class Solution {
+private:
+    int solve1(TreeNode* root,unordered_map<TreeNode*,bool> &mp){
+        if(root == NULL){
+            return 0;
+        }
+        
+        bool ls = solve1(root->left,mp);
+        bool rs = solve1(root->right,mp);
+        
+        if(root->val == 0 && !ls && !rs){
+            mp[root] = true;
+            return 0;
+        }
+        
+        return 1;
+    }
+    
+    void solve2(TreeNode* root,unordered_map<TreeNode*,bool> mp){
+        if(root == NULL){
+            return;
+        }
+        
+        if(mp.find(root->left) != mp.end()){
+            TreeNode* temp = root->left;
+            delete temp;
+            root->left = NULL;
+        }
+        
+        if(mp.find(root->right) != mp.end()){
+            TreeNode* temp = root->right;
+            delete temp;
+            root->right = NULL;
+        }
+        
+        solve2(root->left,mp);
+        solve2(root->right,mp);
+    }
+public:
+    TreeNode* pruneTree(TreeNode* root) {
+        unordered_map<TreeNode*,bool> mp;
+        solve1(root,mp);
+        if(mp[root] == true){
+            return NULL;
+        }
+        solve2(root,mp);
+        return root;
+    }
+};
