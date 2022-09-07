@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        int j = 0;
+        int i = 0;
+        
+        for(auto x : pushed){
+            pushed[i] = x;
+            i++;
+            
+            while(i > 0 && pushed[i-1] == popped[j]){
+                j++;
+                i--;
+            }
+        }
+        
+        if(i == 0){
+            return true;
+        }
+        
+        return false;
+    }
+};
