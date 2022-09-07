@@ -1,24 +1,21 @@
-void solve(Node* root,int &k,int &ans){
+void solve(Node* root,int &k,int &sum){
+    // base case
     if(root == NULL){
         return;
     }
     
-    solve(root->left,k,ans);
-    
-    if(k > 0){
-        ans += root -> data;
-    }else{
+    solve(root->left,k,sum);
+    k--;
+    if(k < 0){
         return;
     }
-    
-    k--;
-    
-    solve(root->right,k,ans);
+    sum += root->data;
+    solve(root->right,k,sum);
 }
 int sum(Node* root, int k) 
 { 
-    int ans = 0;
-    solve(root,k,ans); 
-    
-    return ans;
+  
+    int sum = 0;
+    solve(root,k,sum);
+    return sum;
 } 
