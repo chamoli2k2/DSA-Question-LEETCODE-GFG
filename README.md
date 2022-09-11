@@ -1,2 +1,2 @@
 # Leetcode-Questions
-Leetcode quesntions i did during preperation 
+Leetcode Questions i did during preperation 
