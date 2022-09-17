@@ -1,0 +1,34 @@
+class Solution {
+private:
+    void solve(TreeNode* root,string &ans){
+        // base case
+        if(root == NULL){
+            
+            return;
+        }
+        
+        ans += to_string(root->val);
+        // Checking if left exist or not
+        if(root->left){
+            ans += '('; 
+            solve(root->left,ans);
+            ans += ')';
+        }
+        
+        if(root->right){
+            if(root->left == NULL){
+                ans += "()";
+            }
+            
+            ans += '(';
+            solve(root->right,ans);
+            ans+= ')';
+        }
+    }
+public:
+    string tree2str(TreeNode* root) {
+        string ans = "";
+        solve(root,ans);
+        return ans;
+    }
+};
