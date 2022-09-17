@@ -1,0 +1,69 @@
+// Brute force 
+class Solution{
+    private:
+    bool helper(vector<int> &rank,int &n,int mid,int &target){
+        int count = 0;
+        for(int i=0;i<n;i++){
+            int k = (mid / rank[i]) * 2;
+            int temp = 0;
+            for(int j=0;j<=k/2;j++){
+                if(j * (j + 1) <= k){
+                    temp = j;
+                }
+                else{
+                    break;
+                }
+            }
+            count += temp;
+        }
+        
+        if(count >= target){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public:
+    int findMinTime(int N, vector<int>&rank, int L){
+        // Finding minimum from the rank 
+        int min = INT_MAX;
+        for(int i=0;i<L;i++){
+            if(min > rank[i]){
+                min = rank[i];
+            }
+        }
+        
+        min = (N * (N + 1)) * min;
+        
+        if(min & 1){
+            min = (min + 1) / 2;
+        }
+        else{
+            min = min / 2;
+        }
+        
+        int s = 0;
+        int e = min + 1;
+        int ans;
+        int mid = s + (e - s) / 2;
+        
+        while(s <= e){
+            
+            if(helper(rank,L,mid,N)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+            
+            // updating the trackers
+            mid = s + (e - s) / 2;
+        }
+        
+        return ans;
+    }
+};
+
+// Optimized
