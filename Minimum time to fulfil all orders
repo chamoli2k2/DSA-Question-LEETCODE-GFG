@@ -67,3 +67,70 @@ class Solution{
 };
 
 // Optimized
+
+class Solution{
+    private:
+    bool helper(vector<int> &rank,int &n,int mid,int &target){
+        int count = 0;
+        for(int i=0;i<n;i++){
+            int k = (mid / rank[i]) * 2;
+            int temp = 0;
+            int s = 0;
+            int e = k / 2;
+            int mid = s + (e - s) / 2;
+            while(s <= e){
+                if(mid * (mid + 1) <= k){
+                    temp = mid;
+                    s = mid + 1;
+                }
+                else{
+                    e = mid - 1;
+                }
+                mid = s + (e - s) / 2;
+            }
+            count += temp;
+        }
+        
+        if(count >= target){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public:
+    int findMinTime(int N, vector<int>&rank, int L){
+        // Finding minimum from the rank 
+        sort(rank.begin(),rank.end());
+        int min = rank[0];
+        
+        min = (N * (N + 1)) * min;
+        if(min & 1){
+            min = (min + 1) / 2;
+        }
+        else{
+            min = min / 2;
+        }
+        
+        int s = 0;
+        int e = min + 1;
+        int ans;
+        int mid = s + (e - s) / 2;
+        
+        while(s <= e){
+            
+            if(helper(rank,L,mid,N)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+            
+            // updating the trackers
+            mid = s + (e - s) / 2;
+        }
+        
+        return ans;
+    }
+};
