@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minimumSwaps(int c[],int v[],int n,int k,int b,int T)
+    {
+        int ans = 0;
+        
+        int count = 0;
+        for(int i=n-1;i>=0;i--){
+            c[i] = c[i] + (T * v[i]);
+            
+            if(c[i] < b){
+                count ++;
+            }
+            else{
+               ans += count; 
+               k--;
+               if(k == 0){
+                   break;
+               }
+            }
+        }
+        
+        if(k > 0){
+            return -1;
+        }
+        
+        return ans;
+    }
+};
