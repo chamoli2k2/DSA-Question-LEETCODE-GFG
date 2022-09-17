@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> findOriginalArray(vector<int>& changed) {
+        int n = changed.size();
+        vector<int> ans;
+        // base case
+        if(n & 1){
+            return ans;
+        }
+        // sorting the array
+        sort(changed.begin(),changed.end());
+        
+        // creating the map
+        unordered_map<int,int> mp;
+        for(auto i : changed){
+            mp[i]++;
+        }
+        
+        // evaluating
+        for(int i=0;i<n;i++){
+            int num = changed[i];
+            // base case
+            if(mp[num] == 0){
+                continue;
+            }
+            
+            if(mp[2*num] == 0){
+                vector<int> temp;
+                return temp;
+            }
+            
+            if(mp[num] && mp[2*num]){
+                mp[num]--;
+                ans.push_back(num);
+                mp[2*num]--;
+            }
+        }
+        
+        return ans;
+    }
+};
