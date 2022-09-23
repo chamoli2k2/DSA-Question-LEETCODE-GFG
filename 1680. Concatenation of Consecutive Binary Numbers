@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int concatenatedBinary(int n) {
+        int ans = 0;
+        string temp = "";
+        int mod = 1e9 + 7;
+        for(int i=1;i<=n;i++){
+            int k = (int)log2(i) + 1;
+            ans = ((1LL * ans << k) % mod + i) % mod;
+        }
+        
+        return ans;
+    }
+};
