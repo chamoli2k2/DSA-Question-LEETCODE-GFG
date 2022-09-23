@@ -1,19 +1,18 @@
-long long int maximumSumSubarray(int k, vector<int> &arr , int n){
-        // variable declaration;
-        long long int i=0,j=0;
-        long long int sum=0;
-        long long int maxi=INT_MIN;
-        while(j<n){
-            sum=sum+arr[j];
-            // evaluating sum untill size of window not equal to k
-            if(j-i+1<k){
-                j++;
-            }else if(j-i+1==k){
-                maxi=max(sum,maxi);
-                sum=sum-arr[i];
-                i++;
-                j++;
-            }
+class Solution{   
+public:
+    long maximumSumSubarray(int K, vector<int> &Arr , int N){
+        long sum = 0;
+        long ans = INT_MIN;
+        for(int i=0;i<K;i++){
+            sum += Arr[i];
         }
-        return maxi;
+        ans = sum;
+        for(int i=K;i<Arr.size();i++){
+            sum -= Arr[i-K];
+            sum += Arr[i];
+            ans = max(ans,sum);
+        }
+        
+        return ans;
     }
+};
