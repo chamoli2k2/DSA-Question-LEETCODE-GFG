@@ -1,0 +1,30 @@
+class Solution {
+private:
+    void solve(TreeNode* root,vector<vector<int>> &ans,vector<int> temp,int target){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        // Calulating the path sum
+        if(root->left == NULL && root->right == NULL){
+            if(root->val == target){
+                temp.push_back(root->val);
+                ans.push_back(temp);
+            }
+        }
+        
+        // Doing preorder traversal
+        
+        temp.push_back(root->val);
+        solve(root->left,ans,temp,target - (root->val));
+        solve(root->right,ans,temp,target - (root->val));
+    }
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>> ans;
+        vector<int> temp;
+        solve(root,ans,temp,targetSum);
+        return ans;
+    }
+};
