@@ -1,0 +1,62 @@
+class Solution
+{
+    public:
+    //Function to find the smallest window in the string s consisting
+    //of all the characters of string p.
+    string smallestWindow (string s, string p)
+    {
+        int n = s.size();
+        int m = p.size();
+        
+        unordered_map<int,int> mp;
+        int count = 0;
+        for(int i=0;i<m;i++){
+            mp[p[i]]++;
+        }
+        
+        // Saving the size in count variable
+        count = mp.size();
+        int i = 0;
+        int j = 0;
+        string ans = "-1";
+        int len = INT_MAX;
+        
+        while(j < n){
+            // if we find the element into map
+            if(mp.find(s[j]) != mp.end()){
+                // decreasing the count of element
+                mp[s[j]]--;
+                if(mp[s[j]] == 0){
+                    count--;
+                }
+                
+                // Checking if count is zero
+                if(count == 0){
+                    
+                    // Removing extra element
+                    while(i <= j && count == 0){
+                        if(len > j-i+1){
+                            ans = "";
+                            ans.append(s.begin()+i,s.begin()+j+1);
+                            len = j - i + 1;
+                        }
+                        
+                        if(mp.find(s[i]) == mp.end()){
+                            i++;
+                        }
+                        else{
+                            mp[s[i]]++;
+                            if(mp[s[i]] > 0){
+                                count++;
+                            }
+                            i++;
+                        }
+                    }
+                }
+            }
+            j++;
+        }
+        
+       return ans;
+    }
+};
