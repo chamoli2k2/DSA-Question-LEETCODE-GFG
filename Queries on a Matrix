@@ -1,0 +1,51 @@
+class Solution {
+  public:
+  
+    // Brute Force : 
+    // vector<vector<int>> solveQueries(int n, vector<vector<int>> Queries) {
+    //     vector<vector<int>> ans(n,vector<int>(n,0));
+        
+    //     // Brute force approach
+    //     for(auto i : Queries){
+    //         int is = i[0];
+    //         int js = i[1];
+    //         int ie = i[2];
+    //         int je = i[3];
+            
+    //         for(int r=is;r<=ie;r++){
+    //             for(int c=js;c<=je;c++){
+    //                 ans[r][c]++;
+    //             }
+    //         }
+    //     }
+        
+    //     return ans;
+    // }
+    
+    vector<vector<int>> solveQueries(int n, vector<vector<int>> Queries) {
+        vector<vector<int>> ans(n,vector<int>(n,0));
+        
+        // Optimised force approach
+        for(auto i : Queries){
+            int is = i[0];
+            int js = i[1];
+            int ie = i[2];
+            int je = i[3];
+            
+            for(int r=is;r<=ie;r++){
+                ans[r][js]++;
+                if(je + 1 < n){
+                    ans[r][je+1]--;
+                }
+            }
+        }
+        
+        for(int i=0;i<n;i++){
+            for(int j=1;j<n;j++){
+                ans[i][j] = ans[i][j] + ans[i][j-1];
+            }
+        }
+        
+        return ans;
+    }
+};
