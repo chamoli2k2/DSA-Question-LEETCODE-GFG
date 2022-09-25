@@ -1,0 +1,29 @@
+class Solution{
+public:	
+	int longSubarrWthSumDivByK(int arr[], int n, int k)
+	{
+	    unordered_map<int,int> mp;
+	    mp[0] = -1;
+	    int Sum = 0;
+	    int ans = 0;
+	    
+	    for(int i=0;i<n;i++){
+	        Sum += arr[i];
+	        int rem = Sum % k;
+	        
+	        if(rem < 0){
+	            rem += k;
+	        }
+	        
+	        if(mp.find(rem) != mp.end()){
+	            int idx = mp[rem];
+	            ans = max(ans,i-idx);
+	        }
+	        else{
+	            mp[rem] = i;
+	        }
+	    }
+	    
+	    return ans;
+	}
+};
