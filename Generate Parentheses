@@ -1,0 +1,27 @@
+class Solution
+{
+    private:
+    void solve(string temp,int open,int close){
+        // base case
+        if(close == 0){
+            ans.push_back(temp);
+            return;
+        }
+        
+        if(open){
+            solve(temp+'(',open-1,close);
+        }
+        
+        if(open < close){
+            solve(temp+')',open,close-1);
+        }
+        
+    }
+    public:
+    vector<string> ans;
+    vector<string> AllParenthesis(int n) 
+    {
+        solve("",n,n);
+        return ans;
+    }
+};
