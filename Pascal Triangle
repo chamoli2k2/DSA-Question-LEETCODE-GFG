@@ -1,0 +1,17 @@
+class Solution{
+public:
+    vector<ll> nthRowOfPascalTriangle(int n) {
+        vector<ll> ans;
+        int mod = 1e9 + 7;
+        long long int C = 1;
+        for(int i=1;i<=n;i++){
+            ans.push_back(C);
+            ll temp = (C % mod * (n - i)) % mod;
+            temp /= i;
+            C = temp;
+        }
+        
+        return ans;
+    }
+    
+};
