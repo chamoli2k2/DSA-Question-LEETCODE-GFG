@@ -1,0 +1,27 @@
+class Solution{
+public:
+    char profession(int level, int pos){
+        // base case
+        if(pos == 1 || level == 1){
+            return 'e';
+        }
+        
+        // checking if parent is engineer or doctor
+        if(profession(level-1,(pos + 1)/2) == 'e'){
+            // if position is odd than child will have same professtion as parent
+            // otherwise opposite
+            if(pos & 1){
+                return 'e';
+            }
+            
+            return 'd';
+        }
+        else{
+            if(pos & 1){
+                return 'd';
+            }
+            
+            return 'e';
+        }
+    }
+};
