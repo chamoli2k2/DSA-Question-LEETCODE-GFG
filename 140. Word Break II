@@ -1,0 +1,28 @@
+class Solution {
+private:
+    void solve(set<string> &st,string str,string temp){
+        if(str.size()==0)
+       {
+            temp.pop_back();
+            ans.push_back(temp);
+            return;
+       }
+        
+       for(int i=1;i<=str.size();i++)
+       {
+           string left=str.substr(0,i);
+           string right=str.substr(i);
+           if(st.find(left) != st.end())
+           {
+               solve(st,right,temp+left+" ");
+           }
+       }
+    }
+public:
+    vector<string> ans;
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        set<string> st(wordDict.begin(),wordDict.end());
+        solve(st,s,"");
+        return ans;
+    }
+};
