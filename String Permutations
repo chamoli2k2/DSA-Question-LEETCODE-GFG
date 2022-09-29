@@ -1,0 +1,26 @@
+class Solution{
+    private:
+    void solve(string &s,int idx){
+        // base case
+        if(idx >= s.size()){
+            ans.push_back(s);
+            return;
+        }
+        
+        
+        for(int i=idx;i<s.size();i++){
+            swap(s[idx],s[i]);
+            solve(s,idx+1);
+            swap(s[idx],s[i]);
+        }
+    }
+    public:
+    //Complete this function
+    vector<string> ans;
+    vector<string> permutation(string S)
+    {
+        solve(S,0);
+        sort(ans.begin(),ans.end());
+        return ans;
+    }
+};
