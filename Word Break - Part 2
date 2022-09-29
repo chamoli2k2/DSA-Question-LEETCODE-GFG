@@ -1,0 +1,33 @@
+class Solution{
+public:
+   void solve(string str,unordered_set<string> &set,vector<string> &ans,string temp)
+   {
+       if(str.size()==0)
+       {
+          temp.pop_back();  //removes space at end
+          ans.push_back(temp);
+          return;
+       }
+       for(int i=1;i<=str.size();i++)
+       {
+           string left=str.substr(0,i);
+           string right=str.substr(i);
+           if(set.find(left)!=set.end())
+           {
+               solve(right,set,ans,temp+left+" ");
+           }
+       }
+   }
+   vector<string> wordBreak(int n, vector<string>& dict, string s)
+   {
+       vector<string> ans;
+       string temp="";
+       unordered_set<string> set;
+       for(int i=0;i<n;i++)
+       {
+           set.insert(dict[i]);
+       }
+       solve(s,set,ans,temp);
+       return ans;
+   }
+};
