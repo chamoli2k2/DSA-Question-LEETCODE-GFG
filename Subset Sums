@@ -1,0 +1,27 @@
+class Solution
+{
+private:
+    void solve(vector<int> &arr,int sum,int idx,int n){
+        // base case
+        if(idx >= n){
+            ans.push_back(sum);
+            return;
+        }
+        
+        
+        // taking into consideration
+        sum += arr[idx];
+        solve(arr,sum,idx+1,n);
+        sum -= arr[idx];
+        // taking not into consideration
+        solve(arr,sum,idx+1,n);
+    }
+public:
+    vector<int> ans;
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        int sum = 0;
+        solve(arr,sum,0,N);
+        return ans;
+    }
+};
