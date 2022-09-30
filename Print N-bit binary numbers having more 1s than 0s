@@ -1,0 +1,26 @@
+class Solution{
+private:
+    void solve(int one,int zero,int n,int size,string temp,vector<string> &ans){
+        // base case
+        if(n == 0){
+            ans.push_back(temp);
+            return;
+        }
+        
+        if(one < size){
+            solve(one+1,zero,n-1,size,temp+'1',ans);
+        }
+        
+        if(one > zero){
+            solve(one,zero+1,n-1,size,temp+'0',ans);
+        }
+    }
+public:	
+    
+	vector<string> NBitBinary(int N)
+	{
+	    vector<string> ans;
+	    solve(0,0,N,N,"",ans);
+	    return ans;
+	}
+};
