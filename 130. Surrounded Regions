@@ -1,0 +1,84 @@
+class Solution {
+private:
+    bool dfs(vector<vector<char>> &mat,vector<vector<int>> &visited,int i,int j){
+        // base case
+        if(i >= mat.size() || j >= mat[0].size() || i < 0 || j < 0){
+            return true;
+        }
+        
+        
+        if(mat[i][j] == 'X' || visited[i][j] == 1){
+            return false;
+        }
+        
+        mat[i][j] = 'X';
+        visited[i][j] = 1;
+        // Checking all direction
+        bool us = dfs(mat,visited,i-1,j); // up
+        bool ls = dfs(mat,visited,i,j-1); // left
+        bool ds = dfs(mat,visited,i+1,j); // down
+        bool rs = dfs(mat,visited,i,j+1); // right
+        
+        if(ls || rs || ds || us){
+            mat[i][j] = 'O';
+            return true;
+        }
+    
+        return false;
+    }
+    
+    // Boundary 
+    void bdy(vector<vector<char>> &mat,vector<vector<int>> &visited,int i,int j){
+        // base case
+        if(i >= mat.size() || j >= mat[0].size() || i < 0 || j < 0 || visited[i][j] == 1 || mat[i][j] == 'X'){
+            return;
+        }
+        
+        // marking connected to visited as true;
+        visited[i][j] = 1;
+        
+        // moving in all direction
+        bdy(mat,visited,i-1,j); // up
+        bdy(mat,visited,i,j-1); // left
+        bdy(mat,visited,i+1,j); // down
+        bdy(mat,visited,i,j+1); // right
+    }
+public:
+    void solve(vector<vector<char>>& mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+
+        vector<vector<int>> visited(n,vector<int>(m,-1));
+        
+        // Top & bottom
+        for(int j=0;j<m;j++){
+            if(visited[0][j] == -1 && mat[0][j] == 'O'){
+                bdy(mat,visited,0,j);
+            } 
+            
+            if(visited[n-1][j] == -1 && mat[n-1][j] == 'O'){
+                bdy(mat,visited,n-1,j);
+            } 
+        }
+        
+        // left & right
+        for(int i=0;i<n;i++){
+            if(visited[i][0] == -1 && mat[i][0] == 'O'){
+                bdy(mat,visited,i,0);
+            } 
+            
+            if(visited[i][m-1] == -1 && mat[i][m-1] == 'O'){
+                bdy(mat,visited,i,m-1);
+            }
+        }
+        
+        for(int i=1;i<n-1;i++){
+            for(int j=1;j<m-1;j++){
+                if(mat[i][j] == 'O' && visited[i][j] == -1){
+                    dfs(mat,visited,i,j);
+                }
+            }
+        }
+
+    }
+};
