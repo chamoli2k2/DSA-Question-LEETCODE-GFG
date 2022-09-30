@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int reachNumber(int target) {
+        // making it positive as step in both case will be same
+        if(target < 0){
+            target = -target;
+        }
+
+        for(int i=1;;i++){
+            if(target == i){
+                return i;
+            }
+            else if(i > target){
+                if((i-target)%2 == 0) return i;
+                else if(i%2 == 0)return i+1;
+                else return i+2;
+            }
+            target -= i;
+        }
+        return 0;
+    }
+};
