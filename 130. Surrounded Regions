@@ -1,32 +1,23 @@
+Intuition
+Doing DFS traversal
+
+Approach
+We first marked all the grid which can never be answer as visited (All grid which are connected to boundary directly or indirectly can never become 'X')
+
+Then we traversed in internal grid and checked if the position has 'O' and it is still unvisited then we marked it as 'X' as it is not connected to any 'O' which is not surrounded.
+
+Complexity
+Time complexity:
+O(n * m)
+
+Space complexity:
+O(n * m)
+
+Code
+// Plz upvote if it helps :)
+
 class Solution {
 private:
-    bool dfs(vector<vector<char>> &mat,vector<vector<int>> &visited,int i,int j){
-        // base case
-        if(i >= mat.size() || j >= mat[0].size() || i < 0 || j < 0){
-            return true;
-        }
-        
-        
-        if(mat[i][j] == 'X' || visited[i][j] == 1){
-            return false;
-        }
-        
-        mat[i][j] = 'X';
-        visited[i][j] = 1;
-        // Checking all direction
-        bool us = dfs(mat,visited,i-1,j); // up
-        bool ls = dfs(mat,visited,i,j-1); // left
-        bool ds = dfs(mat,visited,i+1,j); // down
-        bool rs = dfs(mat,visited,i,j+1); // right
-        
-        if(ls || rs || ds || us){
-            mat[i][j] = 'O';
-            return true;
-        }
-    
-        return false;
-    }
-    
     // Boundary 
     void bdy(vector<vector<char>> &mat,vector<vector<int>> &visited,int i,int j){
         // base case
@@ -75,10 +66,9 @@ public:
         for(int i=1;i<n-1;i++){
             for(int j=1;j<m-1;j++){
                 if(mat[i][j] == 'O' && visited[i][j] == -1){
-                    dfs(mat,visited,i,j);
+                    mat[i][j] = 'X';
                 }
             }
         }
-
     }
 };
