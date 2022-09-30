@@ -1,0 +1,28 @@
+class Solution
+{
+private:
+    void solve(vector<int> &ans,int n,int start,string temp){
+        // base case
+        if(temp.size() >= n){
+            int x = stoi(temp);
+            ans.push_back(x);
+            return;
+        }
+        
+        if(n == 1){
+            start = 0;
+        }
+        
+        for(int i=start;i<=9;i++){
+            string str = temp + to_string(i);
+            solve(ans,n,i+1,str);
+        }
+    }
+public:
+    vector<int> increasingNumbers(int N)
+    {
+        vector<int> ans;
+        solve(ans,N,1,"");
+        return ans;
+    }
+};
