@@ -1,0 +1,31 @@
+class Solution
+{
+    private:
+    void solve(vector<int> &arr,vector<int> temp,set<vector<int>> &st,int idx){
+        // base case
+        if(idx >= arr.size()){
+            st.insert(temp);
+            return;
+        }
+        
+        // Taking into array
+        temp.push_back(arr[idx]);
+        solve(arr,temp,st,idx+1);
+        temp.pop_back();
+        
+        // Not taking into array
+        solve(arr,temp,st,idx+1);
+    }
+    public:
+    
+    //Function to find all possible unique subsets.
+    vector<vector<int> > AllSubsets(vector<int> arr, int n)
+    {
+        sort(arr.begin(),arr.end());
+        set<vector<int>> st;
+        vector<int> temp;
+        solve(arr,temp,st,0);
+        vector<vector<int>> ans(st.begin(),st.end());
+        return ans;
+    }
+};
