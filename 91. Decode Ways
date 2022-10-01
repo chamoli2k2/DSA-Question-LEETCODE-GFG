@@ -1,0 +1,30 @@
+class Solution {
+private:
+    int solve(string s,vector<int> &dp,int i){
+        // base case
+        if(i >= s.size()){
+            return 1;
+        }
+        else if(s[i] == '0'){
+            return 0;
+        }
+        else if(i == s.size() - 1){
+            return 1;
+        }
+
+        if(dp[i] != -1){
+            return dp[i];
+        }
+
+        if(s[i] == '1' || (s[i] == '2' && (s[i+1] >= '0' && s[i+1] <= '6'))){
+            return dp[i] = solve(s,dp,i+1) + solve(s,dp,i+2);
+        }
+
+        return dp[i] = solve(s,dp,i+1);
+    }
+public:
+    int numDecodings(string s) {
+        vector<int> dp(s.size(),-1);
+        return solve(s,dp,0);
+    }
+};
