@@ -1,0 +1,34 @@
+class Solution {
+  private:
+    int solve(int arr[],vector<vector<int>> &dp,int idx,int n,int k,int target){
+        // base case
+        if(k > target){
+            return 0;
+        }
+        
+        if(idx >= n){
+            if(target >= k){
+                return 1;
+            }
+            return 0;
+        }
+        
+        if(dp[idx][k] != -1){
+            return dp[idx][k];
+        }
+        
+        // taking current 
+        int c1 = solve(arr,dp,idx+1,n,k*arr[idx],target);
+        
+        // leaving current
+        int c2 = solve(arr,dp,idx+1,n,k,target);
+        
+        return dp[idx][k] = (c1 + c2);
+    }
+  public:
+    int numOfSubsets(int arr[], int N, int target) {
+        int k = 1;
+        vector<vector<int>> dp(N,vector<int>(target+1,-1));
+        return solve(arr,dp,0,N,k,target) - 1;
+    }
+};
