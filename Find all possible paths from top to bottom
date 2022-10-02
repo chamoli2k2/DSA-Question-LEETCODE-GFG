@@ -1,0 +1,30 @@
+class Solution
+{
+private:
+    void solve(vector<vector<int>> &grid,vector<int> temp,int i,int j){
+        // base case
+        if(i >= grid.size() || j >= grid[0].size()){
+            return;
+        }
+        
+        if(i == grid.size()-1 && j == grid[0].size()-1){
+            temp.push_back(grid[i][j]);
+            ans.push_back(temp);
+            return;
+        }
+        
+        // We have two option
+        temp.push_back(grid[i][j]);
+        solve(grid,temp,i+1,j); // down
+        
+        solve(grid,temp,i,j+1); // right
+    }
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> findAllPossiblePaths(int n, int m, vector<vector<int>> &grid)
+    {
+        vector<int> temp;
+        solve(grid,temp,0,0);
+        return ans;
+    }
+};
