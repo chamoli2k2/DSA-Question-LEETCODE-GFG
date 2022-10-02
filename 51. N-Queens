@@ -1,0 +1,45 @@
+class Solution {
+private:
+bool isSafe(vector<int> &lowDiagonal,vector<int> &hashRow,vector<int> &upDiagonal,int row,int col){
+        int n = hashRow.size() - 1 + (col - row);
+
+        if(lowDiagonal[row+col] == 0 && hashRow[row] == 0 && upDiagonal[n] == 0){
+            return true;
+        }
+        return false;
+    }
+void solve(int col,vector<string> &board,vector<int> lowDiagonal,vector<int> upDiagonal,vector<int> hashRow){
+        // base case
+        if(col >= board[0].size()){
+            ans.push_back(board);
+            return;
+        }
+        
+        for(int row=0;row<board.size();row++){
+            if(isSafe(lowDiagonal,hashRow,upDiagonal,row,col)){
+                board[row][col] = 'Q';
+                lowDiagonal[row+col] = 1;
+                int k = hashRow.size() - 1 + col - row;
+                upDiagonal[k] = 1;
+                hashRow[row] = 1;
+                solve(col+1,board,lowDiagonal,upDiagonal,hashRow);
+                board[row][col] = '.';
+                upDiagonal[k] = 0;
+                lowDiagonal[row+col] = 0;
+                hashRow[row] = 0;
+            }
+        }
+    }
+public:
+    vector<vector<string>> ans;
+    vector<vector<string>> solveNQueens(int n) {
+        int k = 2*n - 1;
+        vector<int> lowDiagonal(k,0);
+        vector<int> upDiagonal(k,0);
+        vector<int> row(n,0);
+        vector<string> board(n,string(n,'.'));
+
+        solve(0,board,lowDiagonal,upDiagonal,row);
+        return ans;
+    }
+};
