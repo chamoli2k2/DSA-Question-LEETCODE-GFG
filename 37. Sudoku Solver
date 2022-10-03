@@ -1,0 +1,54 @@
+class Solution {
+private:
+bool check(vector<vector<char>> grid,int row,int col,char k){
+        int r = 3 * (row / 3);
+        int c = 3 * (col / 3);
+        
+        for(int i=0;i<9;i++){
+            if(grid[row][i] == k){
+                return false;
+            }
+            
+            if(grid[i][col] == k){
+                return false;
+            }
+            
+            // Very Very important step
+            if(grid[r + i / 3][c + i % 3] == k){
+                return false;
+            }
+        }
+        return true;
+    }
+bool solve(vector<vector<char>> &grid)  
+    { 
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[0].size();j++){
+                // if we get empty space
+                if(grid[i][j] == '.'){
+                    for(char k='1';k<='9';k++){
+
+                        if(check(grid,i,j,k)){
+                            grid[i][j] = k;
+                            
+                            if(solve(grid)){
+                                return true;
+                            }
+                            else{
+                                grid[i][j] = '.';;
+                            }
+                        }
+        
+                    }
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        solve(board);
+    }
+};
