@@ -1,0 +1,38 @@
+bool checkPrime(int n){
+    for(int i=2;i<=sqrt(n);i++){
+        if(n % i == 0){
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+int findSum(int n){
+    if(n == 1){
+        return 1;
+    }
+    
+    int ans = 0;
+    for(int i=2;i<=n;i++){
+        if(n % i == 0){
+            if(checkPrime(i)){
+                ans += i;
+            }
+        }
+    }
+    
+    return ans;
+}
+
+class Solution {
+  public:
+    int sumOfAll(int l, int r){
+        int sum = 0;
+        for(int i=l;i<=r;i++){
+            sum += findSum(i);
+        }
+        
+        return sum;
+    }
+};
