@@ -1,0 +1,68 @@
+// Rules to fill sudoku : 
+// 1) Row doesn't have same element
+// 2) col doesn't have same element
+// 3) 3*3 mattrix shouldn't have same element
+
+class Solution 
+{
+    private:
+    bool check(int grid[N][N],int row,int col,int k){
+        int r = 3 * (row / 3);
+        int c = 3 * (col / 3);
+        
+        for(int i=0;i<9;i++){
+            if(grid[row][i] == k){
+                return false;
+            }
+            
+            if(grid[i][col] == k){
+                return false;
+            }
+            
+            // Very Very important step
+            if(grid[r + i / 3][c + i % 3] == k){
+                return false;
+            }
+        }
+        return true;
+    }
+    public:
+    //Function to find a solved Sudoku. 
+    bool SolveSudoku(int grid[N][N])  
+    { 
+        for(int i=0;i<N;i++){
+            for(int j=0;j<N;j++){
+                // if we get empty space
+                if(grid[i][j] == 0){
+                    for(int k=1;k<=9;k++){
+
+                        if(check(grid,i,j,k)){
+                            grid[i][j] = k;
+                            
+                            if(SolveSudoku(grid)){
+                                return true;
+                            }
+                            else{
+                                grid[i][j] = 0;
+                            }
+                        }
+        
+                    }
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    //Function to print grids of the Sudoku.
+    void printGrid (int grid[N][N]) 
+    {
+        for(int i=0;i<N;i++){
+            for(int j=0;j<N;j++){
+                cout<<grid[i][j]<<" ";
+            }
+        }
+    }
+};
