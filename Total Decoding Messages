@@ -1,0 +1,31 @@
+int mod = 1e9 + 7;
+class Solution {
+    private:
+        int solve(string &str,vector<int> &dp,int idx){
+            if(idx >= str.size()){
+                return 1;
+            }
+            else if(str[idx] == '0'){
+                return 0;
+            }
+            else if(idx == str.size()-1){
+                return 1;
+            }
+            
+            if(dp[idx] != -1){
+                return dp[idx];
+            }
+            
+            if(str[idx] == '1' || (str[idx] == '2' && str[idx+1] >= '0' && str[idx+1] <= '6')){
+                return dp[idx] = (solve(str,dp,idx+1) % mod + solve(str,dp,idx+2) % mod) % mod;
+            }
+            
+            return dp[idx] = solve(str,dp,idx+1) % mod;
+        }
+	public:
+		int CountWays(string str){
+		    vector<int> dp(str.size(),-1);
+		    return solve(str,dp,0);
+		}
+
+};
