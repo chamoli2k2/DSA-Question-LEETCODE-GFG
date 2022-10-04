@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int s = 1;
+        int e = n;
+
+        int ans;
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            int num = isBadVersion(mid);
+
+            if(num){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
