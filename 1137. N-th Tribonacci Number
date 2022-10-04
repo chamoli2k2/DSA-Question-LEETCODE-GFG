@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int tribonacci(int n) {
+        int p1 = 0;
+        int p2 = 1;
+        int p3 = 1;
+        
+        // base case
+        if(n == 0 || n == 1){
+            return n;
+        }
+
+        if(n == 2){
+            return 1;
+        }
+        
+        int ans;
+        for(int i=3;i<=n;i++){
+            ans = p1 + p2 + p3;
+            p1 = p2;
+            p2 = p3;
+            p3 = ans;
+        }
+
+        return ans;
+    }
+};
