@@ -1,0 +1,41 @@
+class Solution {
+private:
+    int dfs(vector<vector<int>> &grid,vector<vector<int>> &visited,int i,int j){
+        // base case
+        if(i >= grid.size() || i < 0 || j >= grid[0].size() || j < 0){
+            return false;
+        }
+
+        if(grid[i][j] == 1 || visited[i][j] == 1){
+            return true;
+        }
+
+        visited[i][j] = 1;
+
+        int ls = dfs(grid,visited,i,j-1); //left
+        int rs = dfs(grid,visited,i,j+1); //right
+        int up = dfs(grid,visited,i-1,j); //up
+        int dn = dfs(grid,visited,i+1,j); //down
+
+        return ls && rs && up && dn;
+    }
+public:
+    int closedIsland(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> visited(n,vector<int>(m,-1));
+        int ans = 0;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 0 && visited[i][j] == -1){
+                    if(dfs(grid,visited,i,j)){
+                        ans++;
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+};
