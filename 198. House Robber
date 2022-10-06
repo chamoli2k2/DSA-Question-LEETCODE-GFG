@@ -1,31 +1,25 @@
 class Solution {
 private:
-    int solve(vector<int> &nums,int n,vector<int> &dp){
+    int solve(vector<int> &nums,vector<int> &dp,int idx){
         // base case
-        if(n <= 0){
+        if(idx >= nums.size()){
             return 0;
         }
-        
-        // checking if answer is present in dp array or not
-        if(dp[n] != -1){
-            return dp[n];
+
+        if(dp[idx] != -1){
+            return dp[idx];
         }
-        
-        // pick
-        int pick = nums[n-1] + solve(nums,n-2,dp);
-        
-        // not pick
-        int notPick = solve(nums,n-1,dp);
-        
-        dp[n] = max(pick,notPick);
-        
-        return dp[n];
+
+        int loot = nums[idx] + solve(nums,dp,idx+2);
+
+        int notLoot = solve(nums,dp,idx+1);
+
+        return dp[idx] = max(loot,notLoot);
     }
 public:
     int rob(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> dp(n+1,-1);
-        
-        return solve(nums,n,dp);
+        int ans = 0;
+        vector<int> dp(nums.size(),-1);
+        return solve(nums,dp,0);
     }
 };
