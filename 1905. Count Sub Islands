@@ -1,0 +1,45 @@
+class Solution {
+private:
+    bool dfs(vector<vector<int>> &grid1,vector<vector<int>> &grid2,vector<vector<int>> &visited,int i,int  j){
+        // base case
+        if(i >= grid1.size() || i < 0 || j >= grid1[0].size() || j < 0 || grid2[i][j] == 0 || visited[i][j] == 1){
+            return true;
+        }
+
+        if(grid2[i][j] == 1){
+            if(grid1[i][j] == 1){
+                visited[i][j] = 1;
+            }
+            else{
+                return false;
+            }
+        }
+
+        // moving all path
+        bool ls = dfs(grid1,grid2,visited,i,j-1); // left
+        bool rs = dfs(grid1,grid2,visited,i,j+1); // right
+        bool ds = dfs(grid1,grid2,visited,i+1,j); // down
+        bool us = dfs(grid1,grid2,visited,i-1,j); // up
+
+
+        return ls && rs && ds && us;
+    }
+public:
+    int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
+        int n = grid1.size();
+        int m = grid1[0].size();
+        int count = 0;
+        vector<vector<int>> visited(n,vector<int>(m,-1));
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid2[i][j] == 1 && visited[i][j] == -1){
+                    if(dfs(grid1,grid2,visited,i,j)){
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+};
