@@ -1,0 +1,56 @@
+class Solution {
+private:
+    void dfs(vector<vector<int>> &grid,vector<vector<int>> &visited,int i,int j){
+        // base case
+        if(i >= grid.size() || i < 0 || j >= grid[0].size() || j < 0 || grid[i][j] == 0 || visited[i][j] == 1){
+            return;
+        }
+
+        visited[i][j] = 1;
+
+        // moving in all 4 direction
+        dfs(grid,visited,i,j-1); // left
+        dfs(grid,visited,i,j+1); // right
+        dfs(grid,visited,i-1,j); // up
+        dfs(grid,visited,i+1,j); // down
+    }
+public:
+    int numEnclaves(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        int count = 0;
+        vector<vector<int>> visited(n,vector(m,-1));
+
+        // row boundary
+        for(int i=0;i<n;i++){
+            if(grid[i][0] == 1){
+                dfs(grid,visited,i,0);
+            }
+
+            if(grid[i][m-1] == 1){
+                dfs(grid,visited,i,m-1);
+            }
+        }
+
+        // col boundary
+        for(int i=1;i<m;i++){
+            if(grid[0][i] == 1){
+                dfs(grid,visited,0,i);
+            }
+
+            if(grid[n-1][i] == 1){
+                dfs(grid,visited,n-1,i);
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 1 && visited[i][j] == -1){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+};
