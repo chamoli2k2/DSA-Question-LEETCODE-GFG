@@ -1,0 +1,28 @@
+class TimeMap {
+public:
+    // Data member
+    unordered_map<string,unordered_map<int,string>> Tlist;
+
+    TimeMap() {
+
+    }
+    
+    void set(string key, string value, int timestamp) {
+        Tlist[key][timestamp] = value;
+    }
+    
+    string get(string key, int timestamp) {
+        if(Tlist.find(key) == Tlist.end()){
+            return "";
+        }
+        string temp;
+        while(timestamp){
+            if(Tlist[key].find(timestamp) != Tlist[key].end()){
+                temp = Tlist[key][timestamp];
+                break;
+            }
+            timestamp--;
+        }
+        return temp;
+    }
+};
