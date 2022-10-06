@@ -1,0 +1,41 @@
+class Solution {
+  public:
+    string lexicographicallySmallest(string S, int k) {
+        // base case
+        int n = S.size();
+        if(n & (n-1)){
+            k *= 2;
+        }
+        else{
+            k /= 2;
+        }
+        
+        if(k >= n){
+            return "-1";
+        }
+        
+        stack<char> st;
+
+        for(int i=0;i<n;i++){
+            while(!st.empty() && st.top() > S[i] && k > 0){
+                k--;
+                st.pop();
+            }
+            st.push(S[i]);
+        }
+        
+        while(st.size() && k > 0){
+            st.pop();
+            k--;
+        }
+        
+        string ans = "";
+        while(st.size()){
+            ans += st.top();
+            st.pop();
+        }
+        
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
