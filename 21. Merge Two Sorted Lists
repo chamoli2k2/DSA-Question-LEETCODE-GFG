@@ -1,79 +1,45 @@
-// if it help plz upvote :)
-
 class Solution {
-private:
-    ListNode* solve(ListNode* head1,ListNode* head2){
-        ListNode* temp1 = head1;
-        ListNode* temp2 = head2;
-
-        ListNode* ans = NULL;
-        ListNode* curr = NULL;
-        while(temp1 and temp2){
-            if(temp1->val <= temp2->val){
-                if(ans == NULL){
-                    ans = temp1;
-                    curr = ans;
-                }
-                else{
-                    curr->next = temp1;
-                    curr = curr->next;
-                }
-                temp1 = temp1->next;
-            }
-            else{
-                if(ans == NULL){
-                    ans = temp2;
-                    curr = ans;
-                }
-                else{
-                    curr->next = temp2;
-                    curr = curr->next;
-                }
-                temp2 = temp2->next;
-            }
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        // base case
+        if(list1 == NULL && list2 == NULL){
+            return NULL;
+        }
+        else if(list1 == NULL){
+            return list2;
+        }
+        else if(list2 == NULL){
+            return list1;
         }
 
-        while(temp1){
-            curr->next = temp1;
-            temp1 = temp1->next;
-            curr = curr->next;
+        // Defining Variable 
+        ListNode* small; // Carry address of smaller node
+        ListNode* large; // Carry address of larger node
+        ListNode* temp = NULL;
+        if(list1->val <= list2->val){
+            small = list1;
+            large = list2;
+        }
+        else{
+            small = list2;
+            large = list1;
         }
 
-        while(temp2){
-            curr->next = temp2;
-            temp2 = temp2->next;
-            curr = curr->next;
+        // Storing answer for returning
+        ListNode* ans = small;
+        // While any of these link is not Not NULL
+        while(small && large){
+            while(small && small->val <= large->val){
+                temp = small;
+                small = small->next;
+            }
+
+            temp->next = large;
+            ListNode* dummy = large;
+            large = small;
+            small = dummy;
         }
 
         return ans;
-}
-
-int lengther(ListNode* head){
-    int length = 0;
-    while(head){
-        length++;
-        head = head->next;
-    }
-    
-    return length;
-}
-public:
-    ListNode* mergeTwoLists(ListNode* head1, ListNode* head2) {
-        // base case
-        if(head1 == NULL){
-            return head2;
-        }
-        else if(head2 == NULL){
-            return head1;
-        }
-
-        int len1 = lengther(head1);
-        int len2 = lengther(head2);
-
-        if(len1 >= len2){
-            return solve(head1,head2);
-        }
-
-        return solve(head2,head1);
     }
 };
