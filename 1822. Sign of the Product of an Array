@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int arraySign(vector<int>& nums) {
+        int countPositive = 0;
+        int zero = 0;
+        int n = nums.size();
+
+        for(auto i : nums){
+            if(i == 0){
+                zero++;
+            }
+            if(i > 0){
+                countPositive++;
+            }
+        }
+
+        if(zero){
+            return 0;
+        }
+
+        return (n - countPositive) & 1 ? -1 : 1;
+    }
+};
