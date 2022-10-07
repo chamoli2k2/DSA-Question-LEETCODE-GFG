@@ -1,0 +1,38 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,vector<int> &dp,unordered_map<int,int> &freq,int idx){
+        // base case
+        if(idx >= nums.size()){
+            return 0;
+        }
+
+        if(dp[idx] != -1){
+            return dp[idx];
+        }
+
+        // Now we have two choices
+        int take;
+        if(idx + 1 < nums.size() && nums[idx] + 1 != nums[idx+1]){
+            take = nums[idx] * freq[nums[idx]] + solve(nums,dp,freq,idx+1);
+        }
+        else{
+            take = nums[idx] * freq[nums[idx]] + solve(nums,dp,freq,idx+2);
+        }
+        
+        // Now we need to not take
+        int notTake = solve(nums,dp,freq,idx+1);
+
+        return dp[idx] = max(take,notTake);
+    }
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        unordered_map<int,int> freq;
+        for(auto i : nums){
+            freq[i]++;
+        }
+        set<int> st(nums.begin(),nums.end());
+        vector<int> v(st.begin(),st.end());
+        vector<int> dp(v.size(),-1);
+        return solve(v,dp,freq,0);
+    }
+};
