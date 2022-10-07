@@ -1,28 +1,18 @@
 class Solution {
 public:
     ListNode* middleNode(ListNode* head) {
-        // base case 
-        if(head == NULL || head->next == NULL){
-            return head;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        
+        while(fast->next && fast->next->next){
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        
-        ListNode* temp = head;
-        // finding the length of list
-        int length = 0;
-        while(temp){
-            length++;
-            temp = temp->next;;
+
+        if(fast->next){
+            return slow->next;
         }
-        
-        int i = 0;
-        temp = head;
-        length = length/2;
-        
-        while(i < length-1){
-            temp = temp->next;
-            i++;
-        }
-        
-        return temp->next;
+
+        return slow;
     }
 };
