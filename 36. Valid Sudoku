@@ -1,0 +1,46 @@
+class Solution {
+private:
+    bool check(vector<vector<char>> &grid,int i,int j,char ch){
+        int row = 3 * (i / 3);
+        int col = 3 * (j / 3);
+        int count = 0;
+        for(int k=0;k<9;k++){
+            if(grid[i][k] == ch){
+                count++;
+            }
+
+            if(grid[k][j] == ch){
+                count++;
+            }
+
+            if(grid[row + k / 3][col + k % 3] == ch){
+                count++;
+            }
+        }
+
+        if(count != 3){
+            return false;
+        }
+        return true;
+    }
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        int n = board.size();
+        int m = board[0].size();
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(board[i][j] != '.'){
+                    if(check(board,i,j,board[i][j])){
+                        continue;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+};
