@@ -1,27 +1,37 @@
 class Solution {
 public:
-    vector<int> nextGreaterElement(vector<int>& num1, vector<int>& num2) {
-        vector<int> ans(num1.size());
-        for(int i=0;i<num1.size();i++){
-            int count1=0;
-            int count2=0;
-            for(int j=0;j<num2.size();j++){
-                if(num1[i]==num2[j]){
-                    count1++;
-                    continue;
-                }
-                if(count1>0){
-                    if(num2[j]>num1[i]){
-                        count2++;
-                        ans[i]=num2[j];
-                        break;
-                    }
-                }
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> nxtGreater(nums2.size(),-1);
+        stack<int> st;
+        int n = nums1.size();
+        int m = nums2.size();
+
+        for(int i=m-1;i>=0;i--){
+            int num = nums2[i];
+
+            while(!st.empty() && num >= st.top()){
+                st.pop();
             }
-            if(count2==0){
-                ans[i]=-1;
+
+            if(!st.empty()){
+                nxtGreater[i] = st.top();
+            }
+            
+            st.push(num);
+        }
+
+        vector<int> ans;
+        for(int i=0;i<n;i++){
+            int num = nums1[i];
+
+            for(int j=0;j<m;j++){
+                if(num == nums2[j]){
+                    ans.push_back(nxtGreater[j]);
+                    break;
+                }
             }
         }
+
         return ans;
     }
 };
