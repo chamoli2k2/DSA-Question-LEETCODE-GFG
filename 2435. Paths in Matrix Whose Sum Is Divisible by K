@@ -1,0 +1,31 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &grid,vector<vector<vector<int>>> &dp,int i,int j,int sum,int k){
+        // base case
+        if(i >= grid.size() || j >= grid[0].size()){
+            return 0;
+        }
+
+        if(i == grid.size()-1 && j == grid[0].size()-1){
+            return (sum+grid[i][j]) % k == 0 ? 1 : 0;
+        }
+
+        if(dp[i][j][sum % k] != -1){
+            return dp[i][j][sum % k];
+        }
+
+        int mod = 1e9 + 7;
+        long long c1 = solve(grid,dp,i+1,j,sum+grid[i][j],k);
+        long long c2 = solve(grid,dp,i,j+1,sum+grid[i][j],k);
+
+        return dp[i][j][sum % k] = (c1 % mod + c2 % mod) % mod;
+    }
+public:
+    int numberOfPaths(vector<vector<int>>& grid, int k) {
+        int n = grid.size();
+        int m = grid[0].size();
+
+        vector<vector<vector<int>>> dp(n,vector<vector<int>>(m,vector<int>(k+1,-1)));
+        return solve(grid,dp,0,0,0,k);
+    }
+};
