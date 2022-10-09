@@ -20,3 +20,38 @@ public:
         return maxi;
     }
 };
+
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int maxPdt1 = nums[0];
+        long long int pdt = nums[0];
+
+        for(int i=1;i<nums.size();i++){
+            if(pdt == 0){
+                pdt = 1;
+            }
+            pdt *= nums[i];
+            if(maxPdt1 < pdt){
+                maxPdt1 = pdt;
+            }
+        }
+
+        int maxPdt2 = nums[nums.size()-1];
+        pdt = maxPdt2;
+
+        for(int i=nums.size()-2;i>=0;i--){
+            if(pdt == 0){
+                pdt = 1;
+            }
+
+            pdt *= nums[i];
+            if(maxPdt2 < pdt){
+                maxPdt2 = pdt;
+            }
+        }
+
+        return maxPdt1 > maxPdt2 ? maxPdt1 : maxPdt2;
+    }
+};
