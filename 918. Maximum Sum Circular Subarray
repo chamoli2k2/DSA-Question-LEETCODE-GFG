@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int maxSubarraySumCircular(vector<int>& nums) {
+        // We have two cases
+        int MaxSum = INT_MIN;
+        int currSum = 0;
+
+        int minSum = INT_MIN;
+        int minCurr = 0;
+
+        int totalSum = 0;
+        for(int i=0;i<nums.size();i++){
+            // Finding max sum
+            currSum += nums[i];
+
+            if(MaxSum < currSum ){
+                MaxSum = currSum;
+            }
+
+            if(currSum < 0){
+                currSum = 0;
+            }
+
+            // Finding min Sum subarray
+            minCurr += -nums[i];
+
+            if(minCurr > minSum){
+                minSum = minCurr;
+            }
+
+            if(minCurr < 0){
+                minCurr = 0;
+            }
+
+            // Finding total sum
+            totalSum += nums[i];
+        }
+
+        int cSum = totalSum + minSum;
+
+        // base case
+        // All element of subarray are -ve
+        if(cSum == 0){
+            return MaxSum;
+        }
+
+        return cSum >= MaxSum ? cSum : MaxSum;
+    }
+};
