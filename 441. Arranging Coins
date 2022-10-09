@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int arrangeCoins(int n) {
+        long long int s = 0;
+        long long int e = n;
+        long long int target = e;
+        int ans = 0;
+
+        while(s <= e){
+            long long mid = s + (e - s) / 2;
+            long long num = (mid * mid + mid) / 2;
+            if(num == target){
+                ans = mid;
+                break;
+            }
+            else if(num < target){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+        
+        return ans;
+    }
+};
