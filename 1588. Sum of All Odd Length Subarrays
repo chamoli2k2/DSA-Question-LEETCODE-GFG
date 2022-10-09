@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int sumOddLengthSubarrays(vector<int>& arr) {
+        int res = 0;
+        int n = arr.size();
+        
+        for(int i=0;i<arr.size();i++){
+            int starting = i + 1;
+            int ending = n - i;
+            int total = (starting * ending);
+
+            int oddSubarray = (total + 1) / 2;
+            res += (oddSubarray * arr[i]);
+        }
+
+        return res;
+    }
+};
