@@ -1,0 +1,39 @@
+class Solution {
+    private:
+        bool isprime(int num){
+            if(num == 1){
+                return false;
+            }
+            
+            for(int i=2;i<=sqrt(num);i++){
+                if(num % i == 0){
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+	public:
+		int NthTerm(int N){
+		    int temp = N;
+		    int i = 0;
+		    if(N == 0){
+		        return 2;
+		    }
+		    
+		    while(temp - i){
+		        if(isprime(temp-i)){
+		            return N - (temp - i);
+		        }
+		        
+		        if(isprime(temp+i)){
+		            return (temp + i) - N;
+		        }
+		        
+		        i++;
+		    }
+		    
+		    return 1;
+		}
+
+};
