@@ -1,0 +1,36 @@
+class Solution {
+private:
+    int check(vector<int> &nums,int x){
+        int count = 0;
+        for(auto i : nums){
+            if(i >= x){
+                count++;
+            }
+        }
+        return count;
+    }
+public:
+    int specialArray(vector<int>& nums) {
+        int n = nums.size();
+        int s = 1;
+        int e = n;
+        int x = -1;
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            int num = check(nums,mid);
+            if(num == mid){
+                x = mid;
+                break;
+            }
+            else if(num > mid){
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+
+        return x;
+    }
+};
