@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string breakPalindrome(string palindrome) {
+        // base case
+        if(palindrome.size() == 1){
+            return "";
+        }
+        stack<char> st;
+        int idx = -1;
+        st.push('a');
+        for(int i=0;i<palindrome.size();i++){
+            char ch =palindrome[i];
+            if(st.top() < ch){
+                idx = st.size() - 1;
+                break;
+            }
+            st.push(ch);
+        }
+
+        if(palindrome.size() / 2 == idx || idx == -1){
+            palindrome[palindrome.size()-1] = 'b';
+            return palindrome;
+        }
+
+        palindrome[idx] = 'a';
+        return palindrome;
+    }
+};
