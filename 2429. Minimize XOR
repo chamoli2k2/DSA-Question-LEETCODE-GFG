@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int minimizeXor(int num1, int num2) {
+        int setBit = 0;
+        int temp = num2;
+        while(temp){
+            if(temp & 1){
+                setBit++;
+            }
+            temp = temp >> 1;
+        }
+
+        // making simple
+        temp = num1;
+        int ans = 0;
+        int mask = 1 << 30;
+
+        while(mask && setBit){
+            if(mask & temp){
+                ans = ans | mask;
+                setBit--;
+            }
+            mask = mask >> 1;
+        }
+
+        // making mask
+        mask = 1;
+        while(setBit){
+            if((temp & mask) == 0){
+                ans = ans | mask;
+                setBit--;
+            }
+            mask = mask << 1;
+        }
+
+        return ans;
+    }
+};
