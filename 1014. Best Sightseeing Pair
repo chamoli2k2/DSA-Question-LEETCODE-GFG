@@ -40,3 +40,22 @@ public:
         return solve(values,dp,0,0);
     }
 };
+
+
+class Solution {
+public:
+    int maxScoreSightseeingPair(vector<int>& values) {
+        int ans = 0;
+        int maxi = 0;
+
+        for(int i=0;i<values.size();i++){
+            ans = max(ans,maxi + values[i]-i);
+
+            if(maxi <= (values[i]+i)){
+                maxi = values[i]+i;
+            }
+        }
+
+        return ans;
+    }
+};
