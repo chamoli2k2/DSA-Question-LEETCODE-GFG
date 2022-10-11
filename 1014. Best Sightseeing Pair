@@ -1,0 +1,42 @@
+class Solution {
+private:
+    int solve(vector<int> &grid,vector<vector<int>> &dp,int idx,int k){
+        // base case
+        if(idx >= grid.size()){
+            return k == 1 ? -1e8 : 0;
+        }
+
+        if(k == 2){
+            return dp[idx][k] = 0;
+        }
+
+        if((idx == grid.size()-1 && k == 0)){
+            return -1e8;
+        }
+
+        if(dp[idx][k] != -1){
+            return dp[idx][k];
+        }
+
+        if(k == 0){
+            int p1 = grid[idx] + idx + solve(grid,dp,idx+1,k+1);
+            int notTake = solve(grid,dp,idx+1,k);
+
+            dp[idx][k] = max(p1,notTake);
+        }
+        else{
+            int p2 = grid[idx] - idx + solve(grid,dp,idx+1,k+1);
+            int notTake = solve(grid,dp,idx+1,k);
+
+            dp[idx][k] = max(p2,notTake);
+        }
+
+        return dp[idx][k];
+    }
+public:
+    int maxScoreSightseeingPair(vector<int>& values) {
+        int n = values.size();
+        vector<vector<int>> dp(n,vector<int>(3,-1));
+        return solve(values,dp,0,0);
+    }
+};
