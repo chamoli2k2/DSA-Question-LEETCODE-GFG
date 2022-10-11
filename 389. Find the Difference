@@ -1,0 +1,21 @@
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        if(s.size() == 0){
+            return t[0];
+        }
+
+        int n = t.size();
+        int sum1 = 0;
+        int sum2 = 0;
+        for(int i=0;i<n;i++){
+            if(i < n-1){
+                sum1 += s[i] - 'a';
+            }
+            sum2 += t[i] - 'a';
+        }
+
+        char ch = 'a' + (sum2 - sum1);
+        return ch;
+    }
+};
