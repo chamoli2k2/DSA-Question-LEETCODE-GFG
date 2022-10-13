@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string toLowerCase(string s) {
+        unordered_map<char,char> mp;
+        char a = 'a';
+        for(char ch='A';ch<='Z';ch++){
+            mp[ch] = a++;
+        }
+        string ans = "";
+        for(int i=0;i<s.size();i++){
+            if(mp.find(s[i]) != mp.end()){
+                ans += mp[s[i]];
+            }
+            else{
+                ans += s[i];
+            }
+        }
+
+        return ans;
+    }
+};
