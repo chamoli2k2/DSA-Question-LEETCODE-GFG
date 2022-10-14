@@ -1,0 +1,44 @@
+class Solution {
+public:
+    ListNode* deleteMiddle(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head->next;
+        ListNode* previous = NULL;
+        // Base case
+        if(fast == NULL){
+            return NULL;
+        }
+
+        // Moving the pointer 
+        while(fast->next && fast->next->next){
+            previous = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // checking the case
+        // if size of list == 1
+        if(previous == NULL && fast == NULL){
+            return NULL;
+        }
+
+        // if size of list is 2
+        if(previous == NULL && fast->next == NULL){
+            head->next = NULL;
+            delete fast;
+            return head;
+        }
+
+        // if size of list is 3
+        if(previous == NULL && fast->next->next == NULL){
+            slow->next = fast->next;
+            delete fast;
+            return slow;
+        }
+
+        ListNode* temp = slow->next;
+        slow->next = temp->next;
+        delete temp;
+        return head;
+    }
+};
