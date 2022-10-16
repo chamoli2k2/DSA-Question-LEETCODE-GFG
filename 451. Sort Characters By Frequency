@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string frequencySort(string s) {
+        vector<pair<int,char>> v(256,{0,'a'});
+        for(int i=0;i<s.size();i++){
+            int num = s[i] - '\0';
+            v[num].first++;
+            v[num].second = s[i];
+        } 
+
+        // Sorting the array
+        sort(v.begin(),v.end(),greater<>());
+
+        // forming the string 
+        string ans = "";
+        int i = 0;
+        while(i < v.size() && v[i].first != 0){
+            int k = v[i].first;
+            while(k){
+                ans += v[i].second;
+                k--;
+            }
+            i++;
+        }
+        return ans;
+    }
+};
