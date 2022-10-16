@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> productQueries(int n, vector<vector<int>>& queries) {
+        vector<int> power;
+        int temp = n;
+        int i = 0;
+        while(temp){
+            if(temp & 1){
+                power.push_back(1 << i);
+            }
+            i++;
+            temp = temp >> 1;
+        }
+
+        vector<int> ans;
+        for(auto q : queries){
+            int x = q[0];
+            int y = q[1];
+            int mod = 1e9 + 7;
+            long long int num = 1;
+            for(int i=x;i<=y;i++){
+                num = (num % mod * power[i] % mod) % mod;
+            }
+            ans.push_back(num);
+        }
+
+        return ans;
+    }
+};
