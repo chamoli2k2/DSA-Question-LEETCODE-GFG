@@ -1,0 +1,37 @@
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+        int start = 0, minStart = 0, maxStart = 0;
+        long long ans = 0;
+        bool minFound = false, maxFound = false;
+        
+        for(int i=0;i<nums.size();i++){
+            int num = nums[i];
+
+            if(num < minK || num > maxK){
+                start = i + 1;
+                minFound = false;
+                maxFound = false;
+            }
+
+            // if we find minK
+            if(num == minK){
+                minFound = true;
+                minStart = i;
+            }
+
+            // if we find maxK
+            if(num == maxK){
+                maxFound = true;
+                maxStart = i;
+            }
+
+            // If we find both
+            if(minFound && maxFound){
+                ans += (min(minStart,maxStart) - start + 1);
+            }
+        }
+
+        return ans;
+    }
+};
