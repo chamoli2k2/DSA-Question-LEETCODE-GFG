@@ -1,0 +1,41 @@
+class Solution{
+	
+	public:
+	vector<int> downwardDigonal(int N, vector<vector<int>> A)
+	{
+		vector<int> ans;
+		// Step 1 : Finding every starting element of diagonal
+		// a) horizontal diagonal starting element 
+		int col = 0;
+		while(col < N){
+		    int row = 0;
+		    int j = col;
+		    
+		    while(row < N && j >= 0){
+		        ans.push_back(A[row][j]);
+		        row++;
+		        j--;
+		    }
+		    
+		    col++;
+		}
+		
+		// b) vertical diagonal starting element 
+		int row = 1;
+		while(row < N){
+		    col = N - 1;
+		    int i = row;
+		    
+		    while(col >= 0 && i < N){
+		        ans.push_back(A[i][col]);
+		        col--;
+		        i++;
+		    }
+		    
+		    row++;
+		}
+		
+		return ans;
+	}
+
+};
