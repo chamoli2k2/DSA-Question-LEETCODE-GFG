@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& grid) {
+        int n = grid.size();
+	    int m = grid[0].size();
+	    
+	    // Making the answer 
+	    vector<vector<int>> ans(n,vector<int>(m,0));
+	    
+	    // Making the visited array
+	    vector<vector<int>> visited(n,vector<int>(m,-1));
+	    
+	    // Making queue
+	    // {{i,j},distance}
+	    queue<pair<pair<int,int>,int>> q;
+	    
+	    
+	    for(int i=0;i<n;i++){
+	        for(int j=0;j<m;j++){
+	            if(grid[i][j] == 0){
+	                // Pushing the index of 1 & distance
+	                visited[i][j] = 1;
+	                ans[i][j] = 0;
+	                q.push({{i,j},0});
+	            }
+	        }
+	    }
+	    
+	    // Applying BFS Algorithm
+	    int dr[] = {0,0,-1,1};
+	    int dc[] = {-1,1,0,0};
+	    
+	    while(!q.empty()){
+	        // putting out index from queue
+	        int r = q.front().first.first;
+	        int c = q.front().first.second;
+	        int d = q.front().second;
+	        q.pop();
+	        
+	        // Traveling in all 4 direction
+	        for(int i=0;i<4;i++){
+	            int row = r + dr[i];
+	            int col = c + dc[i];
+	            
+	            if(row < n && col < m && row >= 0 && col >= 0 && visited[row][col] == -1){
+	                visited[row][col] = 1;
+	                ans[row][col] = d + 1;
+	                q.push({{row,col},d+1});
+	            }
+	        }
+	    }
+	    
+	    return ans;
+    }
+};
