@@ -9,37 +9,55 @@ public:
         int rowEnd = matrix.size() - 1;
         int colBegin = 0;
         int colEnd = matrix[0].size() - 1;
-        
-        while (rowBegin <= rowEnd && colBegin <= colEnd) {
-            // Traverse Right
-            for (int j = colBegin; j <= colEnd; j ++) {
-                res.push_back(matrix[rowBegin][j]);
-            }
-            rowBegin++;
-            
-            // Traverse Down
-            for (int j = rowBegin; j <= rowEnd; j ++) {
-                res.push_back(matrix[j][colEnd]);
-            }
-            colEnd--;
-            
-            if (rowBegin <= rowEnd) {
-                // Traverse Left
-                for (int j = colEnd; j >= colBegin; j --) {
-                    res.push_back(matrix[rowEnd][j]);
+        int direction = 0;
+
+        while(rowBegin <= rowEnd && colBegin <= colEnd){
+            // direction == 0
+            // Print left -> right
+            if(direction == 0){
+                for(int i=colBegin;i<=colEnd;i++){
+                    res.push_back(matrix[rowBegin][i]);
                 }
+
+                // updating
+                rowBegin++;
+                direction = 1;
             }
-            rowEnd--;
-            
-            if (colBegin <= colEnd) {
-                // Traver Up
-                for (int j = rowEnd; j >= rowBegin; j --) {
-                    res.push_back(matrix[j][colBegin]);
+            // direction == 1
+            // Print top -> bottom
+            else if(direction == 1){
+                for(int i=rowBegin;i<=rowEnd;i++){
+                    res.push_back(matrix[i][colEnd]);
                 }
+                
+                // updating
+                colEnd--;
+                direction = 2;
             }
-            colBegin ++;
+            // direction == 3
+            // print right -> left
+            else if(direction == 2){
+                for(int i=colEnd;i>=colBegin;i--){
+                    res.push_back(matrix[rowEnd][i]);
+                }
+                
+                // updating
+                rowEnd--;
+                direction = 3;
+            }
+            // direction == 3
+            // print bottom -> top
+            else{
+                for(int i=rowEnd;i>=rowBegin;i--){
+                    res.push_back(matrix[i][colBegin]);
+                }
+                
+                // updating
+                colBegin++;
+                direction = 0;
+            }
         }
-        
+    
         return res;
     }
 };
