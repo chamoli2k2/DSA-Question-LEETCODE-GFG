@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        // Base case 1
+        if(dividend == 0){
+            return 0;
+        }
+        else if(dividend == INT_MIN && divisor == -1){
+            return INT_MAX;
+        }
+        else if(dividend == INT_MIN && divisor == 1){
+            return INT_MIN;
+        }
+        else if(dividend == divisor){
+            return 1;
+        }
+
+        // Recording the sign of final answer
+        bool sign = (dividend >= 0) == (divisor >= 0) ? true : false;
+
+        // Making +ve for easy calculation
+        dividend = abs(dividend);
+        divisor = abs(divisor);
+
+        long long ans = 0;
+        int tempDividend = dividend;
+        while((tempDividend - divisor) >= 0){
+            long long count = 1;
+            long long sum = divisor;
+
+            // Main step
+            while((sum << 1) <= tempDividend){
+                count = count << 1;
+                sum = sum << 1;
+            }
+
+            // Updating the value
+            ans += count;
+            tempDividend = tempDividend - sum;
+        }
+
+        return (sign ? 1 : -1) * ans;
+    }
+};
