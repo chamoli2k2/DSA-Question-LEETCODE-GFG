@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    
+int fillingBucket(int N) {
+
+        // code here
+
+        long long ans=1,a=1,b=1;
+
+        for(int i=2;i<=N;i++)
+
+        {
+
+            ans=(a+b)%100000000;
+
+            
+
+            a=b;
+
+            b=ans;
+
+            
+
+        }
+
+        return ans;
+
+    }
+};
