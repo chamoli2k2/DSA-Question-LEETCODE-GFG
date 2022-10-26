@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int K) {
+        unordered_map<int,int> mp;
+        mp[0] = -1;
+        int preSum = 0;
+
+        for(int i=0;i<nums.size();i++){
+            preSum += nums[i];
+            int k = preSum % K;
+
+            if(mp.find(k) == mp.end()){
+                mp[k] = i;
+            }
+            else{
+                int len =  i - mp[k];
+                if (len == 1) continue; //don't update map here as we want farthest remainder
+                if  (len > 1) return true;
+            }
+        }
+
+        return false;
+    }
+};
