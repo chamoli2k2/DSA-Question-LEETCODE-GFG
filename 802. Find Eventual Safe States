@@ -1,0 +1,48 @@
+class Solution {
+private:
+    bool dfs(vector<vector<int>> &graph,vector<int> &visited,vector<int> &pathVisited,vector<int> &safeNode,int idx){
+        // base case
+        // mark visited
+        visited[idx] = 1;
+        pathVisited[idx] = 1;
+
+        for(auto i : graph[idx]){
+            if(visited[i] == -1){
+                if(dfs(graph,visited,pathVisited,safeNode,i)){
+                    safeNode[idx] = -1;
+                    return true;
+                }
+            }
+            else if(pathVisited[i] == 1){
+                safeNode[idx] = -1;
+                return true;
+            }
+        }
+
+        safeNode[idx] = 1;
+        pathVisited[idx] = -1;
+        return false;
+    }
+public:
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int v = graph.size();
+        vector<int> ans;
+        vector<int> visited(v,-1);
+        vector<int> pathVisited(v,-1);
+        vector<int> safeNode(v,-1);
+
+        for(int i=0;i<v;i++){
+            if(visited[i] == -1){
+                dfs(graph,visited,pathVisited,safeNode,i);
+            }
+        }
+
+        for(int i=0;i<v;i++){
+            if(safeNode[i] == 1){
+                ans.push_back(i);
+            }
+        }
+
+        return ans;
+    }
+};
