@@ -1,0 +1,94 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        string ans;
+        int i = a.size() - 1;
+        int j = b.size() - 1;
+        int carry = 0;
+
+        while(i >= 0 && j >= 0){
+            int A = a[i--] - '0';
+            int B = b[j--] - '0';
+
+            if(A && B){
+                if(carry == 1){
+                    ans += '1';
+                }
+                else{
+                    ans += '0';
+                }
+                // updating carry
+                carry = 1;
+            }
+            else if(!A && !B){
+                ans += to_string(carry);
+                // updating carry
+                carry = 0;
+            }
+            else{ 
+                if(carry == 1){
+                    ans += '0';
+                    carry = 1;
+                }
+                else{
+                    ans += '1';
+                    carry = 0;
+                }
+            }
+        }
+
+        while(i >= 0){
+            int A = a[i--] - '0';
+            if(A){
+                if(carry == 1){
+                    ans += '0';
+                    carry = 1;
+                }
+                else{
+                    ans += '1';
+                    carry = 0;
+                }
+            }
+            else{
+                if(carry == 1){
+                    ans += '1';
+                }
+                else{
+                    ans += '0';
+                }
+                carry = 0;
+            }
+        }
+
+        while(j >= 0){
+            int A = b[j--] - '0';
+            if(A){
+                if(carry == 1){
+                    ans += '0';
+                    carry = 1;
+                }
+                else{
+                    ans += '1';
+                    carry = 0;
+                }
+            }
+            else{
+                if(carry == 1){
+                    ans += '1';
+                }
+                else{
+                    ans += '0';
+                }
+                carry = 0;
+            }
+        }
+
+        if(carry){
+            ans += '1';
+        }
+        
+        // Reversing the ans
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
