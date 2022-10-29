@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int rangeBitwiseAnd(int left, int right) {
+        // base case
+        if(left == right){
+            return right;
+        }
+        
+        long long int ans = left;
+        for(long long i=left+1;i<=right;i++){
+            ans = ans & i;
+            if(ans == 0){
+                return 0;
+            }
+        }
+
+        return ans;
+    }
+};
