@@ -1,0 +1,30 @@
+class Solution {
+private:
+    int solve(string &word){
+        int num = 0;
+        for(int i=0;i<word.size();i++){
+            int k = word[i] - 'a';
+            num = num | (1 << k);
+        }
+        return num;
+    }
+
+public:
+    int maxProduct(vector<string>& words) {
+        int ans = 0;
+        for(int i=0;i<words.size()-1;i++){
+            int num1 = solve(words[i]);
+            int n = words[i].size();
+
+            for(int j=i+1;j<words.size();j++){
+                int num2 = solve(words[j]);
+                int m = words[j].size();
+                if((num1 & num2) == 0){
+                    ans = max(ans,n * m);
+                }
+            }
+        }
+
+        return ans;
+    }
+};
