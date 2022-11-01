@@ -1,0 +1,34 @@
+class Solution {
+private:
+    int dfs(vector<vector<int>> &grid,int i,int j){
+        // base case (If we reach down)
+        if(i >= grid.size()){
+            return j;
+        }
+
+        // case 1 : if both adjacent cell has '1' than we can move diagonally down forward
+        if(grid[i][j] == 1 && j+1 < grid[0].size() && grid[i][j+1] == 1){
+            return dfs(grid,i+1,j+1);
+        }
+        // case 2 : if both adjacent cell has '-1' than we can move diagonally down backward
+        else if(grid[i][j] == -1 && j-1 >= 0 && grid[i][j-1] == -1){
+            return dfs(grid,i+1,j-1);
+        }
+        // case 3 : rest in all case it is not possible to go down
+        else{
+            return -1;
+        }
+    }
+public:
+    vector<int> findBall(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        vector<int> ans(m,0);
+        for(int i=0;i<m;i++){
+            ans[i] = dfs(grid,0,i);
+        }
+
+        return ans;
+    }
+};
