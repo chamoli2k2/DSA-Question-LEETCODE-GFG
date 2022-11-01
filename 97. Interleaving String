@@ -1,0 +1,48 @@
+class Solution {
+private:
+    bool solve(string &s1,string &s2,string &s3,vector<vector<vector<int>>> &dp,int i,int j,int k){
+        // base case
+        // We reached the end of either of any string than we are checking if rest of other string is equal
+        if(i >= s1.size()){
+            return s2.substr(j) == s3.substr(k);
+        }
+        else if(j >= s2.size()){
+            return s1.substr(i) == s3.substr(k);
+        }
+
+        // Checking if dp array already have answer 
+        if(dp[i][j][k] != -1){
+            return dp[i][j][k];
+        }
+
+        bool flag = false;
+        // If current index of s1 & s2 both matched with string s3 index
+        // Then we have two option either match with s1 or s2
+        // We take both one by one and check for rest and if find answer from any way than we return true
+        if(s1[i] == s3[k] && s2[j] == s3[k]){
+            flag = solve(s1,s2,s3,dp,i+1,j,k+1) | solve(s1,s2,s3,dp,i,j+1,k+1);
+        }
+        // if s1 matched with s3
+        else if(s1[i] == s3[k]){
+            flag = solve(s1,s2,s3,dp,i+1,j,k+1);
+        }
+        // if s2 matched with s3
+        else if(s2[j] == s3[k]){
+            flag = solve(s1,s2,s3,dp,i,j+1,k+1);
+        }
+        
+        // If no-one match than default it will return false or else it return the answer which it received from 
+        // recursion
+        return dp[i][j][k] = flag;
+    }
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        // Base case
+        if(s1.size() + s2.size() != s3.size()){
+            return false;
+        }
+        // making dp vector
+        vector<vector<vector<int>>> dp(s1.size(),vector<vector<int>>(s2.size(),vector<int>(s3.size(),-1)));
+        return solve(s1,s2,s3,dp,0,0,0);
+    }
+};
