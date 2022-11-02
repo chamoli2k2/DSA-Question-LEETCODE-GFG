@@ -1,22 +1,21 @@
 class Solution {
 public:
     int reachNumber(int target) {
-        // making it positive as step in both case will be same
-        if(target < 0){
-            target = -target;
+        // Base case
+        target = abs(target);
+
+        // Moves
+        //               4th  3rd  2nd  1st  2nd  3rd  4th
+        //             -6 <- -3  <- -1 <- 0 -> 1 -> 3 -> 6 -> 
+
+        int sum = 0;
+        int steps = 0;
+        while(sum < target){
+            steps++;
+            sum += steps;
         }
 
-        for(int i=1;;i++){
-            if(target == i){
-                return i;
-            }
-            else if(i > target){
-                if((i-target)%2 == 0) return i;
-                else if(i%2 == 0)return i+1;
-                else return i+2;
-            }
-            target -= i;
-        }
-        return 0;
+        // Checking if difference of sum & target is even than no of steps are same
+        return (sum - target) % 2 == 0 ? steps : steps % 2 == 0 ? steps+1 : steps+2;
     }
 };
