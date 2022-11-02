@@ -1,0 +1,34 @@
+class Solution {
+private:
+    long long sumer(long long n){
+        long long temp = n;
+        long long sum = 0;
+        while(temp){
+            sum += temp % 10;
+            temp /= 10;
+        }
+        return sum;
+    }
+public:
+    long long makeIntegerBeautiful(long long n, int target) {
+        long long ans = 0;
+        int sum = sumer(n);
+        long long dummy = n;
+        long long lvl = 0;
+
+        while(sum > target){
+            if(dummy % 10 == 0){
+                lvl++;
+                dummy /= 10;
+            }
+            else{
+                int toAdd = 10 - (dummy % 10);
+                dummy += toAdd;
+                sum = sumer(dummy);
+                ans += pow(10,lvl) * toAdd;
+            }
+        }
+        
+        return ans;
+    }
+};
