@@ -1,0 +1,59 @@
+// Making class For storing necessary information
+class video{
+    public:
+    long long MostView = 0;
+    string id;
+    long long Tview = 0;
+};
+
+class Solution {
+private:
+    int maxi(long long a,long long b){
+        if(a > b){
+            return a;
+        }
+        return b;
+    }
+public:
+    vector<vector<string>> mostPopularCreator(vector<string>& creators, vector<string>& ids, vector<int>& views) {
+        vector<vector<string>> ans;
+        unordered_map<string,video> mp;
+        long long mostViewed = 0;
+
+        for(int i=0;i<creators.size();i++){
+            string creator = creators[i];
+            int view = views[i];
+            string id = ids[i];
+
+            if(mp.find(creator) == mp.end()){
+                mp[creator] = {
+                    view, id, view
+                };
+            }
+            else{
+                // Adding new views to creator
+                mp[creator].Tview += view;
+                // Checking if most view id is creator is changed or not
+                if(mp[creator].MostView < view){
+                    mp[creator].id = id;
+                    mp[creator].MostView = view;
+                }
+                else if(mp[creator].MostView == view){
+                    mp[creator].id = min(mp[creator].id,id);
+                }
+            }
+
+            // Finding the maximum viewed video
+            mostViewed = maxi(mostViewed,mp[creator].Tview);
+        }
+
+        for(auto i : mp){
+            if(i.second.Tview == mostViewed){
+                vector<string> temp = {i.first, i.second.id};
+                ans.push_back(temp);
+            }
+        }
+
+        return ans;
+    }
+};
