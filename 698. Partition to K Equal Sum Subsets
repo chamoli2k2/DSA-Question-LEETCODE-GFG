@@ -1,0 +1,47 @@
+class Solution {
+private:
+    bool solve(vector<int> &nums,vector<int> &visited,int idx,int curSum,int target,int k){
+        // Base case
+        if(k == 1){
+            return true;
+        }
+
+        // If we found the sum than we are finding sum again by reducing k count 
+        if(curSum == target){
+            return solve(nums,visited,0,0,target,k-1);
+        }
+
+        for(int i=idx;i<nums.size();i++){
+            if(visited[i] || nums[i] + curSum > target){
+                continue;
+            }
+
+            // Marking visited
+            visited[i] = true;
+            // If all case satisfy than we comes out of loop by this only
+            if(solve(nums,visited,i+1,curSum+nums[i],target,k)){
+                return true;
+            }
+            // Backtracking step
+            visited[i] = false;
+            // only this line and sorting combined making this code run extremely faster
+            while(i+1 < nums.size() && nums[i] == nums[i+1]) i++;
+        }
+
+        return false;
+    }
+public:
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+        int sum = accumulate(nums.begin(),nums.end(),0);
+        // Base case
+        if(sum % k){
+            return false;
+        }
+
+        int target = sum / k;
+        vector<int> visited(nums.size(),0);
+        // Sorting 
+        sort(nums.begin(),nums.end());
+        return solve(nums,visited,0,0,target,k);
+    }    
+};
