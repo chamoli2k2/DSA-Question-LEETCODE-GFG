@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int longestPalindrome(vector<string>& words) {
+        unordered_map<string,int> mp;
+        for(int i=0;i<words.size();i++){
+            mp[words[i]]++;
+        }
+
+        int ans = 0;
+        for(auto [f,s] : mp){
+            string rev = f;
+            // Reversing the string
+            reverse(rev.begin(),rev.end());
+
+            // If we find the word in string
+            if(mp.find(rev) != mp.end()){
+                // Checking if both strings are same or not
+                if(rev == f){
+                    int mini = s;
+                    if(mini % 2 != 0){
+                        mini--;
+                    }
+                    ans += (2 * mini);
+                    // Updating the map
+                    mp[f] -= mini;
+                }
+                // If both string are different than we need to take minimum freq from both array
+                else{
+                    int mini = min(s,mp[rev]);
+                    // Adding 4 * no of minimum freq
+                    // suppose mini = 1 && rev = "ab" && f = "ba"
+                    // than length should be 4 ("abba") i.e (mini * 4)
+                    ans += (mini * 4);
+                    // Updating the map
+                    mp[f] -= mini;
+                    mp[rev] -= mini;
+                }
+            }
+        }
+        
+        // checking if we having
+        for(auto [f,s] : mp){
+            if(f[0] == f[1] && s > 0){
+                // We can only take only one set of number and put into middle so string is still palingdrome
+                ans += 2;
+                break;
+            }
+        }
+
+        return ans;
+    }
+};
