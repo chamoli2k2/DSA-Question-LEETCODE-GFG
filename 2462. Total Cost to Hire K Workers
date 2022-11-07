@@ -1,0 +1,57 @@
+class Solution {
+private: 
+struct cmp{
+    bool operator()(const pair<long long,int> &p1,const pair<long long,int> &p2){
+        // Smaller element is not top
+        if(p1.first != p2.first){
+            return p1.first > p2.first;
+        }
+
+        // smaller index is on top
+        return p1.second > p2.second;
+    }
+};
+    
+public:
+    long long totalCost(vector<int>& costs, int k, int candidates) {
+        // Makign priority queue
+        priority_queue<pair<long long,int>,vector<pair<long long,int>>,cmp> pq;
+        
+        int i = 0;
+        int j = costs.size() - 1;
+        long long ans = 0;
+
+        if(i == j){
+            return costs[0];
+        }
+
+        // Putting inside priority queue
+        while(i < j && candidates > 0){
+            candidates--;
+            pq.push({costs[i],i++});
+            pq.push({costs[j],j--});
+        }
+
+        while(k > 0 && i <= j){
+            ans += pq.top().first;
+            int idx = pq.top().second;
+            pq.pop();
+            k--;
+
+            if(idx < i){
+                pq.push({costs[i],i++});
+            }
+            else{
+                pq.push({costs[j],j--});
+            }
+        }
+
+        while(k > 0 && !pq.empty()){
+            k--;
+            ans += pq.top().first;
+            pq.pop();
+        }
+
+        return ans;
+    }
+};
