@@ -1,0 +1,48 @@
+class Solution{
+    public:
+    vector<long long int> twoOddNum(long long int Arr[], long long int N)  
+    {
+        long long int first = 0;
+        long long int second = 0;
+        
+        long long int XOR = 0;
+        for(int i=0;i<N;i++){
+            XOR = XOR ^ Arr[i];
+        }
+        
+        int j = 0;
+        // checking 1st bit is set at which position
+        while(XOR){
+            if(XOR & 1){
+                break;
+            }
+            else{
+                j++;
+                XOR = XOR >> 1;
+            }
+        }
+        
+        // Sepeating digit on basic of which ith digit is set or not
+        for(int i=0;i<N;i++){
+            if(Arr[i] & (1 << j)){
+                first = first ^ Arr[i];
+            }
+            else{
+                second = second ^ Arr[i];
+            }
+        }
+        
+    
+        vector<long long int> ans;
+        if(first > second){
+            ans.push_back(first);
+            ans.push_back(second);
+        }
+        else{
+            ans.push_back(second);
+            ans.push_back(first);
+        }
+        
+        return ans;
+    }
+};
