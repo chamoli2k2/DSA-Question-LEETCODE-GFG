@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int addDigits(int num) {
+        string s = to_string(num);
+        if(s.size() == 1){
+            return num;
+        }
+
+        int newNum = 0;
+        while(num){
+            newNum = newNum + num % 10;
+            num /= 10;
+        }
+
+        return addDigits(newNum);
+    }
+};
