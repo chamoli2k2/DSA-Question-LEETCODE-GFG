@@ -1,0 +1,31 @@
+class Solution {
+private:
+    void Eretosthenes(vector<int> &sieve,int &ans,int n){
+        for(int i=2;i<n;i++){
+            // If sieve is prime number
+            if(sieve[i]){
+                // Increasing prime number count
+                ans++;
+                // Marking all multiple of prime as composite number
+                for(int j=2*i;j<n;j+=i){
+                    sieve[j] = 0;
+                }
+            }
+        }
+    }
+public:
+    int countPrimes(int n) {
+        // Base case
+        if(n < 2){
+            return 0;
+        }
+
+        vector<int> sieve(n,1);
+        int ans = 0;
+        // marking sieve[0] = 0 & sieve[1] = 0 
+        // applying Sieve of Eretosthenes algorithm
+        Eretosthenes(sieve,ans,n);
+
+        return ans;
+    }
+};
