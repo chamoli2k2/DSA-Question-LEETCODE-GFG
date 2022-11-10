@@ -1,21 +1,19 @@
 class Solution {
 public:
     string removeDuplicates(string s) {
-        stack<char> st;                                                                      // We declared a stack here
-        for(int i=s.length()-1;i>=0;i--){
-            char a=s[i];                                                                    
-            if(!st.empty() and st.top()==a){                     // if stack is empty or stop is same we removed element from stack
+        stack<char> st;
+        string ans = "";
+        for(int i=0;i<s.size();i++){
+            if(!st.empty() && st.top() == s[i]){
+                ans.pop_back();
                 st.pop();
-            }else{
-                st.push(a);
+            }
+            else{
+                st.push(s[i]);
+                ans += s[i];
             }
         }
-        string ans="";  
-        while(!st.empty()){                 // this step is to store the element of stack in a string and return the answer
-            char a=st.top();
-            ans+=a;
-            st.pop();
-        }
+
         return ans;
     }
 };
