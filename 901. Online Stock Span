@@ -1,24 +1,32 @@
 class StockSpanner {
 public:
+    // Data member
+    stack<pair<int,int>> st;
+    int idx;
+
     StockSpanner() {
-     stack<int> s;
-     s.push(0);
-    vector<int> ans(n);
-    for(int i=0;i<n;i++){
-        while(!s.empty() and arr[s.top()]<=arr[i]){
-            s.pop();
-        }
-         if(s.empty()){
-            ans[i]=i+1;
-          }else{
-          ans[i]=i-s.top();
-        }
-        s.push(i);
-    }
-   
+        idx = 0;
     }
     
     int next(int price) {
-        
+        idx++;
+        int ans;
+        while(!st.empty() && st.top().first <= price){
+            st.pop();
+        }
+
+        // if still stack is empty
+        if(st.empty()){
+            ans = idx;
+        }
+        else{
+            ans = idx - st.top().second;
+        }
+
+        // Pushing new element
+        st.push({price,idx});
+
+        return ans;
     }
 };
+
