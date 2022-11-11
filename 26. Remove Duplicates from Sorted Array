@@ -1,14 +1,18 @@
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-        int i=0;
-        int n=nums.size();
-        for(int j=1;j<n;j++){
-            if(nums[i]!=nums[j]){
-                i++;
-                nums[i]=nums[j];
+        int i = 1;
+        int j = 1;
+        int pre = nums[0];
+        while(j < nums.size()){
+            if(pre == nums[j]){
+                j++;
+            }
+            else{
+                nums[i++] = nums[j];
+                pre = nums[j++];
             }
         }
-        return i+1;
+        return i;
     }
 };
