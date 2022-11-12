@@ -1,0 +1,60 @@
+class MedianFinder {
+public:
+    // Making two priority Queue
+    // max , min queue
+    // Data member
+    priority_queue<int> pqMax; // max heap
+    priority_queue<int,vector<int>,greater<int>> pqMin; // min heap
+
+    MedianFinder() {
+    }
+    
+    void addNum(int num) {
+        // Case 1 : 
+        if(pqMax.empty() && pqMin.empty()){
+            pqMax.push(num);
+        }
+        else if(pqMax.size() > pqMin.size()){
+            if(pqMax.top() > num){
+                int k = pqMax.top();
+                pqMax.pop();
+                pqMax.push(num);
+                pqMin.push(k);
+            }
+            else{
+                pqMin.push(num);
+            }
+        }
+        else if(pqMax.size() == pqMin.size()){
+            if(pqMin.top() < num){
+                int k = pqMin.top();
+                pqMin.pop();
+                pqMin.push(num);
+                pqMax.push(k);
+            }
+            else{
+                pqMax.push(num);
+            }
+        }
+    }
+    
+    double findMedian() {
+        double ans;
+        // If only one median is there i.e, size there are odd number of term in list
+        if(pqMax.size() > pqMin.size()){
+            ans = pqMax.top();
+            return ans;
+        }
+
+        // If there are even no of terms in list
+        ans = (pqMax.top() + pqMin.top()) / 2.0;
+        return ans;
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
