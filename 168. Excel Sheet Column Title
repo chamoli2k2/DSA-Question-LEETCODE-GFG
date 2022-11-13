@@ -1,0 +1,17 @@
+class Solution {
+public:
+    string convertToTitle(int n) {
+        // Makking the map
+        vector<char> mp = {'Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
+                            'R','S','T','U','V','W','X','Y'};
+        
+        string ans = "";
+        while(n){
+            ans += mp[n%26];
+            n = (n-1) / 26;
+        }
+        
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
