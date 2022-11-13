@@ -1,0 +1,61 @@
+class Solution {
+public:
+    int minSwaps(vector<int>&nums)
+	{
+	    // answer array
+	    int ans = 0;
+	    
+	    // vector to store element ans their index
+	    vector<pair<int,int>> v;
+	    
+	    for(int i=0;i<nums.size();i++){
+	        v.push_back({nums[i],i});
+	    }
+	    
+	    // sorting the array 
+	    sort(v.begin(),v.end());
+	    
+	    int i = 0;
+	    int n = nums.size();
+	    
+	    // changing sorted array to previous array
+	    while(i < n){
+	        int k = v[i].second;
+	        
+	        if(i != k){
+	            swap(v[i],v[k]);
+	            ans++;
+	        }else{
+	            i++;
+	        }
+	    }
+	    
+	    return ans;
+	}
+    int minimumOperations(TreeNode* root) {
+        queue<TreeNode*> q;
+        q.push(root);
+        int count = 0;
+        while(q.size()){
+            int n = q.size();
+            vector<int> v;
+            for(int i=0;i<n;i++){
+                TreeNode* temp = q.front();
+                q.pop();
+                
+                v.push_back(temp->val);
+                if(temp->left){
+                    q.push(temp->left);
+                }
+                
+                if(temp->right){
+                    q.push(temp->right);
+                }
+            }
+            
+            count += minSwaps(v);
+        }
+        
+        return count;
+    }
+};
