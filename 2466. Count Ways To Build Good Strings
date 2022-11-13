@@ -1,0 +1,38 @@
+int mod = 1e9+7;
+class Solution {
+private:
+    int solve(int zero,int one,vector<int> &dp,int k){
+        // base case
+        if(k == 0){
+            return 1;
+        }
+        
+        if(dp[k] != -1){
+            return dp[k];
+        }
+        
+        // Putting zero
+        int k1 = 0;
+        int k2 = 0;
+        if(one <= k){
+            k1 = solve(zero,one,dp,k-one);
+        }
+        
+        if(zero <= k){
+            k2 = solve(zero,one,dp,k-zero);
+        }
+        
+        
+        return dp[k] = (k1 % mod + k2 % mod) % mod;
+    }
+public:
+    int countGoodStrings(int low, int high, int zero, int one) {
+        vector<int> dp(high+1,-1);
+        int ans = 0;
+        for(int i=low;i<=high;i++){
+            ans = (ans % mod + solve(zero,one,dp,i) % mod) % mod;
+        }
+        
+        return ans;
+    }
+};
