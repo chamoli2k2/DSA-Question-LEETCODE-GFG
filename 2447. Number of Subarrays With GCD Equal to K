@@ -1,16 +1,24 @@
 class Solution {
 public:
     int subarrayGCD(vector<int>& nums, int k) {
-		int cnt = 0;
-        for (int i = 0; i < size(nums); i++)
-        {
-            int currGcd = 0;
-            for (int j = i; j < size(nums); j++)
-            {
-                currGcd = gcd(currGcd, nums[j]);
-                if (currGcd == k) cnt++;
+        int count = 0;
+        for(int i=0;i<nums.size();i++){
+            int gc = 0;
+            int flag = 0;
+            for(int j=i;j<nums.size();j++){
+                gc = gcd(gc,nums[j]);
+
+                if(gc == k){
+                    count++;
+                    flag = 1;
+                }
+                else if(flag){
+                    break;
+                }
+                
             }
         }
-        return cnt;
+
+        return count;
     }
 };
