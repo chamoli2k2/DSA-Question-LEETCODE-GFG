@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int minSwaps(vector<int>& num) {
+        int k = 0;
+        unordered_map<int,int> mp;
+        vector<int> nums(num.begin(),num.end());
+        for(int i=0;i<num.size();i++){
+            if(num[i]) k++;
+            nums.push_back(num[i]);
+        }
+
+        int maxSize = 0;
+        for(int i=0;i<k;i++){
+            mp[nums[i]]++;
+            maxSize = max(mp[1],maxSize);
+        }
+
+        if(mp[1] == k){
+            return 0;
+        }
+
+        for(int i=k;i<nums.size();i++){
+            // removing
+            mp[nums[i-k]]--;
+
+            // adding
+            mp[nums[i]]++;
+
+            maxSize = max(maxSize,mp[1]);
+        }
+
+        return k-maxSize;
+    }
+};
