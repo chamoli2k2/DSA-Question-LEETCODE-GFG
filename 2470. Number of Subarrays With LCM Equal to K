@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int subarrayLCM(vector<int>& nums, int k) {
+        int count = 0;
+        for(int i=0;i<nums.size();i++){
+            long long lc = 1;
+            for(int j=i;j<nums.size();j++){
+                lc = lcm(lc,nums[j]);
+                if(lc > k) break;
+                if(lc == k){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+};
