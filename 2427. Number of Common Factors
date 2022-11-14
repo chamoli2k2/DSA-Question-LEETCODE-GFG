@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int commonFactors(int a, int b) {
+        int Gc = gcd(a,b);
+        // Base case
+        if(Gc == 1) return 1;
+        
+        int count = 0;
+        for(int i=2;i<Gc;i++){
+            if(Gc % i == 0){
+                count++;
+            }
+        }
+        return count + 2;    
+    }
+};
