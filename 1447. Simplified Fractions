@@ -1,0 +1,31 @@
+class Solution {
+private:
+    set<string> solve(int n){
+        // base case
+        if(n == 1){
+            return {};
+        }
+        
+        set<string> st = solve(n-1);
+        for(double i=1;i<n;i++){
+            double k = (i / n);
+            if(k > 0 && k < 1 && mp[k] == 0){
+                string temp;
+                temp += to_string((int)i);
+                temp += '/';
+                temp += to_string(n);
+                st.insert(temp);
+                mp[k]++;
+            }
+        }
+
+        return st;
+    }
+public:
+    unordered_map<double,int> mp;
+    vector<string> simplifiedFractions(int n) {
+        set<string> st = solve(n);
+        vector<string> ans(st.begin(),st.end());
+        return ans;
+    }
+};
