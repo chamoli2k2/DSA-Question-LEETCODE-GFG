@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int countDifferentSubsequenceGCDs(vector<int>& nums) {
+        int k = 2 * 1e5;
+        vector<int> mp(k+1,0);
+
+        // Marking the number present in nums as true
+        for(int i=0;i<nums.size();i++){
+            mp[nums[i]] = 1;
+        }
+
+        int ans = 0;
+
+        // Approach : We are assuming the [1,k] as GCD and then check if this assumed GCD can be made from
+        // nums or not
+
+        for(int i=1;i<=k;i++){
+            // if current number is present in subsequence 
+            if(mp[i] == 1){
+                ans += 1;
+            }
+            else{
+                int gc = 0;
+                for(int j=2*i;j<=k;j+=i){
+                    // Checking if number is present in nums or not
+                    if(mp[j] == 1){
+                        gc = gcd(gc,j);
+                    }
+
+                    // checking if gc is equal to number or not
+                    if(gc == i){
+                        ans += 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+};
