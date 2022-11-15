@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, vector<int>& numsDivide) {
+        // Sorting the nums
+        sort(nums.begin(),nums.end());
+
+        int gc = 0;
+        for(int i=0;i<numsDivide.size();i++){
+            gc = gcd(gc,numsDivide[i]);
+        }
+
+        int count = 0;
+        int i = 0;
+        for(i=0;i<nums.size();i++){
+            if(gc % nums[i] != 0){
+                count++;
+            }
+            else{
+                break;
+            }
+        }
+
+        return i == nums.size() ? -1 : count;
+    }
+};
+        
