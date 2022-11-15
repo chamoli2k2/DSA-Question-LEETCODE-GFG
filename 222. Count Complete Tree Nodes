@@ -1,25 +1,44 @@
 class Solution {
 private:
-    void solve(TreeNode* root,int &count){
-        if(root == NULL){
-            return;
+    int leftHeight(TreeNode* root){
+        int count = 1;
+        while(root){
+            count++;
+            root = root->left;
         }
-        
-        // inorder traversal (L N R)
-        solve(root->left,count);
-        count++;
-        solve(root->right,count);
+
+        return count;
+    }
+
+    int rightHeight(TreeNode* root){
+        int count = 1;
+        while(root){
+            count++;
+            root = root->right;
+        }
+
+        return count;
     }
 public:
     int countNodes(TreeNode* root) {
-        int count = 0;
-        // base case
+        // Base case
         if(root == NULL){
-            return count;
+            return 0;
         }
-        
-        solve(root,count);
-        
-        return count;
+
+        // Caculating left & right height of tree (As we know Tree is complete Binary tree)
+        int ls = leftHeight(root->left);
+        int rs = rightHeight(root->right);
+
+        // Checking if ls & rs is same            (Total no of nodes in the tree)
+        //                1                       lvl 1 -> 1 node = 2^1 - 1 
+        //            2       3                   lvl 2 -> 3 nodes = 2^2 - 1
+        //         4     5  7    8                lvl 3 -> 7 nodes = 2^3 - 1
+
+        // If Tree is complete Binary Tree with both left and right having same height
+        if(ls == rs) return (1 << ls) - 1;
+
+        // If height is not same in left & right part than search in left & right subtree
+        return 1 + countNodes(root->left) + countNodes(root->right);
     }
 };
