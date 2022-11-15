@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool isGoodArray(vector<int>& nums) {
+        // Bezout Lemma
+        // If GCD(a,b) = d
+        // Then there will exist x,y such that (ax + by = d)
+
+        int gc = 0;
+        for(int i=0;i<nums.size();i++){
+            gc = gcd(gc,nums[i]);
+            if(gc == 1) return true;
+        }
+        return false;
+    }
+};
