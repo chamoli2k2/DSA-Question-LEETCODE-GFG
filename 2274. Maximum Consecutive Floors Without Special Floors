@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maxConsecutive(int bottom, int top, vector<int>& special) {
+        // Sorting the array
+        int ans = 0;
+        sort(special.begin(),special.end());
+
+        // Managing the starting case
+        ans = max(ans,special[0]-bottom);
+
+        // Managing the middle case
+        for(int i=1;i<special.size();i++){
+            int k = special[i] - special[i-1] - 1;
+            ans = max(ans,k);
+        }
+
+        // Managing the end case
+        ans = max(ans,top-special[special.size()-1]);
+
+
+        return ans;
+    }
+};
