@@ -1,0 +1,33 @@
+class Solution {
+private:
+
+    static bool cmp(int &a,int &b){
+        string k1 = to_string(a);
+        string k2 = to_string(b);
+
+        int i = 0;
+        while(i < k1.size() && i < k2.size()){
+            if(k1[i] == k2[i]){
+                i++;
+            }
+            else{
+                return k1[i] > k2[i];
+            }
+        }
+
+        return k1+k2 > k2+k1;
+    }
+public:
+    string largestNumber(vector<int>& nums) {
+        sort(nums.begin(),nums.end(),cmp);
+        string ans = "";
+        // Base case
+        if(nums[0] == 0) return "0";
+
+        for(int i=0;i<nums.size();i++){
+            ans += to_string(nums[i]);
+        }
+
+        return ans;
+    }
+};
