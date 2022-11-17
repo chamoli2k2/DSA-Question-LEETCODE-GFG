@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int minMoves(vector<int>& nums) {
+        int mini = INT_MAX;
+        for(auto i : nums){
+            mini = min(mini,i);
+        }
+        int steps = 0;
+        for(auto i : nums){
+            steps += abs(mini - i);
+        }
+
+        return steps;
+    }
+};
