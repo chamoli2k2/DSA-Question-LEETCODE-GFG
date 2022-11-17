@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minOperations(vector<vector<int>>& grid, int x) {
+        vector<int> v;
+        for(auto i : grid){
+            for(auto j : i){
+                v.push_back(j);
+            }
+        }
+        sort(v.begin(),v.end());
+        int n = v.size();
+
+        int idx1 = n / 2;
+        int mid;
+        mid = v[idx1];
+
+        int ans = 0;
+        for(auto i : grid){
+            for(auto j : i){
+                if(j % x != mid % x) return -1;
+                int k = abs(j - mid);
+                ans += k / x;
+            }
+        }
+
+        return ans;
+    }
+};
