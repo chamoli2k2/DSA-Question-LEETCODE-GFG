@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int i = 1;
+        int j = nums.size()-1;
+        vector<int> ans(nums.size(),-1);
+
+        // Loop 1 
+        while(i < nums.size()){
+            ans[i] = nums[j--];
+            i += 2;
+        }
+
+        // Loop 2
+        i = 0;
+        while(i < nums.size()){
+            ans[i] = nums[j--];
+            i += 2;
+        }
+
+        nums.clear();
+        nums.assign(ans.begin(),ans.end());
+    }
+};
