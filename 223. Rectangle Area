@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        // Finding Area of Both Rectangle combined
+        int TotalArea = (ax2 - ax1) * (ay2 - ay1) + (bx2 - bx1) * (by2 - by1);
+
+        // Finding common area from both 
+        int x1 = max(ax1,bx1);
+        int y1 = max(ay1,by1);
+        int x2 = min(ax2,bx2);
+        int y2 = min(ay2,by2);
+
+        int length = x2 - x1;
+        int breadth = y2 - y1;
+
+        // Checking if length & breadth is greater than zero
+        int CommonArea = 0;
+        if(length > 0 && breadth > 0) CommonArea = length * breadth;
+
+        // Returning the area after removing common area
+        return TotalArea - CommonArea;
+    }
+};
