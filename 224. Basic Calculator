@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int calculate(string s) {
+        int n = s.size();
+        int sign = 1;
+        int currNo = 0;
+        int ans = 0;
+        stack<int> st;
+
+        for(int i=0;i<n;i++){
+            char ch = s[i];
+
+            // If number is a digit
+            if(ch >= '0' && ch <= '9'){
+                currNo = ch - '0';
+                while(i+1 < n && s[i+1] >= '0' && s[i+1] <= '9'){
+                    int num = s[i+1] - '0';
+                    currNo = currNo * 10 + num;
+                    i++;
+                }
+
+                currNo = currNo * sign;
+                ans += currNo;
+            }
+            else if(ch == '+'){
+                sign = 1;
+            }
+            else if(ch == '-'){
+                sign = -1;
+            }
+            else if(ch == '('){
+                st.push(ans);
+                st.push(sign);
+                ans = 0;
+                sign = 1;
+            }
+            else if(ch == ')'){
+                int previosSign = st.top();
+                st.pop();
+                ans = ans * previosSign;
+                int previosAns = st.top();
+                st.pop();
+                ans = ans + previosAns;
+            }
+        }
+
+        return ans;
+    }
+};
