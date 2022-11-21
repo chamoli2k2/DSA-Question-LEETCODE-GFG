@@ -1,48 +1,55 @@
 // if it help plz upvote :)
 
 class Solution {
+private:
+    bool check(string &s){
+        if(s == "*" || s == "/" || s == "+" || s == "-") return false;
+
+        return true;
+    }
 public:
-    int evalRPN(vector<string>& s) {
-        
-        // base case
-        if(s.size() == 1){
-            return stoi(s[0]);
-        }
-        
-        int op1;
-        int op2;
-        int ans = 0;
-        int n = s.size();
-        stack<int> st;
+    int evalRPN(vector<string>& tokens) {
+        int n = tokens.size();
+        stack<long long> st;
+        long long ans;
+
         for(int i=0;i<n;i++){
-            if((s[i][0] == '+' || s[i][0] == '-' || s[i][0] == '*' || s[i][0] == '/') && s[i].size() == 1){
-                op1 = st.top();
-                st.pop();
-                op2 = st.top();
-                st.pop();
-                
-                if(s[i][0] == '+'){
-                    ans = (op2 + op1);
-                }
-                else if(s[i][0] == '*'){
-                    ans = (op2 * op1);
-                }
-                else if(s[i][0] == '-'){
-                    ans = (op2 - op1);
-                }
-                else{
-                    ans = (op2 / op1);
-                }
-                
-                st.push(ans);
+            string s = tokens[i];
+
+            if(check(s)){
+                st.push(stoi(s));
             }
             else{
-                st.push(stoi(s[i]));
+                char ch = s[0];
+                int num1 = st.top();
+                st.pop();
+                int num2 = st.top();
+                st.pop();
+
+                switch(ch){
+                    case '*':
+                        ans = num1 *1LL* num2;
+                        break;
+                    
+                    case '/':
+                        ans = 1LL * num2 / num1;
+                        break;
+
+                    case '+':
+                        ans = num1 + num2;
+                        break;
+
+                    case '-':
+                        ans = num2 - num1;
+                        break;
+                }
+
+                st.push(ans);
             }
         }
-        
-        return ans;
-    }
+
+        return st.top();
+    } 
 };
 
 // if it helps plz upvote :)
