@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        int n = maze.size();
+        int m = maze[0].size();
+
+        queue<pair<int,int>> q;
+        q.push({entrance[0],entrance[1]});
+        vector<vector<int>> visited(n,vector<int>(m,0));
+        visited[entrance[0]][entrance[1]] = 1;
+        
+        int dc[] = {-1,1,0,0};
+        int dr[] = {0,0,-1,1};
+        int level = 0;
+
+        while(!q.empty()){
+            int size = q.size();
+            level++;
+
+            for(int i=0;i<size;i++){
+                int x = q.front().first;
+                int y = q.front().second;
+                q.pop();
+
+                for(int j=0;j<4;j++){
+                    int dx = x + dr[j];
+                    int dy = y + dc[j];
+
+                    if(dx >= 0 && dx < n && dy >= 0 && dy < m){
+                        if(visited[dx][dy] == 1 || maze[dx][dy] == '+'){
+                            continue;
+                        }
+                        else if(dx == 0 || dy == 0 || dx == n-1 || dy == m-1){
+                            return level;
+                        }
+
+                        q.push({dx,dy});
+                        visited[dx][dy] = 1;
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+};
