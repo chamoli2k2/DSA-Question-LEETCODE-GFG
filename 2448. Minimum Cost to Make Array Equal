@@ -1,0 +1,36 @@
+class Solution {
+public:
+    long long minCost(vector<int>& nums, vector<int>& cost) {
+        vector<pair<int,int>> arr;
+        long long freq = 0;
+        for(int i=0;i<nums.size();i++){
+            arr.push_back({nums[i],cost[i]});
+            freq = (freq + 1LL * cost[i]);
+        } 
+
+        // sorting
+        sort(arr.begin(),arr.end());
+
+        // Finding median point
+        long long mid = freq / 2;
+        if(freq & 1) mid++;
+
+        long long median;
+        long long f = 0;
+        for(int i=0;i<arr.size();i++){
+            f = (f + 1LL* arr[i].second);
+            median = arr[i].first;
+            if(f >= mid) break;
+        }
+
+        // Finding answer
+        long long ans = 0;
+
+        for(auto i : arr){
+            long long k = abs(1LL*median - i.first) *1LL* i.second;
+            ans += k;
+        }
+
+        return ans;
+    }
+};
