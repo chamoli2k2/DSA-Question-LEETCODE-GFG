@@ -1,57 +1,40 @@
 class Solution {
-private:
-    int findPeak(vector<int> &nums){
-        int e = nums.size();
+public:
+    int search(vector<int>& nums, int target) {
         int s = 0;
-        
-        int mid = s + (e - s) / 2;
-        
-        while(s < e){
-            if(nums[mid] >= nums[0]){
-                s = mid + 1;
-            }else{
-                e = mid;
-            }
-            
-            mid = s + (e - s) / 2;
-        }
-        
-        return s;
-    }
-    
-    int BS(vector<int> &nums,int target,int s,int e){
-        int mid = s + (e - s) / 2;
-        
+        int e = nums.size() - 1;
+        int mid;
+
         while(s <= e){
+            mid = s + (e - s) / 2;
+
+            // If target is found
             if(nums[mid] == target){
                 return mid;
-            }else if(nums[mid] > target){
-                e = mid - 1;
-            }else{
-                s = mid + 1;
             }
-            mid = s + (e - s) / 2;
+
+            // Checking if left part is sorted
+            if(nums[mid] > nums[s]){
+                // Checking if answer lie in left part or not
+                if(target >= nums[s] && target <= nums[mid]){
+                    e = mid - 1;
+                }
+                else{
+                    s = mid + 1;
+                }
+            }
+            // Checking if right part is sorted
+            else if(nums[mid] < nums[s]){
+                // Checking if answer lies in right part or not
+                if(target >= nums[mid] && target <= nums[e]){
+                    s = mid + 1;
+                }
+                else{
+                    e = mid - 1;
+                }
+            }
         }
         
         return -1;
-    }
-public:
-    int search(vector<int>& nums, int target) {
-        // Finding peak element 
-        int peak = findPeak(nums);
-        int ans,e,s;
-        
-        // Applying Binary search algorithm
-        if(target >= nums[0]){
-            s = 0;
-            e = peak - 1;
-            ans = BS(nums,target,s,e);
-        }else{
-            s = peak;
-            e = nums.size() - 1;
-            ans = BS(nums,target,s,e);
-        }
-        
-        return ans;
     }
 };
