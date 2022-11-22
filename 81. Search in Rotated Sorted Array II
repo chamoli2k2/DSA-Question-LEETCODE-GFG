@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int s = 0;
+        int e = nums.size() - 1;
+        int mid;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            // If target is found
+            if(nums[mid] == target){
+                return true;
+            }
+
+            // Checking if left part is sorted
+            if(nums[mid] > nums[s]){
+                // Checking if answer lie in left part or not
+                if(target >= nums[s] && target <= nums[mid]){
+                    e = mid - 1;
+                }
+                else{
+                    s = mid + 1;
+                }
+            }
+            // Checking if right part is sorted
+            else if(nums[mid] < nums[s]){
+                // Checking if answer lies in right part or not
+                if(target >= nums[mid] && target <= nums[e]){
+                    s = mid + 1;
+                }
+                else{
+                    e = mid - 1;
+                }
+            }
+            else{
+                s++;
+            }
+        }
+        
+        return false;
+    }
+};
