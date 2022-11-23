@@ -1,0 +1,71 @@
+class Solution {
+private:
+void mergeTheArr(vector<int> &arr,int left,int mid,int right,int &ans){
+        int copy[right+1];
+        int k = left;
+        int i = left;
+        int j = mid+1;
+        int count = 0;
+
+        for(int t=i;t<=mid;t++){
+            while(j <= right && arr[t] > (2 *1LL* arr[j])){
+                j++;
+            }
+            count += (j-mid-1);
+        }
+
+        ans += count;
+        j = mid + 1;
+        while(i <= mid and j <= right){
+            if(arr[i] <= arr[j]){
+                copy[k++] = arr[i++];
+            }else{
+                copy[k++] = arr[j++];
+            }
+        }
+        
+        // checking if left array is finished or not
+        while(i <= mid){
+            copy[k++] = arr[i++];
+        }
+        
+        // checking if right array is finished or not
+        while(j <= right){
+            copy[k++] = arr[j++];
+        }
+        
+        // copying the array finally in real array
+        for(int it=left;it<=right;it++){
+            arr[it] = copy[it];
+        }
+        
+    }
+    void mergeSort(vector<int> &arr,int left,int right,int &count){
+        // base case
+        if(left >= right){
+            return ;
+        }
+        
+        int mid = left + (right - left)/2;
+        
+        // sorting left part
+        mergeSort(arr,left,mid,count);
+        
+        // sorting right part
+        mergeSort(arr,mid+1,right,count);
+        
+        // merging the array finally
+        mergeTheArr(arr,left,mid,right,count);
+        
+    }
+public:
+    int reversePairs(vector<int>& nums) {
+        int N = nums.size();
+        int left = 0;
+        int right = N-1;
+        int count = 0;
+        
+        mergeSort(nums,left,right,count);
+        return count;
+    }
+};
