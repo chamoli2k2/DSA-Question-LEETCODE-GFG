@@ -1,0 +1,67 @@
+class Solution {
+private:
+    void mergeTheArr(vector<pair<int,int>> &arr,int left,int mid,int right,vector<int> &ans){
+        vector<pair<int,int>> copy(right-left+1,{0,0});
+        int k = 0;
+        int i = left;
+        int j = mid+1;
+
+        while(i <= mid and j <= right){
+            if(arr[i].first > arr[j].first){
+                ans[arr[i].second] += right - j + 1;
+                copy[k++] = arr[i++];
+            }else{
+                copy[k++] = arr[j++];
+            }
+        }
+        
+        // checking if left array is finished or not
+        while(i <= mid){
+            copy[k++] = arr[i++];
+        }
+        
+        // checking if right array is finished or not
+        while(j <= right){
+            copy[k++] = arr[j++];
+        }
+        
+        k = 0;
+        // copying the array finally in real array
+        for(int it=left;it<=right;it++){
+            arr[it] = copy[k++];
+        }
+        
+    }
+    void mergeSort(vector<pair<int,int>> &arr,int left,int right,vector<int> &ans){
+        // base case
+        if(left >= right){
+            return ;
+        }
+        
+        int mid = left + (right - left)/2;
+        
+        // sorting left part
+        mergeSort(arr,left,mid,ans);
+        
+        // sorting right part
+        mergeSort(arr,mid+1,right,ans);
+        
+        // merging the array finally
+        mergeTheArr(arr,left,mid,right,ans);
+        
+    }
+public:
+    vector<int> countSmaller(vector<int>& arr) {
+        vector<pair<int,int>> nums;
+        for(int i=0;i<arr.size();i++) nums.push_back({arr[i],i});
+
+        int N = nums.size();
+        vector<int> ans(N,0);
+        int left = 0;
+        int right = N-1;
+        int count = 0;
+        
+        mergeSort(nums,left,right,ans);
+        return ans;
+    }
+};
