@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int minimumAverageDifference(vector<int>& nums) {
+        long long SUM = 0;
+        for(auto i : nums) SUM += 1LL*i;
+        // Base case
+
+        int ans = INT_MAX;
+        int idx = INT_MAX;
+        long long p1 = 0;
+        long long p2 = SUM;
+
+        for(int i=0;i<nums.size();i++){
+            p1 += nums[i];
+            p2 -= nums[i];
+
+            long long avg1 = p1 / (i + 1);
+            long long avg2;
+            if(i == nums.size()-1){
+                avg2 = 0;
+            }
+            else{
+                avg2 = p2 / (nums.size() - 1 - i);
+            }
+
+            if(abs(avg1 - avg2) < ans){
+                idx = i;
+                ans = abs(avg1 - avg2);
+            }
+        }
+
+        return idx;
+    }
+};
