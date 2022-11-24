@@ -1,0 +1,79 @@
+class Solution {
+public:
+    int findNthDigit(int n) {
+        long long k = 1;
+        vector<long long> power;
+        power.push_back(0);
+
+        // Making power array to store Range of every digit 
+        // For 1 digit no [1,9] -> 9 num -> no. of digit = 9 * 1 = 9
+        // For 2 digit no [10,99] -> 90 num -> no. of digit = 90 * 2 = 180
+        // For 3 digit no [100,999] -> 900 num -> no. of digit = 900 * 3 = 2700
+
+        long long temp = 0;
+        while(temp < INT_MAX){
+            temp = 9 * pow(10,k-1) * k;
+            power.push_back(temp);
+            k++;
+        }
+
+        // After this Power vector look like this
+        // pow[] = [0,9,180,2700,....] -> every index show no of digit in ith digit numer
+        // For eg i = 1 mean no of 1 digit num = 9
+        //        i = 2 mean no of 2 digit num = 180
+        //        i = 3 mean no of 3 digit num = 2700
+
+        // Now we have to find where the nth digit lies, either it is 1 digit number or 2 digit number 
+        // or so on.
+
+        //     1 digit       2 digit          3 digit 
+        // -------9-----------189--------------2389----------------
+
+        // By this we can find out nth digit lies in which range 
+        // if it is b/w [1,9] -> means 1 digit number
+        // if it is b/w [10,189] -> means 2 digit number
+        // if it is b/2 [190,2389] -> means 3 digit number
+
+        // For eg N = 1000 We need to find in which digit number it falls
+        // We can find out this easily 
+        // 1000 - 9 = 991
+        // 991 - 180 = 811
+        // 811 - 2700 = -VE NUMBER  ( MEANS THIS 1000 DIGIT IS 3 DIGIT NUMBER )
+
+        // Now we can find out exact digit easily as we know 811 digit lies in [100,999]
+        // and each digit takes 3 space 
+        // 811 / 3 = 270 digit from begining of 3 digit number is our desired number
+        // 100 + 270 = 370 is the number we looking for
+        // Now we need to find which character number is our 1000 digit in 370
+        // Just take modulas of 811 % 3 = 1 means first digit from begining is our answer
+        // if modulas is 0 means last digit is our answer
+
+        // You may thinking why we divide and took modulas with '3' ?
+        // Ans : It is 3 digit number that's why, If you found out it is k digit number than just 
+        // take modulas and divide it by k.
+
+        // --------------------------------------XXXXXX---------------------------------------
+
+        // Implementation Part
+        // Step 1 : finding out which digit number our Nth digit lies
+        int idx = 1;
+        int N = n;
+        while(N > power[idx]){
+            N -= power[idx++];
+        }
+        
+        // The index idx which we got know represent the digit in which our character lies
+        // (Very Tricky Part)
+        int start = pow(10,idx-1)-1;
+        int desiredNum = start + ceil((double)N / idx);
+        int pos = N % idx;
+
+        // Base check if We got pos == 0 , than means we need to return last digit of number
+        if(pos == 0) return desiredNum % 10;
+
+        // Converting number into string so we can easily evaluate Our answer
+        string S = to_string(desiredNum);
+
+        return S[pos-1] - '0';         
+    }
+};
