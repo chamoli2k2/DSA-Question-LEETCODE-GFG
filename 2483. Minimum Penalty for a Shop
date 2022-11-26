@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int bestClosingTime(string customers) {
+        int k = customers.size();
+        vector<int> prefixY(customers.size(),0);
+        vector<int> prefixX(customers.size(),0);
+        int county = 0,countx = 0;
+        
+        for(int i=customers.size()-1;i>=0;i--){
+            if(customers[i] == 'Y'){
+                county++;
+            }
+            prefixY[i] = county;
+        }
+        
+        prefixX[0] = 0;
+        for(int i=1;i<customers.size();i++){
+            if(customers[i-1] == 'N'){
+                prefixX[i] = prefixX[i-1] + 1;
+            }
+            else{
+                prefixX[i] = prefixX[i-1];
+            } 
+        }
+        
+        int ans = INT_MAX;
+        int idx;
+        
+        for(int i=0;i<k;i++){
+            int k = prefixY[i] + prefixX[i];
+            if(k < ans){
+                ans = k;
+                idx = i;
+            }
+        }
+        
+        if(prefixX[k-1] < ans){
+            idx = k;
+        }
+        
+        return idx;
+    }
+};
