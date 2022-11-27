@@ -1,0 +1,29 @@
+class Solution {
+private:
+    void swapper(vector<int> &arr){
+        int i = 0, j = 0;
+        int n = arr.size();
+
+        while(j < n){
+            if(arr[j] % 2 == 0){
+                swap(arr[i++],arr[j]);
+            }
+            j++;
+        }
+
+        sort(arr.begin(),arr.begin()+i);
+        sort(arr.begin()+i,arr.end());
+    }
+public:
+    long long makeSimilar(vector<int>& nums, vector<int>& target) {
+        swapper(nums);
+        swapper(target);
+        long long ans = 0;
+
+        for(int i=0;i<nums.size();i++){
+            ans += (1LL* abs(nums[i] - target[i]) / 2);
+        }
+
+        return ans / 2;
+    }
+};
