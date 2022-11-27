@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int destroyTargets(vector<int>& nums, int space) {
+        int n = nums.size();
+        unordered_map<int,int> mp;
+        int high = INT_MIN;
+        for(int i=0;i<n;i++){
+            mp[nums[i] % space]++;
+            high = max(mp[nums[i] % space],high);
+        }
+
+        int ans = INT_MAX;
+        for(int i=0;i<n;i++){
+            int k = nums[i] % space;
+            if(mp[k] == high){
+                ans = min(ans,nums[i]);
+            }
+        }
+
+        return ans;
+    }
+};
