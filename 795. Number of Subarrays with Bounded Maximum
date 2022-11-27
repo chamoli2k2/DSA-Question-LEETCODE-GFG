@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int numSubarrayBoundedMax(vector<int>& arr, int left, int right) {
+        int i = 0;
+        int j = 0;
+        int ans = 0;
+        int count = 0;
+
+        while(j < arr.size()){
+            
+            if(arr[j] >= left && arr[j] <= right){
+                count = j - i + 1;
+            }
+            else if(arr[j] > right){
+                count = 0;
+                i = j + 1;
+            }
+
+            ans += count;
+            j++;
+        }
+
+        return ans;
+    }
+};
