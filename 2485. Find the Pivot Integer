@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int pivotInteger(int n) {
+        // Base case 
+        if(n == 1) return 1;
+        vector<int> prefix;
+        int sum = 0;
+        for(int i=1;i<=n;i++){
+            sum += i;
+            prefix.push_back(sum);
+        }
+        
+        int ans = -1;
+        for(int i=1;i<prefix.size();i++){
+            int num = sum - prefix[i-1];
+            if(prefix[i] == num){
+                ans = i+1;
+            }
+        }
+        
+        return ans;
+    }
+};
