@@ -1,0 +1,56 @@
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) {
+        stack<int> st;
+        vector<int> list;
+        vector<int> nxtgreater;
+        
+        ListNode* temp = head;
+        while(temp){
+            list.push_back(temp->val);
+            temp = temp->next;
+        }
+        
+        for(int i=list.size()-1;i>=0;i--){
+            int num = list[i];
+            while(st.size() && num >= st.top()){
+                st.pop();
+            }
+            
+            if(st.size() == 0){
+                list[i] = num;
+            }
+            else{
+                list[i] = st.top();
+            }
+            st.push(num);
+        }
+        
+        
+        int idx = 0;
+        ListNode* ans = NULL;
+        ListNode* tail = NULL;
+        vector<ListNode*> tp;
+        while(head){
+            if(head->val == list[idx++]){
+                tp.push_back(head);
+            }
+            head = head->next;
+        }
+        
+        for(int i=0;i<tp.size();i++){
+            if(ans == NULL){
+                ans = tp[i];
+                tail = tp[i];
+            }
+            else{
+                tail->next = tp[i];
+                tail = tp[i];
+            }
+        }
+        
+        tail->next = NULL;
+        
+        return ans;
+    }
+};
