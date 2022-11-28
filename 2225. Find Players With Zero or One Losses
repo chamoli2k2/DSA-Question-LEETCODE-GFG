@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+        int n = matches.size();
+        
+        unordered_map<int,int> winner;
+        unordered_map<int,int> losser;
+        set<int> player;
+
+        for(auto i : matches){
+            winner[i[0]]++;
+            losser[i[1]]++;
+            player.insert(i[0]);
+            player.insert(i[1]);
+        }
+
+        vector<vector<int>> ans;
+        vector<int> k1;
+        vector<int> k2;
+
+        for(auto it : player){
+            if(losser[it] == 0){
+                k1.push_back(it);
+            }
+            else if(losser[it] == 1){
+                k2.push_back(it);
+            }
+        }
+
+        ans.push_back(k1);
+        ans.push_back(k2);
+
+        return ans;
+    }
+}; 
