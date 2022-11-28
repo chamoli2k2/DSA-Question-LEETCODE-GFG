@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<int> maxScoreIndices(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> pfix1(n+1,0);
+        pfix1[n] = 0;
+
+        // Making pfix 1
+        for(int i=nums.size()-1;i>=0;i--){
+            if(nums[i] == 1){
+                pfix1[i] = pfix1[i+1] + 1;
+            }
+            else{
+                pfix1[i] = pfix1[i+1];
+            }
+        }
+
+        vector<int> pfix0(n+1,0);
+        pfix0[0] = 0;
+        for(int i=1;i<n+1;i++){
+            if(nums[i-1] == 0){
+                pfix0[i] = pfix0[i-1] + 1;
+            }
+            else{
+                pfix0[i] = pfix0[i-1];
+            }
+        }
+        
+        int high = INT_MIN;
+        // finding out max
+        for(int i=0;i<n+1;i++){
+            high = max(high,pfix0[i]+pfix1[i]);
+        }
+
+        vector<int> ans;
+        for(int i=0;i<n+1;i++){
+            if(pfix0[i]+pfix1[i] == high){
+                ans.push_back(i);
+            }
+        }
+
+        return ans;
+    }
+};
