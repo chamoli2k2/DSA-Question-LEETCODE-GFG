@@ -1,24 +1,43 @@
 class Solution {
 public:
-        bool isPossible(vector<int>& A) {
-        unordered_map<int, int> left, end;
-        for (int i: A) {
-            left[i]++;
+    bool isPossible(vector<int>& nums) {
+        int n = nums.size();
+
+        // sorting the array
+        sort(nums.begin(),nums.end());
+
+        unordered_map<int,int> mp;
+        unordered_map<int,int> vacancy;
+
+        // frequency mp
+        for(auto i : nums){
+            mp[i]++;
         }
-        for (int i: A) {
-            if (left[i] == 0) continue;
-            left[i]--;
-            if (end[i - 1] > 0) {   
-                end[i - 1]--;
-                end[i]++;
-            } else if (left[i + 1] > 0 && left[i + 2] > 0) {
-                left[i + 1]--;
-                left[i + 2]--;
-                end[i + 2]++;
-            } else {   
+
+        for(auto i : nums){
+            // Checking if there is element left to put into subsequence
+            if(mp[i] == 0) continue;
+
+            // checking if current element is required in any vacant place or not
+            if(vacancy[i] > 0){
+                // removing from vacancy list & freq list
+                mp[i]--, vacancy[i]--;
+                // adding i+1 as vacancy
+                vacancy[i+1]++;
+                continue;
+            }
+
+            // Checking if (i, i+1, i+2) element are present in map
+            if(mp[i] > 0 && mp[i+1] > 0 && mp[i+2] > 0){
+                mp[i]--, mp[i+1]--, mp[i+2]--;
+                // Puttig i+3 as vacancy
+                vacancy[i+3]++;
+            }
+            else{
                 return false;
             }
         }
+
         return true;
     }
 };
