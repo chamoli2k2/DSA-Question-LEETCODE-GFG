@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(),g.end());
+        sort(s.begin(),s.end());
+
+        int i = 0, j = 0, ans = 0;
+
+        while(i < g.size() && j < s.size()){
+            // If greed of child is less than equal to size of cookie
+            if(g[i] <= s[j]){
+                ans++;
+                i++, j++;
+            }
+            // If greed is greater than size than increment the size of cookie to satisfy the greed
+            else{
+                j++;
+            }
+        }
+
+        return ans;
+    }
+};
