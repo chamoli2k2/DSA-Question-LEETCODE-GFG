@@ -1,0 +1,27 @@
+class Solution {
+private:
+    int solve(long long n){
+        // Base case
+        if(n == 1){
+            return 0;
+        }
+
+        // Checking dp
+        if(dp[n] != 0) return dp[n];
+
+        if(n % 2 == 0){
+            return dp[n] = 1 + solve(n/2);
+        }
+        
+        int k1 = 1 + solve(n+1);
+        int k2 = 1 + solve(n-1);
+        
+        return dp[n] = min(k1,k2);
+    }
+public:
+    unordered_map<int,int> dp;
+    int integerReplacement(int n) {
+        long long N = 1LL*n;
+        return solve(N);
+    }
+};
