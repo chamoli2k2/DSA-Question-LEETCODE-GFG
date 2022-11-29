@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        int n = num.size();
+        stack<char> st;
+        st.push(num[0]);
+
+        for(int i=1;i<n;i++){
+            char ch = num[i];
+
+            while(st.size() && st.top() > ch && k > 0){
+                st.pop();
+                k--;
+            }
+
+            // If starting number are 0
+            if(st.size() == 0 && ch == '0'){
+                continue;
+            }
+
+            st.push(ch);
+        }
+
+        // Case all Number are increasing and k is still greater than 0
+        while(!st.empty() && k > 0){
+            st.pop();
+            k--;
+        }
+
+        // Base case (If stack is empty)
+        if(st.empty()) return "0";
+
+        string ans = "";
+        while(!st.empty()){
+            ans += st.top();
+            st.pop();
+        }
+
+        // Reversing the string
+        reverse(ans.begin(),ans.end());
+
+        return ans;
+    }
+};
