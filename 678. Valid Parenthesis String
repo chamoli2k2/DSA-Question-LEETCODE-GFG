@@ -1,0 +1,45 @@
+class Solution {
+public:
+    bool checkValidString(string s) {
+        int n = s.size();
+        stack<int> open;
+        stack<int> star;
+
+        for(int i=0;i<n;i++){
+            // If we got the open brackes
+            if(s[i] == '('){
+                open.push(i);
+            }
+            // If we got the star '*'
+            else if(s[i] == '*'){
+                star.push(i);
+            }
+            // If we got the close braces
+            else{
+                if(open.size()){
+                    open.pop();
+                }
+                else if(star.size()){
+                    star.pop();
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+
+        // Base case
+        if(open.size() == 0) return true;
+
+        // Poping the remaining element
+        while(open.size() && star.size()){
+            if(open.top() > star.top()){
+                return false;
+            }
+            open.pop();
+            star.pop();
+        }
+
+        return open.size() == 0 ? true : false;
+    }
+};
