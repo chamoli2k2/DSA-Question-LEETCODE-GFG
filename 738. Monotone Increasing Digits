@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int monotoneIncreasingDigits(int n) {
+        string s = to_string(n);
+        int size = s.size();
+        int idx = s.size()-1;
+        
+        // Finding Cliff
+        while(idx-1 >= 0){
+            if(s[idx] < s[idx-1]){
+                break;
+            }
+            idx--;
+        }
+
+        // base case
+        if(idx == 0) return (int)stoi(s);
+
+        s[idx-1] = s[idx-1] - 1;
+        while(idx < size){
+            s[idx++] = '9';
+        }
+
+        return monotoneIncreasingDigits((int)stoi(s));
+    }
+};
