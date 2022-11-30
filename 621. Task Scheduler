@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int gapCount, space, maxiFreq = INT_MIN;
+        char maxiFreqChar;
+        unordered_map<char,int> mp;
+        // Counting the freq
+        for(auto i : tasks){
+            mp[i]++;
+            maxiFreq = max(maxiFreq,mp[i]);
+            if(mp[i] == maxiFreq){
+                maxiFreqChar = i;
+            }
+        }
+
+        // Removing maxifreq char from map
+        mp.erase(maxiFreqChar);
+
+        space = maxiFreq - 1;
+        gapCount = space * n;
+
+        for(auto i : mp){
+            gapCount -= min(space,i.second);
+        }
+
+        return gapCount < 0 ? tasks.size() : gapCount + tasks.size();
+    }
+};
