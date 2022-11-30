@@ -1,0 +1,45 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+        unordered_map<char,int> mp;
+        int maxFreq = 0;
+        int n = s.size();
+        char maxchar;
+
+        for(auto i : s){
+            mp[i]++;
+            if(mp[i] > maxFreq){
+                maxFreq = mp[i];
+                maxchar = i;
+            }
+        }
+
+        // Erasing the maxi freq char
+        mp.erase(maxchar);
+        
+        if(2*maxFreq-1 > n) return "";
+
+        string ans(n,'*');
+
+        int idx = 0;
+        while(idx < s.size() && maxFreq){
+            ans[idx] = maxchar;
+            idx += 2;
+            maxFreq--;
+        }
+
+        for(auto it : mp){
+            int k = it.second;
+            
+            while(k){
+                if(idx >= n) idx = 1;
+
+                ans[idx] = it.first;
+                idx += 2;
+                k--;
+            }
+        }
+
+        return ans;
+    }
+};
