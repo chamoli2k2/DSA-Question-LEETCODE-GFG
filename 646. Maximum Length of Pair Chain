@@ -1,0 +1,27 @@
+class Solution {
+private:
+    static bool cmp(vector<int> &p1,vector<int> &p2){
+        return p1[1] < p2[1];
+    }
+
+    int solve(vector<vector<int>> &pairs,int idx,int prev){
+        // Base case
+        if(idx >= pairs.size()){
+            return 0;
+        }
+
+        int pick = INT_MIN;
+        if(prev == -1 || pairs[idx][0] > pairs[prev][1] ){
+            return 1 + solve(pairs,idx+1,idx);
+        }
+
+        int notPick = solve(pairs,idx+1,prev);
+
+        return max(pick,notPick);
+    }
+public:
+    int findLongestChain(vector<vector<int>>& pairs) {
+        sort(pairs.begin(),pairs.end(),cmp);
+        return solve(pairs,0,-1);
+    }
+};
