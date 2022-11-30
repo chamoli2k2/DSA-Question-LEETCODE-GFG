@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maximumSwap(int num) {
+        // Base case
+        if(num < 10) return num;
+
+        string nums = to_string(num);
+        int n = nums.size();
+        vector<int> nxtGreater(n,-1);
+        nxtGreater[n-1] = nums[n-1];
+
+        for(int i=n-2;i>=0;i--){
+            if(nxtGreater[i+1] >= nums[i]){
+                nxtGreater[i] = nxtGreater[i+1];
+            }
+            else{
+                nxtGreater[i] = nums[i];
+            }
+        }
+
+        for(int i=0;i<nums.size();i++){
+            if(nums[i] != nxtGreater[i]){
+                int idx = i+1, k;
+                while(idx < nums.size()){
+                    if(nums[idx] == nxtGreater[i]){
+                        k = idx;
+                    }
+                    idx++;
+                }
+                swap(nums[i],nums[k]);
+                break;
+            }
+        }
+
+        int ans = stoi(nums);
+        return ans;
+    }
+};
