@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+        int unique = 0;
+        unordered_map<char,int> mp1;
+        unordered_map<char,int> mp2;
+        vector<int> ans;
+
+        for(auto i : s) mp1[i]++, mp2[i]++;
+
+        int i = 0;
+        int j = 0;
+
+        while(j < s.size()){
+            // If element is going 1st time in the stack
+            if(mp2[s[j]] == mp1[s[j]]){
+                unique++;
+            }
+
+            // Decreasing it's freq
+            mp1[s[j]]--;
+
+            // Checking if mp[s[j]] becomes empty 
+            if(mp1[s[j]] == 0){
+                // Decrementing the unique number count
+                unique--;
+            }
+
+            // Checking if Set becomes empty 
+            if(unique == 0){
+                int len = j - i + 1;
+                ans.push_back(len);
+                // Updating the 'ith pointer'
+                i = j + 1;
+            }
+
+            j++;
+        }
+
+        return ans;
+    }
+};
