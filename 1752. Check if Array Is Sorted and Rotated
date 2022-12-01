@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool check(vector<int>& nums) {
+        int idx = 0;
+        int n = nums.size();
+        for(int i=1;i<n;i++){
+            if(nums[i] < nums[i-1]){
+                idx = i;
+                break;
+            }
+        }
+
+        // Base case
+        if(idx == n) return true;
+        
+        // Reversing the array part 1 
+        reverse(nums.begin(),nums.begin()+idx);
+        reverse(nums.begin()+idx,nums.end());
+
+        // Reversing the entire array
+        reverse(nums.begin(),nums.end());
+
+        idx = n;
+        for(int i=1;i<n;i++){
+            if(nums[i] < nums[i-1]){
+                idx = i;
+                break;
+            }
+        }
+
+        return idx == n ? true : false;
+    }
+};
