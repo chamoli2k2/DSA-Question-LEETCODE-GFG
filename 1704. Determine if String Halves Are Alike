@@ -1,0 +1,24 @@
+class Solution {
+private:
+    bool check(char ch){
+        if(ch == 'a' || ch == 'i' || ch == 'e' || ch == 'o' || ch == 'u'){
+            return true;
+        }
+        else if(ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U'){
+            return true;
+        }
+        return false;
+    }
+public:
+    bool halvesAreAlike(string s) {
+        int n = s.size()/2;
+        int k1 = 0, k2 = 0;
+        for(int i=0;i<n;i++){
+            if(check(s[i])) k1++;
+
+            if(check(s[n+i])) k2++;
+        }
+        
+        return k1 == k2;
+    }
+};
