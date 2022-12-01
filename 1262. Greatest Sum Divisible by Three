@@ -1,0 +1,23 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,vector<vector<int>> &dp,int idx,int rem){
+        // Base case
+        if(idx >= nums.size()){
+            if(rem == 0) return 0;
+            return -1e8;
+        }
+
+        if(dp[idx][rem] != -1) return dp[idx][rem];
+
+        int pick = nums[idx] + solve(nums,dp,idx+1,(rem+nums[idx])%3);
+        int notPick = solve(nums,dp,idx+1,rem);
+
+        return dp[idx][rem] = max(pick,notPick);
+    }
+public:
+    int maxSumDivThree(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n,vector<int>(4,-1));
+        return solve(nums,dp,0,0);
+    }
+};
