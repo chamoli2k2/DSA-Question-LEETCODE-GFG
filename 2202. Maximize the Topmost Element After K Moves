@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maximumTop(vector<int>& nums, int k) {
+        int n = nums.size();
+        priority_queue<int> pq;
+
+        // Base case
+        if(k == 0) return nums[0];
+        if(n == 1 && k & 1) return -1;
+        if(k == 1) return nums[1];
+
+        int maxi = INT_MIN;
+        for(auto i : nums) maxi = max(maxi,i);
+
+        // Base case 
+        if(k > n) return maxi;
+
+        int idx = 0;
+        while(k-1){
+            pq.push(nums[idx++]);
+            k--;
+        }
+
+        return idx+1 < n && nums[idx+1] > pq.top() ? nums[idx+1] : pq.top(); 
+    }
+};
