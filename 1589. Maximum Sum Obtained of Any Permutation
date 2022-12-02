@@ -1,0 +1,48 @@
+int mod = 1e9 + 7;
+class Solution {
+private:
+    static bool cmp(vector<int> &p1,vector<int> &p2){
+        return p1[1] < p2[1];
+    }
+public:
+    int maxSumRangeQuery(vector<int>& nums, vector<vector<int>>& requests) {
+        // Making unordered map to keep track into 
+        vector<int> prefix(nums.size(),0);
+        long long ans = 0;
+
+        // We just need to make map
+        for(auto it : requests){
+            int s = it[0];
+            int e = it[1] + 1;
+            prefix[s]++;
+            if(e < nums.size()){
+                prefix[e]--;
+            }
+        }
+
+        // Evaluating prefix sum
+        for(int i=1;i<nums.size();i++){
+            prefix[i] += prefix[i-1];
+        }
+
+        // Sorting the nums
+        sort(nums.begin(),nums.end());
+
+        // making the heap
+        priority_queue<int> pq;
+
+        // pushing element into priority queue
+        for(auto it : prefix){
+            pq.push(it);
+        }
+
+        int idx = nums.size() - 1;
+        while(idx >= 0 && pq.size()){
+            int t = pq.top();
+            pq.pop();
+            ans = (ans % mod + (t *1LL* nums[idx--]) % mod) % mod;
+        }
+
+        return ans;
+    }
+};
