@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int partitionString(string s) {
+        int n = s.size();
+        unordered_map<char,int> mp;
+
+        int ans = 1;
+        int i = 0;
+        int j = 0;
+
+        while(j < n){
+            // putting element in map
+            mp[s[j]]++;
+
+            // Checking if it is unique
+            if(mp[s[j]] > 1){
+                ans++;
+                while(i < j){
+                    mp[s[i++]]--;
+                }
+            }
+            j++;
+        }
+
+        return ans;
+    }
+};
