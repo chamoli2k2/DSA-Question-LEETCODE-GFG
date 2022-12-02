@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int largestValsFromLabels(vector<int>& values, vector<int>& labels, int numWanted, int useLimit) {
+        // Making priority queue
+        priority_queue<pair<int,int>> pq;
+        int n = values.size();
+
+        for(int i=0;i<n;i++) pq.push({values[i],labels[i]});
+
+        // Making map to keep track of uselimit
+        unordered_map<int,int> mp;
+
+        int ans = 0;
+        int flag = (useLimit <= 1 ? false : true);
+        while(pq.size() && numWanted){
+            int num = pq.top().first;
+            int tag = pq.top().second;
+            pq.pop();
+
+            // Putting into map
+            mp[tag]++;
+
+            // maximum product of 1 type can be taken
+            if(mp[tag] <= useLimit){
+                ans += num;
+                numWanted--;
+            }
+        }
+
+        return ans;
+    }
+};
