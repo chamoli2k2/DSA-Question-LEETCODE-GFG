@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool closeStrings(string word1, string word2) {
+        // Base case
+        if(word1.size() != word2.size()) return false;
+
+        unordered_map<char,int> mp1;
+        unordered_map<char,int> mp2;
+        for(int i=0;i<word1.size();i++){
+            mp1[word1[i]]++;
+            mp2[word2[i]]++;
+        }
+
+        unordered_map<int,int> k1;
+        unordered_map<int,int> k2;
+
+        for(auto i : mp1){
+            k1[i.second]++;
+            if(mp2[i.first] == 0) return false;
+        }
+
+        for(auto i : mp2){
+            k2[i.second]++;
+        }
+
+        if(k1.size() != k2.size()) return false;
+
+        for(auto i : k1){
+            if(k2[i.first] != i.second){
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
