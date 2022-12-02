@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minSteps(string s, string t) {
+        int ans = 0;
+        unordered_map<char,int> mp;
+        for(auto i : t) mp[i]++;
+
+        for(auto i : s){
+            if(mp.find(i) != mp.end() && mp[i] > 0){
+                mp[i]--;
+            }
+        }
+
+        for(auto i : mp){
+            ans += i.second;
+        }
+
+        return ans;
+    }
+};
