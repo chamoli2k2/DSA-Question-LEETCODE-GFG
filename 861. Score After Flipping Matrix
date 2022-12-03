@@ -1,0 +1,53 @@
+class Solution {
+private:
+    void flipRow(vector<vector<int>> &grid,int idx){
+        for(int i=0;i<grid[0].size();i++){
+            grid[idx][i] = !grid[idx][i];
+        }
+    }
+
+    void flipCol(vector<vector<int>> &grid,int idx){
+        for(int i=0;i<grid.size();i++){
+            grid[i][idx] = !grid[i][idx];
+        }
+    }
+public:
+    int matrixScore(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<int> column(m,0);
+
+        // Fliping the row whose 1st digit start with zero
+        for(int i=0;i<n;i++){
+            if(grid[i][0] == 0){
+                flipRow(grid,i);
+            }
+        }
+
+        // counting the number of zero
+        for(int j=1;j<m;j++){
+            for(int i=0;i<n;i++){
+                if(grid[i][j] == 0){
+                    column[j]++;
+                }
+            }
+        }
+
+        // Fliping the column with 
+        for(int i=0;i<m;i++){
+            if(column[i] > n/2){
+                flipCol(grid,i);
+            }
+        }
+
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            for(int j=m-1;j>=0;j--){
+                int num = grid[i][j];
+                ans += (num * (1 << (m-j-1)));
+            }
+        }
+
+        return ans;
+    }
+};
