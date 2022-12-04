@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool isCircularSentence(string s) {
+        int n = s.size(), i = 0;
+        if(s[0] != s[n-1]) return false;
+        
+        vector<string> st;
+        string d = "";
+        while(i < n){
+            if(s[i] == ' '){
+                st.push_back(d);
+                d = "";
+            }
+            else{
+                d += s[i];
+            }
+            
+            i++;
+            if(i == n){
+                st.push_back(d);
+            }
+        }
+        
+        for(int i=0;i<st.size()-1;i++){
+            string t = st[i];
+            string k = st[i+1];
+            if(t[t.size()-1] != k[0]) return false;
+        }
+        
+        return true;
+    }
+};
