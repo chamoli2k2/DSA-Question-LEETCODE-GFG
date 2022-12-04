@@ -1,0 +1,31 @@
+class Solution {
+public:
+    long long dividePlayers(vector<int>& s) {
+        int n = s.size();
+        int sum = accumulate(s.begin(),s.end(),0);
+        if((2*sum) % n != 0) return -1;
+        
+        unordered_map<int,int> mp;
+        for(int i=0;i<n;i++) mp[s[i]]++;
+        
+        
+        int target = (2*sum) / n;
+        sort(s.begin(),s.end());
+        
+        long long ans = 0;
+        int i = 0, j = n-1;
+
+        while(i < j){
+            ans += s[i] *1LL* s[j];
+            if(s[i] + s[j] == target){
+                i++,j--;
+
+            }
+            else if(s[i] + s[j] > target || s[i] + s[j] < target){
+                return -1;
+            }
+        }
+        
+        return ans;
+    }
+};
