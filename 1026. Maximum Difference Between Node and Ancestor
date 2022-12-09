@@ -1,0 +1,50 @@
+class Solution {
+private:
+    pair<int,int> solve(TreeNode* root,int &ans){
+        // Base case
+    
+        pair<int,int> ls, rs;
+        int newMin, newMax;
+        if(root->left == NULL && root->right == NULL){
+            newMin = root->val, newMax = root->val;
+            ans = max(ans,0);
+        }
+        else if(root->left && root->right == NULL){
+            ls = solve(root->left,ans);
+            newMin = min(root->val,ls.first);
+            newMax = max(root->val,ls.second);
+            int k1 = abs(root->val - ls.first);
+            int k2 = abs(root->val - ls.second);
+            ans = max({ans,k1,k2});
+        }
+        else if(root->right && root->left == NULL){
+            rs = solve(root->right,ans);
+            newMin = min(root->val,rs.first);
+            newMax = max(root->val,rs.second);
+            ans = max({abs(root->val-rs.first),abs(root->val-rs.second),ans});
+        }
+        else{
+            ls = solve(root->left,ans);
+            rs = solve(root->right,ans);
+            int k1 = min(ls.first,rs.first);
+            int k2 = max(ls.second,rs.second);
+            int val1 = abs(root->val - k1);
+            int val2 = abs(root->val - k2);
+            cout<<val1<<" "<<val2<<" "<<ans<<endl;
+            ans = max(ans,max(val1,val2));
+            cout<<ans<<endl;
+            newMin = min(root->val,k1);
+            newMax = max(root->val,k2);
+        }
+        
+        pair<int,int> newPair = {newMin,newMax};
+        return newPair;
+    }
+public:
+    
+    int maxAncestorDiff(TreeNode* root) {
+        int ans = INT_MIN;
+        solve(root,ans);
+        return ans;
+    }
+};
