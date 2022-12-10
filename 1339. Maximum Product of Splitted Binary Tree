@@ -1,0 +1,41 @@
+int mod = 1e9 + 7;
+class Solution {
+private:
+    long long solve(TreeNode* root){
+        // Base case
+        if(root == NULL){
+            return 0;
+        }
+
+        long long ls = solve(root->left);
+        long long rs = solve(root->right);
+
+        // Case 1 : ans is (left + current) * right
+        long long k1 = (TotalSum - rs) * rs; 
+
+        // Case 2 : ans is (right + current) * left
+        long long k2 = (TotalSum - ls) * ls;
+
+        ans = max({ans,k1,k2});
+
+        return ls + rs + root->val;
+    }
+
+    // Finding Total sum of Tree
+    void findSum(TreeNode* root){
+        // Base case
+        if(root == NULL) return;
+
+        TotalSum += 1LL*root->val;
+        findSum(root->left);
+        findSum(root->right);
+    }
+public:
+    long long ans = INT_MIN;
+    long long TotalSum = 0;
+    int maxProduct(TreeNode* root) {
+        findSum(root);
+        solve(root);
+        return ans % mod;
+    }
+};
