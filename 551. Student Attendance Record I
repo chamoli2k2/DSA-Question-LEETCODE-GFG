@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool checkRecord(string s) {
+        int Absent = 0;
+        int count = 0, Late = 0;
+
+        for(auto it : s){
+            if(it == 'A') Absent++;
+            
+            if(it == 'L'){
+                count++;
+                Late = max(Late,count);
+            }
+            else{
+                count = 0;
+            }
+        }
+
+        return (Absent >= 2 || Late >= 3) ? 0 : 1;
+    }
+};
