@@ -1,0 +1,28 @@
+class Solution {
+private:
+    bool solve(vector<int> &nums,vector<vector<int>> &dp,int idx,int target){
+        // base case
+        if(target == 0) return true;
+        if(idx >= nums.size()) return false;
+
+        // Checking if answer is already present
+        if(dp[idx][target] != -1) return dp[idx][target];
+
+        int take = false;
+        if(nums[idx] <= target){
+            take = solve(nums,dp,idx+1,target-nums[idx]);
+        }
+
+        int notTake = solve(nums,dp,idx+1,target);
+
+        return dp[idx][target] = take | notTake;
+    }
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = accumulate(nums.begin(),nums.end(),0);
+        if(sum & 1) return false;
+        int target = sum / 2;
+        vector<vector<int>> dp(nums.size(),vector<int>(target+1,-1));
+        return solve(nums,dp,0,target);
+    }
+};
