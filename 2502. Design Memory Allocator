@@ -1,0 +1,55 @@
+class Allocator {
+public:
+    unordered_map<int,int> mp;
+    vector<int> nums;
+    Allocator(int n) {
+        nums.resize(n,-69);
+    }
+    
+    int allocate(int size, int mID) {
+        // Checking if size of desire is available
+        int count = 0;
+        int i, idx;
+        for(i=0;i<nums.size();i++){
+            if(nums[i] == -69){
+                count++;
+            }
+            else{
+                count = 0;
+            }
+            
+            if(count == size){
+                idx = i;
+                while(count){
+                    nums[idx--] = mID;
+                    count--;
+                }
+                break;
+            }
+        }
+        
+        // Checking 
+        if(i == nums.size()){
+            return -1;
+        }
+        
+        mp[mID] += size;
+        return idx + 1;
+    }
+    
+    int free(int mID) {
+        if(mp.count(mID) > 0){
+            for(int i=0;i<nums.size();i++){
+                if(nums[i] == mID){
+                    nums[i] = -69;
+                }
+            }
+            
+            int k = mp[mID];
+            mp.erase(mID);
+            return k;
+        }
+        
+        return 0;
+    }
+};
