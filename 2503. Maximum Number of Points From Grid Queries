@@ -1,0 +1,75 @@
+class Solution {
+private:
+public:
+    vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& qt) {
+        int n = grid.size();
+        int m = grid[0].size();
+        int k = qt.size();
+
+        vector<pair<int,int>> nums;
+        // Putting element into new vector and sorting queries
+        for(int i=0;i<k;i++) nums.push_back({qt[i],i});
+
+        // Sorting the array
+        sort(nums.begin(),nums.end());
+
+        // Creating the min queue
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
+        pq.push({grid[0][0],{0,0}});
+        int count = 0;
+        vector<int> ans(k);
+        vector<vector<int>> visited(n,vector<int>(m,0));
+        visited[0][0] = 1;
+
+
+        for(int i=0;i<k;i++){
+            int qry = nums[i].first;
+            int idx = nums[i].second;
+
+            // Putting into priority queue
+            while(!pq.empty() && qry > pq.top().first){
+                int x = pq.top().second.first;
+                int y = pq.top().second.second;
+
+                // increasing count
+                count++;
+
+                // popping the element of queue
+                pq.pop();
+
+                // putting the left right top down
+                // up
+                if(x-1 >= 0 && visited[x-1][y] == 0){
+                    pq.push({grid[x-1][y],{x-1,y}});
+                    // marking visited
+                    visited[x-1][y] = 1;
+                }
+
+                // down 
+                if(x+1 < grid.size() && visited[x+1][y] == 0){
+                    pq.push({grid[x+1][y],{x+1,y}});
+                    // marking visited
+                    visited[x+1][y] = 1;
+                }
+
+                // left 
+                if(y-1 >= 0 && visited[x][y-1] == 0){
+                    pq.push({grid[x][y-1],{x,y-1}});
+                    // marking visited
+                    visited[x][y-1] = 1;
+                }
+
+                // right
+                if(y+1 < grid[0].size() && visited[x][y+1] == 0){
+                    pq.push({grid[x][y+1],{x,y+1}});
+                    // marking visited
+                    visited[x][y+1] = 1;
+                }
+            }
+
+            ans[idx] = count;
+        }
+    
+        return ans;
+    }
+};
