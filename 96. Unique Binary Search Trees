@@ -1,28 +1,25 @@
 class Solution {
-public:
-    int numTrees(int N) {
-        // concept is of catlon number
-        if(N < 2){
+private:
+    int solve(int n,vector<int> &dp){
+        // Base case
+        if(n < 2){
             return 1;
         }
-        
-        // creating dp array
-        vector<long long> dp(N+1,0);
-        dp[0] = 1;
-        dp[1] = 1;
-        int mod = 1e9 + 7;
-        for(int i=2;i<=N;i++){
-            long long res = 0;
-            for(int j=0;j<i;j++){
-                long long left = dp[j];
-                long long right = dp[i-j-1];
-                
-                res += (left * right);
-            }
-            
-            dp[i] = res;
+
+        if(dp[n] != -1){
+            return dp[n];
         }
-        
-        return dp[N];
+
+        int ans = 0;
+        for(int i=1;i<=n;i++){
+            ans += solve(i-1,dp) * solve(n-i,dp);
+        }
+
+        return dp[n] = ans;
+    }
+public:
+    int numTrees(int n) {
+        vector<int> dp(n+1,-1);
+        return solve(n,dp);
     }
 };
