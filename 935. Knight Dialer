@@ -1,0 +1,45 @@
+int mod = 1e9 + 7;
+class Solution {
+private:
+    int solve(vector<vector<char>> &nums,vector<vector<vector<int>>> &dp,int i,int j,int n,int k){
+        // base case
+        if(i < 0 || j < 0 || j >= nums[0].size() || i >= nums.size() || nums[i][j] == '*' || nums[i][j] == '#'){
+            return 0;
+        }
+
+        if(k == n){
+            return 1;
+        }
+
+        if(dp[i][j][k] != -1){
+            return dp[i][j][k];
+        }
+
+        // traversing
+        long long rsu = solve(nums,dp,i-1,j+2,n,k+1);
+        long long rsd = solve(nums,dp,i+1,j+2,n,k+1);
+        long long lsu = solve(nums,dp,i-1,j-2,n,k+1);
+        long long lsd = solve(nums,dp,i+1,j-2,n,k+1);
+        long long usl = solve(nums,dp,i-2,j-1,n,k+1);
+        long long usr = solve(nums,dp,i-2,j+1,n,k+1);
+        long long dsl = solve(nums,dp,i+2,j-1,n,k+1);
+        long long dsr = solve(nums,dp,i+2,j+1,n,k+1);
+
+        return dp[i][j][k] = (rsu%mod+rsd%mod+lsu%mod+lsd%mod+usl%mod+usr%mod+dsl%mod+dsr%mod) % mod;
+    }
+public:
+    int knightDialer(int n) {
+        vector<vector<vector<int>>> dp(4,vector<vector<int>>(3,vector<int>(n+1,-1)));
+        vector<vector<char>> nums = {{'1','2','3'},{'4','5','6'},{'7','8','9'},{'*','0','#'}};
+        int ans = 0;
+        for(int i=0;i<4;i++){
+            for(int j=0;j<3;j++){
+                vector<vector<int>> visited(4,vector<int>(3,-1));
+                if(nums[i][j] != '*' && nums[i][j] != '#'){
+                    ans = (ans % mod + solve(nums,dp,i,j,n,1) % mod) % mod;
+                }
+            }
+        }
+        return ans;
+    }
+};
