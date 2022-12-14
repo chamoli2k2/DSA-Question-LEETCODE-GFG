@@ -1,0 +1,32 @@
+class Solution {
+private:
+    int solve(vector<int> &days,vector<int> &costs,vector<vector<int>> &dp,int idx,int free){
+        // base case
+        if(idx >= days.size()){
+            return 0;
+        }
+
+        if(dp[idx][free] != -1) return dp[idx][free];
+
+        
+        // Checking if free days are active
+        if(free > days[idx]){
+            return dp[idx][free] = solve(days,costs,dp,idx+1,free);
+        }
+
+        // we have 3 option 
+        int k1 = costs[0] + solve(days,costs,dp,idx+1,days[idx]+1);
+        int k2 = costs[1] + solve(days,costs,dp,idx+1,days[idx]+7);
+        int k3 = costs[2] + solve(days,costs,dp,idx+1,days[idx]+30);
+        
+
+        return dp[idx][free] = min({k1,k2,k3});
+    }
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        int n = days.size();
+        vector<vector<int>> dp(n,vector<int>(400,-1));
+        int ans = solve(days,costs,dp,0,0);
+        return ans;
+    }
+};
