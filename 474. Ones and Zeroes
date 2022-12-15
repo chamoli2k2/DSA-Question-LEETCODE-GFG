@@ -1,0 +1,47 @@
+class Solution {
+private:
+    int solve(vector<vector<vector<int>>> &dp,int idx,int m,int n,int k){
+        // base case
+        if(idx >= k){
+            return 0;
+        }
+
+        // If already answer is present in dp
+        if(dp[idx][m][n] != -1){
+            return dp[idx][m][n];
+        }
+
+        int countzero = nums1[idx];
+        int countone = nums2[idx];
+
+        // Checking 
+        int take = 0;
+        if(countzero <= m && countone <= n){
+            take = 1 + solve(dp,idx+1,m-countzero,n-countone,k);
+        }
+
+        int notake = solve(dp,idx+1,m,n,k);
+
+        return dp[idx][m][n] = max(take,notake);
+    }
+public:
+    vector<int> nums1, nums2;
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        int k = strs.size();
+        vector<vector<vector<int>>> dp(k,vector<vector<int>>(m+1,vector<int>(n+1,-1)));
+
+        for(int i=0;i<k;i++){
+            int count = 0;
+            int p = strs[i].size();
+            for(int j=0;j<strs[i].size();j++){
+                if(strs[i][j] == '0'){
+                    count++;
+                }
+            }
+            nums1.push_back(count);
+            nums2.push_back(p-count);
+        }
+
+        return solve(dp,0,m,n,k);
+    }
+};
