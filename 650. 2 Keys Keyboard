@@ -1,0 +1,33 @@
+class Solution {
+private:
+    int solve(int len,int cpy,int n,vector<vector<int>> &dp){
+        // Base case
+        if(len == n){
+            return 0;
+        }
+
+        if(len >= n){
+            return 1e7;
+        }
+
+        if(dp[len][cpy] != -1){
+            return dp[len][cpy];
+        }
+
+        // Case 1 : if cpy == 0
+        if(cpy == 0){
+            return dp[len][cpy] = 1 + solve(len,len,n,dp);
+        }
+
+        // Case 2 :
+        int op1 = 1 + solve(len+cpy,0,n,dp);
+        int op2 = 1 + solve(len+cpy,cpy,n,dp);
+        
+        return dp[len][cpy] = min(op1,op2);
+    }
+public:
+    int minSteps(int n) {
+        vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
+        return solve(1,0,n,dp);
+    }
+};
