@@ -1,0 +1,29 @@
+int mod = 1e9 + 7;
+class Solution {
+private:
+    int solve(vector<vector<vector<int>>> &dp,int i,int j,int n,int m,int maxMove){
+        // Base case
+        if(i < 0 || j < 0 || i >= n || j >= m){
+            return 1;
+        }
+
+        if(maxMove <= 0) return 0;
+
+        if(dp[i][j][maxMove] != -1) return dp[i][j][maxMove];
+        
+        // We have 4 paths
+        long long ls = solve(dp,i,j-1,n,m,maxMove-1);
+        long long rs = solve(dp,i,j+1,n,m,maxMove-1);
+        long long us = solve(dp,i-1,j,n,m,maxMove-1);
+        long long ds = solve(dp,i+1,j,n,m,maxMove-1);
+
+
+        return dp[i][j][maxMove] = (ls % mod + rs % mod + us % mod + ds % mod) % mod;
+    }
+public:
+    int findPaths(int n, int m, int maxMove, int sr, int sc) {
+        vector<vector<vector<int>>> dp(n,vector<vector<int>>(m,vector<int>(maxMove+1,-1)));
+        // Making visited array
+        return solve(dp,sr,sc,n,m,maxMove);
+    }
+};
