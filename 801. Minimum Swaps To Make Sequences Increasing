@@ -1,0 +1,42 @@
+class Solution {
+private:
+    int solve(vector<int> &nums1,vector<int> &nums2,vector<vector<int>> &dp,int idx,int swapped){
+        // Base case
+        if(idx >= nums1.size()){
+            return 0;
+        }
+
+        if(dp[idx][swapped] != -1) return dp[idx][swapped];
+
+
+        int prev1 = nums1[idx-1];
+        int prev2 = nums2[idx-1];
+
+        if(swapped){
+            swap(prev1,prev2);
+        }
+
+        // No swapp
+        int ans = INT_MAX;
+
+        if(nums1[idx] > prev1 && nums2[idx] > prev2){
+            ans = solve(nums1,nums2,dp,idx+1,0);
+        }
+
+        // if swapped
+        if(nums1[idx] > prev2 && nums2[idx] > prev1){
+            ans = min(ans,1+solve(nums1,nums2,dp,idx+1,1));
+        }
+
+        return dp[idx][swapped] = ans;
+    }
+public:
+    int minSwap(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        // inserting -1 in both vectors initially
+        nums1.insert(nums1.begin(),-1);
+        nums2.insert(nums2.begin(),-1);
+        vector<vector<int>> dp(n+1,vector<int>(2,-1));
+        return solve(nums1,nums2,dp,1,0);
+    }
+};
