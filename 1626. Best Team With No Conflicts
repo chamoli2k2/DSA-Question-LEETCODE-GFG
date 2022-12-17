@@ -1,0 +1,36 @@
+class Solution {
+private:
+    int solve(vector<pair<int,int>> &nums,vector<vector<int>> &dp,int idx,int prev){
+        // Base case
+        if(idx >= nums.size()){
+            return 0;
+        }
+
+        if(dp[idx][prev+1] != -1){
+            return dp[idx][prev+1];
+        }
+
+        int take = 0;
+        if(prev == -1 || nums[idx].second >= nums[prev].second){
+            take = nums[idx].second + solve(nums,dp,idx+1,idx);
+        }
+
+        int notake = solve(nums,dp,idx+1,prev);
+
+        return dp[idx][prev+1] = max(take,notake);
+    }
+public:
+    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
+        int n = scores.size();
+        vector<pair<int,int>> nums(n);
+        for(int i=0;i<n;i++){
+            nums[i] = {ages[i],scores[i]};
+        }
+
+        // Sorting according to age
+        sort(nums.begin(),nums.end());
+        // Making the dp array
+        vector<vector<int>> dp(n,vector<int>(n+1,-1));
+        return solve(nums,dp,0,-1);
+    }
+};
