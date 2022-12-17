@@ -1,0 +1,29 @@
+class Solution {
+    int solve(vector<int> &rods,vector<unordered_map<int,int>> &dp,int idx,int leftPart,int rightPart){
+        // base case
+        if(idx >= rods.size()){
+            return leftPart == rightPart ? 0 : -1e6;
+        }
+
+        if(dp[idx].find(leftPart-rightPart) != dp[idx].end()) return dp[idx][leftPart-rightPart];
+
+        // We have three option 
+        // Current element is part of left part or right part or not part of any
+        int ls = rods[idx] + solve(rods,dp,idx+1,leftPart+rods[idx],rightPart);
+
+        int rs = solve(rods,dp,idx+1,leftPart,rightPart+rods[idx]);
+
+        int notPart = solve(rods,dp,idx+1,leftPart,rightPart);
+
+        return dp[idx][leftPart-rightPart] = max({ls,rs,notPart});
+    }
+public:
+    int tallestBillboard(vector<int>& rods) {
+        int n = rods.size();
+        int sum = 0;
+        for(auto i : rods) sum += i;
+
+        vector<unordered_map<int,int>> dp(n);
+        return solve(rods,dp,0,0,0);
+    }
+};
