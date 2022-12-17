@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(vector<int> &slices,vector<vector<int>> &dp,int idx,int end,int k){
+        // Base case
+        if(k == 0 || idx >= end){
+            return 0;
+        }
+
+        if(dp[idx][k] != -1) return dp[idx][k];
+
+        int take = slices[idx] + solve(slices,dp,idx+2,end,k-1);
+        int notake = solve(slices,dp,idx+1,end,k);
+
+        return dp[idx][k] = max(take,notake);
+    }
+public:
+    int maxSizeSlices(vector<int>& slices) {
+        int n = slices.size();
+        vector<vector<int>> dp1(n,vector<int>(n/3+1,-1));
+        vector<vector<int>> dp2(n,vector<int>(n/3+1,-1));
+
+        // Same as House Robber 2 problem
+        int case1 = solve(slices,dp1,0,n-1,n/3);
+        int case2 = solve(slices,dp2,1,n,n/3);
+        
+        return max(case1,case2);
+    }
+};
