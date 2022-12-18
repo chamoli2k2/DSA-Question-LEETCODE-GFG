@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int similarPairs(vector<string>& words) {
+        int n = words.size();
+        unordered_map<int,unordered_map<char,int>> mp;
+        
+        // Storing
+        for(int i=0;i<n;i++){
+            for(int j=0;j<words[i].size();j++){
+                mp[i][words[i][j]]++;
+            }
+        }
+        
+        int ans = 0;
+        int k = mp.size();
+        for(int i=0;i<k;i++){
+            for(int j=i+1;j<k;j++){
+                    if(mp[i].size() != mp[j].size()){
+                        continue;
+                    }
+                    else{
+                        int flag = 1;
+                        for(auto it : mp[j]){
+                            if(mp[i].count(it.first) == 0){
+                                flag = 0;
+                                break;
+                            }
+                        }
+                        
+                        if(flag){
+                            ans++;
+                        }
+                    }
+            }
+        }
+        
+        return ans;
+    }
+};
