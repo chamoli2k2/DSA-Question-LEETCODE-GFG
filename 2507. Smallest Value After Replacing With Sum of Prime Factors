@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int smallestValue(int n) {
+        int sum = 0;
+        int temp = n;
+        for(int i=2;i<=sqrt(n);i++){
+            while(n%i == 0){
+                sum += i;
+                n /= i;
+            }
+        }
+
+        // Case 1 : 
+        if(sum == temp){
+            return sum;
+        }
+        // Case 2 :
+        else if(sum == 0){
+            return n;
+        }
+        // Case 3 :
+        else if(n > 1){
+            sum += n;
+        }
+        
+        return smallestValue(sum);
+    }
+};
