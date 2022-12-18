@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> cycleLengthQueries(int n, vector<vector<int>>& queries) {
+        vector<int> ans;
+        
+        for(int i=0;i<queries.size();i++){
+            int a = queries[i][0];
+            int b = queries[i][1];
+            int k1 = 0, k2 = 0;
+            
+            unordered_map<int,int> mp;
+            while(a){
+                mp[a] = 1;
+                a /= 2;
+            }
+            
+            int lk = 1;
+            while(b){
+                if(mp.find(b) != mp.end()){
+                    lk = b;
+                    break;
+                }
+                b /= 2;
+            }
+            
+            a = queries[i][0];
+            b = queries[i][1];
+            while(a >= lk){
+                k1++;
+                a /= 2;
+            }
+            while(b >= lk){
+                k2++;
+                b /= 2;
+            }
+            
+            ans.push_back(k1+k2-1);
+        }
+        return ans;
+    }
+};
