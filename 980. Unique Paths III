@@ -1,0 +1,46 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &grid,vector<vector<int>> &visited,pair<int,int> s,int count){
+        // Base case
+        if(s.first < 0 || s.first >= grid.size() || s.second < 0 || s.second >= grid[0].size() || grid[s.first][s.second] == -1){
+            return 0;
+        }
+
+        if(grid[s.first][s.second] == 2){
+            return count == -1 ? 1 : 0;
+        }
+
+        count--;
+        grid[s.first][s.second] = -1;
+
+        int rs = solve(grid,{s.first,s.second+1},count);
+        int us = solve(grid,{s.first-1,s.second},count);
+        int ds = solve(grid,{s.first+1,s.second},count);
+        int ls = solve(grid,{s.first,s.second-1},count);
+
+        count++;
+        grid[s.first][s.second] = 0;
+
+        return ls + rs + us + ds;
+    }
+public:
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        pair<int,int> s;
+        int count = 0;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 1){
+                    s = {i,j};
+                }
+                else if(grid[i][j] == 0){
+                    count++;
+                }
+            }
+        }
+
+        return solve(grid,visited,s,e,count);
+    }
+};
