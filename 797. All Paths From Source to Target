@@ -1,0 +1,25 @@
+class Solution {
+private:
+    void solve(vector<vector<int>> &graph,int curr,vector<int> temp){
+        // base case
+        temp.push_back(curr);
+        if(curr == graph.size()-1){
+            ans.push_back(temp);
+            temp.pop_back();
+            return;
+        }
+
+        for(auto it : graph[curr]){
+            solve(graph,it,temp);
+        }
+
+        temp.pop_back();
+    }
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+        vector<int> temp;
+        solve(graph,0,temp);
+        return ans;
+    }
+};
