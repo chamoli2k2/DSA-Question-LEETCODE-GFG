@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool detectCapitalUse(string word) {
+        int count = 0;
+        int n = word.size();
+
+        for(auto i : word){
+            if(i >= 'A' && i <= 'Z'){
+                count++;
+            }
+        }
+
+        // if count == 0
+        if(count == 0) return true;
+        // checking if count == n
+        if(count == n) return true;
+        // checking if count is 1
+        if(count == 1 && word[0] >= 'A' && word[0] <= 'Z') return true;
+        return false;
+    }
+};
