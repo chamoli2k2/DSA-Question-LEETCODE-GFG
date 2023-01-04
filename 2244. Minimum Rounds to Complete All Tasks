@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minimumRounds(vector<int>& tasks) {
+        int n = tasks.size();
+        unordered_map<int,int> mp;
+        for(int i=0;i<n;i++){
+            mp[tasks[i]]++;
+        }
+
+        // Evaluating
+        int ans = 0;
+
+        for(auto it : mp){
+            // Base case
+            if(it.second == 1){
+                return -1;
+            }
+            else if(it.second % 3 == 0){
+                ans += it.second/3;
+            }
+            else{
+                ans += it.second/3 + 1;
+            }
+        }
+
+        return ans;
+    }
+};
