@@ -1,0 +1,26 @@
+class Solution {
+private:
+    void solve(TreeNode* root,int k){
+        // base case
+        if(root == NULL){
+            return;
+        }
+
+        if(root->left == NULL && root->right == NULL){
+            ans = min(ans,k);
+        }
+
+        solve(root->left,k+1);
+        solve(root->right,k+1);
+    }
+    
+public:
+    int ans = INT_MAX;
+    int minDepth(TreeNode* root) {
+        // Base case
+        if(root == NULL) return 0;
+        
+        solve(root,1);
+        return ans;
+    }
+};
