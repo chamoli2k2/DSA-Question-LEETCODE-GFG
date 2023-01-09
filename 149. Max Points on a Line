@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int maxPoints(vector<vector<int>>& points) {
+        int n = points.size();
+        int ans = 1;
+        double t = 1e9;
+        for(int i=0;i<n-1;i++){
+            unordered_map<double,int> mp;
+            int temp = 0;
+            for(int j=i+1;j<n;j++){
+                double k1 = 1.0 * (points[j][0] - points[i][0]);
+                double k2 = 1.0 * (points[j][1] - points[i][1]);
+
+                if(k1 == 0){
+                    mp[-69]++;
+                }
+                else{
+                    mp[k2/k1]++;
+                }
+
+            }
+
+            for(auto it : mp){
+                temp = max(temp,it.second+1);
+            }
+
+            ans = max(ans,temp);
+        }
+
+        return ans;
+    }
+};
