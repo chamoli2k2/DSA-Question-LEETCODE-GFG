@@ -1,0 +1,14 @@
+class Solution {
+public:
+    vector<int> separateDigits(vector<int>& nums) {
+        vector<int> ans;
+        for(auto it : nums){
+            string temp = to_string(it);
+            for(auto k : temp){
+                ans.push_back(k-'0');
+            }
+        }
+        
+        return ans;
+    }
+};
