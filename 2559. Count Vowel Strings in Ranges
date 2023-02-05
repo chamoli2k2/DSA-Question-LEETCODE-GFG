@@ -1,0 +1,47 @@
+class Solution {
+public:
+    bool check(char c1){
+        if(c1 == 'a' || c1 == 'e' || c1 == 'i' || c1 == 'o' || c1 == 'u'){
+            return true;
+        }
+        return false;
+    }
+    
+    vector<int> vowelStrings(vector<string>& words, vector<vector<int>>& queries) {
+        int idx = 0;
+        vector<int> nums(words.size(),0);
+        for(auto it : words){
+            int n = it.size();
+            if(check(it[0]) && check(it[n-1])){
+                nums[idx] = 1;
+            }
+            idx++;
+        }
+        
+        for(int i=1;i<nums.size();i++){
+            nums[i] = nums[i] + nums[i-1];
+        }
+        
+        vector<int> ans;
+        for(auto it : queries){
+            int a = it[0];
+            int b = it[1];
+            
+            int m;
+            if(b < nums.size()){
+                m = nums[b];
+            }
+            else{
+                m = nums[nums.size()-1];
+            }
+            
+            if(a-1 >= 0){
+                m -= nums[a-1];
+            }
+            
+            ans.push_back(m);
+        }
+        
+        return ans;
+    }
+};
