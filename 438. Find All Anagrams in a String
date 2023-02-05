@@ -1,0 +1,62 @@
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        unordered_map<char,int> mp1;
+        unordered_map<char,int> mp2;
+
+        for(auto it : p){
+            mp1[it]++;
+        }
+
+        int k = p.size();
+        for(int i=0;i<k;i++){
+            mp2[s[i]]++;
+        }
+
+        vector<int> ans;
+        int flag = true;
+        for(auto it : mp2){
+            if(mp1.find(it.first) == mp1.end()){
+                flag = false;
+                break;
+            }
+            else if(mp1[it.first] != it.second){
+                flag = false;
+                break;
+            }
+        }
+
+        if(flag){
+            ans.push_back(0);
+        }
+
+        for(int i=k;i<s.size();i++){
+            int flag = true;
+            // removing the element from map
+            mp2[s[i-k]]--;
+            
+            if(mp2[s[i-k]] == 0) mp2.erase(s[i-k]);
+
+            // adding the element
+            mp2[s[i]]++;
+
+            // checking the hass
+            for(auto it : mp2){
+                if(mp1.find(it.first) == mp1.end()){
+                    flag = false;
+                    break;
+                }
+                else if(mp1[it.first] != it.second){
+                    flag = false;
+                    break;
+                }
+            }
+
+            if(flag){
+                ans.push_back(i-k+1);
+            }
+        }
+
+        return ans;
+    }
+};
