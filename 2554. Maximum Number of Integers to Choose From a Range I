@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int maxCount(vector<int>& banned, int n, int maxSum) {
+        
+        unordered_map<int,int> nums;
+        
+        for(auto it : banned){
+            nums[it] = -1;
+        }
+        
+        int ans = 0;
+        
+        for(int i=1;i<=n;i++){
+            if(nums[i] == -1) continue;
+            
+            if(maxSum >= i){
+                ans++;
+                maxSum -= i;
+            }
+            else{
+                break;
+            }
+        }
+        
+        return ans;
+    }
+};
