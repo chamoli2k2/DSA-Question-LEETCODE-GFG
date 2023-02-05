@@ -1,0 +1,41 @@
+class Solution {
+private:    
+    bool check(vector<int> &nums,int mid,int k){
+        // Checking is it possible to loot the houses 
+        int i = 0, n = nums.size();
+
+        while(i < n){
+            // Checking if nums[i] is less than mid
+            if(nums[i] <= mid){
+                k--;
+                i += 2;
+            }
+            else{
+                i++;
+            }
+
+            if(k == 0) return true;
+        }
+
+        return k == 0;
+    }
+public:
+    int minCapability(vector<int>& nums, int k) {
+        int s = 0;
+        int e = 1e9;
+        int mid, ans;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            if(check(nums,mid,k)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
