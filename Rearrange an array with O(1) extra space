@@ -1,0 +1,29 @@
+class Solution{
+    public:
+    // arr: input array
+    // n: size of array
+    //Function to rearrange an array so that arr[i] becomes arr[arr[i]]
+    //with O(1) extra space.
+    void arrange(long long arr[], int n) {
+        int Q = n;
+        for(int i=0;i<n;i++){
+            int k = arr[i];
+            if(i < k){
+                arr[i] = arr[k] * Q + arr[i];
+            }
+            else if(i > k){
+                int t = arr[k] % Q;
+                arr[i] = t * Q + arr[i];
+            }
+        }
+        
+        for(int i=0;i<n;i++){
+            if(arr[i] == i){
+                continue;
+            }
+            
+            arr[i] /= Q;
+        }
+        
+    }
+};
