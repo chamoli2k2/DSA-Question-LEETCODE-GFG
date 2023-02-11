@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+
+        vector<vector<int>> visited(n,vector<int>(m,0));
+        queue<pair<pair<int,int>,int>> q;
+        vector<vector<int>> distance(n,vector<int>(m,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 1){
+                    q.push({{i,j},0});
+                    visited[i][j] = 1;
+                    distance[i][j] = 0;
+                }
+            }
+        }
+
+        int dr[] = {1,-1,0,0};
+        int dc[] = {0,0,1,-1};
+
+        while(!q.empty()){
+            int r = q.front().first.first;
+            int c = q.front().first.second;
+            int d = q.front().second;
+            q.pop();
+
+            for(int i=0;i<4;i++){
+                int row = r + dr[i];
+                int col = c + dc[i];
+
+                if(row >= 0 && col >= 0 && row < n && col < m && visited[row][col] == 0 && grid[row][col] == 0){
+                    visited[row][col] = 1;
+                    distance[row][col] = d + 1;
+                    q.push({{row,col},d+1});
+                }
+            }
+        }
+
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 0){
+                    ans = max(ans,distance[i][j]);
+                }
+            }
+        }
+
+        return ans == 0 ? -1 : ans;
+    }
+};
