@@ -1,0 +1,40 @@
+class Solution {
+  public:
+    vector<int> shortestPath(vector<vector<int>>& edges, int N,int M, int src){
+        vector<int> distance(N,1e9);
+        unordered_map<int,list<int>> adj;
+        for(auto it : edges){
+            int a = it[0];
+            int b = it[1];
+            
+            adj[a].push_back(b);
+            adj[b].push_back(a);
+        }
+        
+        queue<pair<int,int>> q;
+        q.push({src,0});
+        distance[src] = 0;
+        
+        while(!q.empty()){
+            int node = q.front().first;
+            int d = q.front().second;
+            int k = d + 1;
+            q.pop();
+            
+            for(auto it : adj[node]){
+                if(k < distance[it]){
+                    distance[it] = k;
+                    q.push({it,k});
+                }
+            }
+        }
+        
+        for(int i=0;i<N;i++){
+            if(distance[i] == 1e9){
+                distance[i] = -1;
+            }
+        }
+        
+        return distance;
+    }
+};
