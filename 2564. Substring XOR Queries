@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<vector<int>> substringXorQueries(string s, vector<vector<int>>& queries) {
+        // a^b = c is equal to c^a = b is equal to b^c = a 
+        vector<vector<int>> ans;
+        int n = s.size();
+        unordered_map<int,pair<int,int>> mp;
+
+        for(int i=n-1;i>=0;i--){
+            int k = max(0,i-31);
+            int ans = 0;
+            int t = 0;
+            for(int j=i;j>=k;j--){
+                ans += (s[j]-'0') * (1 << t);
+                t++;
+                if(mp.count(ans) == 0){
+                    mp[ans] = {j,i};
+                }
+                else if(mp.count(ans) > 0){
+                    if(mp[ans].second-mp[ans].first == i-j){
+                        mp[ans] = {j,i};
+                    }
+                }
+            }
+        }
+
+        for(auto it : queries){
+            int a = it[0];
+            int b = it[1];
+
+            int Xor = (a ^ b);
+            
+            if(mp.count(Xor) > 0){
+                auto p = mp[Xor];
+                ans.push_back({p.first,p.second});
+            }
+            else{
+                ans.push_back({-1,-1});
+            }
+        }
+
+        return ans;
+    }
+};
