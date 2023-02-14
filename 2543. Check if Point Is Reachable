@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool isReachable(int targetX, int targetY) {
+        int x = targetX, y = targetY;
+
+        while(1){
+            while(x % 2 == 0){
+                x /= 2;
+            }
+
+            while(y % 2 == 0){
+                y /= 2;
+            }
+
+            if(x == 1 || y == 1){
+                return true;
+            }
+
+            if(x == y){
+                return false;
+            }
+
+            if(x > y){
+                x += y;
+            }
+            else{
+                y += x;
+            }
+        }
+
+        return false;
+    }
+};
