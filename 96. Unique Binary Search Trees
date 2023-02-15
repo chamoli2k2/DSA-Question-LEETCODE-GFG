@@ -12,6 +12,12 @@ private:
 
         int ans = 0;
         for(int i=1;i<=n;i++){
+            //        Left           Node          Right    (n = 5)
+//   Node 1 :                         1            2,3,4,5
+//   Node 2 :          1              2            3,4,5
+//   Node 3 :          1,2            3            4,5
+//   Node 4 :          1,2,3          4            5
+//   Node 5 :          1,2,3,4        5            
             ans += solve(i-1,dp) * solve(n-i,dp);
         }
 
