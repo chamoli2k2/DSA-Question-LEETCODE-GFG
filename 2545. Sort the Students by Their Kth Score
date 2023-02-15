@@ -1,0 +1,12 @@
+int t;
+bool cmp(vector<int> &v1,vector<int> &v2){
+    return v1[t] > v2[t];
+}
+class Solution {
+public:
+    vector<vector<int>> sortTheStudents(vector<vector<int>>& score, int k) {
+        t = k;
+        sort(score.begin(),score.end(),cmp);
+        return score;
+    }
+};
