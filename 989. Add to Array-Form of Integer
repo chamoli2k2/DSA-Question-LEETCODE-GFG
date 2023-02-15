@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<int> addToArrayForm(vector<int>& nums, int k) {
+        string n1 = "";
+        string n2 = to_string(k);
+        for(auto it : nums) n1 += ('0' + it);
+        int s1 = n1.size();
+        int s2 = n2.size();
+        int m = max(s1,s2);
+        vector<int> ans(m+1,0);
+
+        if(n1.size() > n2.size()){
+            int i = n1.size() - 1;
+            int j = n2.size() - 1;
+            int carry = 0;
+            while(i >= 0){
+                int t1 = n1[i--] - '0';
+                int t2 = 0;
+                if(j >= 0){
+                   t2 = n2[j--] - '0';
+                }
+
+                ans[m--] += (t1 + t2 + carry) % 10;
+                carry = (t1 + t2 + carry) / 10;
+            }
+
+            if(carry){
+                ans[m] = carry;
+            }
+        }
+        else{
+            int i = n2.size() - 1;
+            int j = n1.size() - 1;
+            int carry = 0;
+            while(i >= 0){
+                int t1 = n2[i--] - '0';
+                int t2 = 0;
+                if(j >= 0){
+                    t2 = n1[j--] - '0';
+                }
+
+                ans[m--] += (t1 + t2 + carry) % 10;
+                carry = (t1 + t2 + carry) / 10;
+            }
+
+            if(carry){
+                ans[m] = carry;
+            }
+        }
+
+        while(ans[0] == 0) ans.erase(ans.begin());
+
+        return ans;
+    }
+};
