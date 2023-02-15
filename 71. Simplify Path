@@ -1,0 +1,46 @@
+class Solution {
+public:
+    string simplifyPath(string path) {
+        stack<string> st;
+        int idx = 0;
+
+        while(idx < path.size()){
+            string temp = "";
+            while(idx < path.size() && path[idx] != '/'){
+                temp += path[idx++];
+            }
+
+            // Case 1 : if temp = ".."
+            if(temp.size() == 2 && temp[0] == '.' && temp[1] == '.'){
+                if(!st.empty()) st.pop();
+            }
+            // Case 2 : pushing operation
+            else if(temp.size() == 1 && temp[0] == '.'){
+                idx++;
+                continue;
+            }
+            else if(temp.size()){
+                st.push(temp);
+            }
+
+            // updating
+            idx++;
+        }
+
+        stack<string> samp;
+        while(!st.empty()){
+            samp.push(st.top());
+            st.pop();
+        }
+
+        string ans = "/";
+        while(!samp.empty()){
+            ans += samp.top();
+            samp.pop();
+            ans += '/';
+        }
+        if(ans.size() > 1) ans.pop_back();
+
+        return ans;
+    }
+};
