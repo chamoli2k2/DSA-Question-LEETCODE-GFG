@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string customSortString(string order, string s) {
+        unordered_map<char,int> mp;
+        for(int i=0;i<order.size();i++){
+            mp[order[i]] = i;
+        }
+
+        priority_queue<pair<int,char>> pq;
+        int num = 1000;
+
+        for(int i=0;i<s.size();i++){
+            if(mp.count(s[i]) > 0){
+                int k = mp[s[i]];
+                pq.push({-k,s[i]});
+            }
+            else{
+                pq.push({-num,s[i]});
+                num++;
+            }
+        }
+
+        string ans = "";
+        while(!pq.empty()){
+            ans += pq.top().second;
+            pq.pop();
+        }
+
+        return ans;
+    }
+};
