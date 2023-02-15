@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<vector<int>> spiralMatrixIII(int rows, int cols, int sr, int sc) {
+        vector<vector<int>> ans;
+        vector<int> pos = {sr,sc};
+        ans.push_back(pos);
+        int counter = 1;
+        
+        while(ans.size() < rows * cols){
+
+            for(int i=1;i<=counter;i++){
+                pos[1] = pos[1] + (counter % 2 == 0 ? -1 : 1);
+                if(pos[1] >= 0 && pos[1] < cols && pos[0] >= 0 && pos[0] < rows){
+                    ans.push_back(pos);
+                }
+            }
+
+            for(int i=1;i<=counter;i++){
+                pos[0] = pos[0] + (counter % 2 == 0 ? -1 : 1);
+                if(pos[1] >= 0 && pos[1] < cols && pos[0] >= 0 && pos[0] < rows){
+                    ans.push_back(pos);
+                }
+            }
+
+            counter++;
+        }
+
+        return ans;
+    }
+};
