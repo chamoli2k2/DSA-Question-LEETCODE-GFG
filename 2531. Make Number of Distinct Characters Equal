@@ -1,0 +1,59 @@
+class Solution {
+public:
+    bool isItPossible(string word1, string word2) {
+        unordered_map<char,int> mp1;
+        unordered_map<char,int> mp2;
+        
+        for(auto it : word1) mp1[it]++;
+        for(auto it : word2) mp2[it]++;
+
+        for(char ch='a';ch<='z';ch++){
+            if(mp1.count(ch) > 0){
+                for(char ph='a';ph<='z';ph++){
+                    if(mp2.count(ph) > 0){
+                        // swapping 
+                        mp1[ph]++;
+                        mp2[ch]++;
+
+                        // removing the old
+                        mp1[ch]--;
+                        mp2[ph]--;
+
+                        // checking if freq become zero or not
+                        if(mp1[ch] == 0){
+                            mp1.erase(ch);
+                        }
+
+                        if(mp2[ph] == 0){
+                            mp2.erase(ph);
+                        }
+
+                        // checking the size 
+                        if(mp1.size() == mp2.size()){
+                            return true;
+                        }
+
+                        // reverting the change
+                        mp1[ph]--;
+                        mp2[ch]--;
+
+                        // checking if freq become zero or not
+                        if(mp1[ph] == 0){
+                            mp1.erase(ph);
+                        }
+
+                        if(mp2[ch] == 0){
+                            mp2.erase(ch);
+                        }
+
+                        // regiving the original value
+                        mp1[ch]++;
+                        mp2[ph]++;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+};
