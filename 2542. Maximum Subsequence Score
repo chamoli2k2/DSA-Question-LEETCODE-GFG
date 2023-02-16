@@ -1,0 +1,38 @@
+class Solution {
+public:
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        long long ans = 0;
+        vector<pair<int,int>> arr;
+        for(int i=0;i<nums1.size();i++){
+            arr.push_back({nums2[i],nums1[i]});
+        }
+        // sorting 
+        sort(arr.rbegin(),arr.rend());
+
+        priority_queue<int> pq;
+        long long m;
+        long long result;
+
+        // inserting the k element int the priority queue
+        for(int i=0;i<k;i++){
+            ans += arr[i].second;
+            pq.push(-arr[i].second);
+        }
+
+        m = arr[k-1].first;
+        result = ans * m;
+        // Now doing rest evaluation
+        for(int i=k;i<nums1.size();i++){
+            if(-1*pq.top() < arr[i].second){
+                m = arr[i].first;
+                ans += pq.top();
+                pq.pop();
+                ans += arr[i].second;
+                pq.push(-arr[i].second);
+            }
+            result = max(result,(ans * m));
+        }
+
+        return result;
+    }
+};
