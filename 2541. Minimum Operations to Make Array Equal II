@@ -1,0 +1,23 @@
+class Solution {
+public:
+    long long minOperations(vector<int>& nums1, vector<int>& nums2, int k) {
+        // base case
+        if(k == 0){
+            return nums1 == nums2 ? 0 : -1;
+        }
+        
+        int n = nums1.size();
+        long long sum = 0;
+        long long posSum = 0;
+        for(int i=0;i<n;i++){
+            if(abs(nums1[i] - nums2[i]) % k != 0) return -1;
+
+            sum += 1LL*(nums1[i] - nums2[i]);
+            posSum += 1LL*abs(nums1[i] - nums2[i]);
+        }
+
+        if(sum != 0) return -1;
+
+        return (posSum / (2 * k));
+    }
+};
