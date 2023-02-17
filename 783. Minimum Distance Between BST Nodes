@@ -1,0 +1,26 @@
+class Solution {
+private:
+    void solve(TreeNode* root,vector<int> &ans){
+        // Base case
+        if(root == NULL){
+            return;
+        }
+
+        // left
+        solve(root->left,ans);
+        ans.push_back(root->val);
+        solve(root->right,ans);
+    }
+public:
+    int minDiffInBST(TreeNode* root) {
+        vector<int> preorder;
+        solve(root,preorder);
+        int n = preorder.size();
+        int ans = INT_MAX;
+        for(int i=1;i<n;i++){
+            ans = min(ans,preorder[i]-preorder[i-1]);
+        }
+
+        return ans;
+    }
+};
