@@ -1,0 +1,38 @@
+class Solution {
+private:
+    int solve(vector<int> &pow,int n){
+        // base case
+        if(n == 0){
+            return 0;
+        }
+
+        // checking
+        int idx = lower_bound(pow.begin(),pow.end(),n) - pow.begin();
+        
+        int dif1, dif2;
+        if(idx >= pow.size()){
+            dif1 = abs(pow[idx-1] - n);
+            return 1 + solve(pow,dif1);
+        }
+        else if(idx < pow.size() && pow[idx] == n){
+            return 1;
+        }
+        
+        dif1 = abs(pow[idx-1] - n);
+        dif2 = abs(pow[idx] - n);
+        n = min(dif1,dif2);
+
+        return 1 + solve(pow,n);
+    }
+public:
+    int minOperations(int n) {
+        vector<int> pow;
+        int k = 1;
+        while(k <= 1e5){
+            pow.push_back(k);
+            k <<= 1;
+        }
+        
+        return solve(pow,n);
+    }
+};
