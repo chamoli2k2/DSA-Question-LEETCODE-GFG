@@ -1,32 +1,26 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        int s = 0;
-        int e = nums.size() - 1;
-        int mid;
+        int s = 0, e = nums.size()-1;
+        int mid = 0;
 
         while(s <= e){
             mid = s + (e - s) / 2;
 
-            // If target is found
+            // If we found the target
             if(nums[mid] == target){
                 return mid;
             }
-
-            // Checking if left part is sorted
-            if(nums[mid] > nums[s]){
-                // Checking if answer lie in left part or not
-                if(target >= nums[s] && target <= nums[mid]){
+            else if(nums[s] <= nums[mid]){
+                if(nums[s] <= target && nums[mid] >= target){
                     e = mid - 1;
                 }
                 else{
                     s = mid + 1;
                 }
             }
-            // Checking if right part is sorted
-            else if(nums[mid] < nums[s]){
-                // Checking if answer lies in right part or not
-                if(target >= nums[mid] && target <= nums[e]){
+            else{
+                if(nums[mid] <= target && nums[e] >= target){
                     s = mid + 1;
                 }
                 else{
@@ -34,7 +28,7 @@ public:
                 }
             }
         }
-        
+
         return -1;
     }
 };
