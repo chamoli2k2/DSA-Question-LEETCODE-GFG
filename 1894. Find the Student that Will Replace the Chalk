@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int chalkReplacer(vector<int>& chalk, int k) {
+        int n = chalk.size();
+        long long sum = accumulate(chalk.begin(),chalk.end(),1LL*0);
+        long long target = k % sum;
+        cout<<target;
+        int idx = 0;
+        while(target){
+            if(target >= chalk[idx]){
+                target -= 1LL*chalk[idx];
+            }
+            else{
+                break;
+            }
+            idx++;
+        }
+
+        return idx;
+    }
+};
