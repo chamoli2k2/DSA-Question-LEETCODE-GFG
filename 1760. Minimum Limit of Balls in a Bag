@@ -1,0 +1,37 @@
+class Solution {
+private:
+    bool check(vector<int> &nums,int k,int op){
+        int t = 0;
+        
+        for(int i=0;i<nums.size();i++){
+            if(nums[i] > k){
+                if(nums[i] % k == 0){
+                    t += (nums[i] / k - 1);
+                }
+                else{
+                    t += (nums[i] / k);
+                }
+            }
+        }
+
+        return t <= op;
+    }
+public:
+    int minimumSize(vector<int>& nums, int maxOperations) {
+        int n = nums.size();
+        int s = 1, e = 1e9, mid, ans;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            if(check(nums,mid,maxOperations)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
