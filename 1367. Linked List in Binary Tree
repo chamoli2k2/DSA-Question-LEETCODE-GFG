@@ -1,0 +1,20 @@
+class Solution {
+private:
+    bool match(ListNode* head,TreeNode* root){
+        // Base case
+        if(head == NULL) return true;
+        if(root == NULL) return false;
+
+        if(head->val != root->val) return false;
+
+        return match(head->next,root->left) || match(head->next,root->right);
+    }
+public:
+    bool isSubPath(ListNode* head, TreeNode* root) {
+        // base case
+        if(head == NULL) return true;
+        if(root == NULL) return false;
+
+        return match(head,root) || isSubPath(head,root->left) || isSubPath(head,root->right);
+    }
+};
