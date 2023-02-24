@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minimumDeviation(vector<int>& nums) {
+        // making the odd value even & finding the minimum value
+        int mini = INT_MAX, ans = INT_MAX, n = nums.size();
+        priority_queue<int> pq;
+
+        for(int i=0;i<n;i++){
+            if(nums[i] & 1){
+                nums[i] = 2 * nums[i];
+            }
+            mini = min(mini,nums[i]);
+            pq.push(nums[i]);
+        }
+
+        while(pq.top() % 2 == 0){
+            int k = pq.top();
+            pq.pop();
+            ans = min(ans,k-mini);
+            k /= 2;
+            mini = min(mini,k);
+            pq.push(k);
+        }
+
+        ans = min(ans,pq.top()-mini);
+        return ans;
+    }
+};
