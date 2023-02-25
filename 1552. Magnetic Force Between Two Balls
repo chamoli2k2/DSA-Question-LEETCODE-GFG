@@ -1,0 +1,37 @@
+class Solution {
+private:
+    bool check(vector<int> &position,int m,int balls){
+        int prev = 0, n = position.size();
+
+        for(int i=1;i<n;i++){
+            if(position[i] - position[prev] >= m){
+                balls--;
+                prev = i;
+                if(balls == 1) return true;
+            }
+        }
+
+        return false;
+    }
+public:
+    int maxDistance(vector<int>& position, int m) {
+        int n = position.size();
+        // Sorting the array
+        sort(position.begin(),position.end());
+        int s = 1, e = position[n-1], ans, mid;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            if(check(position,mid,m)){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+};
