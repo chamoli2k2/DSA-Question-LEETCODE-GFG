@@ -1,0 +1,38 @@
+class Solution {
+private:
+    int check(vector<int> &dist,double hour,int s){
+        int n = dist.size();
+        double time = 0;
+
+        for(int i=0;i<n;i++){
+            if(i < n-1){
+                time += ceil(1.0*dist[i] / s);
+            }
+            // Catch point last train we don't need to wait for another train
+            else{
+                time += 1.0*dist[i] / s;
+            }
+        }
+       
+        return time <= hour;
+    }
+public:
+    int minSpeedOnTime(vector<int>& dist, double hour) {
+        int s = 1, e = 1e7, ans = -1, mid;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            if(check(dist,hour,mid)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
+
