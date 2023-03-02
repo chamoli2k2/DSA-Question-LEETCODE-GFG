@@ -1,0 +1,29 @@
+class Solution {
+private:
+    bool check(vector<int> &nums,int k,int target){
+        long long m = 0;
+
+        for(auto it : nums){
+            m += 1LL* ceil(1.0*it / k);
+        }
+
+        return m <= target;
+    }
+public:
+    int smallestDivisor(vector<int>& nums, int threshold) {
+        int n = nums.size(), s = 1, e = 1e6, mid, ans;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            if(check(nums,mid,threshold)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
