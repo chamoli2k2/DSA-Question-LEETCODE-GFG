@@ -1,0 +1,37 @@
+class Solution {
+private:
+    bool check(vector<int> &bloomDay,int target,int m,int k){
+        int t = 0, n = bloomDay.size();
+        for(int i=0;i<n;i++){
+            if(bloomDay[i] <= target){
+                t++;
+                if(t == k){
+                    m--;
+                    t = 0;
+                }
+            }
+            else{
+                t = 0;
+            }
+        }
+
+        return m <= 0;
+    }
+public:
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        int s = 1, e = 1e9, ans = -1, mid;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            if(check(bloomDay,mid,m,k)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
