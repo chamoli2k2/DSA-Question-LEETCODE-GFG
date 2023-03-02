@@ -1,0 +1,45 @@
+class Solution {
+private:
+    bool check(vector<int> &nums,vector<long long> &arr,int win,int k){
+        int n = nums.size();
+        int m = win - 1;
+        if(m == 0) return true;
+        
+        for(int i=m;i<n;i++){
+            long long t = m *1LL* nums[i] - arr[i-1];
+            if(i-m-1 >= 0){
+                t += arr[i-m-1];
+            }
+            if(t <= k) return true;
+        }
+
+        return false;
+    }
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        // Sorting the array
+        sort(nums.begin(),nums.end());
+
+        int s = 1, e = nums.size(), ans, mid;
+        vector<long long> arr(e);
+        arr[0] = nums[0];
+
+        for(int i=1;i<e;i++){
+            arr[i] = arr[i-1] + nums[i];
+        }
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            if(check(nums,arr,mid,k)){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+        
+        return ans;
+    }
+};
