@@ -1,0 +1,32 @@
+class Solution {
+private:
+    bool check(vector<int> &nums,long long time,int target){
+        long long trip = 0;
+        for(int it : nums){
+            trip += 1LL*(time/it);
+            if(trip >= target) return true;
+        }
+        return false;
+    }
+public:
+    long long minimumTime(vector<int>& time, int totalTrips) {
+        long long s = 1, e = 0, mid, ans;
+        for(int i=0;i<time.size();i++){
+            e = max(e,(long long)time[i]);
+        }
+        e = e * totalTrips;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            if(check(time,mid,totalTrips)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
