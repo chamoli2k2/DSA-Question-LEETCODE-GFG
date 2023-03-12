@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxScore(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.rbegin(),nums.rend());
+        long long ans = 0;
+        vector<long long> k(n);
+        k[0] = nums[0];
+        for(int i=1;i<n;i++){
+            k[i] = k[i-1] + 1LL*nums[i];
+            if(k[i] > 0){
+                ans++;
+            }
+        }
+        
+        if(k[0] > 0){
+            ans ++;
+        }
+        
+        return ans;
+    }
+};
