@@ -1,0 +1,32 @@
+class Solution {
+private:
+    long long solve(int l,int r){
+        long long a = (l *1LL* (l + 1)) / 2;
+        long long b = (r *1LL* (r + 1)) / 2;
+
+        return b - a;
+    }
+public:
+    int maxProfit(vector<int>& nums, int orders) {
+        // Sorting
+        sort(begin(nums),end(nums));
+        long long n = nums.size(), ans = 0, mod = 1e9 + 7;
+
+        for(int i=n-1;i>=0;i--){
+            // Finding the difference
+            long long diff = (i > 0) ? (nums[i] - nums[i-1]) : nums[i];
+
+            // orders we are processing
+            long long x = min(1LL*orders,1LL*(n-i)*diff);
+
+            long long r = nums[i];
+            long long l = r - (x / (n-i));
+
+            ans = (ans % mod + (solve(l,r) * (n-i)) % mod) % mod;
+            ans = (ans % mod + (l * (x % (n-i))) % mod) % mod;
+            orders -= x;
+        }
+
+        return ans;
+    }
+};
