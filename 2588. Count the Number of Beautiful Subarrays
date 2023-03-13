@@ -1,0 +1,23 @@
+class Solution {
+public:
+    long long beautifulSubarrays(vector<int>& nums) {
+        long long ans = 0;
+        int n = nums.size();
+        vector<long long> pFix(n+1,0);
+
+        for(int i=0;i<n;i++){
+            pFix[i+1] = pFix[i] ^ nums[i];
+        }
+
+        unordered_map<int,int> mp;
+        mp[0] = 1;
+        for(int i=1;i<=n;i++){
+            if(mp.count(pFix[i])){
+                ans += 1LL* mp[pFix[i]];
+            }
+            mp[pFix[i]]++;
+        }
+
+        return ans;
+    }
+};
