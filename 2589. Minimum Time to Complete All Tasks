@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int findMinimumTime(vector<vector<int>>& tasks) {
+        // Sorting the array
+        sort(begin(tasks),end(tasks),[](auto &p1,auto &p2){
+            return p1[1] < p2[1];
+        });
+
+        bool timeOn[2001] = {0};
+
+        for(auto it : tasks){
+            int start = it[0], end = it[1], duration = it[2];
+
+            // Marking the time 
+            for(int i=start;i<=end;i++){
+                if(timeOn[i]){
+                    duration--;
+                }
+            }
+
+            for(int i=end;duration>0;i--){
+                if(timeOn[i]) continue;
+                duration--;
+                timeOn[i] = true;
+            }
+        }
+
+        int ans = 0;
+        for(int i=0;i<=2000;i++){
+            ans += timeOn[i];
+        }
+
+        return ans;
+    }
+};
