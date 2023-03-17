@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        int n = nums.size(), i = 0, j = 0, ans = 0, sum = 0;
+        int mp[2] = {0};
+
+        while(j < n){
+            // adding
+            sum += 1;
+
+            mp[nums[j]]++;
+
+            if(mp[0] > k){
+                while(i < j && mp[0] != k){
+                    sum -= 1;
+                    mp[nums[i++]]--;
+                }
+            }
+            else{
+                ans = max(ans,sum);
+            }
+
+            j++;
+        }
+
+        return ans;
+    }
+};
