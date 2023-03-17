@@ -1,0 +1,51 @@
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        unordered_map<string,int> mp1, mp2;
+        vector<int> ans;
+
+        // adding into map
+        for(int i=0;i<words.size();i++){
+            mp1[words[i]]++;
+        }
+        // coping 
+        mp2 = mp1;
+        
+        int lenWord = words[0].size();
+        int n = words.size();
+        if(n*lenWord > s.size()) return ans;
+
+        for(int i=0;i<=s.size()-n*lenWord;i++){
+            // finding substring
+            string temp = s.substr(i,lenWord);
+
+            // checking if temp is part of words or not
+            if(mp1.count(temp) == 0) continue;
+
+            for(int j=i;j<i+(n*lenWord);j+=lenWord){
+                temp = s.substr(j,lenWord);
+
+                // checking if part of map or not
+                if(mp1.count(temp)){
+                    mp1[temp]--;
+                    if(mp1[temp] == 0){
+                        mp1.erase(temp);
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+
+            // checking if map is empty or not
+            if(mp1.size() == 0){
+                ans.push_back(i);
+            }
+
+            // copying again
+            mp1 = mp2;
+        }
+
+        return ans;
+    }
+};
