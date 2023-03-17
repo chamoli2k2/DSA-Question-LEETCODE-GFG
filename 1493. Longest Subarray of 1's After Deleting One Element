@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums) {
+        int n = nums.size(), i = 0, j = 0, ans = 0, sum = 0;
+        int mp[2] = {0};
+
+        while(j < n){
+            sum += nums[j];
+            // adding 
+            mp[nums[j]]++;
+
+            if(mp[0] == 2){
+                while(i < j && mp[0] != 1){
+                    sum -= nums[i];
+                    mp[nums[i++]]--;
+                }
+            }
+            else{
+                ans = max(ans,sum);
+            }
+            j++;
+        }
+
+        if(ans == n) ans --;
+        return ans;
+    }
+};
