@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> getAverages(vector<int>& nums, int k) {
+        long long n = nums.size(), sum = 0;
+        vector<int> ans(n,-1);
+        // base case
+        if(k == 0) return nums;
+        if(2*k >= n) return ans;
+
+        // calculating the sum  
+        for(int i=0;i<=2*k;i++){
+            sum += nums[i];
+        }
+
+        // evaluating 
+        int div = 2*k + 1;
+
+        for(int i=k;i<n-k;i++){
+            // storing the ans
+            ans[i] = sum / div;
+
+            // removing
+            sum -= nums[i-k];
+
+            // adding
+            if(i+k+1 < n){
+                sum += nums[i+k+1];
+            }
+        }
+
+        return ans;
+    }
+};
