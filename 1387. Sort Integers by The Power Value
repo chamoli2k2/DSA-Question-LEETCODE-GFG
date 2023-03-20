@@ -1,0 +1,27 @@
+class Solution {
+private:
+    int solve(int num){
+        int ans = 0;
+        while(num != 1){
+            if(num & 1){
+                num = 3 * num + 1;
+            }
+            else{
+                num /= 2;
+            }
+            ans++;
+        }
+
+        return ans;
+    }
+public:
+    int getKth(int lo, int hi, int k) {
+        vector<pair<int,int>> arr;
+        for(int i=lo;i<=hi;i++){
+            int t = solve(i);
+            arr.push_back({t,i});
+        }
+        sort(begin(arr),end(arr));
+        return arr[k-1].second;
+    }
+};
