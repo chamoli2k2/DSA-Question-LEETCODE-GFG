@@ -1,0 +1,26 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,unordered_map<int,int> &mp,int idx, int k){
+        // base case
+        if(idx >= nums.size()){
+            return 1;
+        }
+
+        int take = 0;
+        if(mp[nums[idx]-k] == 0 && mp[nums[idx]+k] == 0){
+            mp[nums[idx]]++;
+            take = solve(nums,mp,idx+1,k);
+            mp[nums[idx]]--;
+        }
+
+        int notTake = solve(nums,mp,idx+1,k);
+
+        return take + notTake;
+    }
+public:
+    int beautifulSubsets(vector<int>& nums, int k) {
+        unordered_map<int,int> mp;
+        int ans = solve(nums,mp,0,k);
+        return ans - 1;
+    }
+};
