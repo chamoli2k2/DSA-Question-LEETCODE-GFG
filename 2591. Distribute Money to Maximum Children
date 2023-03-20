@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int distMoney(int money, int children) {
+        int remainingMoney = money - children;
+
+        // Base Case
+        if(remainingMoney < 0) return -1;
+
+        int cnt_7 = remainingMoney / 7;
+        int valOther = remainingMoney % 7;
+
+        // Case 1 : if count of 7 is less than children
+        if(cnt_7 < children){
+            int remainingSpace = children - cnt_7;
+            if(remainingSpace == 1 && valOther == 3){
+                return max(0,cnt_7-1);
+            }
+            else{
+                return cnt_7;
+            }
+        }
+        // Case 2 : if count of 7 is greater than children
+        else if(cnt_7 > children){
+            return children-1;
+        }
+        // Case 3 : if count of 7 is equal to children
+        else{
+            if(valOther == 0){
+                return cnt_7;
+            }
+            else{
+                return cnt_7 - 1;
+            }
+        }
+    }
+};
