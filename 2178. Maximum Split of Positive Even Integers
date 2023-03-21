@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<long long> maximumEvenSplit(long long finalSum) {
+        vector<long long> ans;
+        // Base case
+        if(finalSum & 1) return ans;
+
+        long long k = 2;
+        while(k <= finalSum){
+            finalSum -= k;
+            ans.push_back(k);
+            k += 2;
+        }
+
+        ans[ans.size()-1] = ans[ans.size()-1] + finalSum;
+        
+        return ans;
+    }
+};
