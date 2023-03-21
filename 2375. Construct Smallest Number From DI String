@@ -1,0 +1,52 @@
+class Solution {
+private: 
+    void solve(string &pattern,vector<int> &mp,int idx,string &ans){
+        // Base case
+        if(idx >= pattern.size()){
+            if(ans > pattern){
+                ans = pattern;
+            }
+            return;
+        }
+
+        // taking backup
+        char ch = pattern[idx];
+
+        if(pattern[idx] == 'I'){
+            for(char i='1';i<='9';i++){
+                if(mp[i-'0'] == 0 && i > pattern[idx-1]){
+                    mp[i-'0']++;
+                    pattern[idx] = i;
+                    solve(pattern,mp,idx+1,ans);
+                    mp[i-'0']--;
+                }
+            }
+        }
+        else{
+            for(char i='1';i<='9';i++){
+                if(mp[i-'0'] == 0 && i < pattern[idx-1]){
+                    mp[i-'0']++;
+                    pattern[idx] = i;
+                    solve(pattern,mp,idx+1,ans);
+                    mp[i-'0']--;
+                }
+            }
+        }
+
+        pattern[idx] = ch;
+    }
+public:
+    string smallestNumber(string pattern) {
+        string arr = "", ans = "987654321";
+        vector<int> mp(10,0);
+        for(char ch='1';ch<='9';ch++){
+            arr = ch;
+            arr = arr + pattern;
+            mp[ch-'0']++;
+            solve(arr,mp,1,ans);
+            mp[ch-'0']--;
+        }
+
+        return ans;
+    }
+};
