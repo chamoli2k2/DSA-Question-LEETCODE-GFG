@@ -1,0 +1,38 @@
+class Solution {
+private:    
+    int solve(vector<vector<int>> &matrix,int k,unordered_map<int,int> &mp,int idx){
+        // base case
+        if(k == 0){
+            int ans = 0;
+            for(int i=0;i<matrix.size();i++){
+                int flag = 1;
+                for(int j=0;j<matrix[0].size();j++){
+                    if(matrix[i][j] == 1 && mp[j] == 0){
+                        flag = 0;
+                        break;
+                    }
+                }
+                if(flag) ans++;
+            }
+            return ans;
+        }
+
+        if(idx >= matrix[0].size()) return -1e6;
+
+        // take index
+        mp[idx]++;
+        int take = solve(matrix,k-1,mp,idx+1);
+        mp[idx]--;
+
+        // not take 
+        int notTake = solve(matrix,k,mp,idx+1);
+
+        return max(take,notTake);
+    }
+public:
+    int maximumRows(vector<vector<int>>& matrix, int numSelect) {
+        int n = matrix.size(), m = matrix[0].size();
+        unordered_map<int,int> mp;
+        return solve(matrix,numSelect,mp,0);
+    }
+};
