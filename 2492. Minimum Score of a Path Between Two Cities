@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(unordered_map<int,list<pair<int,int>>> &mp,vector<int> &visited,int node,int &ans){
+        visited[node] = 1;
+
+        for(auto& [v,dis] : mp[node]){
+            ans = min(ans,dis);
+            if(visited[v] == 0){
+                ans = min(ans,solve(mp,visited,v,ans));
+            }
+        }
+
+        return ans;
+    }
+public:
+    int minScore(int n, vector<vector<int>>& roads) {
+        int ans = INT_MAX;
+        unordered_map<int,list<pair<int,int>>> mp;
+        for(auto it : roads){
+            mp[it[0]].push_back({it[1],it[2]});
+            mp[it[1]].push_back({it[0],it[2]});
+            ans = max(ans,it[2]);
+        }
+        vector<int> visited(n+1,0);
+        solve(mp,visited,1,ans);
+        return ans;
+    }
+};
