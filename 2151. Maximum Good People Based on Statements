@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int maximumGood(vector<vector<int>>& nums) {
+        int n = nums.size(), total = 1 << n, ans = 0;
+
+        for(int i=0;i<total;i++){
+            // finding good person
+            unordered_map<int,int> mp;
+            int num = i, k = 0, temp = 0, flag = 1;
+            while(num){
+                if(num & 1){
+                    mp[k] = 1;
+                }
+                k++;
+                num >>= 1;
+            }
+
+            // no of good person
+            int goodPerson = mp.size();
+
+            // testing a good person
+            for(auto& [gP,t] : mp){
+                for(int j=0;j<n;j++){
+                    // If good person say a person is bad than
+                    if(nums[gP][j] == 0){
+                        // checking if that person is not present inside the map
+                        if(mp.count(j) > 0){
+                            flag = 0;
+                            break;
+                        }
+                    }
+                    // If good person say a person is good than
+                    else if(nums[gP][j] == 1){
+                        // checking if that person is present inside map or not
+                        if(mp.count(j) == 0){
+                            flag = 0;
+                            break;
+                        }
+                    }
+                }
+
+                if(flag == 0) break;
+            }
+
+            if(flag) ans = max(ans,goodPerson);
+        }
+
+        return ans;
+    }
+};
