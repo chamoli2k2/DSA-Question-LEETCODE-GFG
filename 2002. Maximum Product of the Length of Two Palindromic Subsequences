@@ -1,0 +1,55 @@
+class Solution {
+private:
+    int solve(string &s,vector<vector<int>> &dp,int i,int j){
+        // Base case
+        if(i > j){
+            return 0;
+        }
+        else if(i == j) return 1;
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+        if(s[i] == s[j]){
+            return dp[i][j] = 2 + solve(s,dp,i+1,j-1);
+        }
+        
+        int c1 = solve(s,dp,i+1,j);
+        int c2 = solve(s,dp,i,j-1);
+
+        return dp[i][j] = max(c1,c2);
+    }
+
+    int pallingDrome(string &s) {
+        int n = s.size();
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+        return solve(s,dp,0,n-1);
+    }
+public:
+    int maxProduct(string s) {
+        int n = s.size(), ans = 1;
+
+        // For creating disjoing subsequence
+        for(int i=0;i<(1<<n);i++){
+            int num = i, idx = 0;
+            string x = "", y = "";
+            while(idx < n){
+                if(num & 1){
+                    x += s[idx];
+                }
+                else{
+                    y += s[idx];
+                }
+                idx++;
+                num >>= 1;
+            }
+
+            // checking pallingdrome
+            int n1 = pallingDrome(x);
+            int n2 = pallingDrome(y);
+        
+            ans = max(ans,n1*n2);
+        }
+
+        return ans;
+    }
+};
