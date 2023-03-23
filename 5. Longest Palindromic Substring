@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n = s.size(), i = 0, flag = 1;
+        string st = "#";
+        // Creating manacher string
+        while(i <= n){
+            if(flag){
+                st += s[i++];
+                flag = 0;
+            }
+            else{
+                st += '#';
+                flag = 1;
+            }
+        }
+
+        int t = st.size();
+        vector<int> pFix(t,0);
+        int ans = 0;
+        string res = "";
+        for(int i=0;i<t;i++){
+            int l = i, r = i, count = 0;
+            while(l >= 0 && r < t){
+                if(st[l--] == st[r++]){
+                    count++;
+                }
+                else{
+                    break;
+                }
+            }
+            pFix[i] = count;
+            if(ans < pFix[i]-1){
+                ans = pFix[i]-1;
+                res = "";
+                // copying the data
+                int idx = i - (pFix[i]-1);
+                
+                while(idx <= (i+pFix[i]-1)){
+                    if(st[idx] != '#'){
+                        res += st[idx];
+                    }
+                    idx++;
+                }
+            }
+        }
+        
+        return res;
+    }
+};
