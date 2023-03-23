@@ -1,0 +1,31 @@
+class Solution {
+private:
+    int solve(vector<int> &task,vector<vector<int>> &dp,int time,int mask,int sessionTime){
+        // base case
+        int n = task.size();
+        if(mask == (1<<n)-1) return 0;
+
+        if(dp[time][mask] != -1) return dp[time][mask];
+
+        int ans = 1e7;
+        
+        for(int i=0;i<n;i++){
+            if(mask & (1<<i)) continue;
+            
+            if(time+task[i] <= sessionTime){
+                ans = min(ans,solve(task,dp,time+task[i],mask|(1<<i),sessionTime));
+            }
+            else{
+                ans = min(ans,1+solve(task,dp,task[i],mask|(1<<i),sessionTime));
+            }
+        }
+
+        return dp[time][mask] = ans;
+    }
+public:
+    int minSessions(vector<int>& tasks, int sessionTime) {
+        int m = 1 << 15;
+        vector<vector<int>> dp(16,vector<int>(m,-1));
+        return solve(tasks,dp,0,0,sessionTime) + 1;
+    }
+};
