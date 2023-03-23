@@ -1,0 +1,36 @@
+class Solution {
+private:
+    void solve(vector<int> &num1,vector<int> &ans,vector<int> &temp,int k,int idx,int target){
+        // base case
+        if(idx < 0){
+            if(k > high){
+                int t = temp[0];
+                if(target > 0){
+                    temp[0] += target;
+                } 
+                ans = temp;
+                high = k;
+                temp[0] = t;
+            }
+            
+            return;
+        }
+
+        int bkp = temp[idx];
+        if(target > num1[idx]){
+            temp[idx] = num1[idx] + 1;
+            solve(num1,dp,ans,temp,k+idx,idx-1,target-temp[idx]);
+        }
+
+        temp[idx] = bkp;
+        solve(num1,dp,ans,temp,k,idx-1,target);
+    }
+public:
+    int high = 0;
+    vector<int> maximumBobPoints(int numArrows, vector<int>& aliceArrows) {
+        vector<int> ans(12,0);
+        vector<int> temp(12,0);
+        solve(aliceArrows,dp,ans,temp,0,11,numArrows);
+        return ans;
+    }
+};
