@@ -1,0 +1,27 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,vector<int> &arr,vector<int> &dp,int mask,int idx,int n){
+        // base case
+        if(mask+1 == (1<<n)){
+            return 0;
+        }
+
+        if(dp[mask] != -1) return dp[mask];
+
+        int ans = 1e8;
+        for(int i=0;i<n;i++){
+            if(mask & (1 << i)) continue;
+            int k = (nums[idx] ^ arr[i]) + solve(nums,arr,dp,mask|(1<<i),idx+1,n);
+            ans = min(k,ans);
+        }
+
+        return dp[mask] = ans;
+    }
+public:
+    int minimumXORSum(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        int t = (1<<n) + 1;
+        vector<int> dp(t,-1);
+        return solve(nums1,nums2,dp,0,0,n);
+    }
+};
