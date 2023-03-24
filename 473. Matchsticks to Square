@@ -1,0 +1,35 @@
+class Solution {
+private:
+    bool solve(vector<int> &nums,int s1,int s2,int s3,int s4,int idx,int target){
+        // Base case
+        if(idx == nums.size()){
+            return flag = (s1==s2 && s2==s3 && s3==s4 && s1==target);
+        }
+
+        if(flag) return 1;
+
+        int c1 = 0, c2 = 0, c3 = 0, c4 = 0;
+        if(s1+nums[idx] <= target) c1 = solve(nums,s1+nums[idx],s2,s3,s4,idx+1,target);
+        if(c1) return flag = true;
+        if(s2+nums[idx] <= target) c2 = solve(nums,s1,s2+nums[idx],s3,s4,idx+1,target);
+        if(c2) return flag = true;
+        if(s3+nums[idx] <= target) c3 = solve(nums,s1,s2,s3+nums[idx],s4,idx+1,target);
+        if(c3) return flag = true;
+        if(s4+nums[idx] <= target) c4 = solve(nums,s1,s2,s3,s4+nums[idx],idx+1,target);
+        if(c4) return flag = true;
+
+        return false;
+    }
+public:
+    int flag = 0; 
+    bool makesquare(vector<int>& matchsticks) {
+        int n = matchsticks.size();
+        int sum = accumulate(begin(matchsticks),end(matchsticks),0);
+        if(sum % 4 != 0) return false;
+        sum /= 4;
+        for(auto it : matchsticks) if(it > sum) return false;
+        sort(rbegin(matchsticks),rend(matchsticks));
+        //vector<vector<int>> dp(n,vector<int>(4,-1));
+        return solve(matchsticks,0,0,0,0,0,sum);
+    }
+};
