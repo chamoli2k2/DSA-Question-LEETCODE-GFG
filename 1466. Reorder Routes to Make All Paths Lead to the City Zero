@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(unordered_map<int,list<int>> &mp,vector<int> &visited,int node){
+         visited[node] = 1;
+
+        int ans = 0;
+        for(auto& it : mp[node]){
+            if(visited[abs(it)] == 0){
+                ans += solve(mp,visited,abs(it)) + (it > 0);
+            }
+        }
+
+        return ans;
+    }
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        unordered_map<int,list<int>> mp;
+        // making adjancy list
+        for(auto it : connections){
+            mp[it[0]].push_back(it[1]);
+            mp[it[1]].push_back(-it[0]);
+        }
+
+        // making a visited array
+        vector<int> visited(n,0);
+        return solve(mp,visited,0);
+    }
+};
