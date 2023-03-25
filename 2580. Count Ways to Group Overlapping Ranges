@@ -1,0 +1,39 @@
+int mod = 1e9 + 7;
+class Solution {
+private:
+    int solve(int x,int n){
+        // Base case
+        if(n == 0) return 1;
+
+        int halfAns = solve(x,n/2);
+
+        int ans = ((halfAns%mod) *1LL* (halfAns)%mod) % mod;
+        if(n & 1){
+            return (ans*x) % mod;
+        }
+
+        return ans;
+    }
+public:
+    int countWays(vector<vector<int>>& ranges) {
+        int n = ranges.size();
+        sort(begin(ranges),end(ranges));
+        vector<vector<int>> ans;
+        int s = ranges[0][0], e = ranges[0][1];
+
+        for(int i=1;i<n;i++){
+            if(e < ranges[i][0]){
+                ans.push_back({s,e});
+                s = ranges[i][0], e = ranges[i][1];
+            }
+            else{
+                e = max(ranges[i][1],e);
+            }
+        }
+
+        ans.push_back({s,e});
+        int t = ans.size();
+
+        return solve(2,t);
+    }
+};
