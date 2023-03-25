@@ -1,0 +1,54 @@
+class CombinationIterator {
+private:
+    void solve(string &s,int i,string st){
+        // Base case
+        if(i == s.size()){
+            if(st.size()) ans.push_back(st);
+            return;
+        }
+
+        // case 1
+        solve(s,i+1,st+s[i]);
+
+        // case 2
+        solve(s,i+1,st);
+    }
+
+    static bool cmp(string &s1,string &s2){
+        if(s1.size() == s2.size()) return s1 < s2;
+        return s1.size() < s2.size();
+    }
+
+public:
+    vector<string> ans;
+    int idx = 0, len;
+    CombinationIterator(string characters, int combinationLength) {
+        solve(characters,0,"");
+        len = combinationLength;
+        sort(begin(ans),end(ans),cmp);
+        for(int i=0;i<ans.size();i++){
+            if(ans[i].size() == len){
+                idx = i;
+                break;
+            }
+        }
+    }
+    
+    string next() {
+        return ans[idx++];
+    }
+    
+    bool hasNext() {
+        if(idx == ans.size()) return false;
+        if(ans[idx].size() == len) return true;
+
+        return false;
+    }
+};
+
+/**
+ * Your CombinationIterator object will be instantiated and called as such:
+ * CombinationIterator* obj = new CombinationIterator(characters, combinationLength);
+ * string param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
