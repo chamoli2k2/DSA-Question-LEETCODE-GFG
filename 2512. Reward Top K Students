@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<int> topStudents(vector<string>& pf, vector<string>& nf, vector<string>& report, vector<int>& si, int k) {
+        priority_queue<pair<int,int>> pq;
+        vector<int> ans;
+        unordered_map<string,int> mp1, mp2;
+
+        for(auto it : pf) mp1[it] = 1;
+        for(auto it : nf) mp2[it] = 1;
+
+        for(int i=0;i<report.size();i++){
+            int id = si[i], score = 0;
+            string s = "";
+            
+            for(int j=0;j<report[i].size();j++){
+                if(report[i][j] != ' '){
+                    s += report[i][j];
+                }
+                else{
+                    if(mp1[s]){
+                        score += 3;
+                    }
+                    else if(mp2[s]){
+                        score -= 1;
+                    }
+                    
+                    s = "";
+                }
+            }
+
+            if(s.size()){
+                if(mp1[s]){
+                    score += 3;
+                }
+                else if(mp2[s]){
+                    score -= 1;
+                }
+            }
+
+            cout<<score<<endl;
+
+            pq.push({-score,id});
+            if(pq.size() > k) pq.pop();
+        }
+
+        while(pq.size()){
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+
+        reverse(begin(ans),end(ans));
+        return ans;
+    }
+};
