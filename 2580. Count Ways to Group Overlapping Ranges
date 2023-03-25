@@ -16,24 +16,21 @@ private:
     }
 public:
     int countWays(vector<vector<int>>& ranges) {
-        int n = ranges.size();
+        int n = ranges.size(), t = 0;
         sort(begin(ranges),end(ranges));
-        vector<vector<int>> ans;
         int s = ranges[0][0], e = ranges[0][1];
 
         for(int i=1;i<n;i++){
             if(e < ranges[i][0]){
-                ans.push_back({s,e});
+                t++;
                 s = ranges[i][0], e = ranges[i][1];
             }
             else{
                 e = max(ranges[i][1],e);
             }
         }
-
-        ans.push_back({s,e});
-        int t = ans.size();
-
+        t++;
+        
         return solve(2,t);
     }
 };
