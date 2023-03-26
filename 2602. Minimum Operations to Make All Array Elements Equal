@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<long long> minOperations(vector<int>& nums, vector<int>& queries) {
+        sort(begin(nums),end(nums));
+        long long n = nums.size(), m = queries.size();
+        vector<long long> prefix(n);
+        vector<long long> ans(m);
+        prefix[0] = nums[0];
+
+        for(int i=1;i<n;i++){
+            prefix[i] = prefix[i-1] + 1LL*nums[i];
+        }
+
+        long long total = prefix[n-1];
+        for(int i=0;i<m;i++){
+            long long k = 1LL*queries[i];
+            long long idx = upper_bound(begin(nums),end(nums),k) - begin(nums);
+
+            long long smaller = 0, bigger = 0;
+            if(idx == 0){
+                bigger = total - (n * k);
+            }
+            else{
+                smaller = (idx *1LL* k) - prefix[idx-1];
+                bigger = (total-prefix[idx-1]) - ((n-idx) *1LL* k);
+            }
+
+            ans[i] = smaller + bigger;
+        }
+
+        return ans;
+    }
+};
