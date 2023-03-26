@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool primeSubOperation(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> prime(1009,1);
+        vector<int> ans;
+        prime[0] = 0, prime[1] = 0;
+        
+        for(int i=2;i<1009;i++){
+            if(prime[i] == 1){
+                for(int j=2*i;j<1009;j+=i){
+                    prime[j] = 0;
+                }
+            }
+        }
+        
+        
+        for(int i=0;i<1009;i++){
+            if(prime[i] == 1){
+                ans.push_back(i);
+            }
+        }
+        
+        for(int i=n-1;i>0;i--){
+            if(nums[i-1] < nums[i]) continue;
+
+            int d = -1;
+            for(int j=0;j<ans.size();j++){
+                if(nums[i-1] > ans[j] && nums[i-1]-ans[j] < nums[i]){
+                    d = nums[i-1] - ans[j];
+                    break;
+                }
+                else if(nums[i-1] < ans[j]) break;
+            }
+
+            if(d == -1) return false;
+
+            nums[i-1] = d;
+        }
+        
+        return true;
+    }
+};
