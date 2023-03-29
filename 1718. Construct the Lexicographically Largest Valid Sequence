@@ -1,0 +1,52 @@
+class Solution {
+private:
+    bool solve(vector<int> &ans,vector<int> &visited,int idx,int n){
+        // Base case
+        // If we are succefully filled all the blank space than we will return true
+        if(idx == ans.size()) return true;
+
+        // checking if current idx is already filled or not
+        if(ans[idx] != 0){
+            return solve(ans,visited,idx+1,n);
+        } 
+        
+        for(int i=n;i>=1;i--){
+            // if already visited 
+            if(visited[i] == 1) continue;
+
+            // marking visited
+            visited[i] = 1;
+            ans[idx] = i;
+
+            // marking 2nd idx
+            if(i == 1){
+                if(solve(ans,visited,idx+1,n)){
+                    return true;
+                }
+            }
+            else if(idx+i < ans.size() && ans[idx+i] == 0){
+                ans[idx+i] = i;
+                if(solve(ans,visited,idx+1,n)){
+                    return true;
+                }
+                ans[idx+i] = 0;
+            }
+
+            visited[i] = 0;
+            ans[idx] = 0;
+        }
+        
+        
+        return false;
+    }
+public:
+    vector<int> constructDistancedSequence(int n) {
+        // Creating the visited and answer array
+        vector<int> ans(2*n-1,0), visited(n+1,0);
+
+        // We will apply gready approach 
+        // we will try to place maximum value possible in starting
+        solve(ans,visited,0,n);
+        return ans;
+    }
+};
