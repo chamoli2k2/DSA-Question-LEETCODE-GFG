@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minNumber(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> ans;
+        unordered_map<int,int> mp;
+        for(int i=0;i<nums1.size();i++){
+            for(int j=0;j<nums2.size();j++){
+                int a = nums1[i] * 10 + nums2[j];
+                int b = nums2[j] * 10 + nums1[i];
+                ans.push_back(a);
+                ans.push_back(b);
+            }
+            mp[nums1[i]]++;
+        }
+        
+        for(int i=0;i<nums2.size();i++){
+            if(mp.count(nums2[i]) > 0){
+                ans.push_back(nums2[i]);
+            }
+        }
+        
+        sort(begin(ans),end(ans));
+        return ans[0];
+    }
+};
