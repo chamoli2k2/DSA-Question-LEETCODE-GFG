@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int maximumCostSubstring(string s, string chars, vector<int>& vals) {
+        unordered_map<char,int> mp;
+        
+        // mapping
+        for(int i=0;i<chars.size();i++){
+            mp[chars[i]] = vals[i];
+        }
+        
+        vector<int> kAlgo;
+        for(int i=0;i<s.size();i++){
+            char ch = s[i];
+            if(mp.find(ch) == mp.end()){
+                mp[ch] = ch-'a'+1;
+                kAlgo.push_back(mp[ch]);
+            }
+            else{
+                int a = mp[ch];
+                kAlgo.push_back(a);
+            }
+        }
+        
+        long long ans = 0;
+        long long sum = 0;
+        
+        for(int i=0;i<kAlgo.size();i++){
+            sum += kAlgo[i];
+            
+            if(sum > ans){
+                ans = sum;
+            }
+            
+            if(sum < 0){
+                sum = 0;
+            }
+        }
+        
+        return ans > 0 ? ans : 0;
+    }
+};
+
