@@ -1,0 +1,29 @@
+#define ll long long
+class Solution {
+private:
+    static bool cmp(pair<int,int> &p1,pair<int,int> &p2){
+        return p1.first-p1.second > p2.first -p2.second;
+    }
+public:
+    int miceAndCheese(vector<int>& r1, vector<int>& r2, int k) {
+        int n = r1.size();
+        vector<pair<int,int>> mp;
+        
+        for(int i=0;i<n;i++){
+            mp.push_back({r1[i],r2[i]});
+        }
+        
+        sort(begin(mp),end(mp),cmp);
+        ll ans = 0;
+        for(int i=0;i<n;i++){
+            if(i < k){
+                ans += mp[i].first;
+            }
+            else{
+                ans += mp[i].second;
+            }
+        }
+        
+        return ans;
+    }
+};
