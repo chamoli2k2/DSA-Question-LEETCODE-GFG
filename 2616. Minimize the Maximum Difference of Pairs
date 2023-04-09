@@ -1,0 +1,36 @@
+class Solution {
+private:
+    bool check(vector<int> &nums,int t, int p){
+        int pairCount = 0, n = nums.size();
+        for(int i=1;i<n;i++){
+            int diff = nums[i] - nums[i-1];
+            if(diff <= t){
+                pairCount++;
+                i++;
+            }
+        }
+
+        return pairCount >= p;
+    }
+public:
+    int minimizeMax(vector<int>& nums, int p) {
+        int n = nums.size();
+        sort(begin(nums),end(nums));
+
+        int s = 0, e = nums[n-1] - nums[0], mid, ans;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            if(check(nums,mid,p)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
