@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<long long> distance(vector<int>& nums) {
+        int n = nums.size();
+        vector<long long> arr(n,0);
+        vector<pair<long long,int>> ls(n,{0,0}), rs(n,{0,0});
+
+        unordered_map<int,long long> mp1, mp2, mp3, mp4;
+
+        for(int i=0;i<n;i++){
+            int j = n - i - 1;
+
+            // Left side
+            mp1[nums[i]]++;
+
+            if(mp1[nums[i]] > 1){
+                ls[i].first = mp2[nums[i]];
+                ls[i].second = mp1[nums[i]] - 1;
+            }
+
+            // Right side
+            mp3[nums[j]]++;
+
+            if(mp3[nums[j]] > 1){
+                rs[j].first = mp4[nums[j]];
+                rs[j].second = mp3[nums[j]] - 1;
+            }
+
+            mp2[nums[i]] += 1LL*i;
+            mp4[nums[j]] += 1LL*j;
+        }
+
+
+        for(int i=0;i<n;i++){
+            long long l = (ls[i].second *1LL* i - ls[i].first);
+            long long r = (rs[i].first - i *1LL* rs[i].second);
+
+            arr[i] = l + r;
+        }
+
+        return arr;
+    }
+};
