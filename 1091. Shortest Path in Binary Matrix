@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<vector<int>> path(n,vector<int>(n,INT_MAX));
+        int si = 0, ei = 0;
+        int sf = n-1, ef = n-1;
+        // base case
+        if(grid[0][0] == 1) return -1;
+        if(si == sf && ei == ef) return 1;
+        
+        path[si][ei] = 1;
+        queue<pair<int,pair<int,int>>> q;
+        q.push({1,{si,ei}});
+        
+        
+        // Making row and col
+        int row[] = {0,0,-1,1,-1,-1,1,1};
+        int col[] = {-1,1,0,0,-1,1,-1,1};
+        
+        while(!q.empty()){
+            int dist = q.front().first;
+            int s = q.front().second.first;
+            int e = q.front().second.second;
+            q.pop();
+            
+            for(int i=0;i<8;i++){
+                int r = s + row[i];
+                int c = e + col[i];
+                
+                if(r >= 0 && c >= 0 && r < n && c < n && grid[r][c] == 0 && dist+1 < path[r][c]){
+                    path[r][c] = dist + 1;
+                    if(r == sf && c == ef){
+                        return path[r][c];
+                    }
+                    q.push({dist+1,{r,c}});
+                }
+            }
+            
+        }
+        
+        return -1;
+    }
+};
