@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        unordered_map<int,list<pair<int,int>>> mp;
+        int n = points.size(), sum = 0;
+
+        // Creating the adjancy list
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int mD = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
+                mp[i].push_back({j,mD});
+                mp[j].push_back({i,mD});
+            }
+        }
+
+        vector<int> visited(n,0);
+        priority_queue<pair<int,int>> pq;
+        pq.push({0,0});
+
+        while(!pq.empty()){
+            int weight = -pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+
+            if(visited[node] == 1) continue;
+            sum += weight;
+            visited[node] = 1;
+
+            for(auto it : mp[node]){
+                if(visited[it.first] == 0){
+                    int adjNode = it.first, w = it.second;
+                    pq.push({-w,adjNode});
+                }
+            }
+        }
+
+        return sum;
+    }
+};
