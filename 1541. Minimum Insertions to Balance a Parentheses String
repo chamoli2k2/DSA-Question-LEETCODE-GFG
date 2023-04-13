@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int minInsertions(string s) {
+        int n = s.size(), ans = 0;
+        stack<char> st;
+
+        for(int i=0;i<n;i++){
+            if(s[i] == '('){
+                st.push('(');
+            }
+            else{
+                // if size of st is zero
+                if(st.size() == 0){
+                    if(i+1 < n && s[i+1] == ')'){
+                        ans++;
+                        i++;
+                    }
+                    else{
+                        ans += 2;
+                    }
+                }
+                else{
+                    if(i+1 < n && s[i+1] == ')'){
+                        i++;
+                    }
+                    else{
+                        ans++;
+                    }
+                    st.pop();
+                }
+            }
+        }
+
+        if(st.size()){
+            int k = st.size();
+            ans += 2*k;
+        }
+
+        return ans;
+    }
+};
