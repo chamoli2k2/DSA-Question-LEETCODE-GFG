@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minSwaps(string s) {
+        int n = s.size(), ans = 0, openB = 0, closeB = 0;
+        int i = 0, j = n-1;
+
+        while(i < j){
+            if(s[i] == '['){
+                openB++;
+            }
+            else{
+                closeB++;
+            }
+
+            // If close bracket count > open bracket count
+            if(closeB > openB){
+                while(s[j] != '['){
+                    j--;
+                }
+                swap(s[i],s[j]);
+                j--;
+                closeB--;
+                openB++;
+                ans++;
+            }
+
+            i++;
+        }
+
+        return ans;
+    }
+};
