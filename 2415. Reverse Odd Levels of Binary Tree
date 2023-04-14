@@ -1,0 +1,45 @@
+class Solution {
+public:
+    TreeNode* reverseOddLevels(TreeNode* root) {
+        queue<TreeNode*> q;
+        q.push(root);
+        bool odd = false;
+        vector<int> temp;
+
+        while(!q.empty()){
+            int n = q.size();
+            
+            int idx = odd ? n-1 : -1;
+
+            for(int i=0;i<n;i++){
+                TreeNode* node = q.front();
+                q.pop();
+
+                if(node->left){
+                    q.push(node->left);
+                    if(odd == false){
+                        temp.push_back(node->left->val);
+                    }
+                }
+
+                if(node->right){
+                    q.push(node->right);
+                    if(odd == false){
+                        temp.push_back(node->right->val);
+                    }
+                }
+
+                if(odd){
+                    node->val = temp[idx--];
+                }
+            }
+
+            odd = !odd;
+            if(odd){
+                temp.clear();
+            }
+        }
+
+        return root;
+    }
+};
