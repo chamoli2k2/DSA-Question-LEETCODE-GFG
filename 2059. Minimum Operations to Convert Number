@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums, int start, int goal) {
+        int n = nums.size();
+        vector<int> path(1001,INT_MAX);
+        queue<pair<int,int>> q;
+        q.push({start,0});
+        path[start] = 0;
+
+        while(!q.empty()){
+            int newStart = q.front().first;
+            int dist = q.front().second;
+            q.pop();
+
+            for(auto it : nums){
+                int c1 = newStart + it;
+                int c2 = newStart - it;
+                int c3 = newStart ^ it;
+
+                if(c1 == goal || c2 == goal || c3 == goal){
+                    return dist+1;
+                }
+
+                if(c1 >= 0 && c1 <= 1000 && path[c1] > dist+1){
+                    path[c1] = dist + 1;
+                    q.push({c1,dist+1});
+                }
+                if(c2 >= 0 && c2 <= 1000 && path[c2] > dist+1){
+                    path[c2] = dist + 1;
+                    q.push({c2,dist+1});
+                }
+                if(c3 >= 0 && c3 <= 1000 && path[c3] > dist+1){
+                    path[c3] = dist + 1;
+                    q.push({c3,dist+1});
+                }
+
+            }
+        }
+
+        return -1;
+    }
+};
