@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int amountOfTime(TreeNode* root, int start) {
+        unordered_map<TreeNode*,list<TreeNode*>> mp;
+        queue<TreeNode*> q;
+        q.push(root);
+        TreeNode* sE;
+
+        while(!q.empty()){
+            int n = q.size();
+
+            for(int i=0;i<n;i++){
+                TreeNode* node = q.front();
+                q.pop();
+
+                if(node->val == start){
+                    sE = node;
+                }
+
+                if(node->left){
+                    mp[node].push_back(node->left);
+                    mp[node->left].push_back(node);
+                    q.push(node->left);
+                }
+
+                if(node->right){
+                    mp[node].push_back(node->right);
+                    mp[node->right].push_back(node);
+                    q.push(node->right);
+                }
+            }
+        }
+
+        int ans = 0;
+        queue<pair<TreeNode*,int>> qe;
+        unordered_map<TreeNode*,bool> visited;
+        qe.push({sE,0});
+
+        while(!qe.empty()){
+            TreeNode* node = qe.front().first;
+            int time = qe.front().second;
+            qe.pop();
+
+            visited[node] = true;
+            ans = max(ans,time);
+
+            for(auto it : mp[node]){
+                if(visited[it] == false){
+                    qe.push({it,time+1});
+                }
+            }
+        }
+
+        return ans;
+    }
+};
