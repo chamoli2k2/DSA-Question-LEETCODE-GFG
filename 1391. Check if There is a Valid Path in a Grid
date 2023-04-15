@@ -1,0 +1,92 @@
+class Solution {
+private:
+    bool isValid(int i,int j){
+        if(i < 0 || j <  0 || i >= n || j >= m){
+            return false;
+        }
+        return true;
+    }
+
+    bool solve(vector<vector<int>> &grid,vector<vector<int>> &visited,int i,int j){
+        // Base case 1
+        if(flag) return true;
+
+        // Base case 2
+        if(i == grid.size()-1 && j == grid[0].size()-1){
+            visited[i][j] = 1;
+            return true;
+        }
+
+        // Base case 3
+        if(visited[i][j] == 1){
+            return false;
+        }
+
+        // Marking visited
+        visited[i][j] = 1;
+
+        int left, right, up, down;
+        left = right = up = down = 0;
+
+        // Marking the direction
+        if(grid[i][j] == 1){
+            left = right = 1;
+        }
+        else if(grid[i][j] == 2){
+            up = down = 1;
+        }
+        else if(grid[i][j] == 3){
+            left = down = 1;
+        }
+        else if(grid[i][j] == 4){
+            right = down = 1;
+        }
+        else if(grid[i][j] == 5){
+            left = up = 1;
+        }
+        else{
+            right = down = 1;
+        }
+
+        // moving in direction
+        int ls, rs, us, ds;
+        ls = rs = us = ds = 0;
+
+        if(left){
+            int newX = i, newY = j - 1;
+            if(isValid(newX,newY) && (grid[newX][newY] == 1 || grid[newX][newY] == 4 || grid[newX][newY] == 6)){
+                ls = solve(grid,visited,newX,newY);
+            }
+        }
+
+        if(right){
+            int newX = i, newY = j + 1;
+            if(isValid(newX,newY) && (grid[newX][newY] == 3 || grid[newX][newY] == 5 || grid[newX][newY] == 1)){
+                rs = solve(grid,visited,newX,newY);
+            }
+        }
+
+        if(up){
+            int newX = i - 1, newY = j;
+            if(isValid(newX,newY) && (grid[newX][newY] == 2 || grid[newX][newY] == 4 || grid[newX][newY] == 3)){
+                us = solve(grid,visited,newX,newY);
+            }
+        }
+
+        if(down){
+            int newX = i + 1, newY = j;
+            if(isValid(newX,newY) && (grid[newX][newY] == 2 || grid[newX][newY] == 5 || grid[newX][newY] == 6)){
+                ds = solve(grid,visited,newX,newY);
+            }
+        }
+
+        return flag = (ls || ds || rs || us);
+    }
+public:
+    int flag = 0, n, m;
+    bool hasValidPath(vector<vector<int>>& grid) {
+        n = grid.size(), m = grid[0].size();
+        vector<vector<int>> visited(n,vector<int>(m,0));
+        return solve(grid,visited,0,0);
+    }
+};
