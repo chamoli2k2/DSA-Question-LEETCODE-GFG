@@ -1,0 +1,34 @@
+class Solution {
+private:
+    int solve(vector<int> &arr,map<pair<int,int>,int> &mp,vector<vector<int>> &dp,int ls,int rs){
+        // Base case
+        if(ls == rs){
+            return 0;
+        }
+
+        if(dp[ls][rs] != -1) return dp[ls][rs];
+
+        int ans = INT_MAX;
+        for(int i=ls;i<rs;i++){
+            ans = min(ans,mp[{ls,i}]*mp[{i+1,rs}] + solve(arr,mp,dp,ls,i) + solve(arr,mp,dp,i+1,rs));
+        }
+
+        return dp[ls][rs] = ans;
+    }
+public:
+    int mctFromLeafValues(vector<int>& arr) {
+        int n = size(arr);
+        map<pair<int,int>,int> mp;
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+
+        // Precomputing the maximum value in a range
+        for(int i=0;i<n;i++){
+            mp[{i,i}] = arr[i];
+            for(int j=i+1;j<n;j++){
+                mp[{i,j}] = max(arr[j],mp[{i,j-1}]);
+            }
+        }
+
+        return solve(arr,mp,dp,0,n-1);
+    }
+};
