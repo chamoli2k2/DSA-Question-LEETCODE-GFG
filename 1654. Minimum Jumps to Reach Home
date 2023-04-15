@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int minimumJumps(vector<int>& forbidden, int a, int b, int x) {
+        // Maximum forward it can go
+        int fLimit = x + b;
+        queue<pair<int,pair<int,bool>>> q;
+        q.push({0,{0,0}});
+        unordered_map<int,int> mp;
+        vector<vector<int>> visited(2,vector<int>(6000+1,0));
+        visited[0][0] = 1;
+        visited[1][0] = 1;
+        
+        for(auto it : forbidden) mp[it] = 1;
+
+        while(!q.empty()){
+            int num = q.front().first;
+            int dist = q.front().second.first, back = q.front().second.second;
+            q.pop();
+
+            if(num == x) return dist;
+
+            // We have 3 cases
+            // jump forward
+            if(num + a <= 6000 && mp[num+a] == 0 && visited[1][num+a] == 0){
+                visited[1][num+a] = 1;
+                q.push({num+a,{dist+1,0}});
+            }
+
+            // backward Jump
+            if(num-b >= 0 && back == 0 && mp[num-b] == 0 && visited[0][num-b] == 0){
+                visited[0][num-b] = 1;
+                q.push({num-b,{dist+1,1}});
+            }
+        }
+
+        return -1;
+    }
+};
