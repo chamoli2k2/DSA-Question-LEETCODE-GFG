@@ -1,0 +1,71 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* replaceValueInTree(TreeNode* root) {
+        queue<TreeNode*> q, pq;
+        q.push(root);
+        
+        unordered_map<TreeNode*,int> mpSum;
+        unordered_map<TreeNode*,TreeNode*> mp;
+        
+        while(!q.empty()){
+            int n = q.size();
+            int sum = 0;
+            for(int i=0;i<n;i++){
+                TreeNode* node = q.front();
+                q.pop();
+                
+                sum += node->val;
+                
+                // Sum variable to store parent sum of each node
+                int SumParent = 0;
+                
+                if(node->left){
+                    mp[node->left] = node;
+                    SumParent += node->left->val;
+                    q.push(node->left);
+                }
+                
+                if(node->right){
+                    mp[node->right] = node;
+                    SumParent += node->right->val;
+                    q.push(node->right);
+                }
+                
+                // pushing the value of parent sum
+                mpSum[node] = SumParent;
+                
+                
+                pq.push(node);
+            }
+            
+            
+            for(int i=0;i<n;i++){
+                TreeNode* node = pq.front();
+                pq.pop();
+                
+                // seeing the parent
+                if(mp.find(node) == mp.end()){
+                    node->val = 0;
+                }
+                else{
+                    TreeNode* p = mp[node];
+                    int k = mpSum[p];
+                    node->val = sum - k;
+                }
+            }
+        }
+        
+        return root;
+    }
+};
