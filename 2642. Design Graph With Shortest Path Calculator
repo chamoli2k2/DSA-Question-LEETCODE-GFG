@@ -1,0 +1,55 @@
+class Graph {
+public:
+    unordered_map<int,list<pair<int,int>>> mp;
+    int k;
+    Graph(int n, vector<vector<int>>& edges) {
+        k = n;
+        for(int i=0;i<n;i++){
+            mp[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+        }
+    }
+    
+    void addEdge(vector<int> edge) {
+        mp[edge[0]].push_back({edge[1],edge[2]});
+    }
+    
+    int shortestPath(int node1, int node2) {
+        vector<long long> arr(k,INT_MAX);
+        arr[node1] = 0;
+        priority_queue<pair<long long,int>> q;
+        q.push({0,node1});
+        
+        while(!q.empty()){
+            long long pCost = -q.top().first;
+            int node = q.top().second;
+            
+            q.pop();
+            
+            if (node == node2) {
+                return pCost;
+            }
+            
+            if (pCost > arr[node]) {
+                continue;
+            }
+            
+            for(auto it : mp[node]){
+                long long newNode = it.first, newCost = it.second + pCost;
+                if(1LL*newCost < arr[newNode]){
+                    arr[newNode] = newCost;
+                    q.push({-newCost,newNode});
+                }
+            }
+        }
+        
+        return -1;
+    }
+};
+
+
+/**
+ * Your Graph object will be instantiated and called as such:
+ * Graph* obj = new Graph(n, edges);
+ * obj->addEdge(edge);
+ * int param_2 = obj->shortestPath(node1,node2);
+ */
