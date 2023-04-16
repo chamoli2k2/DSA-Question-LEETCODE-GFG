@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<long long> findPrefixScore(vector<int>& arr) {
+        int n = size(arr), maximum = arr[0];
+        vector<long long> ans, preSum(n,0);
+        preSum[0] = 2*arr[0];
+        for(int i=1;i<n;i++){
+            maximum = max(maximum,arr[i]);
+            preSum[i] = arr[i] + maximum;
+        }
+        
+        long long sum = 0;
+        for(int i=0;i<n;i++){
+            sum += preSum[i];
+            ans.push_back(sum);
+        }
+        
+        return ans;
+    }
+};
