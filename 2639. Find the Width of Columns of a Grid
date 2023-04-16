@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> findColumnWidth(vector<vector<int>>& arr) {
+        vector<int> result;
+        int n = arr.size(), m = arr[0].size();
+        
+        for(int i=0;i<m;i++){
+            int temp = 0;
+            for(int j=0;j<n;j++){
+                string s = to_string(arr[j][i]);
+                temp = max(temp,(int)size(s));
+            }
+            result.push_back(temp);
+        }
+        
+        return result;
+    }
+};
