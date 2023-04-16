@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &piles,vector<vector<int>> &dp,int idx,int n,int k){
+        // Base case
+        if(idx >= n || k == 0) return 0;
+        
+        if(dp[idx][k] != -1) return dp[idx][k];
+
+        int maxi = 0, sum = 0;
+
+        // Not taking from this pile
+        maxi = solve(piles,dp,idx+1,n,k);
+        for(int j=0;j<piles[idx].size() && j < k;j++){
+            sum += piles[idx][j];
+
+            // We have two options
+            maxi = max(maxi,sum+solve(piles,dp,idx+1,n,k-j-1));
+        }
+
+        return dp[idx][k] = maxi;
+    }
+public:
+    int maxValueOfCoins(vector<vector<int>>& piles, int k) {
+        int n = size(piles);
+        vector<vector<int>> dp(n,vector<int>(k+1,-1));
+        return solve(piles,dp,0,n,k);
+    }
+};
