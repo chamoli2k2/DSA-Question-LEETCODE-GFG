@@ -1,0 +1,42 @@
+class Solution {
+private:
+    int solve(string &word,int idx,int n){
+        // Base case
+        if(idx >= n) return 0;
+        
+        if(word[idx] == 'a'){
+            if(idx+1 < n && word[idx+1] == 'b'){
+                if(idx+2 < n && word[idx+2] == 'c'){
+                    return 0 + solve(word,idx+3,n);
+                }
+                else{
+                    return 1 + solve(word,idx+2,n);
+                }
+            }
+            else if(idx+1 < n && word[idx+1] == 'c'){
+                return 1 + solve(word,idx+2,n);
+            }
+            else{
+                return 2 + solve(word,idx+1,n);
+            }
+        }
+        else if(word[idx] == 'b'){
+            if(idx+1 < n && word[idx+1] == 'c'){
+                return 1 + solve(word,idx+2,n);
+            }
+            else{
+                return 2 + solve(word,idx+1,n);
+            }
+        }
+        else{
+            return 2 + solve(word,idx+1,n);
+        }
+    }
+public:
+    int addMinimum(string word) {
+        // Base case
+        int n = word.size();
+        
+        return solve(word,0,n);
+    }
+};
