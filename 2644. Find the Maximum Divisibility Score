@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxDivScore(vector<int>& nums, vector<int>& div) {
+        int n = nums.size(), m = div.size(), maxi = 0, ans = INT_MAX;
+        
+        for(int i=0;i<m;i++){
+            int di = div[i], count = 0;
+            for(int j=0;j<n;j++){
+                if(nums[j] % di == 0){
+                    count ++;
+                }
+            }
+            
+            if(count > maxi){
+                maxi = count;
+                ans = di;
+            }
+            else if(count == maxi){
+                ans = min(ans,di);
+            }
+        }
+        
+        return ans;
+    }
+};
