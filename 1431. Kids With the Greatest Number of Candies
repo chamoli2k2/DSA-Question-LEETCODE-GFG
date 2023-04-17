@@ -1,0 +1,15 @@
+class Solution {
+public:
+    vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
+        int maxi = *max_element(begin(candies),end(candies));
+        vector<bool> ans(size(candies),false);
+
+        for(int i=0;i<size(candies);i++){
+            if(candies[i]+extraCandies >= maxi){
+                ans[i] = true;
+            }
+        }
+
+        return ans;
+    }
+};
