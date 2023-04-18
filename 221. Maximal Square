@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& arr) {
+        int n = arr.size(), m = arr[0].size(), res = 0;
+        vector<vector<int>> ans(n,vector<int>(m,0));
+
+        for(int i=0;i<n;i++){
+            if(arr[i][0] == '1') ans[i][0] = 1, res = 1;
+        }
+
+        for(int j=0;j<m;j++){
+            if(arr[0][j] == '1') ans[0][j] = 1, res = 1;
+        }
+
+        for(int i=1;i<n;i++){
+            for(int j=1;j<m;j++){
+                if(arr[i][j] == '1'){
+                    ans[i][j] = min({ans[i-1][j],ans[i][j-1],ans[i-1][j-1]}) + 1;
+                    res = max(res,ans[i][j]);
+                }
+            }
+        }
+
+        return res * res;
+    }
+};
