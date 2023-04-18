@@ -3,6 +3,7 @@ public:
     bool isValidSerialization(string preorder) {
         vector<string> ans;
         string temp = "";
+        
         // spliting
         for(int i=0;i<size(preorder);i++){
             if(preorder[i] == ','){
@@ -16,17 +17,15 @@ public:
 
         if(temp != "") ans.push_back(temp);
 
-        stack<string> st;
+        int vac = 1;
         for(auto it : ans){
-            if(it == "#"){
-                while(st.size() >= 2 && st.top() == "#"){
-                    st.pop();
-                    if(st.top() != "#") st.pop();
-                }
+            vac--;
+            if(vac < 0) return false;
+            if(it != "#"){
+                vac += 2;
             }
-            st.push(it);
         }
-
-        return st.size() == 1 && st.top() == "#";
+        
+        return vac == 0 ? true : false;
     }
 };
