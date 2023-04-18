@@ -1,59 +1,52 @@
 class Solution {
 public:
-    int largestRectangleArea(vector<int>& arr) {
-        stack<pair<long long,int>>  st;
-        vector<int> ls;
-        vector<int> rs;
-        int n=arr.size();
-        // step 1 find previous smaller element from left side
+    int largestRectangleArea(vector<int>& nums) {
+        int n = size(nums);
+        vector<int> ls(n,0), rs(n,0);
+        stack<int> st;
+
+        // Finding the next smaller elment from left
         for(int i=0;i<n;i++){
-            long long num=arr[i];
-            while(!st.empty() and st.top().first>=num){
+            while(!st.empty() && nums[st.top()] >= nums[i]){
                 st.pop();
             }
-            
+
             if(st.empty()){
-                ls.push_back(-1);
-            }else{
-                ls.push_back(st.top().second);
+                ls[i] = -1;
             }
-            
-            st.push({num,i});
+            else{
+                ls[i] = st.top();
+            }
+
+            st.push(i);
         }
-        
-        // emptying the stack
-        while(!st.empty()){
-            st.pop();
-        }
-        
-        // step 1 find previous smaller element from right side
+
+        // Clearing the stack
+        while(!st.empty()) st.pop();
+
+        // Finding next smaller element from right
         for(int i=n-1;i>=0;i--){
-            long long num=arr[i];
-            while(!st.empty() and st.top().first>=num){
+            while(!st.empty() && nums[st.top()] >= nums[i]){
                 st.pop();
             }
-            
+
             if(st.empty()){
-                rs.push_back(n);
-            }else{
-                rs.push_back(st.top().second);
+                rs[i] = n;
             }
-            
-            st.push({num,i});
+            else{
+                rs[i] = st.top();
+            }
+
+            st.push(i);
         }
-        
-        // Reversing the rs
-        reverse(rs.begin(),rs.end());
-        
-        // calculating the area
-        long long ans=0;
-        
+
+        // Finding the area
+        int ans = 0;
         for(int i=0;i<n;i++){
-            long long area=(rs[i]-ls[i]-1)*arr[i];
-            ans=max(ans,area);
+            int area = (rs[i]-ls[i]-1) * nums[i];
+            ans = max(ans,area);
         }
-        
-        // returning the finally answer
+
         return ans;
     }
 };
