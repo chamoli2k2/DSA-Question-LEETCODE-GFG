@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool isValidSerialization(string preorder) {
+        vector<string> ans;
+        string temp = "";
+        // spliting
+        for(int i=0;i<size(preorder);i++){
+            if(preorder[i] == ','){
+                ans.push_back(temp);
+                temp = "";
+            }
+            else{
+                temp += preorder[i];
+            }
+        }
+
+        if(temp != "") ans.push_back(temp);
+
+        stack<string> st;
+        for(auto it : ans){
+            if(it == "#"){
+                while(st.size() >= 2 && st.top() == "#"){
+                    st.pop();
+                    if(st.top() != "#") st.pop();
+                }
+            }
+            st.push(it);
+        }
+
+        return st.size() == 1 && st.top() == "#";
+    }
+};
