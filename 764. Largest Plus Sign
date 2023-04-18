@@ -1,0 +1,80 @@
+class Solution {
+public:
+    int orderOfLargestPlusSign(int n, vector<vector<int>>& mines) {
+        // Intialising the variables
+        int m = n;
+        vector<vector<int>> nums(n,vector<int>(n,1));
+       vector<vector<int>> ls(n,vector<int>(n,0)), rs(n,vector<int>(n,0)), ds(n,vector<int>(n,0)), us(n,vector<int>(n,0));
+
+       // Putting the mines
+       for(auto it : mines){
+           nums[it[0]][it[1]] = 0;
+       }
+
+        // Prefix evaluation
+        // Left and Right
+        for(int i=0;i<n;i++){
+            int sum1 = 0, sum2 = 0;
+            for(int j=0;j<m;j++){
+                // filling from left
+                if(nums[i][j] == 1){
+                    sum1++;
+                    ls[i][j] = sum1;
+                }
+                else{
+                    sum1 = 0;
+                }
+
+                // filling from right
+                if(nums[i][m-1-j] == 1){
+                    sum2++;
+                    rs[i][m-1-j] = sum2;
+                }
+                else{
+                    sum2 = 0;
+                }
+            }
+        }
+
+        // Up and Down
+        for(int j=0;j<m;j++){
+            int sum1 = 0, sum2 = 0;
+            for(int i=0;i<n;i++){
+                // up filling
+                if(nums[i][j] == 1){
+                    sum1++;
+                    us[i][j] = sum1;
+                }
+                else{
+                    sum1 = 0;
+                }
+
+                // down filling
+                if(nums[n-1-i][j] == 1){
+                    sum2++;
+                    ds[n-1-i][j] = sum2;
+                }
+                else{
+                    sum2 = 0;
+                }
+            }
+        }
+
+        int ans = 0;
+        // Evaluating the answer
+        for(int i=1;i<n-1;i++){
+            for(int j=1;j<m-1;j++){
+                if(nums[i][j] == 1){
+                    int k = min({ls[i][j-1],rs[i][j+1],us[i-1][j],ds[i+1][j]});
+                    ans = max(ans,k+1);
+                }
+            }
+        }
+
+        if(ans == 0 && mines.size() != n*n){
+            return 1;
+        }
+        
+        return ans;
+    }
+};
