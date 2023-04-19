@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int getSum(int a, int b) {
+        // Equivalent of addition and subtraction
+        while(b!=0)
+        {
+            unsigned int temp=(a&b);
+            a=a^b;
+            b=(int)(temp<<1);
+        }
+        return a;
+    }
+};
