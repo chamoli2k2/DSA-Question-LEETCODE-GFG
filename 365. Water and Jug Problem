@@ -1,0 +1,72 @@
+class Solution {
+public:
+    bool canMeasureWater(int j1, int j2, int target) {
+        // Base case
+        if(j1 + j2 < target) return false;
+        if(j1 + j2 == target) return true;
+        if(j1%2 == 0 && j2%2 == 0 && target&1) return false;
+
+        // Making queue
+        queue<pair<int,int>> q;
+        map<pair<int,int>,int> visited;
+        q.push({0,0});
+        int newS1, newS2;
+
+        while(!q.empty()){
+            // putting out the 
+            int s1 = q.front().first, s2 = q.front().second;
+            q.pop();
+
+            // checking if reached target
+            if(s1+s2 == target || s1 == target || s2 == target) return true;
+
+            visited[{s1,s2}] = 1;
+
+            // We have following cases
+            // case 1 : full the j2 from j1 
+            newS1 = s1 - min(s1,j2-s2);
+            newS2 = s2 + min(s1,j2-s2);
+            if(visited[{newS1,newS2}] == 0){
+                q.push({newS1,newS2});
+            }
+
+            // case 2 : full the j1 from j2
+            newS1 = s1 + min(s2,j1-s1);
+            newS2 = s2 - min(s2,j1-s1);
+            if(visited[{newS1,newS2}] == 0){
+                q.push({newS1,newS2});
+            }
+
+            // case 3 : emptying the j1
+            newS1 = 0;
+            newS2 = s2;
+            if(visited[{newS1,newS2}] == 0){
+                q.push({newS1,newS2});
+            }
+
+            // case 4 : emptying the j2
+            newS1 = s1;
+            newS2 = 0;
+            if(visited[{newS1,newS2}] == 0){
+                q.push({newS1,newS2});
+            }
+
+            // case 5 : filling the j1 completely
+            newS1 = j1;
+            newS2 = s2;
+            if(visited[{newS1,newS2}] == 0){
+                q.push({newS1,newS2});
+            }
+
+            // case 6 : filling the j2 completely
+            newS1 = s1;
+            newS2 = j2;
+            if(visited[{newS1,newS2}] == 0){
+                q.push({newS1,newS2});
+            }
+
+        }
+
+        return false;
+    }
+};
