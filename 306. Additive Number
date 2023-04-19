@@ -1,0 +1,45 @@
+class Solution {
+private:
+    bool solve(string target,long long n1,long long n2,bool flag){
+        // BASE CASE
+        if(target.size() == 0 && flag) return true;
+
+        long long n3 = n1 + n2;
+        string s3 = to_string(n3);
+        int k = s3.size();
+        string check = target.substr(0,k);
+
+        if(check == s3){
+            return solve(target.substr(s3.size()),n2,n3,true);
+        }
+
+        return false;
+    }
+public:
+    bool isAdditiveNumber(string num) {
+        int n = num.size();
+        
+        for(int i=1;i<=n/2;i++){
+            string s1 = num.substr(0,i);
+            long long n1 = stol(s1);
+
+            // checking 
+            if(to_string(n1) != s1) break;
+
+            for(int j=1;j<=(n-i)/2;j++){
+                string s2 = num.substr(i,j);
+                long long n2 = stol(s2);
+
+                // checking 
+                if(to_string(n2) != s2) break;
+
+                
+                bool found = solve(num.substr(i+j),n1,n2,false);
+    
+                if(found) return true;
+            }
+        }
+
+        return false;
+    }
+};
