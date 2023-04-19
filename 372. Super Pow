@@ -1,0 +1,29 @@
+int mod = 1337;
+class Solution {
+private:
+    int power(int a,int b){
+        // Base case
+        if(b == 0) return 1;
+
+        int ans = power(a,b/2) % mod;
+
+        if(b & 1){
+            return (ans%mod *1LL* ans%mod * a%mod) % mod;
+        }
+
+        return (ans%mod *1LL* ans%mod) % mod;
+    }
+    int solve(int a,vector<int> &b,int idx){
+        // Base case
+        if(idx < 0) return 1;
+
+        int ans = (power(a,b[idx])%mod *1LL* (power(solve(a,b,idx-1),10))%mod) % mod;
+        
+        return ans;
+    }
+public:
+    int superPow(int a, vector<int>& b) {
+        int n = b.size()-1;
+        return solve(a,b,n);
+    }
+};
