@@ -1,0 +1,25 @@
+class Solution {
+private:
+    pair<int,int> solve(TreeNode* root,int &ans){
+        // Base case
+        if(root == NULL) return {0,0};
+
+        pair<int,int> ls = solve(root->left,ans);
+        pair<int,int> rs = solve(root->right,ans);
+
+        int totalVal = root->val + ls.first + rs.first;
+        int totalNode = ls.second + rs.second + 1;
+
+        if(totalVal/totalNode == root->val){
+            ans++;
+        }
+
+        return {totalVal,totalNode};
+    }
+public:
+    int averageOfSubtree(TreeNode* root) {
+        int ans = 0;
+        solve(root,ans);
+        return ans;
+    }
+};
