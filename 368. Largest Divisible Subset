@@ -1,0 +1,42 @@
+class Solution {
+private:
+    void solve(vector<int> &nums,int idx,int n){
+        // Base case
+        if(idx == n){
+            if(temp.size() > ans.size()){
+                ans = temp;
+            }
+            return;
+        }
+
+        // Take
+        int c1 = 0; 
+        if(temp.size() == 0){
+            temp.push_back(nums[idx]);
+            solve(nums,idx+1,n);
+            temp.pop_back();
+        }
+        else{
+            if(nums[idx]%temp[temp.size()-1] == 0 && (int)temp.size() > dp[idx]){
+                dp[idx] = (int)temp.size();
+                temp.push_back(nums[idx]);
+                solve(nums,idx+1,n);
+                temp.pop_back();
+            }
+        }
+
+        // Not take
+        solve(nums,idx+1,n);
+
+    }
+public:
+    vector<int> ans, dp, temp;
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<=n;i++) dp.push_back(-1);
+        vector<int> temp;
+        solve(nums,0,n);
+        return ans;
+    }
+};
