@@ -1,0 +1,21 @@
+class Solution {
+private:
+    void solve(int num,int target,vector<int> &ans){
+        // base case
+        if(num > target) return;
+
+        ans.push_back(num);
+
+        for(int j=0;j<10;j++){
+            solve(num*10+j,target,ans);
+        }
+    }
+public:
+    vector<int> lexicalOrder(int n) {
+        vector<int> ans;
+        for(int i=1;i<=9;i++){
+            solve(i,n,ans);
+        }
+        return ans;
+    }
+};
