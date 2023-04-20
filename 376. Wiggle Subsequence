@@ -1,0 +1,47 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,vector<vector<int>> &dp,int idx,int flag,int n){
+        // Base case
+        if(idx == n-1) return 1;
+
+        if(dp[idx][flag] != -1) return dp[idx][flag];
+
+        // Taking positive
+
+        int c1 = 0;
+        if(flag == 0){
+            // Take
+            if(nums[idx+1] > nums[idx]){
+                c1 = 1 + solve(nums,dp,idx+1,1,n);
+            }
+            else{
+                c1 = solve(nums,dp,idx+1,0,n);
+            }
+        }
+        else{
+            // Take
+            if(nums[idx+1] < nums[idx]){
+                c1 = 1 + solve(nums,dp,idx+1,0,n);
+            }
+            else{
+                c1 = solve(nums,dp,idx+1,1,n);
+            }
+        }
+
+        return dp[idx][flag] = c1;
+    }
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        int n = nums.size();
+        // making dp vector
+        vector<vector<int>> dp1(n,vector<int>(2,-1)), dp2(n,vector<int>(2,-1));
+
+        // Taking -ve as first difference
+        int c1 = solve(nums,dp1,0,0,n);
+
+        // Taking +ve as first difference
+        int c2 = solve(nums,dp2,0,1,n);
+
+        return max(c1,c2);
+    }
+};
