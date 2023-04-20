@@ -1,0 +1,49 @@
+class Solution {
+public:
+    TreeNode* createBinaryTree(vector<vector<int>>& nums) {
+        TreeNode* root, *node1, *node2;
+        unordered_map<int,TreeNode*> mp, ptracker;
+        unordered_map<int,int> allNode;
+
+        for(auto it : nums){
+            int parent = it[0], child = it[1], isLeft = it[2];
+
+            // Checking child in map
+            if(mp.find(child) != mp.end()){
+                node1 = mp[child];
+            }
+            else{
+                node1 = new TreeNode(child);
+                mp[child] = node1;
+            }
+
+            // Checking parent in map
+            if(mp.find(parent) != mp.end()){
+                node2 = mp[parent];
+            }
+            else{
+                node2 = new TreeNode(parent);
+                mp[parent] = node2;
+            }
+
+            if(isLeft){
+                node2->left = node1;
+            }
+            else{
+                node2->right = node1;
+            }
+
+            ptracker[child] = node2;
+            allNode[child] = 1;
+            allNode[parent] = 1;
+        }
+
+        for(auto it : allNode){
+            if(ptracker.find(it.first) == ptracker.end()){
+                return mp[it.first];
+            }
+        }
+        
+        return NULL;
+    }
+};
