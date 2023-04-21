@@ -1,38 +1,33 @@
-int mod = 1e9 + 7;
 class Solution {
 private:
-    int solve(vector<pair<int,int>> &nums,vector<vector<vector<int>>> &dp,int idx,int Profit,int target,int k){
+    int solve(int idx,int n,int target){
         // Base case
-        // If no thieves left || idx is greater than bound
-        if(k == 0 || idx >= nums.size()){
-            return Profit >= target ? 1 : 0;
+        if(idx >= size(nums)){
+            return (n >= 0 && target <= 0);
         }
-        
 
-        if(dp[idx][Profit][k] != -1) return dp[idx][Profit][k];
+        if(target < 0) target = 0;
+        if(dp[idx][n][target] != -1) return dp[idx][n][target];
 
-        // We have 2 choice either take or notake
+        // We have two options
         int take = 0;
-        if(nums[idx].first <= k){
-            take = solve(nums,dp,idx+1,Profit+nums[idx].second,target,k-nums[idx].first);
+        if(nums[idx].first <= n){
+            take = solve(idx+1,n-nums[idx].first,target-nums[idx].second);
         }
 
-        int notake = solve(nums,dp,idx+1,Profit,target,k);
+        int noTake = solve(idx+1,n,target);
 
-        return dp[idx][Profit][k] = (take % mod + notake % mod) % mod;
+        return dp[idx][n][target] = (take%mod + noTake%mod) % mod;
     }
 public:
-    int profitableSchemes(int k, int minProfit, vector<int>& group, vector<int>& profit) {
-        int n = group.size();
-        int Sum = 0;
-        vector<pair<int,int>> nums(n);
-        for(int i=0;i<n;i++){
-            nums[i] = {group[i],profit[i]};
-            Sum += profit[i];
+    int mod = 1e9 + 7;
+    int dp[102][102][102];
+    vector<pair<int,int>> nums;
+    int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) {
+        for(int i=0;i<size(group);i++){
+            nums.push_back({group[i],profit[i]});
         }
-
-        vector<vector<vector<int>>> dp(n,vector<vector<int>>(Sum+1,vector<int>(k+1,-1)));
-
-        return solve(nums,dp,0,0,minProfit,k);
+        memset(dp,-1,sizeof(dp));
+        return solve(0,n,minProfit);
     }
 };
