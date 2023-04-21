@@ -1,0 +1,44 @@
+class Solution {
+private:
+    vector<int> solve(TreeNode* root,int dist,int &ans){
+        // Base case
+        if(root == NULL) return {0};
+        if(root->left == NULL && root->right == NULL) return {1};
+
+        // Doing postorder traversal
+        vector<int> ls = solve(root->left,dist,ans);
+        vector<int> rs = solve(root->right,dist,ans);
+
+        // evaluating
+        vector<int> nodes;
+    
+        for(auto i : ls){
+            for(auto j : rs){
+                // checking 
+                if(i && j && i+j <= dist){
+                    ans++;
+                }
+            }
+        }
+
+        for(auto it : ls){
+            if(it+1 < dist && it){
+                nodes.push_back(it+1);
+            }
+        }
+
+        for(auto it : rs){
+            if(it+1 < dist && it){
+                nodes.push_back(it+1);
+            }
+        }
+
+        return nodes;
+    }
+public:
+    int countPairs(TreeNode* root, int distance) {
+        int ans = 0;
+        solve(root,distance,ans);
+        return ans;
+    }
+};
