@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int n = nums.size(), gc = 0, count = 0;
+        for(auto it : nums){
+            gc = gcd(gc,it);
+            if(it == 1) count++;
+        }
+        // Base case
+        if(gc > 1) return -1;
+        if(count > 0) return n - count;
+        
+        int len = INT_MAX;
+        for(int i=0;i<n;i++){
+            gc = 0;
+            for(int j=i;j<n;j++){
+                gc = gcd(gc,nums[j]);
+                if(gc == 1){
+                    len = min(len,j-i+1);
+                    break;
+                }
+            }
+        }
+
+        // Returning 
+        return n + len - 2;
+    }
+};
