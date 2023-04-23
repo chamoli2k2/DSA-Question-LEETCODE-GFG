@@ -1,0 +1,33 @@
+int mod = 1e9 + 7;
+class Solution {
+private:
+    int solve(string &s,int k,int idx,int n){
+        // Base case
+        if(idx == n) return 1;
+
+        // checking 
+        if(dp[idx] != -1) return dp[idx];
+
+        if(s[idx] == '0') return 0;
+        long long num = 0, ans = 0;
+
+        for(int i=idx;i<n;i++){
+            num = num * 10 + (s[i] - '0');
+            if(num <= k){
+                ans = (solve(s,k,i+1,n) % mod + ans % mod) % mod;
+            }
+            else{
+                break;
+            }
+        }
+
+        return dp[idx] = ans;
+    }
+public:
+    int dp[100001];
+    int numberOfArrays(string s, int k) {
+        int n = size(s);
+        memset(dp,-1,sizeof(dp));
+        return solve(s,k,0,n);
+    }
+};
