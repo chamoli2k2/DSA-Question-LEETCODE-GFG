@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int isWinner(vector<int>& p1, vector<int>& p2) {
+        int s1 = 0, s2 = 0;
+        for(int i=0;i<p1.size();i++){
+            s1 += p1[i];
+            if((i-1 >= 0 && p1[i-1] == 10) || (i-2 >= 0 && p1[i-2] == 10)){
+                s1 += p1[i];
+            }
+        }
+
+        for(int i=0;i<p2.size();i++){
+            s2 += p2[i];
+            if((i-1 >= 0 && p2[i-1] == 10) || (i-2 >= 0 && p2[i-2] == 10)){
+                s2 += p2[i];
+            }
+        }
+
+        return s1 == s2 ? 0 : (s1 > s2 ? 1 : 2);
+    }
+};
