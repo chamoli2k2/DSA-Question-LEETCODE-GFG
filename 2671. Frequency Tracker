@@ -1,0 +1,37 @@
+class FrequencyTracker {
+public:
+    unordered_map<int,int> mp1, mp2;
+    FrequencyTracker() {
+        
+    }
+    
+    void add(int n) {
+        // Adding freq
+        if(mp1[n] > 0){
+            mp2[mp1[n]]--;
+        }
+        
+        // adding number
+        mp1[n]++;
+
+        mp2[mp1[n]]++;
+    }
+    
+    void deleteOne(int n) {
+        if(mp1.find(n) != mp1.end()){
+            mp2[mp1[n]]--;
+
+            mp1[n]--;
+            if(mp1[n] == 0){
+                mp1.erase(n);
+            }
+            else{
+                mp2[mp1[n]]++;
+            }   
+        }
+    }
+    
+    bool hasFrequency(int freq) {
+        return mp2[freq] > 0;
+    }
+};
