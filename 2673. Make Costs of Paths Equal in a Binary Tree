@@ -1,0 +1,21 @@
+class Solution {
+private:
+    int solve(vector<int> &cost,int idx,int n,int &ans){
+        // Base case
+        if(idx >= n) return 0;
+
+        int left = solve(cost,2*idx+1,n,ans);
+        int right = solve(cost,2*idx+2,n,ans);
+
+        int curr = cost[idx] + max(left,right);
+        ans += abs(left-right);
+
+        return curr;
+    }
+public:
+    int minIncrements(int n, vector<int>& cost) {
+        int ans = 0;
+        solve(cost,0,n,ans);
+        return ans;
+    }
+};
