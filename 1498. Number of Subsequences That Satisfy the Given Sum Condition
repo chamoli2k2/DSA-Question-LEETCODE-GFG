@@ -1,0 +1,33 @@
+int mod = 1e9 + 7;
+class Solution {
+private:
+    int pow1(int a,int b){
+        // Base case
+        if(b == 0) return 1;
+
+        long long halfAns = pow1(a,b/2) % mod;
+
+        if(b & 1){
+            return (halfAns % mod * halfAns % mod * a % mod) % mod;
+        }
+
+        return (halfAns % mod * halfAns % mod) % mod;
+    }
+public:
+    int numSubseq(vector<int>& nums, int target) {
+        sort(begin(nums),end(nums));
+        int i = 0, j = size(nums) - 1, ans = 0;
+
+        while(i <= j){
+            if(nums[i]+nums[j] <= target){
+                ans = (ans % mod + pow1(2,j-i) % mod) % mod;
+                i++;
+            }
+            else{
+                j--;
+            }
+        }
+
+        return ans;
+    }
+};
