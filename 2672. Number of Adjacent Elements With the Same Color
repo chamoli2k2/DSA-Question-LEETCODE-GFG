@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> colorTheArray(int n, vector<vector<int>>& queries) {
+        vector<int> nums(n,0), ans;
+        int color = 0;
+
+        for(auto it : queries){
+            int idx = it[0], clr = it[1];
+
+            if(nums[idx] != 0 && idx+1 < n && nums[idx] == nums[idx+1]) color--;
+            if(idx-1 >= 0 && nums[idx] != 0 && nums[idx-1] == nums[idx]) color--;
+
+            nums[idx] = clr;
+
+            if(idx+1 < n && nums[idx] == nums[idx+1]) color++;
+            if(idx-1 >= 0 && nums[idx] == nums[idx-1]) color++;
+
+            ans.push_back(color);
+        }
+
+        return ans;
+    }
+};
