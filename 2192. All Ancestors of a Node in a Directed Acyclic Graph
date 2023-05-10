@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        unordered_map<int,list<int>> mp;
+        for(auto it : edges){
+            mp[it[1]].push_back(it[0]);
+        }
+
+        vector<vector<int>> ans(n);
+
+        for(int i=0;i<n;i++){
+            queue<int> q;
+            vector<int> visited(n,0);
+            q.push(i);
+            visited[i] = 1;
+            while(!q.empty()){
+                int node = q.front();
+                q.pop();
+
+                for(auto it : mp[node]){
+                    if(visited[it] == 0){
+                        visited[it] = 1;
+                        ans[i].push_back(it);
+                        q.push(it);
+                    }
+                }
+            }
+        }
+
+        for(int i=0;i<n;i++) sort(ans[i].begin(),ans[i].end());
+
+        return ans;
+    }
+};
