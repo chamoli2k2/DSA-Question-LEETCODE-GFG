@@ -1,0 +1,24 @@
+class Solution {
+private:
+    long long solve(vector<vector<int>> &ques,int idx,int n){
+        // Base case
+        if(idx >= n) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        // case 1 : 
+        long long take = ques[idx][0] + solve(ques,idx+ques[idx][1]+1,n);
+
+        //  case 2 : 
+        long long notTake = solve(ques,idx+1,n);
+
+        return dp[idx] = max(take,notTake);
+    }
+public:
+    long long dp[100001];
+    long long mostPoints(vector<vector<int>>& ques) {
+        int n = size(ques);
+        memset(dp,-1,sizeof(dp));
+        return solve(ques,0,n);
+    }
+};
