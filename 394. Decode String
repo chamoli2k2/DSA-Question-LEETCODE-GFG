@@ -1,0 +1,51 @@
+class Solution {
+public:
+    string decodeString(string s) {
+        string ans = "";
+        stack<char> st;
+        for(int i=0;i<size(s);i++){
+            if(s[i] == ']'){
+                string temp = "";
+                while(!st.empty() && st.top() != '['){
+                    temp += st.top();
+                    st.pop();
+                }
+
+                if(!st.empty()) st.pop();
+
+                // Reversing the string
+                reverse(begin(temp),end(temp));
+
+                // Checking the number
+                string num = "";
+
+                while(!st.empty() && st.top() >= '0' && st.top() <= '9'){
+                    num += st.top();
+                    st.pop();
+                }
+
+                reverse(begin(num),end(num));
+                int n = stoi(num);
+
+                while(n){
+                    for(auto it : temp){
+                        st.push(it);
+                    }
+                    n--;
+                }
+            }
+            else{
+                st.push(s[i]);
+            }
+        }
+
+        while(!st.empty()){
+            ans += st.top();
+            st.pop();
+        }
+
+        reverse(begin(ans),end(ans));
+
+        return ans;
+    }
+};
