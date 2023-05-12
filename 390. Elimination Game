@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int lastRemaining(int n) {
+        int head = 1, step = 1, flag = 1;
+        while(n > 1){
+            if(flag || (n & 1)){
+                head += step;
+            }
+
+            step *= 2;
+            n /= 2;
+            flag = !flag;
+        }
+        
+        return head;
+    }
+};
