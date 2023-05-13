@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int countSeniors(vector<string>& nums) {
+        int ans = 0;
+        unordered_map<int,int> mp;
+        for(auto it : nums){
+            int k = (it[11]-'0') * 10 + (it[12]-'0');
+            if(k > 60) ans++;
+        }
+        
+        return ans;
+    }
+};
