@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int longestSubstring(string s, int k) {
+        int ans = 0, mp[26] = {0}, n = size(s);
+        // Storing the frequency
+        for(auto it : s) mp[it-'a']++;
+
+        int idx = 0;
+        // Finding the splliting area
+        while(idx < n && mp[s[idx]-'a'] >= k) idx++;
+
+        // Checking 
+        if(idx == n) return n;
+
+        int left = longestSubstring(s.substr(0,idx),k);
+        int right = longestSubstring(s.substr(idx+1,n),k);
+
+        return max(left,right);
+    }
+}; 
