@@ -1,0 +1,9 @@
+class Solution {
+public:
+    bool doesValidArrayExist(vector<int>& nums) {
+        int xori = 0;
+        for(auto it : nums) xori = xori ^ it;
+        
+        return xori == 0 ? true : false;
+    }
+};
