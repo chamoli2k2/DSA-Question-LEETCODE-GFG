@@ -1,0 +1,80 @@
+class Solution {
+public:
+    long long subArrayRanges(vector<int>& arr) {
+      int n = size(arr);
+        vector<int> ls1(n), rs1(n), ls2(n), rs2(n);
+        stack<int> st1, st2;
+
+        for(int i=0;i<n;i++){
+            int idx = n - 1 - i;
+
+            while(!st1.empty() && arr[i] < arr[st1.top()]){
+                st1.pop();
+            }
+
+            if(st1.empty()){
+                ls1[i] = i + 1;
+            }
+            else{
+                ls1[i] = i - st1.top();
+            }
+
+            while(!st2.empty() && arr[idx] <= arr[st2.top()]){
+                st2.pop();
+            }
+
+            if(st2.empty()){
+                rs1[idx] = n - idx;
+            }
+            else{
+                rs1[idx] = st2.top() - idx;
+            }
+            
+
+            st1.push(i);
+            st2.push(idx);
+        }
+
+        while(!st1.empty()) st1.pop();
+        while(!st2.empty()) st2.pop();
+
+        for(int i=0;i<n;i++){
+            int idx = n - 1 - i;
+
+            while(!st1.empty() && arr[i] > arr[st1.top()]){
+                st1.pop();
+            }
+
+            if(st1.empty()){
+                ls2[i] = i + 1;
+            }
+            else{
+                ls2[i] = i - st1.top();
+            }
+
+            while(!st2.empty() && arr[idx] >= arr[st2.top()]){
+                st2.pop();
+            }
+
+            if(st2.empty()){
+                rs2[idx] = n - idx;
+            }
+            else{
+                rs2[idx] = st2.top() - idx;
+            }
+            
+
+            st1.push(i);
+            st2.push(idx);
+        }
+
+        long long ans = 0;
+
+        for(int i=0;i<n;i++){
+          long long k = (rs2[i]*1LL*ls2[i] - rs1[i]*1LL*ls1[i]) *1LL* arr[i];
+          ans += k;
+        }
+
+        return ans;
+    }
+};
