@@ -1,0 +1,40 @@
+class Solution {
+private:
+    int pow1(int a,int b,int mod=1e9+7){
+        // Base case
+        if(b == 0) return 1;
+
+        int halfAns = pow(a,b/2);
+
+        if(b & 1){
+            return (halfAns % mod *1LL* halfAns % mod * a % mod) % mod;
+        }
+
+        return (halfAns % mod *1LL* halfAns % mod) % mod;
+    }
+
+    int add(int a,int b,int mod=1e9+7){
+        return (a%mod + b%mod) % mod;
+    }
+public:
+    int sumOfPower(vector<int>& nums) {
+        int n = nums.size(), mod = 1e9 + 7, ans = 0, prev;
+        sort(begin(nums),end(nums));
+        prev = 0;
+        ans = (nums[0]%mod *1LL* nums[0]%mod *1LL* nums[0]%mod) % mod;
+
+        for(int i=1;i<n;i++){
+            int curr = add(prev*2,nums[i-1]);
+            int p = (pow1(nums[i],2)%mod *1LL* curr%mod) % mod;
+            ans = add(ans,p);
+            prev = curr;
+        }
+
+        for(int i=1;i<n;i++){
+            ans = (ans % mod + pow1(nums[i],3) % mod) % mod; 
+        }
+
+        
+        return ans;
+    }
+};
