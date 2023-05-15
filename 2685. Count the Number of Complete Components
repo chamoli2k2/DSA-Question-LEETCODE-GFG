@@ -1,0 +1,44 @@
+class Solution {
+private:
+    void dfs(unordered_map<int,list<int>> &mp,vector<int> &visited,vector<int> &nums,int node,int &k){
+        visited[node] = 1;
+        k++;
+        nums.push_back(node);
+
+        for(auto it : mp[node]){
+            if(visited[it] == 0){
+                dfs(mp,visited,nums,it,k);
+            }
+        }
+    }
+public:
+    int countCompleteComponents(int n, vector<vector<int>>& edges) {
+        unordered_map<int,list<int>> mp;
+        for(auto it : edges){
+            mp[it[0]].push_back(it[1]);
+            mp[it[1]].push_back(it[0]);
+        }
+
+        vector<int> visited(n,0);
+        int comp = 0;
+
+        for(int i=0;i<n;i++){
+            if(visited[i] == 0){
+                int k = 0, flag = 1;
+                vector<int> temp;
+                dfs(mp,visited,temp,i,k);
+
+                for(auto it : temp){
+                    if(mp[it].size() < k-1){
+                        flag = 0;
+                        break;
+                    }
+                }
+
+                if(flag) comp++;
+            }
+        }
+
+        return comp;
+    }
+};
