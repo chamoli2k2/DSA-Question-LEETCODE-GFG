@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        int n = size(s), i = 0, j = 0, ans = 0, mp[26] = {0};
+
+        while(j < n){
+            mp[s[j]-'A']++;
+            
+            // Checking the validity
+            int maxi = 0;
+            for(int it=0;it<26;it++){
+                if(mp[it] > maxi){
+                    maxi = mp[it];
+                }
+            }
+
+            // Checking t = length - maximum frequency character
+            while((j-i+1)-maxi > k){
+                mp[s[i]-'A']--;
+                for(int it=0;it<26;it++) if(mp[it] > maxi) maxi = mp[it];
+                i++;
+            }
+
+            ans = max(ans,j-i+1);
+            j++;
+        }
+
+        return ans;
+    }
+};
