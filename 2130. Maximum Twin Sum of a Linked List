@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int pairSum(ListNode* head) {
+        int ans = 0, n = 0;
+        vector<int> arr;
+        while(head){
+            arr.push_back(head->val);
+            head = head->next;
+            n++;
+        }
+
+        for(int i=0;i<n/2;i++){
+            int sum = arr[i] + arr[n-1-i];
+            ans = max(ans,sum);
+        }
+
+        return ans;
+    }
+};
