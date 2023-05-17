@@ -1,0 +1,60 @@
+/*                     Time Complexity O(N2)                   */
+
+// class Solution {
+// private:
+//     void solve(TreeNode *root,long long target){
+//         // Base case
+//         if(root == NULL) return;
+
+//         target -= 1LL*root->val;
+
+//         if(target == 0) ans++;
+
+//         solve(root->left,target);
+//         solve(root->right,target);
+//     }
+// public:
+//     int ans = 0;
+//     int pathSum(TreeNode* root, int targetSum) {
+//         // Base case
+//         if(root == NULL) return 0;
+
+//         solve(root,targetSum);
+//         pathSum(root->left,targetSum);
+//         pathSum(root->right,targetSum);
+//         return ans;
+//     }
+// };
+
+
+//                              Time Complexity O(N)                         
+
+
+class Solution {
+private:
+    void solve(TreeNode *root,long long sum,long long target){
+        // Base case
+        if(root == NULL) return;
+
+        sum += 1LL*root->val;
+
+        long long preFix = sum - target;
+
+        //cout<<preFix<<" "<<sum<<endl;
+
+        if(mp[preFix] > 0) ans += mp[preFix];
+
+        mp[sum]++;
+        solve(root->left,sum,target);
+        solve(root->right,sum,target);
+        mp[sum]--;
+    }
+public:
+    int ans = 0;
+    unordered_map<long long,int> mp;
+    int pathSum(TreeNode* root, int targetSum) {
+        mp[0] = 1;
+        solve(root,0,targetSum);
+        return ans;
+    }
+};
