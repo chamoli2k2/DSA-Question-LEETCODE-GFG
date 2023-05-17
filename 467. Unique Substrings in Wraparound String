@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int findSubstringInWraproundString(string s) {
+        int ans = 1, mp[26] = {0}, n = size(s), prevAns = 1;
+        mp[s[0]-'a'] = 1;
+        for(int i=1;i<n;i++){
+            // Checking if it is continous sequence
+            if((s[i-1]-'a'+1)%26 == s[i]-'a'){
+                prevAns++;
+            }
+            else{
+                prevAns = 1;
+            }
+
+            if(mp[s[i]-'a'] < prevAns){
+                ans += prevAns - mp[s[i]-'a'];
+                mp[s[i]-'a'] = prevAns;
+            }
+        }
+        
+        return ans;
+    }
+};
