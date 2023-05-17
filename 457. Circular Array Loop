@@ -1,0 +1,36 @@
+class Solution {
+private:
+    int getNxt(vector<int> &nums,int idx,bool dir){
+        int nxt = (idx + nums[idx] + nums.size()) % nums.size();
+        
+        int ndir = nums[nxt] >= 0 ? true : false;
+
+        if(dir != ndir) return -1;
+        if(nxt == idx) return -1;
+
+        return nxt;
+    }
+public:
+    bool circularArrayLoop(vector<int>& nums) {
+        int n = size(nums);
+
+        for(int i=0;i<n;i++){
+            int slow = i, fast = i;
+            bool dir = nums[i] >= 0 ? true : false;
+            while(1){
+                slow = getNxt(nums,slow,dir);
+                if(slow == -1) break;
+
+                fast = getNxt(nums,fast,dir);
+                if(fast == -1) break;
+                cout<<slow<<" "<<fast<<endl;
+                fast = getNxt(nums,fast,dir);
+                if(fast == -1) break;
+
+                if(slow == fast) return true;
+            }
+        }
+
+        return false;
+    }
+};
