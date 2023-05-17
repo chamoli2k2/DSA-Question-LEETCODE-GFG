@@ -1,0 +1,43 @@
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        // Base case
+        if(root == NULL) return "/";
+
+        // preorder
+        string k = to_string(root->val)+".";
+        k += serialize(root->left);
+        k += serialize(root->right);
+
+        return k;
+    }
+
+    TreeNode* solve(string &data,int &idx){
+        // Base case
+        if(idx == data.size() || data[idx] == '/'){
+            idx++;
+            return NULL;
+        }
+
+        int num = 0;
+        while(data[idx] != '.' && idx < data.size()){
+            num = num * 10 + data[idx]-'0';
+            idx++;
+        }
+        
+        TreeNode* node = new TreeNode(num);
+        idx++;
+        node->left = solve(data,idx);
+        node->right = solve(data,idx);
+        return node;
+    }
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data){
+        int idx = 0;
+        cout<<data<<endl;
+        return solve(data,idx);
+        return NULL;
+    }
+};
