@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode* solve(TreeNode* root,int key){
+        // Base case
+        if(root == NULL) return NULL;
+
+        if(root->val == key){
+            if(root->left == NULL && root->right == NULL){
+                delete root;
+                return NULL;
+            }
+            else if(root->right){
+                TreeNode* temp = root->right;
+                while(temp->left){
+                    temp = temp->left;
+                }
+                root->val = temp->val;
+                temp->val = key;
+                root->right = solve(root->right,key);
+            }
+            else{
+                TreeNode* temp = root->left;
+                while(temp->right){
+                    temp = temp->right;
+                }
+                root->val = temp->val;
+                temp->val = key;
+                root->left = solve(root->left,key);
+            }
+        }
+        else if(root->val < key){
+            root->right = solve(root->right,key);
+        }
+        else{
+            root->left = solve(root->left,key);
+        }
+
+        return root;
+    }
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        return solve(root,key);
+    }
+};
