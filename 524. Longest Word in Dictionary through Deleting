@@ -1,0 +1,34 @@
+class Solution {
+private:
+    bool check(string &s1,string &s2){
+        int j = 0;
+        for(int i=0;i<s1.size();i++){
+            if(s1[i] == s2[j]){
+                j++;
+            }
+
+            if(j == s2.size()) return true;
+        }
+
+        return j == s2.size();
+    }
+public:
+    string findLongestWord(string s, vector<string>& nums) {
+        string ans(1002,'z');
+        int si = 0;
+        for(int i=0;i<nums.size();i++){
+            string k = nums[i];
+            if(check(s,k)){
+                if(si < k.size()){
+                    ans = k;
+                    si = k.size();
+                }
+                else if(si == k.size()){
+                    ans = min(ans,k);
+                }
+            }
+        }
+
+        return si == 0 ? "" : ans;
+    }
+};
