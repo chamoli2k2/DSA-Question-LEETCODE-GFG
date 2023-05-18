@@ -1,0 +1,24 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,int i,int j,bool flag){
+        // Base case
+        if(i > j) return 0;
+        if(i == j) return nums[i];
+
+        if(dp[i][j][flag] != -1) return dp[i][j][flag];
+
+        if(flag){
+            return dp[i][j][flag] = max(nums[i]+solve(nums,i+1,j,!flag),nums[j]+solve(nums,i,j-1,!flag));
+        }
+        
+        return dp[i][j][flag] = min(-nums[i]+solve(nums,i+1,j,!flag),-nums[j]+solve(nums,i,j-1,!flag));
+    }
+public:
+    int dp[21][21][2];
+    bool PredictTheWinner(vector<int>& nums) {
+        int n = size(nums), i = 0, j = n-1;
+        memset(dp,-1,sizeof(dp));
+        int maxP = solve(nums,i,j,1);
+        return maxP >= 0;
+    }
+};
