@@ -1,0 +1,35 @@
+class Solution {
+private:
+    bool sbs(string &s1,string s2){
+        int j = 0;
+        for(int i=0;i<size(s1);i++){
+            if(s1[i] == s2[j]){
+                j++;
+            }
+
+            if(j == s2.size()) return true;
+        }
+
+        return j == s2.size();
+    }
+public:
+    int findLUSlength(vector<string>& strs) {
+        // Sort
+        sort(begin(strs),end(strs),[](string &s1,string &s2){
+            return size(s1) > size(s2);
+        });
+
+        for(int i=0;i<strs.size();i++){
+            for(int j=0;j<strs.size() && strs[j].size() >= strs[i].size();j++){
+                if(i != j && sbs(strs[j],strs[i])){
+                    goto h;
+                }
+            }
+
+            return strs[i].size();
+            h:;
+        }
+
+        return -1;
+    }
+};
