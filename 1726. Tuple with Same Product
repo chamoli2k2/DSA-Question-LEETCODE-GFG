@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int tupleSameProduct(vector<int>& nums) {
+        int n = size(nums), ans = 0;
+        unordered_map<int,int> mp;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int k = nums[i] * nums[j];
+                mp[k]++;
+            }
+        }
+
+        for(auto [it,f] : mp){
+            if(f > 1){
+                ans += (f * (f-1) * 8) / 2;
+            }
+        }
+
+        return ans;
+    }
+};
