@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(TreeNode* root){
+        if(root == NULL) return 0;
+
+        int ls = solve(root->left);
+        int rs = solve(root->right);
+
+        int k = root->val + ls + rs;
+        mp[k]++;
+        freq = max(freq,mp[k]);
+
+        return k;
+    }
+public:
+    unordered_map<int,int> mp;
+    int freq = 0;
+    vector<int> findFrequentTreeSum(TreeNode* root) {
+        solve(root);
+        vector<int> ans;
+        for(auto &[it,f] : mp){
+            if(f == freq){
+                ans.push_back(it);
+            }
+        }
+        return ans;
+    }
+};
