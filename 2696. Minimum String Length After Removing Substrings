@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minLength(string s) {
+        int n = size(s);
+        string k = "";
+        int idx = 0;
+        while(idx < n){
+            if(idx+1 < n && s[idx] == 'A' && s[idx+1] == 'B'){
+                idx += 2;
+            }
+            else if(idx+1 < n && s[idx] == 'C' && s[idx+1] == 'D'){
+                idx += 2;
+            }
+            else{
+                k += s[idx];
+                idx++;
+            }
+        }
+        
+        // Base case
+        if(s.size() == k.size()) return k.size();
+        
+        return minLength(k);
+    }
+};
