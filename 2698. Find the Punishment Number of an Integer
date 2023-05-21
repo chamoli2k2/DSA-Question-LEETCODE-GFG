@@ -1,0 +1,30 @@
+class Solution {
+private:
+    bool check(string num,int target,int idx){
+        // Base case
+        if(idx == num.size()){
+            return target == 0;
+        }
+        
+        int k = 0;
+        for(int i=idx;i<num.size();i++){
+            k = k * 10 + num[i]-'0';
+            if(check(num,target-k,i+1)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+public:
+    int punishmentNumber(int n) {
+        int ans = 0;
+        for(int i=1;i<=n;i++){
+            int num = i * i;
+            if(check(to_string(num),i,0)){
+                ans += num;
+            }
+        }
+        return ans;
+    }
+};
