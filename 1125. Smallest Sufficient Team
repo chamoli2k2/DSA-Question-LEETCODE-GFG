@@ -1,0 +1,69 @@
+class Solution {
+private:
+    int solve(int idx,int &n,int smask,int &tmask,vector<vector<int>> &dp,vector<vector<int>> &recover){
+        // Base case
+        if(smask+1 == tmask){
+            return 0;
+        }
+
+        if(idx == n) return 1e7;
+
+
+        if(dp[smask][idx] != -1) return dp[smask][idx];
+
+
+        // Taking the ith index
+        int backUpmask = smask;
+        smask = smask | maskMp[idx];
+        int c1 = 1 + solve(idx+1,n,smask,tmask,dp,recover);
+
+        // Not taking the ith index
+        smask = backUpmask;
+        int c2 = solve(idx+1,n,smask,tmask,dp,recover);
+
+        if(c1 < c2){
+            recover[smask][idx] = 1;
+        }
+
+        return dp[smask][idx] = min(c1,c2);
+    }
+public:
+    vector<int> maskMp;
+    vector<int> ans;
+    vector<int> smallestSufficientTeam(vector<string>& rskill, vector<vector<string>>& people) {
+        int n = people.size();
+        maskMp.resize(n,0);
+        int skill = 1 << rskill.size();
+
+        // making mask map of every one
+        for(int i=0;i<n;i++){
+            int mask = 0;
+            for(int j=0;j<size(people[i]);j++){
+                for(int k=0;k<size(rskill);k++){
+                    if(people[i][j] == rskill[k]){
+                        mask = mask | (1 << k);
+                        break;
+                    }
+                }
+            }
+
+            // mapping the masking to the person
+            maskMp[i] = mask;
+        }
+
+        vector<vector<int>> dp(skill+1,vector<int>(n,-1));
+        vector<vector<int>> recover(skill+1,vector<int>(n,0));
+        solve(0,n,0,skill,dp,recover);
+
+        for(int i=0,mask=0;i<n;i++){
+            if(recover[mask][i]){
+                ans.push_back(i);
+                mask=(mask | maskMp[i]);
+            }
+
+            if(mask+1==skill) break;
+        }
+
+        return ans;
+    }
+};
