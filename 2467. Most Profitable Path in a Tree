@@ -1,0 +1,114 @@
+class Solution {
+private:
+    bool dfs(unordered_map<int,list<int>> &mp,vector<int> &path,int node,vector<int> &visited){
+        visited[node] = 1;
+        path[node] = 1;
+        if(node == 0) return true;
+
+        for(auto it : mp[node]){
+            if(visited[it] == 0){
+                if(dfs(mp,path,it,visited)){
+                    return true;
+                }
+            }
+        }
+
+        path[node] = 0;
+        return false;
+    }
+public:
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        int n = size(amount);
+        unordered_map<int,list<int>> mp;
+        for(auto it : edges){
+            mp[it[0]].push_back(it[1]);
+            mp[it[1]].push_back(it[0]);
+        }
+
+        queue<pair<int,int>> q;
+        vector<int> dist1(n,1e6);
+        vector<int> dist2(n,1e6);
+        vector<int> path(n,0), visited(n,0);
+        dfs(mp,path,bob,visited);
+
+        // Traversing 0 to leaf node
+        q.push({0,0});
+        dist1[0] = 0;
+        while(!q.empty()){
+            int node = q.front().first;
+            int dist = q.front().second;
+            q.pop();
+
+            for(auto it : mp[node]){
+                if(dist+1 < dist1[it]){
+                    dist1[it] = dist + 1;
+                    q.push({it,dist+1});
+                }
+            }
+        }
+
+        // Traversing bob to 0 
+        q.push({bob,0});
+        dist2[bob] = 0;
+        while(!q.empty()){
+            int node = q.front().first;
+            int dist = q.front().second;
+            q.pop();
+
+            for(auto it : mp[node]){
+                if(dist+1 < dist2[it]){
+                    dist2[it] = dist + 1;
+                    q.push({it,dist+1});
+                }
+            }
+        }
+
+        // for(int i=0;i<n;i++){
+        //     cout<<path[i]<<" "<<dist1[i]<<" "<<dist2[i]<<endl;
+        // }
+
+        q.push({0,amount[0]});
+        visited.clear();
+        visited.resize(n,0);
+        int ans = INT_MIN;
+        visited[0] = 1;
+        while(!q.empty()){
+            int node = q.front().first;
+            int sum = q.front().second;
+            q.pop();
+
+            // is a leaf node
+            if(mp[node].size() == 1 && node != 0){
+                ans = max(ans,sum);
+                //continue;
+            }
+
+            for(auto it : mp[node]){
+                // checking the path is on way
+                int s = 0;
+                if(path[it] && visited[it] == 0){
+                    if(dist1[it] < dist2[it]){
+                        s = sum + amount[it];
+                    }
+                    else if(dist1[it] == dist2[it]){
+                        s = sum + amount[it] / 2;
+                    }
+                    else{
+                        s = sum;
+                    }
+                    q.push({it,s});
+                    visited[it] = 1;
+                }
+                else if(visited[it] == 0){
+                    s = sum + amount[it];
+                    q.push({it,s});
+                    visited[it] = 1;
+                }
+                
+            }
+        }
+
+
+        return ans;
+    }
+};
