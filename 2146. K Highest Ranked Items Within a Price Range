@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<vector<int>> highestRankedKItems(vector<vector<int>>& grid, vector<int>& pricing, vector<int>& start, int k) {
+        int n = size(grid), m = size(grid[0]);
+        vector<vector<int>> pq;
+        vector<vector<int>> visited(n,vector<int>(m,0));
+        queue<pair<int,int>> q;
+        q.push({start[0],start[1]});
+        visited[start[0]][start[1]] = 1;
+
+        int row[] = {1,-1,0,0};
+        int col[] = {0,0,-1,1};
+        int dist = 0;
+
+        while(!q.empty()){
+            int t = q.size();
+
+            for(int j=0;j<t;j++){
+                int x = q.front().first;
+                int y = q.front().second;
+                q.pop();
+                for(int i=0;i<4;i++){
+                    int r = x + row[i];
+                    int c = y + col[i];
+
+                    if(r >= 0 && c >= 0 && r < n && c < m){
+                        if(visited[r][c]) continue;
+                        if(grid[r][c] == 0) continue;
+
+                        q.push({r,c});
+                        visited[r][c] = 1;
+                        if(grid[r][c] >= pricing[0] && grid[r][c] <= pricing[1]){
+                            pq.push_back({dist+1,grid[r][c],r,c});
+                        }
+
+                    }
+                }
+            }
+            dist++;
+        }
+
+        vector<vector<int>> ans;
+        if(grid[start[0]][start[1]] >= pricing[0] && grid[start[0]][start[1]] <= pricing[1])
+            pq.push_back({0,grid[start[0]][start[1]],start[0],start[1]});
+
+        sort(begin(pq),end(pq));
+        for(int i=0;i<min(int(k),(int)pq.size());i++){
+            ans.push_back({pq[i][2],pq[i][3]});
+
+        }
+
+        return ans;
+    }
+};
