@@ -1,26 +1,23 @@
 class Solution {
 private:
-    int solve(vector<int> &piles,vector<vector<int>> &dp,int i,int j,int flag,int n){
+    int solve(vector<int> &piles,vector<vector<int>> &dp,int i,int j,int n){
         // Base case
         if(i == j)  return piles[i];
         if(i > j) return 0;
 
         if(dp[i][j] != -1) return dp[i][j];
 
-        int ans = 0;
-        if(flag){
-            ans = max(piles[i]+solve(piles,dp,i+1,j,!flag,n),piles[j]+solve(piles,dp,i,j-1,!flag,n));
-        }
-        else{
-            ans = min(-piles[i]+solve(piles,dp,i+1,j,!flag,n),-piles[j]+solve(piles,dp,i,j-1,!flag,n));
-        }
+        // Taking front
+        int f = piles[i] - solve(piles,dp,i+1,j,n);
+        // Taking last
+        int l = piles[j] - solve(piles,dp,i,j-1,n);
 
-        return dp[i][j] = ans;
+        return dp[i][j] = max(f,l);
     }
 public:
     bool stoneGame(vector<int>& piles) {
         int n = piles.size();
         vector<vector<int>> dp(n,vector<int>(n,-1));
-        return solve(piles,dp,0,n-1,1,n);
+        return solve(piles,dp,0,n-1,n);
     }
 };
