@@ -1,0 +1,26 @@
+class Solution {
+private:
+    int solve(vector<int> &piles,vector<vector<int>>&dp,int idx,int m,int n){
+        // Base case
+        if(idx >= n) return 0;
+
+        if(dp[idx][m] != -1) return dp[idx][m];
+
+        //cout<<idx<<" ";
+        long long ans = -1e9, temp = 0;
+        for(int x=1;x<=2*m && idx+x-1 < n;x++){
+            temp = temp + 1LL*piles[idx+x-1];
+            ans = max(ans,temp-solve(piles,dp,idx+x,max(x,m),n));
+        }
+        
+        return dp[idx][m] = ans;
+    }
+public:
+    int stoneGameII(vector<int>& piles) {
+        int n = size(piles);
+        vector<vector<int>> dp(n,vector<int>(n+1,-1));
+        int sum = accumulate(begin(piles),end(piles),0);
+        int diff = solve(piles,dp,0,1,n);
+        return (sum + diff) / 2;
+    }
+};
