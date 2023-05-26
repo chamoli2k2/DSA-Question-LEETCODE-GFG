@@ -1,0 +1,36 @@
+class Solution {
+private:
+    int solve(vector<int> &piles,vector<int> &dp,int idx,int n){
+        // Base case
+        if(idx >= n) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        // Taking 1
+        int prev = piles[idx];
+        int c1 = prev - solve(piles,dp,idx+1,n);
+
+        // Taking 2
+        int c2 = -1e9;
+        if(idx+1 < n){
+            prev += piles[idx+1];
+            c2 = prev - solve(piles,dp,idx+2,n);
+        } 
+
+        // Taking 3
+        int c3 = -1e9;
+        if(idx+2 < n){
+            prev += piles[idx+2];
+            c3 = prev - solve(piles,dp,idx+3,n);
+        }
+
+        return dp[idx] = max({c1,c2,c3});
+    }
+public:
+    string stoneGameIII(vector<int>& stoneValue) {
+        int n = size(stoneValue);
+        vector<int> dp(n,-1);
+        int ans = solve(stoneValue,dp,0,n);
+        return ans == 0 ? "Tie" : (ans > 0 ? "Alice" : "Bob");
+    }
+};
