@@ -1,0 +1,9 @@
+class Solution {
+public:
+    int buyChoco(vector<int>& prices, int money) {
+        int n = size(prices);
+        sort(begin(prices),end(prices));
+        int ans = prices[1] + prices[0];
+        return (money-ans) >= 0 ? money-ans : money;
+    }
+};
