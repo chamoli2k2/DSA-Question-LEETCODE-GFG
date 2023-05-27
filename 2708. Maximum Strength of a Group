@@ -1,0 +1,22 @@
+class Solution {
+private:
+    long long solve(vector<int> &nums,int idx,long long pdt,int n,int take){
+        // Base case
+        if(idx >= n){
+            if(take) ans = max(ans,pdt);
+            return -1e9;
+        }
+        
+        long long c1 = nums[idx] * solve(nums,idx+1,pdt*1LL*nums[idx],n,take+1);
+        long long c2 = solve(nums,idx+1,pdt,n,take);
+        
+        return max(c1,c2);
+    }
+public:
+    long long ans = -1e9;
+    long long maxStrength(vector<int>& nums) {
+        int n = size(nums);
+        solve(nums,0,1,n,0);
+        return ans;
+    }
+};
