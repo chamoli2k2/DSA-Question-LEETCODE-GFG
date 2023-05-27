@@ -1,0 +1,28 @@
+#define pi pair<int,int> 
+class Solution {
+public:
+    int maxPerformance(int n, vector<int>& sp, vector<int>& ef, int k) {
+        long sum = 0, ans = 0, mod = 1e9 + 7;
+        vector<pi> nums;
+        for(int i=0;i<n;i++){
+            nums.push_back({ef[i],sp[i]});
+        }
+
+        // Sorting the nums
+        sort(rbegin(nums),rend(nums));
+        priority_queue<int,vector<int>,greater<int>> pq;
+
+        for(int i=0;i<n;i++){
+            sum += nums[i].second;
+            pq.push(nums[i].second);
+            if(pq.size() > k){
+                sum -= pq.top();
+                pq.pop();
+            }
+            long temp = (sum *1LL* nums[i].first);
+            ans = max(ans,temp);   
+        }
+
+        return ans % mod;
+    }
+};
