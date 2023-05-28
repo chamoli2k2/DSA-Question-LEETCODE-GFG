@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<int>> differenceOfDistinctValues(vector<vector<int>>& grid) {
+        int n = size(grid), m = size(grid[0]);
+        vector<vector<int>> ans(n,vector<int>(m,0));
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                unordered_map<int,int> mp1, mp2;
+                
+                // moving right 
+                int k1 = i+1, k2 = j+1;
+                while(k1 < n && k2 < m){
+                    mp1[grid[k1][k2]]++;
+                    k1++;
+                    k2++;
+                }
+                
+                k1 = i-1, k2 = j-1;
+                while(k1 >= 0 && k2 >= 0){
+                    mp2[grid[k1][k2]]++;
+                    k1--;
+                    k2--;
+                }
+                
+                ans[i][j] = abs(int(mp1.size()) - int(mp2.size()));
+            }
+        }
+        
+        return ans;
+    }
+};
