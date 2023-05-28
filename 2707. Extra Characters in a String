@@ -1,0 +1,32 @@
+class Solution {
+private:
+    int solve(string &s,vector<int> &dp,int idx,int n){
+        // Base case
+        if(idx >= n) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        // Taking current idx
+        int ans = INT_MAX;
+        string k = "";
+        for(int i=idx;i<n;i++){
+            k += s[i];
+            if(mp[k] > 0){
+                ans = min(ans,solve(s,dp,i+1,n));
+            }
+        }
+
+        // Not taking current idx
+        ans = min(ans,1+solve(s,dp,idx+1,n));
+
+        return dp[idx] = ans;
+    }
+public:
+    unordered_map<string,int> mp;
+    int minExtraChar(string s, vector<string>& dictionary) {
+        int n = size(s);
+        for(auto it : dictionary) mp[it]++;
+        vector<int> dp(n,-1);
+        return solve(s,dp,0,n);
+    }
+};
