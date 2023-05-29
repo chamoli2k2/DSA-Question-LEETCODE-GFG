@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int maxIncreasingCells(vector<vector<int>>& mat) {
+        int n = size(mat), m = size(mat[0]);
+        vector<int> row(n,0), col(m,0);
+        vector<vector<int>> temp(n,vector<int>(m,0));
+        unordered_map<int,vector<pair<int,int>>> mp;
+        set<int,greater<int>> st;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                mp[mat[i][j]].push_back({i,j});
+                st.insert(mat[i][j]);
+            }
+        }
+
+        for(auto &v : st){
+            for(auto it : mp[v]){
+                int i = it.first, j = it.second;
+                temp[i][j] = max(row[i],col[j]) + 1;
+            }
+
+            for(auto it : mp[v]){
+                int i = it.first, j = it.second;
+                row[i] = max(temp[i][j],row[i]);
+                col[j] = max(temp[i][j],col[j]);
+            }
+        }
+
+        int ans = INT_MIN;
+        for(auto it : row) ans = max(ans,it);
+        for(auto it : col) ans = max(ans,it);
+
+        return ans;
+    }
+};
