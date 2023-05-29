@@ -1,0 +1,35 @@
+class Solution {
+private:
+    bool check(string &k){
+        int i = 0, j = k.size()-1;
+        while(i < j){
+            if(k[i++] != k[j--]) return false;
+        }
+        return true;
+    }
+    void solve(string &s,vector<string> temp,int idx,int n){
+        // Base case
+        if(idx >= n){
+            if(temp.size()) ans.push_back(temp);
+            return;
+        }
+
+        string k = "";
+        for(int i=idx;i<n;i++){
+            k += s[i];
+            if(check(k)){
+                temp.push_back(k);
+                solve(s,temp,i+1,n);
+                temp.pop_back();
+            }
+        }
+    }
+public:
+    vector<vector<string>> ans;
+    vector<vector<string>> partition(string s) {
+        int n = s.size();
+        vector<string> temp;
+        solve(s,temp,0,n);
+        return ans;
+    }
+};
