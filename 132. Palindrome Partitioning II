@@ -1,0 +1,32 @@
+class Solution {
+private:
+    bool check(int i, int j,string &s){
+        while(i < j){
+            if(s[i++] != s[j--]) return false;
+        }
+        return true;
+    }
+    int solve(string &s,int idx,int n){
+        // Base case
+        if(idx == n) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        int ans = 1e8, cost = 0;
+        for(int j=idx;j<n;j++){
+            if(check(idx,j,s)){
+                cost = 1 + solve(s,j+1,n);
+                ans = min(ans,cost);
+            }
+        }
+
+        return dp[idx] = ans;
+    }
+public:
+    int dp[2005];
+    int minCut(string s) {
+        int n = size(s);
+        memset(dp,-1,sizeof(dp));
+        return solve(s,0,n) - 1;
+    }
+};
