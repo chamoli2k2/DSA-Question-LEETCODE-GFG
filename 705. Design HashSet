@@ -1,0 +1,22 @@
+class MyHashSet {
+public:
+    unordered_map<int,int> mp;
+    MyHashSet() {
+        
+    }
+    
+    void add(int key) {
+        mp[key]++;
+    }
+    
+    void remove(int key) {
+        if(mp[key] > 0){
+            mp.erase(key);
+        }
+    }
+    
+    bool contains(int key) {
+        if(mp[key]) return true;
+        return false;
+    }
+};
