@@ -1,0 +1,29 @@
+class UndergroundSystem {
+public:
+    unordered_map<int,pair<string,double>> mpCin;
+    unordered_map<string,list<double>> mpCout;
+    UndergroundSystem() {
+        
+    }
+    
+    void checkIn(int id, string stationName, int t) {
+        mpCin[id] = {stationName,1.0*t};
+    }
+    
+    void checkOut(int id, string stationName, int t) {
+        string st = mpCin[id].first;
+        double Time = 1.0*t - mpCin[id].second;
+        mpCout[st+"-"+stationName].push_back(Time);
+    }
+    
+    double getAverageTime(string startStation, string endStation) {
+        string k = startStation + "-" + endStation;
+        double Ttime = 0, total = 0;
+        for(auto it : mpCout[k]){
+            Ttime += it;
+            total++;
+        }
+
+        return Ttime / total;
+    }
+};
