@@ -1,0 +1,26 @@
+class Solution {
+public:
+    long long matrixSumQueries(int n, vector<vector<int>>& queries) {
+        vector<int> row(n,-1);
+        vector<int> col(n,-1);
+        long long sum = 0, rowCount = 0, colCount = 0;
+        for(int i=size(queries)-1;i>=0;i--){
+            long long tp = queries[i][0], idx = queries[i][1], val = queries[i][2];
+
+            if(tp == 0 && row[idx] != -1) continue;
+            if(tp == 1 && col[idx] != -1) continue;
+
+            if(tp == 0){
+                sum += (n-colCount) * val;
+                row[idx] = val;
+                rowCount++;
+            }
+            else{
+                sum += (n-rowCount) * val;
+                col[idx] = val;
+                colCount++;
+            }
+        }
+        return sum;
+    }
+};
