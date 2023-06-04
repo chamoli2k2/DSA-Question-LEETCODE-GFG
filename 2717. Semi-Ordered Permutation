@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int semiOrderedPermutation(vector<int>& nums) {
+        int n = size(nums);
+        // Base case
+        if(nums[0] == 1 && nums[n-1] == n) return 0;
+        
+        int low = 0, high = 0;
+        for(int k=0;k<n;k++){
+            if(nums[k]==1) {
+                low = k;
+            }
+            if(nums[k]==n) {
+                high = k;
+            }
+        }
+        
+        if(high > low)
+            return low + (n - high - 1);
+            
+        return low + (n - high - 2);
+    }
+};
