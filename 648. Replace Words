@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string s) {
+        unordered_map<string,int> mp;
+        for(auto it : dictionary) mp[it]++;
+        int i = 0, n = s.size();
+        string ans = "";
+
+        while(i < n){
+            string temp = "";
+            while(i < n && s[i] != ' '){
+                temp += s[i++];
+                if(mp[temp]){
+                    while(i < n && s[i] != ' ') i++;
+                    break;
+                }
+
+            }
+
+            ans += temp + " ";
+            i++;
+        }
+
+        ans.pop_back();
+        return ans;
+    }
+};
