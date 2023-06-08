@@ -1,4 +1,23 @@
 class Solution {
+private:
+    int BS(vector<int> &grid){
+        int i=0, j = grid.size()-1, mid, ans = j+1;
+
+        while(i <= j){
+            mid = i + (j - i) / 2;
+
+            if(grid[mid] >= 0){
+                i = mid + 1;
+            }
+            else{
+                ans = mid;
+                j = mid - 1;
+            }
+
+        }
+
+        return ans;
+    }
 public:
     int countNegatives(vector<vector<int>>& grid) {
         int count = 0;
@@ -6,10 +25,9 @@ public:
         int m = grid[0].size();
 
         for(int i=0;i<n;i++){
-            vector<int> arr = grid[i];
-            reverse(arr.begin(),arr.end());
-            int idx = upper_bound(arr.begin(),arr.end(),-1) - arr.begin();
-            //cout<<idx<<endl;
+            int idx = 0;
+            idx = m - BS(grid[i]);
+            cout<<idx<<" ";
             count += idx; 
         }
 
