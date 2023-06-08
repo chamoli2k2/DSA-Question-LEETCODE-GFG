@@ -1,0 +1,53 @@
+class Solution {
+private:
+    bool isValid(int i,int j,int n,int m){
+        if(i >= 0 && i < n && j >= 0 && j < m){
+            return true;
+        }
+        return false;
+    }
+    void solve(vector<vector<char>> &board,int i,int j,int n,int m){
+        // Base case
+        if(isValid(i,j,n,m) == false){
+            return;
+        }
+
+        if(board[i][j] == 'E'){
+            // Checking
+            int count = 0;
+            if(isValid(i-1,j,n,m) && board[i-1][j] == 'M') count++;
+            if(isValid(i,j-1,n,m) && board[i][j-1] == 'M') count++;
+            if(isValid(i+1,j,n,m) && board[i+1][j] == 'M') count++;
+            if(isValid(i,j+1,n,m) && board[i][j+1] == 'M') count++;
+            if(isValid(i-1,j-1,n,m) && board[i-1][j-1] == 'M') count++;
+            if(isValid(i-1,j+1,n,m) && board[i-1][j+1] == 'M') count++;
+            if(isValid(i+1,j-1,n,m) && board[i+1][j-1] == 'M') count++;
+            if(isValid(i+1,j+1,n,m) && board[i+1][j+1] == 'M') count++;
+
+            if(count > 0){
+                board[i][j] = '0' + count;
+            }
+            else{
+                board[i][j] = 'B';
+                solve(board,i-1,j,n,m);
+                solve(board,i,j-1,n,m);
+                solve(board,i+1,j,n,m);
+                solve(board,i,j+1,n,m);
+                solve(board,i-1,j-1,n,m);
+                solve(board,i-1,j+1,n,m);
+                solve(board,i+1,j-1,n,m);
+                solve(board,i+1,j+1,n,m);
+            }
+        }
+    }
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        if(board[click[0]][click[1]] == 'M'){
+            board[click[0]][click[1]] = 'X';
+            return board;
+        }
+        int n = size(board), m = size(board[0]);
+        solve(board,click[0],click[1],n,m);
+        return board;
+    }
+};
