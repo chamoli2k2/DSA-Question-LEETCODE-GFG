@@ -1,0 +1,76 @@
+/*
+// Definition for a QuadTree node.
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+    
+    Node() {
+        val = false;
+        isLeaf = false;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* intersect(Node* q1, Node* q2) {
+        // Base case
+        if(q1->isLeaf == 1 && q2->isLeaf == 1){
+            return new Node((q1->val|q2->val),1);
+        }
+
+        if(q1->isLeaf == 1){
+            return q1->val ? q1 : q2;
+        }
+
+        if(q2->isLeaf == 1){
+            return q2->val ? q2 : q1;
+        }
+
+        Node* topLeft = intersect(q1->topLeft,q2->topLeft);
+        Node* topRight = intersect(q1->topRight,q2->topRight);
+        Node* bottomLeft = intersect(q1->bottomLeft,q2->bottomLeft);
+        Node* bottomRight = intersect(q1->bottomRight,q2->bottomRight);
+
+        Node* newNode = new Node();
+
+        if (topLeft->isLeaf && topRight->isLeaf && bottomLeft->isLeaf && bottomRight->isLeaf && topLeft->val == topRight->val && bottomLeft->val == bottomRight->val && topLeft->val == bottomRight->val) {
+            newNode->isLeaf = true;
+            newNode->val = topLeft->val;
+        } else {
+            newNode->topLeft = topLeft;
+            newNode->topRight = topRight;
+            newNode->bottomLeft = bottomLeft;
+            newNode->bottomRight = bottomRight;
+        }
+
+        return newNode;
+    }
+};
