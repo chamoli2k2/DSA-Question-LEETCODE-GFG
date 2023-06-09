@@ -1,0 +1,30 @@
+class Solution {
+private:
+    int getH(TreeNode* root){
+        // Base case
+        if(root == NULL) return 0;
+        return max(getH(root->left),getH(root->right)) + 1;
+    }
+
+    int getW(TreeNode* root){
+        // Base case
+        if(root == NULL) return 0;
+        return max(getW(root->left),getW(root->right))*2 + 1;
+    }
+
+    void solve(TreeNode* root,vector<vector<string>> &ans,int level,int l,int r){
+        // Base case
+        if(root == NULL) return;
+        int mid = l + (r - l) / 2;
+        ans[level][mid] = to_string(root->val);
+        solve(root->left,ans,level+1,l,mid-1);
+        solve(root->right,ans,level+1,mid+1,r);
+    }
+public:
+    vector<vector<string>> printTree(TreeNode* root) {
+        int h = getH(root), w = getW(root);
+        vector<vector<string>> ans(h,vector<string>(w,""));
+        solve(root,ans,0,0,w-1);
+        return ans;
+    }
+};
