@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> constructArray(int n, int k) {
+        vector<int> ans(n,1);
+        int idx = 1, low = 2, high = n, flag = 1;
+
+        while(k > 1){
+            if(flag){
+                ans[idx++] = high--;
+            }
+            else{
+                ans[idx++] = low++;
+            }
+            flag = !flag;
+            k--;
+        }
+
+        while(idx < n){
+            if(flag){
+                ans[idx++] = low++;
+            }
+            else{
+                ans[idx++] = high--;
+            }
+        }
+        
+        return ans;
+    }
+};
