@@ -1,0 +1,36 @@
+class MagicDictionary {
+public:
+    unordered_map<string,int> mp;
+    MagicDictionary() {
+        
+    }
+    
+    void buildDict(vector<string> dictionary) {
+        for(auto it : dictionary){
+            mp[it]++;
+        }
+    }
+    
+    bool search(string s) {
+        for(auto &[word,fq] : mp){
+            if(word.size() == s.size()){
+                int k = 0;
+                for(int i=0;i<s.size();i++){
+                    if(s[i] != word[i]){
+                        k++;
+                    }
+                }
+                if(k == 1) return true;
+            }
+        }
+
+        return false;
+    }
+};
+
+/**
+ * Your MagicDictionary object will be instantiated and called as such:
+ * MagicDictionary* obj = new MagicDictionary();
+ * obj->buildDict(dictionary);
+ * bool param_2 = obj->search(searchWord);
+ */
