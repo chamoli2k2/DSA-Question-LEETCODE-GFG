@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string longestWord(vector<string>& words) {
+        string ans = "";
+        unordered_map<string,int> mp;
+        for(auto it : words) mp[it]++;
+
+        int n = size(words);
+        for(int i=0;i<n;i++){
+            string word = words[i], pWord = "";
+            int flag = 1;
+            for(auto it : word){
+                pWord += it;
+                if(mp[pWord] == 0){
+                    flag = 0;
+                    break;
+                }
+            }
+
+            if(flag){
+                if(pWord.size() > ans.size()){
+                    ans = pWord;
+                }
+                else if(pWord.size() == ans.size()){
+                    ans = min(ans,pWord);
+                }
+            }
+        }
+
+        return ans;
+    }
+};
