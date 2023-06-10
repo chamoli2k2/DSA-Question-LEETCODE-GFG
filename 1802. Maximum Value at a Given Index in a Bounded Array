@@ -1,0 +1,47 @@
+class Solution {
+private:
+    long long solver(long long n){
+        long long ans = n *1LL* (n + 1) / 2;
+        return ans;
+    }
+    bool check(long long mid,long long rem){
+        // Case 1 : Checking Right Side is  (4 3 2 1 1 1)
+        long long s1 = 0;
+        if(EmptyR >= mid){
+            s1 = solver(mid) + EmptyR - mid;
+        }
+        // (5 4 3)
+        else{
+            s1 = solver(mid) - solver(mid-EmptyR);
+        }
+
+        long long s2 = 0;
+        // Cas2 : Checking Left Side is (1 1 1 2 3 4 5) type
+        if(EmptyL >= mid){
+            s2 = solver(mid) + EmptyL - mid;
+        }
+        else{
+            s2 = solver(mid) - solver(mid-EmptyL);
+        }
+
+        return rem >= (s1 + s2);
+    }
+public:
+    long long EmptyL, EmptyR;
+    int maxValue(int n, int idx, int maxSum) {
+        long long s = 1, e = maxSum, mid, ans;
+        EmptyL = idx, EmptyR = n - idx - 1;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            if(check(mid-1,maxSum-mid)){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
