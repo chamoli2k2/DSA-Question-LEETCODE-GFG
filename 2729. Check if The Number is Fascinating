@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool isFascinating(int n) {
+        string a = to_string(n);
+        string b = to_string(2*n);
+        string c = to_string(3*n);
+        string d = a + b + c;
+        if(d.size() > 9) return false;
+        unordered_map<char,int> mp;
+        for(auto it : d){
+            if(it == '0') return false;
+            mp[it]++;
+            if(mp[it] > 1) return false;
+        }
+        
+        return true;
+    }
+};
