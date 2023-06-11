@@ -1,0 +1,42 @@
+#define ll long long
+class Solution {
+public:
+    long long minCost(vector<int>& nums, int x) {
+        ll n = size(nums), ans = LONG_MAX;
+        int v[1001][1001] = {0};
+
+        // Copying the vector row
+        for(int i=0;i<n;i++){
+            v[0][i] = nums[i];
+        }
+
+        // making the rotating vector
+        for(int i=1;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(j-1 >= 0){
+                    v[i][j] = v[i-1][j-1];
+                }
+                else{
+                    v[i][j] = v[i-1][n-1];
+                }
+            }
+        }
+
+        // Creating the vector for storing minimum till now
+        vector<int> minCol(n,INT_MAX);
+        ll t = 0;
+        for(int i=0;i<n;i++){
+            ll res = (t++) * x;
+            for(int j=0;j<n;j++){
+                if(minCol[j] > v[i][j]){
+                    minCol[j] = v[i][j];
+                }
+                res += minCol[j];
+            }
+
+            ans = min(ans,res);
+        }
+
+        return ans;
+    }
+};
