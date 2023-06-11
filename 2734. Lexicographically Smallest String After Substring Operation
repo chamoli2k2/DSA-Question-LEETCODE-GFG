@@ -1,0 +1,20 @@
+class Solution {
+public:
+    string smallestString(string s) {
+        int n = size(s), idx = 0;
+        while(s[idx] == 'a') idx++;
+        for(int i=idx;i<n;i++){
+            if(s[i] != 'a'){
+                int num = (s[i] - 'a') - 1;
+                s[i] = num + 'a';
+            }
+            else{
+                break;
+            }
+        }
+        if(idx == n){
+            s[n-1] = 'z';
+        }
+        return s;
+    }
+};
