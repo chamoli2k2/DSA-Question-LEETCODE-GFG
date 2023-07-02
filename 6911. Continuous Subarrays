@@ -1,0 +1,33 @@
+class Solution {
+public:
+    long long continuousSubarrays(vector<int>& nums) {
+        long long ans = 0;
+        map<int,int> mp;
+        long long maxi = INT_MIN, mini = INT_MAX, n = size(nums);
+        long long j = 0, i = 0;
+        
+        while(j < n){
+            mp[nums[j]]++;
+            auto kt = mp.begin(), it = --mp.end();
+            maxi = it->first;
+            mini = kt->first;
+            
+            if(maxi-mini > 2){
+                while(i < j && maxi-mini > 2){
+                    mp[nums[i]]--;
+                    if(mp[nums[i]] == 0){
+                        mp.erase(nums[i]);
+                    }
+                    auto kt = mp.begin(), it = --mp.end();
+                    maxi = it->first, mini = kt->first;
+                    i++;  
+                }
+            }
+            
+            ans += (j-i+1);
+            j++;
+        }
+        
+        return ans;
+    }
+};
