@@ -1,0 +1,28 @@
+class Solution {
+private:
+    void seive(vector<bool> &prime,int n){
+        for(int i=2;i<=sqrt(n);i++){
+            if(prime[i]){
+                for(int j=2*i;j<=n;j+=i){
+                    prime[j] = 0;
+                }
+            }
+        }
+    }
+public:
+    vector<vector<int>> findPrimePairs(int n) {
+        vector<vector<int>> ans;
+        vector<bool> prime(n+1,1);
+        prime[0] = 0;
+        prime[1] = 0;
+        seive(prime,n);
+        for(int i=2;i<=n;i++){
+            if(prime[i] && prime[n-i]){
+                ans.push_back({i,n-i});
+                prime[n-i] = 0;
+            }
+        }
+        
+        return ans;
+    }
+};
