@@ -1,0 +1,33 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,vector<vector<int>> &dp,int idx,int prev,int target,int n){
+        // Base case
+        if(idx == n-1){
+            if(nums[idx]-nums[prev] >= -target && nums[idx]-nums[prev] <= target){
+                return 1;
+            }
+            else{
+                return -1e9;
+            }
+        }
+        
+        
+        if(dp[idx][prev] != -1) return dp[idx][prev];
+        
+        int k = -1e9;
+        if(nums[idx]-nums[prev] >= -target && nums[idx]-nums[prev] <= target){
+            k = 1 + solve(nums,dp,idx+1,idx,target,n);
+        }
+        
+        int notTake = solve(nums,dp,idx+1,prev,target,n);
+        
+        return dp[idx][prev] = max(k,notTake);
+    }
+public:
+    int maximumJumps(vector<int>& nums, int target) {
+        int n = size(nums);
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+        int ans = solve(nums,dp,1,0,target,n);
+        return ans <= 0 ? -1 : ans;
+    }
+};
