@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int longestValidSubstring(string word, vector<string>& forbidden) {
+        unordered_map<string,int> mp;
+        int maxLen = 0;
+        for(auto &it : forbidden){
+            mp[it]++;
+            maxLen = max(maxLen,(int)it.size());
+        }
+
+        int i = 0, j = 0, n = size(word), ans = 0;
+        while(j < n){
+            string temp;
+            for(int k=j;k>=i && k>j-maxLen;k--){
+                temp = word[k] + temp;
+                if(mp.count(temp)){
+                    i = k + 1;
+                    break;
+                }
+            }
+
+            ans = max(ans,j-i+1);
+            j++;
+        }
+        
+        return ans;
+    }
+};
