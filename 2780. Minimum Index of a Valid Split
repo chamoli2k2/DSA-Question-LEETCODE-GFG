@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minimumIndex(vector<int>& nums) {
+        unordered_map<int,int> mp;
+        int ans = -1,dom, maxi = 0, n = size(nums);
+        for(auto it : nums){
+            mp[it]++;
+            if(mp[it] > maxi){
+                dom = it;
+                maxi = mp[it];
+            }
+        }
+        
+        int freq = 0;
+        
+        for(int i=0;i<n;i++){
+            if(nums[i] == dom){
+                freq++;
+            }
+            
+            if((freq * 2 > i+1) && ((maxi-freq) * 2 > n-i-1)){
+                ans = i;
+                break;
+            }
+        }
+        
+        
+        return ans;
+    }
+};
