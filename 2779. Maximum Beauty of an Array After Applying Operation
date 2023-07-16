@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int maximumBeauty(vector<int>& nums, int k) {
+        int n = size(nums), ans = -1;
+        sort(begin(nums),end(nums));
+        for(int i=0;i<n;i++){
+            int idx = upper_bound(nums.begin()+i,nums.end(),nums[i]+2*k) - nums.begin();
+            int wind = idx-i+1;
+            if(idx == n || nums[i]+2*k < nums[idx]){
+                wind = idx-i;
+            }
+            ans = max(ans,wind);
+        }
+        return ans;
+    }
+};
