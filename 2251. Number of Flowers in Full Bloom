@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people) {
+        map<int,int> mp;
+        for(auto it : flowers){
+            mp[it[0]]++;
+            mp[it[1]+1]--;
+        }
+
+        vector<int> ans;
+        // preprocessing in the map
+        long long k = 0;
+        for(auto it : mp){
+            k += 1LL*it.second;
+            mp[it.first] = k;
+        }
+
+        for(int i=0;i<size(people);i++){
+            if(mp.count(people[i])){
+                ans.push_back(mp[people[i]]);
+            }
+            else{
+                auto it = mp.lower_bound(people[i]);
+                if(it != mp.end()){
+                    if(it != mp.begin()){
+                        it--;
+                        ans.push_back(it->second);
+                    }
+                    else{
+                        ans.push_back(0);
+                    }
+                }
+                else{
+                    ans.push_back(0);
+                }
+            }
+        }
+
+        return ans;
+    }
+};
