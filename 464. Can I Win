@@ -1,0 +1,35 @@
+class Solution {
+private:
+    bool dfs(int m,int target,int mask){
+        if(target <= 0) return false;
+
+        if(dp[mask] != 0) return dp[mask] > 0;
+
+        for(int i=0;i<m;i++){
+            if(!(mask&1<<i) && !dfs(m,target-(i+1),mask|(1<<i))){
+                dp[mask] = 1;
+                return true;
+            }
+        }
+
+        // we loose
+        dp[mask] = -1;
+        return false;
+    }
+public:
+    int dp[(1<<20)+1] = {};
+    bool canIWin(int maxI, int target) {
+        int sum = maxI * (maxI + 1) / 2;
+
+        // I just pick 1 to win
+        if(target < 2) return true;
+
+        // total is too large, nobody can win
+        if(sum < target) return false;
+
+        // total happens to match sum, whoever pick at odd times wins
+        if(sum == target) return maxI % 2;
+
+        return dfs(maxI,target,0);
+    }
+};
