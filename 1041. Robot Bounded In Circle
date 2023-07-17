@@ -1,0 +1,58 @@
+class Solution {
+public:
+    bool isRobotBounded(string s) {
+        int n = size(s), x = 0, y = 0;
+        char dir =  'N';
+
+        for(int i=0;i<n;i++){
+            // We are facing North
+            if(dir == 'N'){
+                if(s[i] == 'G'){
+                    y++;
+                }
+                else if(s[i] == 'R'){
+                    dir = 'E';
+                }
+                else{
+                    dir = 'W';
+                }
+            }
+            else if(dir == 'S'){
+                if(s[i] == 'G'){
+                    y--;
+                }
+                else if(s[i] == 'R'){
+                    dir = 'W';
+                }
+                else{
+                    dir = 'E';
+                }
+            }
+            else if(dir == 'E'){
+                if(s[i] == 'G'){
+                    x++;
+                }
+                else if(s[i] == 'R'){
+                    dir = 'S';
+                }
+                else{
+                    dir = 'N';
+                }
+            }
+            else if(dir == 'W'){
+                if(s[i] == 'G'){
+                    x--;
+                }
+                else if(s[i] == 'R'){
+                    dir = 'N';
+                }
+                else{
+                    dir = 'S';
+                }
+            }
+        }
+
+        if(x == 0 && y == 0 || dir != 'N') return true;
+        return false;
+    }
+};
