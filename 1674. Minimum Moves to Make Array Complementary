@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minMoves(vector<int>& nums, int limit) {
+        int n = size(nums), ans = INT_MAX;
+        vector<int> mp(2*limit+2,0);
+        for(int i=0;i<n/2;i++){
+            // With 0 moves
+            int mid = nums[i] + nums[n-1-i];
+            // With 1 moves
+            int mini = min(nums[i],nums[n-1-i]) + 1;
+            int maxi = max(nums[i],nums[n-1-i]) + limit +1;
+
+            // Minimum possible sum
+            mp[2] += 2;
+            mp[mini]--;
+            mp[mid]--;
+            mp[mid+1]++;
+            mp[maxi]++;
+        }
+
+        for(int i=2;i<2*limit+2;i++){
+            mp[i] += mp[i-1];
+            ans = min(ans,mp[i]);
+        }
+
+        return ans;
+    }
+};
