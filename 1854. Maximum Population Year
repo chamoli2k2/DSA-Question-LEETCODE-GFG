@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maximumPopulation(vector<vector<int>>& logs) {
+        vector<int> prefix(3000,0);
+        for(auto it : logs){
+            prefix[it[0]]++;
+            prefix[it[1]]--;
+        }
+
+        int ans = 0, maxi = 0;
+        for(int i=1;i<3000;i++){
+            prefix[i] = prefix[i] + prefix[i-1];
+            if(prefix[i] > maxi){
+                ans = i;
+                maxi = prefix[i];
+            }
+        }
+
+        return ans;
+    }
+};
