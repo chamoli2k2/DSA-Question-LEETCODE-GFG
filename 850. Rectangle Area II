@@ -1,0 +1,50 @@
+int mod = 1e9 + 7;
+class Solution {
+public:
+    int rectangleArea(vector<vector<int>>& rectangles) {
+        unordered_map<int,int> mpx, mpy;
+        set<int> stx, sty;
+        for(auto it : rectangles){
+            stx.insert(it[0]);
+            sty.insert(it[1]);
+            stx.insert(it[2]);
+            sty.insert(it[3]);
+        }
+
+        // Doing coordinate compression
+        vector<int> numsx(stx.begin(),stx.end()), numsy(sty.begin(),sty.end());
+
+        // copying data into map
+        for(int i=0;i<size(numsx);i++){
+            mpx[numsx[i]] = i;
+        }
+
+        for(int i=0;i<size(numsy);i++){
+            mpy[numsy[i]] = i;
+        }
+
+        long ans = 0;
+        vector<vector<bool>> grid(210,vector<bool>(210,0));
+
+        // Making the grid
+        for(auto it : rectangles){
+            for(int i=mpx[it[0]];i<mpx[it[2]];i++){
+                for(int j=mpy[it[1]];j<mpy[it[3]];j++){
+                    grid[i][j] = true;
+                }
+            }
+        }
+        
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[0].size();j++){
+                // true
+                if(grid[i][j]){
+                    ans += (numsx[i+1]-numsx[i]) *1LL* (numsy[j+1]-numsy[j]);
+                    ans %= mod;
+                }
+            }
+        }
+
+        return (int)ans;
+    }
+};
