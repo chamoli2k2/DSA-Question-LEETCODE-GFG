@@ -1,0 +1,18 @@
+class MyCalendarThree {
+public:
+    map<int,int> mp;
+    MyCalendarThree(){
+
+    }
+    
+    int book(int start, int end){
+        mp[start]++;
+        mp[end]--;
+        int ans = 0, count = 0;
+        for(auto it=mp.begin();it!=mp.end();it++){
+            count += it->second;
+            ans = max(ans,count);
+        }
+        return ans;
+    }
+};
