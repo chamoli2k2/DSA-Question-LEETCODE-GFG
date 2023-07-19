@@ -1,0 +1,33 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &nums,vector<vector<int>> &dp,int idx,int k){
+        // Base case
+        if(idx == nums.size() || k == 0){
+            return 0;
+        }
+
+
+        if(dp[idx][k] != -1) return dp[idx][k];
+
+        int i;
+        for(i=idx+1;i<nums.size();i++){
+            if(nums[i][0] > nums[idx][1]){
+                break;
+            }
+        }
+
+        // Take
+        int c1 = nums[idx][2] + solve(nums,dp,i,k-1);
+        // not Take
+        int c2 = solve(nums,dp,idx+1,k);
+
+        return dp[idx][k] = max(c1,c2);
+    }
+public:
+    int maxValue(vector<vector<int>>& events, int k) {
+        sort(begin(events),end(events));
+        int n = size(events);
+        vector<vector<int>> dp(n,vector<int>(k+1,-1));
+        return solve(events,dp,0,k);
+    }
+};
