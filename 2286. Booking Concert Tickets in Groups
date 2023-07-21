@@ -1,0 +1,130 @@
+class BookMyShow {
+public:
+    vector<long long> sumTree, maxTree, startSeat;
+    set<long long> nonZeroRow;
+    long long n , m;
+
+    // Building sum Tree
+    long long buildSumTree(long long idx,long long left,long long right){
+        // Base case
+        if(left == right){
+            sumTree[idx] = 1LL*m;
+            return sumTree[idx];
+        }
+
+        long long mid = left + (right - left) / 2;
+        long long ls = buildSumTree(2*idx+1,left,mid);
+        long long rs = buildSumTree(2*idx+2,mid+1,right);
+
+        sumTree[idx] = ls + rs;
+        return sumTree[idx];
+    }
+
+    // Query 
+    long long query(long long k,long long idx = 0,long long l = 0,long long r = -1){
+        if(r == -1) r += n;
+
+        // Base case
+        if(maxTree[idx] < k){
+            return n;
+        }
+
+        if(l == r) return l;
+
+        long long mid = l + (r - l) / 2;
+        if(maxTree[2*idx+1] >= k){
+            return query(k,2*idx+1,l,mid);
+        }
+        
+        return query(k,2*idx+2,mid+1,r);
+    }
+
+    // update
+    void update(long long targetIdx,long long val,long long idx = 0,long long l = 0, long long r = -1){
+        if(r == -1) r += n;
+
+        // Base case
+        if(l == targetIdx && r == targetIdx){
+            maxTree[idx] = val;
+            sumTree[idx] = val;
+            return;
+        }
+
+        if(l > targetIdx || r < targetIdx) return;
+
+        long long mid = l + (r - l) / 2;
+        update(targetIdx,val,2*idx+1,l,mid);
+        update(targetIdx,val,2*idx+2,mid+1,r);
+        maxTree[idx] = max(maxTree[2*idx+1],maxTree[2*idx+2]);
+        sumTree[idx] = sumTree[2*idx+1] + sumTree[2*idx+2];
+    }
+
+    // Sum query 
+    long long sumQuery(long long x,long long y,long long l = 0,long long r = -1,long long idx = 0){
+        if(r == -1) r += n;
+
+        // Base case
+        if(l > y || r < x) return 0;
+
+        if(l >= x && r <= y) return sumTree[idx];
+
+        long long mid = l + (r - l) / 2;
+        return sumQuery(x,y,l,mid,2*idx+1) + sumQuery(x,y,mid+1,r,2*idx+2);
+    }
+
+public:
+    BookMyShow(long long n_in, long long m_in) {
+        n = n_in, m = m_in;
+        sumTree.resize(4*n);
+        maxTree.resize(4*n,m);
+        startSeat.resize(n,0);
+        buildSumTree(0,0,n-1);
+        for(long long i=0;i<n;i++){
+            nonZeroRow.insert(i);
+        }
+    }
+    
+    vector<long long> gather(long long k, long long maxRow) {
+        // Checking if there is any nonEmtpy row is remaining
+        if(nonZeroRow.size() == 0){
+            return {};
+        }
+
+        long long idx = query(k);
+        if(idx > maxRow){
+            return {};
+        }
+
+        vector<long long> ans = {idx,(long long)startSeat[idx]};
+        startSeat[idx] += k;
+        // Checking if startSeat is full
+        update(idx,m-startSeat[idx]);
+        if(startSeat[idx] == m) nonZeroRow.erase(idx);
+
+        return ans;
+    }
+    
+    bool scatter(long long k, long long maxRow) {
+        long long seatLeft = sumQuery(0,maxRow);
+        if(seatLeft < k) return false;
+
+        vector<long long> toErase;
+        for(auto it : nonZeroRow){
+            long long left = m - startSeat[it];
+            if(left >= k){
+                startSeat[it] += k;
+                update(it,left-k);
+                break;
+            }
+            else{
+                toErase.push_back(it);
+                update(it,0);
+                startSeat[it] = m;
+                k -= left;
+            }
+        }
+
+        for(auto it : toErase) nonZeroRow.erase(it);
+        return true;
+    }
+};
