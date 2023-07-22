@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool solve(string &s,string p,int i,int j){
+        // Base case
+        if(j == p.size()) return i == s.size();
+
+        if(i < s.size() && dp[i][j] != -1) return dp[i][j];
+
+        // Case 1 : If string matches or have '.' in it
+        bool matched = (i < s.size() && (s[i] == p[j] || p[j] == '.')) ;
+        bool notTake = false, take = false;
+        
+        // Checking if we have preceding '*' or not
+        if((j+1) < p.size() && p[j+1] == '*'){
+            // If we have preceding star than let not take the current character
+            // or we can say we are deleting it
+            notTake = solve(s,p,i,j+2);
+
+            // We can take current character only if current character is matched 
+            take = false;
+            if(matched){
+                take = solve(s,p,i+1,j);
+            }
+            return dp[i][j] = take || notTake;
+        }
+
+        // If we don't have preceeding '*'
+        if(matched){
+            return dp[i][j] = solve(s,p,i+1,j+1);
+        }
+
+        return dp[i][j] = false;
+    }
+public:
+    int dp[21][21];
+    bool isMatch(string s, string p) {
+        memset(dp,-1,sizeof(dp));
+        return solve(s,p,0,0);
+    }
+};
