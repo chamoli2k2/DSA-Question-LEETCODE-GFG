@@ -1,0 +1,29 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,vector<vector<int>> &dp,int idx,int target,long long sum){
+        // Base case
+        if(sum == target) return 1;
+        if(sum > target || idx == nums.size()) return 0;
+        
+        if(dp[idx][sum] != -1) return dp[idx][sum];
+        
+        long long k = 1LL*pow(nums[idx],x);
+        int take = solve(nums,dp,idx+1,target,sum+k);
+        
+        int notake = solve(nums,dp,idx+1,target,sum);
+        
+        return dp[idx][sum] = (take % mod + notake % mod) % mod;
+    }
+public:
+    int mod = 1e9 + 7;
+    int x;
+    int numberOfWays(int n, int m) {
+        vector<int> nums;
+        x = m;
+        for(int i=1;i<=n;i++){
+            nums.push_back(i);
+        }
+        vector<vector<int>> dp(n,vector<int>(n+1,-1));
+        return solve(nums,dp,0,n,0);
+    }
+};
