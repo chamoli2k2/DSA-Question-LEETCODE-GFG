@@ -1,0 +1,28 @@
+class Solution {
+private:
+    long long solve(vector<int> &nums,vector<vector<long long>> &dp,int idx,int x,bool flag){
+        if(idx == nums.size()){
+            return 0;
+        }
+        
+        if(dp[idx][flag] != -1) return dp[idx][flag];
+        
+        long long take = 0;
+        if(nums[idx] % 2 == flag){
+            take = 1LL*nums[idx] + solve(nums,dp,idx+1,x,flag);
+            return dp[idx][flag] = take;
+        }
+        
+        long long c1 = -1LL*x + 1LL*nums[idx] + solve(nums,dp,idx+1,x,!flag);
+        long long c2 = solve(nums,dp,idx+1,x,flag);
+            
+        return dp[idx][flag] = max(c1,c2);
+    }
+public:
+    long long maxScore(vector<int>& nums, int x) {
+        long long ans = 0, n = size(nums);
+        vector<vector<long long>> dp(n+1,vector<long long>(2,-1));
+        bool flag = nums[0] % 2;
+        return solve(nums,dp,0,x,flag);
+    }
+};
