@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<vector<TreeNode*>> dp;
+    vector<TreeNode*> solve(int n) {
+        if(n % 2 == 0){
+            return {};
+        }
+
+        if(n == 1){
+            TreeNode* newNode = new TreeNode(0);
+            return {newNode};
+        }
+
+        if(dp[n].size()){
+            return dp[n];
+        }
+
+        vector<TreeNode*> ans;
+
+        for(int i=1;i<n;i+=2){
+            vector<TreeNode*> ls = solve(i);
+            vector<TreeNode*> rs = solve(n-i-1);
+
+            for( TreeNode*l: ls)
+            {
+                for(TreeNode*r : rs)
+                {
+                    
+                    TreeNode* root = new TreeNode(0);
+                    
+                    root -> left = l;
+                    
+                    root -> right = r;
+                    
+                    
+                    ans.push_back(root);
+                }
+            }
+
+        }
+
+        return dp[n] = ans;
+    }
+
+    vector<TreeNode*> allPossibleFBT(int n){
+        dp.resize(n+1);
+        return solve(n);
+    }
+};
