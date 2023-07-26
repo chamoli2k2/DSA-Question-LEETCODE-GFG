@@ -1,44 +1,41 @@
-
 class Solution {
 private:
-    int solve(vector<string> &str,string s){
-        // base case
-        int n = s.size();
-        if(n == 0){
-            return 1;
-        }
-        
-        // if found string in map
-        if(dp[s] != 0){
-            return dp[s];
-        }
-        
-        for(int i=1;i<=n;i++){
-            int flag = 0;
-            // Checking if string is in dictionary
-            string temp = s.substr(0,i);
-            for(int j=0;j<str.size();j++){
-                // camparing both string
-                if(temp.compare(str[j]) == 0){
-                    flag = 1;
-                    break;
+    bool check(string &s,int idx,int n){
+        // Base case
+        if(idx == n) return true;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        string k = "";
+        for(int j=idx;j<n;j++){
+            k += s[j];
+            if(mp[k]){
+                if(check(s,j+1,n)){
+                    return dp[idx] = true;
                 }
             }
-            if(flag && solve(str,s.substr(i,n-i)) == 1){
-                return dp[s] = 1;
-            }
         }
-        
-        return dp[s] = -1;
+
+        return dp[idx] = false;
     }
 public:
-    unordered_map<string,int> dp;
+    unordered_map<string,int> mp;
+    int dp[301];
     bool wordBreak(string s, vector<string>& wordDict) {
-        int x = solve(wordDict,s);
-        if(x == 1){
-            return true;
+        int n = size(s);
+        memset(dp,-1,sizeof(dp));
+        for(auto it : wordDict) mp[it]++;
+
+        string temp = "";
+        for(int i=0;i<n;i++){
+            temp += s[i];
+            if(mp[temp]){
+                if(check(s,i+1,n)){
+                    return true;
+                }
+            }
         }
-        
+
         return false;
     }
 };
