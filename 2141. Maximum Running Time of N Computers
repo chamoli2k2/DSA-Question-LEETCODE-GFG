@@ -1,0 +1,35 @@
+class Solution {
+private:
+    bool check(vector<int> &nums,long long target,int n){
+        long long total = 0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i] < target){
+                total += 1LL*nums[i];
+            }
+            else{
+                total += 1LL*target;
+            }
+        }
+
+        return total >= n *1LL* target ? true : false;
+    }
+public:
+    long long maxRunTime(int n, vector<int>& batteries) {
+        long long ans, s = 1, e = 0;
+        for(auto it : batteries) e += 1LL*it;
+
+        while(s <= e){
+            long long mid = s + (e - s) / 2;
+
+            if(check(batteries,mid,n)){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+};
