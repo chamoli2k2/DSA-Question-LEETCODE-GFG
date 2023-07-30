@@ -1,0 +1,27 @@
+class Solution {
+private:
+    double solve(int A,int B){
+        // Base case
+        if(A <= 0 && B > 0) return 1.0;
+        if(A > 0 && B <= 0) return 0.0;
+        if(A <= 0 && B <= 0) return 0.5;
+
+        if(dp[A][B] != -1.0) return dp[A][B];
+
+        double c1 = solve(A-100,B); 
+        double c2 = solve(A-75,B-25); 
+        double c3 = solve(A-50,B-50); 
+        double c4 = solve(A-25,B-75); 
+
+        return dp[A][B] = (c1 + c2 + c3 + c4) / 4.0;
+    }
+public:
+    vector<vector<double>> dp;
+    double soupServings(int n) {
+        if(n >= 4801) return 1.0;
+
+        dp.resize(n+1,vector<double>(n+1,-1.0));
+
+        return solve(n,n);
+    }
+};
