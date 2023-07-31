@@ -1,0 +1,37 @@
+class Solution {
+private:
+    string merge(string a,string b){
+        // Checking if string b lies in complete string a
+        if (a.find(b) != string::npos) 
+            return a;
+
+        // Finding the ending overlap
+        for(int i= min(size(a),size(b));i>=0;i--){
+            if(a.substr(a.size()-i) == b.substr(0,i)) return a + b.substr(i);
+        }
+
+        return a + b;
+    }
+    string updateAns(vector<string> &arr){
+        string x = merge(merge(arr[0],arr[1]),arr[2]);
+        return x;
+    }
+public:
+    string minimumString(string a, string b, string c) {
+        vector<vector<string>> arr = {{a,b,c},{a,c,b},{b,c,a},{b,a,c},{c,a,b},{c,b,a}};
+        string result = a + b + c;
+
+        for(auto it : arr){
+            string k = updateAns(it);
+
+            if(k.size() == result.size()){
+                result = min(k,result);
+            }
+            else if(k.size() < result.size()){
+                result = k;
+            }
+        }
+
+        return result;
+    }
+};
