@@ -1,0 +1,23 @@
+class Solution {
+private:
+    int solve(int floor,int egg){
+        // Base case
+        if(floor == 0 || floor == 1 || egg == 1) return floor;
+
+        if(dp[floor][egg] != -1) return dp[floor][egg];
+
+        int ans = INT_MAX;
+        for(int k=1;k<=floor;k++){
+            int tempAns = 1 + max(solve(k-1,egg-1),solve(floor-k,egg));
+            ans = min(ans,tempAns);
+        }
+
+        return dp[floor][egg] = ans;
+    }
+public:
+    int dp[10001][3];
+    int twoEggDrop(int n) {
+        memset(dp,-1,sizeof(dp));
+        return solve(n,2);
+    }
+};
