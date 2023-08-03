@@ -1,0 +1,35 @@
+class Solution {
+private:
+    int solve(int floor,int egg){
+        // Base case
+        if(floor == 0 || floor == 1 || egg == 1) return floor;
+
+        if(dp[floor][egg] != -1) return dp[floor][egg];
+
+        int ans = INT_MAX, s = 1, e = floor, tempAns = 0;
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            int left = solve(mid-1,egg-1);
+            int right = solve(floor-mid,egg);
+
+            tempAns = 1 + max(left,right);
+            if(left < right){
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+
+            ans = min(ans,tempAns);
+        }
+        
+        return dp[floor][egg] = ans;
+    }
+public:
+    int dp[10001][101];
+    int superEggDrop(int k, int n) {
+        memset(dp,-1,sizeof(dp));
+        return solve(n,k);
+    }
+};
