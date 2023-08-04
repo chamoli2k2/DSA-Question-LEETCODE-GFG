@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int carFleet(int target, vector<int>& position, vector<int>& speed) {
+        vector<pair<int,int>> nums;
+        for(int i=0;i<position.size();i++){
+            nums.push_back({position[i],speed[i]});
+        }
+
+        sort(begin(nums),end(nums));
+        stack<double> st;
+        
+        for(int i=nums.size()-1;i>=0;i--){
+            double timeTake = 1.0*(target - nums[i].first) / nums[i].second;
+            if(!st.empty() && st.top() >= timeTake){
+                continue;
+            }
+            else{
+                st.push(timeTake);
+            }
+        }
+
+        return st.size();
+    }
+};
