@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+        // A Binary Tree is doesn't have any cycle + It is always connected 
+        // First we need to find root Node for this
+        // Root Node will be the node which is not the children of any node
+        // In binary tree only one root node can exist
+        
+        vector<int> visited(n,0);
+        vector<int> root(n,0);
+        queue<int> q;
+        for(int i=0;i<n;i++){
+            if(leftChild[i] != -1) root[leftChild[i]]++;
+            if(rightChild[i] != -1) root[rightChild[i]]++;
+        }
+
+        int rootNode = 0, count = 0;
+        for(int i=0;i<n;i++){
+            if(root[i] == 0){
+                rootNode = i;
+                count++;
+            }
+        }
+
+        if(count != 1) return false;
+        q.push(rootNode);
+
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+
+            if(visited[node] == 1) return false;
+            visited[node] = 1;
+
+            if(leftChild[node] != -1) q.push(leftChild[node]);
+            if(rightChild[node] != -1) q.push(rightChild[node]);
+        }
+
+        for(int i=0;i<n;i++) if(visited[i] == 0) return false;
+
+        return true;
+    }
+};
