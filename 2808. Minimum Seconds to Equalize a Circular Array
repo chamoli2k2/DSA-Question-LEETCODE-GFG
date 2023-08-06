@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minimumSeconds(vector<int>& nums) {
+        int n = size(nums), ans = INT_MAX;
+        unordered_map<int,vector<int>> mp;
+        for(int i=0;i<n;i++){
+            mp[nums[i]].push_back(i);
+        }
+
+        for(auto &[ele,vt] : mp){
+            mp[ele].push_back(vt[0]+n);
+            int currMax = 0;
+            for(int i=1;i<mp[ele].size();i++){
+                currMax = max(currMax,(mp[ele][i]-mp[ele][i-1])/2);
+            }
+
+            ans = min(ans,currMax);
+        }
+
+        return ans;
+    }
+};
