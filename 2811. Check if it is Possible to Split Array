@@ -1,0 +1,48 @@
+/*
+If there is a pair of adjacent elements with sum nums[i] + nums[i + 1] >= m , we can always split the array.
+
+This is because we can always "chip away" elements one-by-one from eather side of the array, until we reach that pair.
+*/
+class Solution {
+public:
+    bool canSplitArray(vector<int>& nums, int m) {
+        int n = size(nums);
+        if(n <= 2) return true;
+        for(int i=1;i<n;i++){
+            if(nums[i]+nums[i-1] >= m) return true;
+        }
+        return false;
+    }
+};
+
+
+class Solution {
+private:
+    bool solve(vector<int> &nums,int i,int j,int m){
+        // Base case
+        if(i >= j) return true;
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        int flag = false, sum = 0, currSum = 0;
+        for(int k=i;k<=j;k++){
+            sum += nums[k];
+        }
+        
+        for(int k=i;k<j;k++){
+            currSum += nums[k];
+            if((currSum >= m || k-i+1 == 1) && (sum-currSum >= m || j-k == 1)){
+                flag |= solve(nums,i,k,m) & solve(nums,k+1,j,m);
+            }
+        }
+        
+        return dp[i][j] = flag;
+    }
+public:
+    int dp[101][101];
+    bool canSplitArray(vector<int>& nums, int m) {
+        int n = size(nums);
+        memset(dp,-1,sizeof(dp));
+        return solve(nums,0,n-1,m);
+    }
+};
