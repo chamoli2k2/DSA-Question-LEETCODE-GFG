@@ -1,0 +1,40 @@
+/*
+First sort the array by profits in descending order.
+Simply take first k elements. Since there is a factor of categories in profit calculation, keep a set with all categories. In case you have a repeated category, push into a vector/stack which stores the values. Next is simple, whichever repeated category has the least profit value is to be replaced by an element whose category hasn't been encountered yet.
+*/
+class Solution {
+public:
+    long long findMaximumElegance(vector<vector<int>>& items, int k) {
+        unordered_map<int,int> mp;
+        stack<int> minAtTop;
+        sort(items.rbegin(),items.rend());
+        long long ans, sum = 0;
+
+        for(int i=0;i<k;i++){
+            sum += 1LL*items[i][0];
+            if(mp.count(items[i][1])){
+                minAtTop.push(items[i][0]);
+            }
+            else{
+                mp[items[i][1]]++;
+            }
+        }
+
+        ans = mp.size()*1LL*mp.size() + sum;
+
+        for(int i=k;i<items.size();i++){
+            // If found new category
+            if(mp.count(items[i][1]) == 0 && !minAtTop.empty()){
+                sum -= minAtTop.top();
+                minAtTop.pop();
+                sum += items[i][0];
+                mp[items[i][1]]++;
+                int n = mp.size();
+
+                ans = max(ans,sum + n*1LL*n);
+            }
+        }
+
+        return ans;
+    }
+};
