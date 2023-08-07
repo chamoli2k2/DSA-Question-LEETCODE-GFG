@@ -1,0 +1,26 @@
+class Solution {
+private:
+    int solve(int uni,int len,int k,int n){
+        // Base case
+        if(uni == 0 && len == 0) return 1;
+        if(len == 0 || uni == 0) return 0;
+
+        if(dp[uni][len] != -1) return dp[uni][len];
+
+        long replayOldSong = 0;
+        long addNewSong = (solve(uni-1,len-1,k,n) *1LL* (n-uni+1)) % mod;
+
+        if(uni > k){
+            replayOldSong = (solve(uni,len-1,k,n) *1LL* (uni-k)) % mod;
+        }
+
+        return dp[uni][len] = (addNewSong + replayOldSong) % mod;
+    }
+public:
+    int mod = 1e9 + 7;
+    int dp[101][101];
+    int numMusicPlaylists(int n, int goal, int k) {
+        memset(dp,-1,sizeof(dp));
+        return solve(n,goal,k,n);
+    }
+};
