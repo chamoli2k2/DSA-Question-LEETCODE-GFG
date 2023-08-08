@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<vector<string>> findSequences(string beginWord, string endWord, vector<string>& wordList) {
+        // Making the WordList Map
+        vector<vector<string>> ans;
+        unordered_map<string,int> mp;
+        for(auto it : wordList) mp[it]++;
+
+        // This queue represent No of step required to make word form original word
+        queue<vector<string>> q;
+        q.push({beginWord});
+        vector<string> usedOnLvl;
+        usedOnLvl.push_back(beginWord);
+        int lvl = 0;
+
+        while(!q.empty()){
+            vector<string> nums = q.front();
+            q.pop();
+
+            if(nums.size() > lvl){
+                lvl++;
+                for(auto it : usedOnLvl){
+                    mp[it]--;
+                }
+            }
+
+            string word = nums.back();
+            if(word == endWord){
+                // We will store only minimum transation transformation
+                if(ans.size() == 0){
+                    ans.push_back(nums);
+                }
+                else if(ans[0].size() == nums.size()){
+                    ans.push_back(nums);
+                }
+            }
+
+            for(int i=0;i<word.size();i++){
+                char originalWord = word[i];
+                for(char ch='a';ch<='z';ch++){
+                    word[i] = ch;
+                    if(mp[word] > 0){
+                        nums.push_back(word);
+                        q.push(nums);
+                        usedOnLvl.push_back(word);
+                        nums.pop_back();
+                    }
+                }
+                word[i] = originalWord;
+            }
+        }
+
+        return ans;
+    }
+};
