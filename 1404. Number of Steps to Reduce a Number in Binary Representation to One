@@ -1,0 +1,37 @@
+class Solution {
+private:
+    string addString(string s){
+        // Adding 1 to string a
+        int n = s.size(), j = n - 1, carry = 1;
+        while(j >= 0 && carry){
+            if(s[j] == '1' && carry == 1){
+                s[j] = '0';
+            }
+            else{
+                s[j] = '1';
+                carry = 0;
+            }
+            j--;
+        }
+
+        return carry == 1 ? ("1"+s) : s;
+    }
+public:
+    int numSteps(string s) {
+        int n = size(s), j = s.size() - 1, ans = 0;
+        while(j != 0){
+            // Checking if it is odd
+            if(s[j] == '1'){
+                // Adding 1 to the string 
+                s = addString(s.substr(0,j+1));
+                j = s.size() - 1;
+            }
+            else{
+                j--;
+            }
+            ans++;
+        }
+
+        return ans;
+    }
+};
