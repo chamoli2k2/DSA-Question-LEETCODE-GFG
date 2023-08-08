@@ -1,49 +1,50 @@
 class Solution {
-public:
-    void solve(TreeNode* root,vector<int> &temp){
-        // base case
-        if(root == NULL) return;
-        
-        solve(root->left,temp);
-        temp.push_back(root->val);
-        solve(root->right,temp);
+private:
+    pair<int,int> find(int target){
+        int s = 0, e = nums.size() - 1, ls = -1, rs = -1;
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+
+            if(nums[mid] == target){
+                ls = target;
+                rs = target;
+                break;
+            }
+            else if(nums[mid] < target){
+                ls = nums[mid];
+                s = mid + 1;
+                
+            }
+            else{
+                rs = nums[mid];
+                e = mid - 1;
+            }
+        }
+
+        return {ls,rs};
     }
-    
+
+    // Function to find Inorder
+    void preorder(TreeNode* root){
+        // Base case
+        if(root == NULL) return;
+
+        preorder(root->left);
+        nums.push_back(root->val);
+        preorder(root->right);
+    }
+public:
+    vector<int> nums;
     vector<vector<int>> closestNodes(TreeNode* root, vector<int>& queries) {
         vector<vector<int>> ans;
-        int n = queries.size();
-        vector<int> temp;
-        solve(root,temp);
-        
-        for(int i=0;i<queries.size();i++){
-            int num = queries[i];
-            int k = lower_bound(temp.begin(),temp.end(),num) - temp.begin();
-            vector<int> arr;
-                
-            if(k < temp.size() && temp[k] == num){
-                arr.push_back(temp[k]);
-            }
-            else if(k-1 >= 0){
-                arr.push_back(temp[k-1]);
-            }
-            else{
-                arr.push_back(-1);
-            }
-            
-            if(k < temp.size() && temp[k] == num){
-                arr.push_back(temp[k]);
-            }
-            else if(k < temp.size()){
-                arr.push_back(temp[k]);
-            }
-            else{
-                arr.push_back(-1);
-            }
-            
-            ans.push_back(arr);
-            
+        preorder(root);
+
+        for(auto &it : queries){
+            int query = it;
+            pair<int,int> k = find(query);
+            ans.push_back({k.first,k.second});
         }
-        
+
         return ans;
     }
 };
