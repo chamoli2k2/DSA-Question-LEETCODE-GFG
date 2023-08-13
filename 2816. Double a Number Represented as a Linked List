@@ -1,0 +1,53 @@
+class Solution {
+public:
+    ListNode* doubleIt(ListNode* head) {
+        if(head == NULL) return head;
+        ListNode* previous = NULL;
+        ListNode* current = head;
+        ListNode* next;
+
+        while(current){
+            next = current->next;
+            current->next = previous;
+            previous = current;
+            current = next;
+        }
+        
+        ListNode* temp = previous;
+        int carry = 0;
+        head = previous;
+        while(temp){
+            int newNum = temp->val * 2 + carry;
+            if(newNum < 10){
+                temp->val = newNum;
+                carry = 0;
+            }
+            else{
+                temp->val =  newNum % 10;
+                carry = newNum/10;
+            }
+            previous = temp;
+            temp = temp->next;
+        }
+        
+        if(carry){
+            previous->next = new ListNode(carry);
+            carry = 0;
+        }
+        
+        
+        previous = NULL;
+        current = head;
+        next;
+
+        while(current){
+            next = current->next;
+            current->next = previous;
+            previous = current;
+            current = next;
+        }
+        
+        
+        return previous;
+    }
+};
