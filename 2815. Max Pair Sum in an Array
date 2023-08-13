@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int maxSum(vector<int>& nums) {
+        int n = size(nums), ans = INT_MIN;
+        for(int i=0;i<n;i++){
+            int maxa = -1, a = nums[i];
+            
+            while(a){
+                maxa = max(maxa,a%10);
+                a/=10;
+            }
+            
+            for(int j=i+1;j<n;j++){
+                int b = nums[j],  maxb = -1;
+                
+                while(b){
+                    maxb = max(maxb,b%10);
+                    b/=10;
+                }
+                
+                if(maxb == maxa){
+                    ans = max(ans,nums[i]+nums[j]);
+                }
+            }
+        }
+        
+        return ans == INT_MIN ? -1 : ans;
+    }
+};
