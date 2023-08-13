@@ -1,0 +1,37 @@
+class Solution {
+private:
+    bool solve(vector<int> &arr,int idx,int n){
+        // Base case
+        if(idx >= n) return true;
+        
+
+        if(dp[idx] != -1) return dp[idx];
+
+        // Checking if we incounter same element 
+        if(idx+1 < n && arr[idx] == arr[idx+1]){
+            dp[idx] = solve(arr,idx+2,n);
+            if(dp[idx]) return true;
+
+            // If got three element equal
+            if(idx+2 < n && arr[idx] == arr[idx+2]){
+                dp[idx] = solve(arr,idx+3,n);
+                if(dp[idx]) return true;
+            }
+        }
+
+        // If we got three consecutive increasing element
+        if(idx+2 < n && arr[idx+2]-arr[idx+1] == 1 && arr[idx+1]-arr[idx] == 1){
+            dp[idx] = solve(arr,idx+3,n);
+            if(dp[idx]) return true;
+        }
+
+        return dp[idx] = false;
+    }
+public:
+    int dp[100001];
+    bool validPartition(vector<int>& nums) {
+        int n = size(nums);
+        memset(dp,-1,sizeof(dp));
+        return solve(nums,0,n);
+    }
+};
