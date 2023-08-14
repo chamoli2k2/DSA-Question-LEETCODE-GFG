@@ -1,0 +1,32 @@
+class Solution {
+private:
+    void findPrimeScore(int num){
+        if(num < 2) return;
+
+        while(num % 2 == 0 && num > 1){
+            mp[2] = 1;
+            num /= 2;
+        }
+
+        for(int i=3;i*i<=num;i+=2){
+            while(num % i == 0 && num > 1){
+                mp[i] = 1;
+                num /= i;
+            }
+        }
+
+        if(num > 1){
+            mp[num] = 1;
+        }
+    }
+public:
+    unordered_map<int,bool> mp;
+    int distinctPrimeFactors(vector<int>& nums) {
+        int n = nums.size();
+        for(int i=0;i<n;i++){
+            findPrimeScore(nums[i]);
+        }
+
+        return (int)mp.size();
+    }
+};
