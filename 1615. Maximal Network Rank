@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maximalNetworkRank(int n, vector<vector<int>>& roads){
+        vector<int> adj[n];
+        for(auto it : roads){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(i == j) continue;
+
+                int k1 = adj[i].size();
+                int k2 = adj[j].size();
+
+                for(auto it : adj[i]){
+                    if(it == j){
+                        k2--;
+                        break;
+                    }
+                }
+
+                ans = max(ans,k1+k2);
+            }
+        }
+
+        return ans;
+    }
+};
