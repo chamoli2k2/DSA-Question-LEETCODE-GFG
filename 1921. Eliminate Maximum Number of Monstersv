@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int eliminateMaximum(vector<int>& dist, vector<int>& speed) {
+        int n = size(speed), ans = 0;
+        vector<double> nums;
+        for(int i=0;i<n;i++){
+            double k = 1.0*dist[i] / speed[i];
+            nums.push_back(k);
+        }
+
+        sort(begin(nums),end(nums));
+
+        int t = 0;
+        for(int i=0;i<n;i++){
+            if(nums[i] > t){
+                t++;
+                ans++;
+            }
+            else{
+                break;
+            }
+        }
+
+        return ans;
+    }
+};
