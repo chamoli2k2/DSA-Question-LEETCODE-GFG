@@ -1,0 +1,44 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,int idx,int prev){
+        // Base case
+        if(idx == nums.size()) return 0;
+
+        if(dp[idx][prev+1] != -1) return dp[idx][prev+1];
+
+        int ans = 1e7;
+        if(prev == -1){
+            // We have 3 case
+            ans = 1e7;
+            for(int i=1;i<=3;i++){
+                int c = 1 + solve(nums,idx+1,i);
+                if(nums[idx] == i){
+                    c--;
+                }
+                ans = min(ans,c);
+            }
+        }
+        // Getting previous
+        else if(prev <= nums[idx]){
+            ans = 1e7;
+            for(int i=prev;i<=nums[idx];i++){
+                int c = 1 + solve(nums,idx+1,i);
+                if(nums[idx] == i){
+                    c--;
+                }
+                ans = min(ans,c);
+            }
+        }
+        else{
+            ans = 1 + solve(nums,idx+1,prev);
+        }
+
+        return dp[idx][prev+1] = ans;
+    }
+public:
+    int dp[101][5];
+    int minimumOperations(vector<int>& nums) {
+        memset(dp,-1,sizeof(dp));
+        return solve(nums,0,-1);
+    }
+};
