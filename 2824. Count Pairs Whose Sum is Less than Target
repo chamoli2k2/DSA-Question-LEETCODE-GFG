@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int countPairs(vector<int>& nums, int target) {
+        int n = size(nums), ans = 0;
+        sort(begin(nums),end(nums));
+
+        for(int i=0;i<n;i++){
+            int num = target - nums[i];
+            int idx = lower_bound(begin(nums)+i+1,end(nums),num) - nums.begin();
+            
+            ans += idx-i-1;
+        }
+
+        return ans;
+    }
+};
