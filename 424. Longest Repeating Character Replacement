@@ -1,26 +1,21 @@
 class Solution {
 public:
-    int characterReplacement(string s, int k) {
-        int n = size(s), i = 0, j = 0, ans = 0, mp[26] = {0};
-
+    int characterReplacement(string nums, int k) {
+        int n = size(nums), ans = 0, i = 0, j = 0, maxiFreq = 0;
+        unordered_map<char,int> mp;
         while(j < n){
-            mp[s[j]-'A']++;
+            mp[nums[j]]++;
+
+            // No of same element in j-i+1 size window
+            maxiFreq = max(maxiFreq,mp[nums[j]]);
+
+            int noOfDiff = (j-i+1) - maxiFreq;
+
+            // If we have noOfDiff character in window is greater than k 
+            if(noOfDiff > k){
+                mp[nums[i++]]--;
+            }
             
-            // Checking the validity
-            int maxi = 0;
-            for(int it=0;it<26;it++){
-                if(mp[it] > maxi){
-                    maxi = mp[it];
-                }
-            }
-
-            // Checking t = length - maximum frequency character
-            while((j-i+1)-maxi > k){
-                mp[s[i]-'A']--;
-                for(int it=0;it<26;it++) if(mp[it] > maxi) maxi = mp[it];
-                i++;
-            }
-
             ans = max(ans,j-i+1);
             j++;
         }
