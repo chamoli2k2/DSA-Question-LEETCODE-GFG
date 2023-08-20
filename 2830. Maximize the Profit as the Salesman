@@ -1,0 +1,41 @@
+class Solution {
+private:
+    int upperBound(vector<vector<int>> &nums,int st,int target){
+        int s = st, e = nums.size()-1, ans = nums.size();
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            if(nums[mid][0] <= target){
+                s = mid + 1;
+            }
+            else{
+                ans = mid;
+                e = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+    long long solve(vector<vector<int>> &nums,int idx){
+        // Base case
+        int n = nums.size();
+        if(idx >= n) return 0;
+        
+        if(dp[idx] != -1) return dp[idx];
+        
+        // We have two choices take the current index
+        int newIdx = upperBound(nums,idx+1,nums[idx][1]);
+        int take = nums[idx][2] + solve(nums,newIdx);
+        int notTake = solve(nums,idx+1);
+        
+        return dp[idx] = max(take,notTake);
+    }
+public:
+    long long dp[100001];
+    int maximizeTheProfit(int n, vector<vector<int>>& offers) {
+        sort(offers.begin(),offers.end());
+        memset(dp,-1,sizeof(dp));
+        return solve(offers,0);
+    }
+};
