@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int longestEqualSubarray(vector<int>& nums, int k) {
+        int n = size(nums), ans = 0, i = 0, j = 0;
+        unordered_map<int,int> mp;
+
+        while(j < n){
+            mp[nums[j]]++;
+            ans = max(ans,mp[nums[j]]);
+
+            if(j-i+1 > ans+k){
+                mp[nums[i++]]--;
+            }
+
+            j++;
+        }
+
+        return ans;
+    }
+};
