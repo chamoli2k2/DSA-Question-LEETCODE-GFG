@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minimumSum(int n, int k) {
+        int num = 1, size = 0, ans = 0;
+        unordered_map<int,int> mp;
+        while(size < n){
+            int newNum = k - num;
+            if(mp.find(newNum) == mp.end()){
+                ans += num;
+                size++;
+            }
+            mp[num++]++;
+        }
+
+        return ans;
+    }
+};
