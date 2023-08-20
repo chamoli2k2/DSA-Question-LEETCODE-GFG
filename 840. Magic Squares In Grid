@@ -1,0 +1,57 @@
+class Solution {
+private:
+    bool check(vector<vector<int>> &grid,int i,int j){
+        int arr[10] = {0};
+        for(int k1=i;k1<i+3;k1++){
+            for(int k2=j;k2<j+3;k2++){
+                if(grid[k1][k2] > 9 || grid[k1][k2] < 1) break;
+                arr[grid[k1][k2]]++;
+            }
+        }
+
+        // Checking diagonal
+        int sum1 = 0, sum2 = 0, x = 0, y = 0;
+        while(x < 3){
+            sum1 += grid[i+x][j+y];
+            sum2 += grid[i+x][j+2-y];
+            x++, y++;
+        }
+
+        if(sum1 != sum2) return false;
+        // Checking each row and col sum
+
+        for(x=i;x<i+3;x++){
+            sum1 = 0;
+            for(y=j;y<j+3;y++){
+                sum1 += grid[x][y];
+            }
+            if(sum1 != sum2) return false;
+        }
+
+        for(x=j;x<j+3;x++){
+            sum1 = 0;
+            for(y=i;y<i+3;y++){
+                sum1 += grid[y][x];
+            }
+            if(sum1 != sum2) return false;
+        }
+
+        for(int i=1;i<10;i++){
+            if(arr[i] != 1) return false;
+        }
+
+        return true;
+    }
+public:
+    int numMagicSquaresInside(vector<vector<int>>& grid) {
+        int n = size(grid), m = size(grid[0]), ans = 0;
+        for(int i=0;i<=n-3;i++){
+            for(int j=0;j<=m-3;j++){
+                if(check(grid,i,j)){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+};
