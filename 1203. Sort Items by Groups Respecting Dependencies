@@ -1,0 +1,83 @@
+class Solution {
+private:
+    vector<int> TopoSort(unordered_map<int,vector<int>> &adj,vector<int> &nums,int n){
+        queue<int> q;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i] == 0){
+                q.push(i);
+            }
+        }
+
+        vector<int> ans;
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            ans.push_back(node);
+
+            for(auto it : adj[node]){
+                nums[it]--;
+                if(nums[it] == 0){
+                    q.push(it);
+                }
+            }
+        }
+
+        return ans.size() == n ? ans : vector<int>();
+    }
+public:
+    vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& beforeItems) {
+        unordered_map<int,vector<int>> adjItem, adjGrp;
+        int grpId = m;
+        for(int i=0;i<n;i++){
+            if(group[i] == -1) group[i] = grpId++;
+        }
+
+        // Making graph of Group
+        for(int i=0;i<n;i++){
+            for(auto prev : beforeItems[i]){
+                // If both item and before item lies in same group then continue
+                adjItem[prev].push_back(i);
+                if(group[i] == group[prev]) continue;
+
+                adjGrp[group[prev]].push_back(group[i]);
+            }
+        }
+
+        // Making indegree of both group and Item
+        vector<int> inItem(n,0), inGrp(grpId,0);
+        for(int i=0;i<n;i++){
+            for(auto it : adjItem[i]){
+                inItem[it]++;
+            }
+        }
+
+        for(int i=0;i<grpId;i++){
+            for(auto it : adjGrp[i]){
+                inGrp[it]++;
+            }
+        }
+
+        vector<int> topoItem = TopoSort(adjItem,inItem,n);
+        vector<int> topoGrp = TopoSort(adjGrp,inGrp,grpId);
+
+        if(topoItem.size() == 0 || topoGrp.size() == 0){
+            return {};
+        }
+
+        vector<int> ans;
+        unordered_map<int,vector<int>> mp;
+
+        for(auto it : topoItem){
+            int grp = group[it];
+            mp[grp].push_back(it);
+        }
+
+        for(auto it : topoGrp){
+            for(auto kt : mp[it]){
+                ans.push_back(kt);
+            }
+        }
+
+        return ans;
+    }
+};
