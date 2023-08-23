@@ -1,0 +1,68 @@
+class DisJointSet{
+private:
+    vector<int> size, parent;
+public:
+    // Constructor
+    DisJointSet(int n){
+        size.resize(n+1,1);
+        parent.resize(n+1);
+        for(int i=0;i<=n;i++){
+            parent[i] = i;
+        }
+    }
+
+    // Finding ulimate parent of node
+    int findUPar(int node){
+        // Finding Parent
+        if(node == parent[node]) return node;
+
+        // Path compression
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    // Union by size 
+    void unionBySize(int u,int v){
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+
+        if(ulp_u == ulp_v) return;
+        if(size[ulp_u] < size[ulp_v]){
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else{
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+};
+class Solution {
+public:
+    int removeStones(vector<vector<int>>& stones) {
+        int n = 0, m = 0, noOfStones = stones.size();
+        for(auto it : stones){
+            n = max(n,it[0]);
+            m = max(m,it[1]);
+        }
+
+        DisJointSet ds(n+m+1);
+        unordered_map<int,int> StoneNode;
+
+        for(auto it : stones){
+            int rowNo = it[0];
+            int colNo = it[1] + n + 1;
+            ds.unionBySize(rowNo,colNo);
+            StoneNode[rowNo] = 1;
+            StoneNode[colNo] = 1;
+        }
+
+        int Cnt = 0;
+        for(auto it : StoneNode){
+            if(ds.findUPar(it.first) == it.first){
+                Cnt++;
+            }
+        }
+        
+        return noOfStones - Cnt;
+    }
+};
