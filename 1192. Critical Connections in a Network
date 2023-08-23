@@ -1,0 +1,41 @@
+class Solution {
+private:
+    int timer = 1;
+    void dfs(vector<int> adj[],vector<int> &visited,int tin[],int low[],int node,int parent){
+        // Base case
+        visited[node] = 1;
+        low[node] = tin[node] = timer;
+        timer++;
+
+        for(auto it : adj[node]){
+            if(it == parent) continue;
+
+            if(visited[it] == 0){
+                dfs(adj,visited,tin,low,it,node);
+                low[node] = min(low[node],low[it]);
+
+                // Checking there is bridge
+                if(low[it] > tin[node]){
+                    Bridges.push_back({it,node});
+                }
+            }
+            else{
+                low[node] = min(low[node],low[it]);
+            }
+        }
+    }
+public:
+    vector<vector<int>> Bridges;
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        vector<int> adj[n];
+        for(auto it : connections){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        
+        int tin[n], low[n];
+        vector<int> visited(n,0);
+        dfs(adj,visited,tin,low,0,-1);
+        return Bridges;
+    }
+};
