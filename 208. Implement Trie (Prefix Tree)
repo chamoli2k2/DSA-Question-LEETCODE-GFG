@@ -1,0 +1,89 @@
+class Node{
+public:
+    Node* links[26];
+    bool flag = false;
+
+    // Checking if current node has the the alphabet
+    bool containKey(char ch){
+        // The character exist if this condition satisfy
+        return links[ch-'a'] != NULL;
+    }
+
+    // Inserting the reference of character into the node
+    void put(char ch,Node* node){
+        links[ch-'a'] = node;
+    }
+
+    // moving to new refernce trie
+    Node* get(char ch){
+        return links[ch-'a'];
+    }
+
+    // Setting the End 
+    void setEnd(){
+        flag = true;
+    }
+
+    // Checking if current reference is End of any word or not
+    bool isEnd(){
+        return flag == true;
+    }
+};
+
+class Trie {
+private:
+    Node* root;
+public:
+    Trie() {
+        root = new Node();
+    }
+    
+    void insert(string word) {
+        int n = word.size();
+        Node* node = root;
+        for(int i=0;i<n;i++){
+            // If current character doesn't exist in node
+            if(node->containKey(word[i]) == false){
+                // Then we need to insert it into the trie
+                node->put(word[i],new Node());
+            }
+            // move to the reference trie
+            node = node->get(word[i]);
+        }
+
+        // Setting the End of word
+        node->setEnd();
+    }
+    
+    bool search(string word) {
+        Node* node = root;
+        for(int i=0;i<word.size();i++){
+            // Checking if current word exist in node or not
+            if(node->containKey(word[i]) == false){
+                return false;
+            }
+            // If we find the word int node
+            // Moving to next reference of node in trie
+            node = node->get(word[i]);
+        }
+
+        // checking if this current refernence is end
+        return node->isEnd();
+    }
+    
+    bool startsWith(string word) {
+        Node* node = root;
+        for(int i=0;i<word.size();i++){
+            // Checking if current word exist in node or not
+            if(node->containKey(word[i]) == false){
+                return false;
+            }
+            // If we find the word int node
+            // Moving to next reference of node in trie
+            node = node->get(word[i]);
+        }
+
+        // There is no need to check is this is complete word or not as this can be prefix of any word too
+        return true;
+    }
+};
