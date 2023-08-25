@@ -1,0 +1,29 @@
+// Bucket Sort
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        // Creating a map for storing frequency of element in the array
+        unordered_map<int,int> mp;
+        for(auto &it : nums) mp[it]++;
+
+        int n = nums.size();
+        vector<vector<int>> Bucket(n+1);
+
+        // Arranging element into the bucket according to there frequency
+        for(auto &[num,fq] : mp){
+            Bucket[fq].push_back(num);
+        }
+
+        vector<int> ans;
+        // Storing the element into the answer
+        // Highest frequency will at the last of Bucket 
+        for(int i=n;i>=1&&k;i--){
+            for(int j=0;j<Bucket[i].size()&&k;j++){
+                ans.push_back(Bucket[i][j]);
+                k--;
+            }
+        }
+        
+        return ans;
+    }
+};
