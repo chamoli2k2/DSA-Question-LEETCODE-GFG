@@ -1,0 +1,118 @@
+    class Node
+    {
+    public:
+    Node *links[2];
+
+    // Checking if current node has the the alphabet
+    bool containKey(bool ch)
+    {
+    // The character exist if this condition satisfy
+    return links[ch] != NULL;
+    }
+
+    // Inserting the reference of character into the node
+    void put(bool ch, Node *node)
+    {
+    links[ch] = node;
+    }
+
+    // moving to new refernce trie
+    Node *get(bool ch)
+    {
+    return links[ch];
+    }
+    };
+
+    class Trie
+    {
+    private:
+    Node *root;
+
+    public:
+    Trie()
+    {
+    root = new Node();
+    }
+
+    void insert(int num)
+    {
+    Node *node = root;
+    for (int i = 31; i >= 0; i--)
+    {
+        bool bi = (num >> i) & 1;
+        // Checking if current is present
+        if (node->containKey(bi) == false)
+        {
+            node->put(bi, new Node());
+        }
+        node = node->get(bi);
+    }
+    }
+
+    int search(int num)
+    {
+    int maxNum = 0;
+    Node *node = root;
+    for (int i = 31; i >= 0; i--)
+    {
+        bool bi = (num >> i) & 1;
+        if (node->containKey(1 - bi))
+        {
+            maxNum = maxNum | (1 << i);
+            node = node->get(1 - bi);
+        }
+        else
+        {
+            node = node->get(bi);
+        }
+    }
+
+    return maxNum;
+    }
+    };
+
+    class Solution
+    {
+    public:
+    vector<int> maximizeXor(vector<int> &arr, vector<vector<int>> &queries)
+    {
+    vector<pair<int, pair<int, int>>> nums;
+    for (int i = 0; i < queries.size(); i++)
+    {
+        nums.push_back({queries[i][1], {queries[i][0], i}});
+    }
+
+    // Sorting the array
+    sort(nums.begin(), nums.end());
+
+    // Creating the Trie
+    Trie tr;
+
+    vector<int> ans(queries.size());
+    int j = 0;
+    sort(arr.begin(), arr.end());
+    for (int i = 0; i < nums.size(); i++)
+    {
+        int ai = nums[i].first;
+        int xi = nums[i].second.first;
+        int idx = nums[i].second.second;
+        int maxi = -1;
+        ans[idx] = maxi;
+        while (j < arr.size() && arr[j] <= ai)
+        {
+            tr.insert(arr[j++]);
+        }
+
+        if (j == 0)
+        {
+            ans[idx] = -1;
+        }
+        else
+        {
+            ans[idx] = tr.search(xi);
+        }
+    }
+
+    return ans;
+    }
+    };
