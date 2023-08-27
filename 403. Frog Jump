@@ -1,0 +1,58 @@
+class Solution {
+private:
+    int lb(vector<int> &nums,int idx,int target){
+        int s = idx, e = nums.size()-1, mid, ans = -1;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            if(nums[mid] > target){
+                e = mid - 1;
+            }
+            else{
+                ans = mid;
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+    int solve(vector<int> &nums,int idx,int k){
+        // Base case
+        if(idx >= nums.size()) return false;
+        if(idx == nums.size()-1) return true;
+
+        if(dp[idx][k] != -1) return dp[idx][k];
+
+        // Checking if we can jump on stone or not
+        // We have 3 options to do so
+        int c1 = lb(nums,idx+1,nums[idx]+k);
+        int c2 = lb(nums,idx+1,nums[idx]+k+1);
+        int c3 = lb(nums,idx+1,nums[idx]+k-1);
+
+        // Checking
+        if(c1 != -1 && nums[c1] == nums[idx]+k){
+            int isTrue = solve(nums,c1,nums[c1]-nums[idx]);
+            if(isTrue) return dp[idx][k] = true;
+        }
+
+        if(c2 != -1 && nums[c2] == nums[idx]+k+1){
+            int isTrue = solve(nums,c2,nums[c2]-nums[idx]);
+            if(isTrue) return dp[idx][k] = true;
+        }
+
+        if(c3 != -1 && nums[c3] == nums[idx]+k-1){
+            int isTrue = solve(nums,c3,nums[c3]-nums[idx]);
+            if(isTrue) return dp[idx][k] = true;
+        }
+
+        return dp[idx][k] = false;
+    }
+public:
+    int dp[2001][4001];
+    bool canCross(vector<int>& stones) {
+        // Base case
+        if(stones[1]-stones[0] != 1) return false;
+        memset(dp,-1,sizeof(dp));
+        return solve(stones,1,1);
+    }
+};
