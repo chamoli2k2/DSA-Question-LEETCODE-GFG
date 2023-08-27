@@ -1,0 +1,34 @@
+// The concept used here is of contribution of each element in answer
+class Solution {
+public:
+    int uniqueLetterString(string s) {
+        int n = size(s), ans = 0;
+        vector<vector<int>> mp(26);
+
+        // Mapping the apperance of each character
+        for(int i=0;i<26;i++){
+            mp[i].push_back(-1);
+        }
+
+        // Mapping the string
+        for(int i=0;i<n;i++){
+            mp[s[i]-'A'].push_back(i);
+        }
+
+        // Finding the contribution of each character
+        for(char ch='A';ch<='Z';ch++){
+            // Checking if current character exist in map or not
+            if(mp[ch-'A'].size() == 1) continue;
+            
+            // Pushing size of string at back respectively for easy calculation
+            mp[ch-'A'].push_back(n);
+            for(int i=1;i<mp[ch-'A'].size()-1;i++){
+                int ls = mp[ch-'A'][i] - mp[ch-'A'][i-1];
+                int rs = mp[ch-'A'][i+1] - mp[ch-'A'][i];
+                ans += ls * rs;
+            }
+        }
+
+        return ans;
+    }
+};
