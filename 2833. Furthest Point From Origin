@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int furthestDistanceFromOrigin(string moves) {
+        int pointer1 = 0, pointer2 = 0;
+        for(int i=0;i<moves.size();i++){
+            if(moves[i] == '_'){
+                pointer1--;
+                pointer2++;
+            }
+            else if(moves[i] == 'L'){
+                pointer1--;
+                pointer2--;
+            }
+            else{
+                pointer2++;
+                pointer1++;
+            }
+        }
+        
+        return abs(pointer1) > abs(pointer2) ? abs(pointer1) : abs(pointer2);
+    }
+};
