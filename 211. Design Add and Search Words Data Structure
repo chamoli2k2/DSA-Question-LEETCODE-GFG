@@ -1,0 +1,100 @@
+class Node{
+public:
+    Node* links[26];
+    bool flag = false;
+
+    // Checking if current node has the the alphabet
+    bool containKey(char ch){
+        // The character exist if this condition satisfy
+        return links[ch-'a'] != NULL;
+    }
+
+    // Inserting the reference of character into the node
+    void put(char ch,Node* node){
+        links[ch-'a'] = node;
+    }
+
+    // moving to new refernce trie
+    Node* get(char ch){
+        return links[ch-'a'];
+    }
+
+    // Setting the End 
+    void setEnd(){
+        flag = true;
+    }
+
+    // Checking if current reference is End of any word or not
+    bool isEnd(){
+        return flag == true;
+    }
+};
+
+class Trie {
+private:
+    Node* root;
+public:
+    Trie() {
+        root = new Node();
+    }
+    
+    void insert(string word) {
+        int n = word.size();
+        Node* node = root;
+        for(int i=0;i<n;i++){
+            // If current character doesn't exist in node
+            if(node->containKey(word[i]) == false){
+                // Then we need to insert it into the trie
+                node->put(word[i],new Node());
+            }
+            // move to the reference trie
+            node = node->get(word[i]);
+        }
+
+        // Setting the End of word
+        node->setEnd();
+    }
+
+    bool search(string &s,int idx,Node* node){
+        // Base case
+        if(node == NULL) return false;
+        if(idx == s.size()) return node->isEnd();
+
+        if(s[idx] == '.'){
+            for(char ch='a';ch<='z';ch++){
+                if(node->containKey(ch) == true){
+                    Node* temp = node->get(ch);
+                    if(search(s,idx+1,temp)) return true;
+                }
+            }
+            return false;
+        }
+
+        if(node->containKey(s[idx]) == true){
+            node = node->get(s[idx]);
+            if(search(s,idx+1,node)) return true;
+        }
+        
+        return false;
+    }
+    
+    bool SearchWord(string &s){
+        Node* node = root;
+        return search(s,0,node);
+    }
+};
+class WordDictionary {
+public:
+    Trie tr;
+    WordDictionary() {
+        
+    }
+    
+    void addWord(string word) {
+        tr.insert(word);
+    }
+    
+    bool search(string word) {
+        return tr.SearchWord(word);
+    }
+};
