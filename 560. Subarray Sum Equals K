@@ -1,27 +1,17 @@
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
-        // Concept prefix sum
+        int n = nums.size(), ans = 0, sum = 0;
         unordered_map<int,int> mp;
-        int n = nums.size();
-        
-        int sum = 0;
-        mp[0]++;
-        int count = 0;
-        
+        mp[0] = 1;
         for(int i=0;i<n;i++){
-            sum = sum + nums[i];
-            
+            sum += nums[i];
             int preSum = sum - k;
-            
-            if(mp.find(preSum) != mp.end()){
-                count = count + mp[preSum];
+            if(mp[preSum]){
+                ans += mp[preSum];
             }
-            
-             mp[sum]++;
-            
+            mp[sum]++;
         }
-        
-        return count;
+        return ans;
     }
 };
