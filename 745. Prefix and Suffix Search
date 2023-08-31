@@ -1,0 +1,96 @@
+class Node{
+    public:
+    Node* links[26];
+    set<int,greater<int>> st;
+
+    // Containkey
+    bool containKey(char ch){
+        return links[ch-'a'] != NULL;
+    }
+
+    // get
+    Node* get(char ch){
+        return links[ch-'a'];
+    }
+
+    // Put
+    void put(char ch,Node* node){
+        links[ch-'a'] = node;
+    }
+
+    // index
+    void putIdx(int idx){
+        st.insert(idx);
+    }
+};
+
+class Trie{
+    private:
+    Node* root;
+    public:
+    Trie(){
+        root = new Node();
+    }
+    // inserting
+    void insert(string &word,int idx){
+        Node* node = root;
+        for(int i=0;i<word.size();i++){
+            if(node->containKey(word[i]) == false){
+                node->put(word[i],new Node());
+            }
+            node = node->get(word[i]);
+            node->putIdx(idx);
+        }
+    }
+
+    // Search word
+    set<int,greater<int>> findWord(string &word){
+        set<int> st;
+        Node* node = root;
+        for(int i=0;i<word.size();i++){
+            if(node->containKey(word[i]) == false){
+                return {};
+            }
+            node = node->get(word[i]);
+        }
+
+        return node->st;
+    }
+};
+
+class WordFilter {
+public:
+    Trie prefix;
+    Trie suffix;
+    WordFilter(vector<string>& words) {
+        unordered_map<string,int> mp;
+        for(int i=0;i<words.size();i++){
+            mp[words[i]] = i;
+        }
+
+        for(auto &[str,i] : mp){
+            string word = str;
+            // Inserting the prefix
+            prefix.insert(word,i);
+            // Inserting the suffix
+            reverse(word.begin(),word.end());
+            suffix.insert(word,i);
+        }
+    }
+    
+    int f(string pref, string suff) {
+        reverse(begin(suff),end(suff));
+        set<int,greater<int>> ans = suffix.findWord(suff);
+        set<int,greater<int>> b = prefix.findWord(pref);
+        for(auto it : ans){
+            if(b.find(it) != b.end()) return it;
+        }
+        return -1;
+    }
+};
+
+/**
+ * Your WordFilter object will be instantiated and called as such:
+ * WordFilter* obj = new WordFilter(words);
+ * int param_1 = obj->f(pref,suff);
+ */
