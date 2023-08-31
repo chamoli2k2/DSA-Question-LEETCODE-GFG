@@ -1,0 +1,111 @@
+class Node{
+    public:
+    Node* links[26];
+    bool flag = false;
+
+    // Getting link
+    Node* get(char ch){
+        return links[ch-'a'];
+    }
+
+    // putting address of new node
+    void put(char ch,Node* node){
+        links[ch-'a'] = node;
+    }
+
+    // Checking if word exist
+    bool containKey(char ch){
+        return links[ch-'a'] != NULL;
+    }
+
+    // Set the end of word
+    void setEnd(){
+        flag = true;
+    }
+
+    // Checking is end
+    bool isEnd(){
+        return flag;
+    }
+};
+
+class Trie{
+
+    public:
+    Node* root;
+    Trie(){
+        root = new Node();
+    }
+
+    // Inserting node into trie
+    void insert(string word){
+        Node* node = root;
+        for(int i=0;i<word.size();i++){
+            if(node->containKey(word[i]) == false){
+                node->put(word[i],new Node());
+            }
+            node = node->get(word[i]);
+        }
+        node->setEnd();
+    }
+
+    // Searching the char
+    bool searChar(char ch){
+        Node* node = root;
+        return node->containKey(ch);
+    }
+    
+    Node* NodeReturn(){
+        return root;
+    }
+};
+class Solution {
+private:
+    void dfs(vector<vector<char>> &board,vector<vector<bool>> &visited,Node* node,int i,int j,set<string> &st,string ans){
+        // Base case
+        if(i < 0 || j < 0 || j >= board[0].size() || i >= board.size()){
+            return;
+        }
+        if(visited[i][j] == true || node->containKey(board[i][j]) == false){
+            return;
+        }
+
+        Node* nextNode = node->get(board[i][j]);
+        visited[i][j] = true;
+
+        // Checking if the current node is end of word
+        if(nextNode->isEnd()){
+            st.insert(ans+board[i][j]);
+        }
+
+        // Traversing
+        dfs(board,visited,nextNode,i+1,j,st,ans+board[i][j]);
+        dfs(board,visited,nextNode,i-1,j,st,ans+board[i][j]);
+        dfs(board,visited,nextNode,i,j+1,st,ans+board[i][j]);
+        dfs(board,visited,nextNode,i,j-1,st,ans+board[i][j]);
+
+        visited[i][j] = false;
+    }
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        Trie tr;
+        int n = size(board), m = size(board[0]);
+        // Adding words to trie
+        for(auto &it : words) tr.insert(it);
+
+        vector<vector<bool>> visited(n,vector<bool>(m,0));
+        set<string> st;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(visited[i][j] == 0 && tr.searChar(board[i][j])){
+                    Node* rootNode = tr.NodeReturn();
+                    dfs(board,visited,rootNode,i,j,st,"");
+                }
+            }
+        }
+
+        vector<string> res(st.begin(),st.end());
+        return res;
+    }
+};
