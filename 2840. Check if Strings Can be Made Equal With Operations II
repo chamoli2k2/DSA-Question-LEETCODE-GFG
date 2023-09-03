@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool checkStrings(string s1, string s2) {
+        string evens1 = "", evens2 = "", odds1 = "", odds2 = "";
+
+        for(int i=0;i<s1.size();i++){
+            if(i & 1){
+                odds1 += s1[i];
+                odds2 += s2[i];
+            }
+            else{
+                evens1 += s1[i];
+                evens2 += s2[i];
+            }
+        }
+
+        sort(begin(odds1),end(odds1));
+        sort(begin(odds2),end(odds2));
+        sort(begin(evens1),end(evens1));
+        sort(begin(evens2),end(evens2));
+
+        return (odds1 == odds2) && (evens1 == evens2);
+    }
+};
