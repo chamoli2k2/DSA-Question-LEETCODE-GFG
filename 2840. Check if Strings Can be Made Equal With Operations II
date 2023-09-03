@@ -22,3 +22,36 @@ public:
         return (odds1 == odds2) && (evens1 == evens2);
     }
 };
+
+class Solution {
+public:
+    bool checkStrings(string s1, string s2) {
+        // Logic is simple 
+        // We can replace odd index with odd index and even index with even index only
+        // Frequency of each element should be equal at even and odd index respectively in 
+        // both string 
+        
+        int freq[26] = {0};
+        for(int i=0;i<s1.size();i+=2){
+            // Increasing the freq
+            freq[s1[i]-'a']++;
+            freq[s2[i]-'a']--;
+        }
+
+        // Now checking
+        for(int i=0;i<26;i++){
+            if(freq[i]) return false;
+        }
+
+        for(int i=1;i<s1.size();i+=2){
+            freq[s1[i]-'a']++;
+            freq[s2[i]-'a']--;
+        }
+
+        for(int i=0;i<26;i++){
+            if(freq[i]) return false;
+        }
+
+        return true;
+    }
+};
