@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minSubarray(vector<int>& nums, int p) {
+        int n = size(nums), ans = n, totalSum = 0, prefix = 0;
+        for(int i=0;i<n;i++){
+            totalSum = (totalSum + nums[i]) % p;
+        }
+
+        if(totalSum == 0) return 0;
+        unordered_map<int,int> mp;
+        mp[0] = -1;
+        for(int i=0;i<n;i++){
+            prefix = (prefix + nums[i]) % p;
+            int req = (prefix-totalSum+p) % p;
+            if(mp.count(req)){
+                ans = min(ans,i-mp[req]);
+            }
+            mp[prefix] = i;
+        }
+        
+        return ans < n ? ans : -1;
+    }
+};
