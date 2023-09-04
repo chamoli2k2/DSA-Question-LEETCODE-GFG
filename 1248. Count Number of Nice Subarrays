@@ -1,0 +1,31 @@
+// When ever it is asked you have to find exactly K  subarray 
+// Always remember this thing Exactly K = Atmost(k) - Atmost(k-1)
+
+class Solution {
+private:
+    int solve(vector<int> &nums,int k){
+        int n = size(nums), i = 0, j = 0, ans = 0, count = 0;
+
+        while(j < n){
+            if(nums[j] & 1){
+                count++;
+            }
+
+            while(i <= j && count > k){
+                if(nums[i] & 1){
+                    count--;
+                }
+                i++;
+            }
+
+            ans += j-i+1;
+            j++;
+        }
+        
+        return ans;
+    }
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        return solve(nums,k) - solve(nums,k-1);
+    }
+};
