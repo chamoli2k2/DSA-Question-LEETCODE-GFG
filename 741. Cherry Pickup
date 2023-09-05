@@ -1,0 +1,43 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &grid,int r1,int c1,int r2,int n){
+        // Calculating C2 ans r1 + c2 should be equal to r2 + c2
+        int c2 = r1 + c1 - r2;
+        if(r1 == n || r2 == n || c1 == n || c2 == n || grid[r1][c1] == -1 || grid[r2][c2] == -1) return INT_MIN;
+
+        // We know both will reach end at same time
+        if(r1 == n-1 && c1 == n-1) return grid[r1][c1];
+
+        if(dp[r1][c1][r2] != -1) return dp[r1][c1][r2];
+
+        int ans = 0;
+        // If both are on same cell
+        if(r1 == r2 && c1 == c2){
+            ans = grid[r1][c1];
+        }
+        // Other wise
+        else{
+            ans = grid[r1][c1] + grid[r2][c2];
+        }
+
+        // Both going right
+        int rr = solve(grid,r1,c1+1,r2,n);
+        // Both going down
+        int dd = solve(grid,r1+1,c1,r2+1,n);
+        // One down and One right
+        int dr = solve(grid,r1+1,c1,r2,n);
+        // One right and one down
+        int rd = solve(grid,r1,c1+1,r2+1,n);
+
+        return dp[r1][c1][r2] = ans + max({rr,dd,rd,dr});
+    }
+public:
+    int dp[51][51][51];
+    int cherryPickup(vector<vector<int>>& grid) {
+        int n = size(grid);
+        if(grid[0][0] == -1 || grid[n-1][n-1] == -1) return 0;
+        memset(dp,-1,sizeof(dp));
+        int ans = solve(grid,0,0,0,n);
+        return ans < 0 ? 0 : ans;
+    }
+};
