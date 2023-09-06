@@ -1,40 +1,22 @@
+// Algorithm 
+// Find the length of both linked list and find there difference
+// Move the bigger linked list difference time so that both linked list reaches same distination
+// Now move both linked list simultaneously and check if we got intersection or not till we reach
+// NULL
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        ListNode *temp=headA;
-        int size1=0;
-        while(temp!=NULL){
-            size1++;
-            temp=temp->next;
+        // Base Case
+        if(headA == NULL || headB == NULL) return NULL;
+
+        ListNode* a = headA;
+        ListNode* b = headB;
+
+        while(a != b){
+            a = a == NULL ? headB : a->next;
+            b = b == NULL ? headA : b->next;
         }
-        temp=headB;
-        int size2=0;
-        while(temp!=NULL){
-            size2++;
-            temp=temp->next;
-        }
-        
-        
-        if(size1>size2){
-            int d=size1-size2;
-            while(d>0){
-                headA=headA->next;
-                d--;
-            }
-        }else{
-            int d=size2-size1;
-            while(d>0){
-                headB=headB->next;
-                d--;
-            }
-        }
-        while(headA and headB){
-            if(headA==headB){
-                return headA;
-            }
-            headA=headA->next;
-            headB=headB->next;
-        }
-        return NULL;   
+
+        return a;
     }
 };
