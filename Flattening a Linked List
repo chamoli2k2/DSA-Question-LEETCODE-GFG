@@ -1,0 +1,46 @@
+Node* mergeTwoLists(Node* list1, Node* list2) {
+    // Base case
+    if(list1 == NULL) return list2;
+    if(list2 == NULL) return list1;
+    // Checking which list starting is smaller
+    Node *small, *large;
+    if(list1->data <= list2->data){
+        small = list1;
+        large = list2;
+    }
+    else{
+        small = list2;
+        large = list1;
+    }
+    
+    Node *ans = small;
+    while(small && large){
+        Node* prev = NULL;
+        while(small && small->data <= large->data){
+            prev = small;
+            small = small->bottom;
+        }
+
+        prev->bottom = large;
+        large = small;
+        small = prev->bottom;
+    }
+
+    return ans;
+}
+
+Node *flatten(Node *root)
+{
+   // Base case
+   if(root == NULL || root->next == NULL) return root;
+   
+   // Logic is simple we assume down as a linked list and right as another linked list 
+   // In the end we merge them both
+   Node* down = root;
+   Node* right = root->next;
+   down->next = NULL;
+   flatten(right);
+   
+   // Merging both list
+   return mergeTwoLists(down,right);
+}
