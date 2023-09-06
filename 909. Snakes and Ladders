@@ -1,0 +1,48 @@
+class Solution {
+private:
+    pair<int,int> find(int x,int n){
+        int r = (x-1) / n;
+        int c = (x-1) % n;
+        if (r&1)    c = (n-1)-c;
+        r = (n-1)-r;
+        return {r,c};
+    }
+public:
+    int snakesAndLadders(vector<vector<int>>& board){
+        int n = size(board), steps = 0;
+        vector<vector<bool>> visited(n,vector<bool>(n,false));
+        queue<int> q;
+        q.push(1);
+        // Making visited
+        visited[n-1][0] = true;
+
+        while(!q.empty()){
+            int m = q.size();
+
+            for(int i=0;i<m;i++){
+                int node = q.front();
+                q.pop();
+                // Checking if we reach destination
+                if(node == n*n) return steps;
+
+                for(int j=1;j<=6;j++){
+                    if(node+j > n*n) break;
+                    pair<int,int> corDinate = find(node+j,n);
+                    int x = corDinate.first, y = corDinate.second;
+                    if(visited[x][y] == true) continue;
+                    visited[x][y] = true;
+                    if(board[x][y] == -1){
+                        q.push(node+j);
+                    }
+                    else{
+                        q.push(board[x][y]);
+                    }
+                }
+            }
+
+            steps++;
+        }
+
+        return -1;
+    }
+};
