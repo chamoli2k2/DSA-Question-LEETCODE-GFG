@@ -1,0 +1,43 @@
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        // Base case
+        if(head == NULL) return head;
+        // Step 1 : making the copy and inserting it between node
+        Node* tempNode = head;
+        while(tempNode){
+            Node* newNode = new Node(tempNode->val);
+            Node* next = tempNode->next;
+            tempNode->next = newNode;
+            newNode->next = next;
+            tempNode = next;
+        }
+
+        // Step 2 : connecting the random pointer
+        tempNode = head;
+
+        while(tempNode){
+            Node* randomPointer = tempNode->random;
+            Node* actualNode = tempNode->next;
+            if(randomPointer != NULL){
+                actualNode->random = randomPointer->next;
+            }
+            tempNode = actualNode->next;
+        }
+
+        // Step 3 : connecting next node of both copy list and actual list
+        tempNode = head;
+        Node* dummyNode = new Node(-1);
+        dummyNode->next = head;
+        Node* ans = head->next;
+        while(tempNode){
+            dummyNode->next = tempNode->next;
+            Node* nextNode = tempNode->next->next;
+            tempNode->next = nextNode;
+            dummyNode = dummyNode->next;
+            tempNode = nextNode;
+        }
+
+        return ans;
+    }
+};
