@@ -1,0 +1,42 @@
+class Solution {
+private:
+    void solve(int idx,int count){
+        // Base case
+        if(idx >= Zeros.size()){
+            ans = min(ans,count);
+            return;
+        }
+
+        // For every of zero cell try all possibility of xtra cell
+        for(int k=0;k<Xtra.size();k++){
+            // If we don't have left power in this xtra cell
+            if(Xtra[k][2] == 0) continue;
+            Xtra[k][2]--;
+            solve(idx+1,abs(Zeros[idx][0]-Xtra[k][0])+abs(Zeros[idx][1]-Xtra[k][1])+count);
+            Xtra[k][2]++;
+        }
+    }
+public:
+    vector<vector<int>> Zeros, Xtra;
+    int ans;
+    int minimumMoves(vector<vector<int>>& grid) {
+        int n = grid.size();
+        ans = INT_MAX;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j] == 0){
+                    Zeros.push_back({i,j});
+                }
+                else if(grid[i][j] > 1){
+                    Xtra.push_back({i,j,grid[i][j]-1});
+                }
+            }
+        }
+
+        // Base case
+        if(Zeros.size() == 0) return 0;
+        solve(0,0);
+        return ans;
+    }
+};
+
