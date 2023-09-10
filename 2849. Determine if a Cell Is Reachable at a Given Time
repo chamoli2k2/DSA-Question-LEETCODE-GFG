@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool isReachableAtTime(int sx, int sy, int fx, int fy, int t){
+        // Base case
+        if(t == 1 && fx == sx && sy == fy) return false;
+        
+        int dx = abs(sx-fx), dy = abs(sy-fy);
+        int diagonalDistance = min(dx,dy);
+        t -= diagonalDistance;
+        int RemainingInX = abs(dx-diagonalDistance);
+        int RemainingInY = abs(dy-diagonalDistance);
+
+        return RemainingInX+RemainingInY <= t ? true : false;
+    }
+};
