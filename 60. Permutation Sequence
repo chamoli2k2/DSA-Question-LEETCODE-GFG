@@ -1,41 +1,26 @@
 class Solution {
-    void nxt_permutation(string &num){
-        int n = num.size() - 2;
-        
-        // Finding first number greater number 
-        while(num[n] > num[n+1]){
-            n--;
-        }
-        
-        int temp = num[n];
-        int i = num.size() - 1;
-        
-        // finding the first number greater than that number from back
-        while(temp > num[i]){
-            i--;
-        }
-        
-        // swapping both number 
-        swap(num[n],num[i]);
-        
-        
-        // reversing the number 
-        reverse(num.begin()+n+1,num.end());
-    }
 public:
     string getPermutation(int n, int k) {
-        string num = "";
-        // Step 1 : making number first;
-        for(int i=1;i<=n;i++){
-            num += to_string(i);
+        string ans = "";
+        vector<int> number;
+        int fact = 1;
+        for(int i=1;i<n;i++){
+            fact = fact * i;
+            number.push_back(i);
         }
-        
-        // step 2 : Finding next permutation
-        while(k > 1){
-            nxt_permutation(num);
-            k--;
+        number.push_back(n);
+        k = k - 1;
+        while(true){
+            int idx = k/fact;
+            ans.push_back(number[idx]+'0');
+            number.erase(number.begin()+idx);
+            if(number.size() == 0){
+                break;
+            }
+            k = k % fact;
+            fact = fact / number.size();
         }
-        
-        return num;
+
+        return ans;
     }
 };
