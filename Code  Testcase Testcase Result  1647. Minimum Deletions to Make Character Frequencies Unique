@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minDeletions(string s) {
+        int n = size(s), ans = 0;
+        unordered_map<char,int> mp1;
+        map<int,int,greater<int>> mp2;
+
+        // Making the map
+        for(auto &it : s) mp1[it]++;
+
+        for(auto &[ch,freq] : mp1){
+            mp2[freq]++;
+        }
+
+        mp2[0] = 1;
+        for(auto &[fq,noOfChar] : mp2){
+            if(fq == 0) break;
+            ans += (noOfChar-1);
+            if(mp2[fq] > 1)
+                mp2[fq-1] += (noOfChar-1);
+        }
+
+        return ans;
+    }
+};
