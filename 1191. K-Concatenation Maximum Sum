@@ -1,0 +1,36 @@
+class Solution {
+private:
+    pair<int,int> solve(vector<int> &arr){
+        int n = arr.size(), sum = 0, ans = 0, total = 0;
+        for(int i=0;i<n;i++){
+            sum += arr[i];
+            total += arr[i];
+            ans = max(ans,sum);
+            if(sum < 0) sum = 0;
+        }
+        return {total,ans};
+    }
+public:
+    int kConcatenationMaxSum(vector<int>& arr, int k) {
+        // We have there case
+        int n = size(arr), mod = 1e9 + 7;
+        pair<int,int> p = solve(arr);
+        int TotalSum = p.first, KandaneSum = p.second;
+        
+        // If k is 1 
+        if(k == 1) return KandaneSum;
+
+        for(int i=0;i<n;i++){
+            arr.push_back(arr[i]);
+        }
+
+        if(TotalSum < 0){
+            return kConcatenationMaxSum(arr,1);
+        }
+
+        pair<int,int> p2 = solve(arr);
+        int newSum = p2.second;
+        
+        return (newSum%mod + ((k-2)*1LL*TotalSum)%mod) %mod;
+    }
+};
