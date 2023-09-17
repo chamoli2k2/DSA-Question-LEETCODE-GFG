@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minimumRightShifts(vector<int>& nums) {
+        // Base case
+        int n = nums.size(), drops = 0, pvtIdx;
+        for(int i=1;i<n;i++){
+            if(nums[i] < nums[i-1]){
+                pvtIdx = i;
+                drops++;
+            }
+        }
+
+        if(drops > 1) return -1;
+        if(drops == 0) return 0;
+        return nums[0] >= nums[n-1] ? n-pvtIdx : -1;
+    }
+};
