@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int countWays(vector<int>& nums) {
+        long ans = 0, n = nums.size(), selected = 0;
+        sort(begin(nums),end(nums));
+        // Case when we are not selecting anyone and everyone is happy
+        if(nums[0] != 0) ans = 1;
+
+        for(int i=0;i<n;i++){
+            // Checking if no of selected student is happy
+            // If we selected no of student is greater than nums[i]
+            selected++;
+            if(selected > nums[i]){
+                // As it is given than all student should be happy
+                // than no of non selected student should also be happy
+                if(i+1 < n && selected < nums[i+1]){
+                    ans++;
+                }
+                // If we selected everyone 
+                else if(selected == n){
+                    ans++;
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
