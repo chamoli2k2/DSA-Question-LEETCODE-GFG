@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int countPairs(vector<vector<int>>& nums, int k) {
+        int ans = 0, n = size(nums);
+        map<pair<int,int>,int> mp;
+
+        /*
+            x1^x2 + y1^y2 = k
+            val + y1^y2 = k     (x1^x2 = val)
+            val + k-val = k
+            From this we can observe
+            x1 = val^x2
+            y1 = (k-val)^y2
+
+        */
+
+        for(int i=0;i<n;i++){
+            for(int newK=0;newK<=k;newK++){
+                int x1 = newK^nums[i][0];
+                int y1 = (k-newK)^nums[i][1];
+
+                if(mp[{x1,y1}]){
+                    ans += mp[{x1,y1}];
+                }
+            }
+            mp[{nums[i][0],nums[i][1]}]++;
+        }
+
+        return ans;
+    }
+};
