@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minLengthAfterRemovals(vector<int>& nums) {
+        // If maximum frequency element size is less than n/2 
+        // than we can use remaining element to cancel maximum 
+        // frequency element as well as each other or them
+        int n = nums.size(), maxiFreq = 1, freq = 1;
+        for(int i=0;i<n-1;i++){
+            if(nums[i] == nums[i+1]){
+                freq++;
+                maxiFreq = max(maxiFreq,freq);
+            }
+            else{
+                freq = 1;
+            }
+        }
+
+        // Checking if maximu freq is less than n/2
+        if(2*maxiFreq <= n) return n & 1;
+
+        return 2*maxiFreq - n;
+    }
+};
