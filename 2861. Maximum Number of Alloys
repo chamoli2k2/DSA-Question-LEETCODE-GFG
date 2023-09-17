@@ -1,0 +1,35 @@
+class Solution {
+private:
+    bool check(vector<vector<int>> &comp,vector<int> &stocks,vector<int> &cost,int idx,int budget,int target){
+        long money = 0;
+        for(int i=0;i<stocks.size();i++){
+            if(target*1LL*comp[idx][i] > stocks[i]){
+                money += (target*1LL*comp[idx][i] - 1LL*stocks[i]) *1LL* cost[i];
+            }
+            
+            if(money > budget) return false;
+        }
+        return true;
+    }
+public:
+    int maxNumberOfAlloys(int n, int k, int budget, vector<vector<int>>& composition, vector<int>& stock, vector<int>& cost) {
+        int res = 0;
+        for(int i=0;i<k;i++){
+            int s = 0, e = INT_MAX, ans = -1;
+            while(s <= e){
+                int mid = s + (e - s) / 2;
+                if(check(composition,stock,cost,i,budget,mid)){
+                    ans = mid;
+                    s = mid + 1;
+                }
+                else{
+                    e = mid - 1;
+                }
+            }
+
+            res = max(ans,res);
+        }
+
+        return res;
+    }
+};
