@@ -1,0 +1,31 @@
+class Solution {
+private:
+    void Find(unordered_map<int,vector<int>> &mp,int num,int idx){
+        for(int i=2;i<=sqrt(num);i++){
+            int k = i*i;
+            while(num%k == 0){
+                num /= k;
+            }
+        }
+        mp[num].push_back(idx);
+    }
+public:
+    long long maximumSum(vector<int>& nums) {
+        long long ans = 0, n = size(nums);
+        unordered_map<int,vector<int>> mp;
+
+        for(int i=1;i<=n;i++){
+            Find(mp,i,i-1);
+        }
+
+        for(auto &[rem,vec] : mp){
+            long long sum = 0;
+            for(auto &idx : vec){
+                sum = sum + 1LL*nums[idx];
+            }
+            ans = max(ans,sum);
+        }
+
+        return ans;
+    }
+};
