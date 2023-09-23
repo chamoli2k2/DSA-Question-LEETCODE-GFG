@@ -1,0 +1,35 @@
+class Solution {
+private:
+    bool check(string &s,unordered_map<char,vector<int>> &mp){
+        int n = s.size(), prev = -1;
+        for(int i=0;i<n;i++){
+            // Checking if character is find in map
+            if(mp.count(s[i]) == 0) return false;
+
+            auto it = upper_bound(mp[s[i]].begin(),mp[s[i]].end(),prev);
+
+            // If we find out the index
+            if(it == mp[s[i]].end()) return false;
+
+            prev = *it;
+        }
+
+        return true;
+    }
+public:
+    int numMatchingSubseq(string s, vector<string>& words) {
+        int n = size(s), m = words.size(), ans = 0;
+        unordered_map<char,vector<int>> mp;
+        for(int i=0;i<n;i++){
+            mp[s[i]].push_back(i);
+        }
+
+        for(int i=0;i<m;i++){
+            if(check(words[i],mp)){
+                ans++;
+            }
+        }
+
+        return ans;
+    }
+};
