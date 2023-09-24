@@ -1,0 +1,28 @@
+class Solution {
+private:
+    double solve(int poured,int query_row,int query_glass){
+        // Base case
+        if(query_row < 0 || query_glass < 0 || query_glass > query_row) return 0.0;
+        if(query_row == 0 && query_glass == 0){
+            return poured;
+        }
+
+        // Checking if we find the glass
+        if(dp[query_row][query_glass] > -1) return dp[query_row][query_glass];
+
+        // Finding answer for current glass
+        double leftUp = (solve(poured,query_row-1,query_glass-1)-1) / 2.0;
+        double rightUp = (solve(poured,query_row-1,query_glass)-1) / 2.0;
+
+        if(leftUp < 0) leftUp = 0.0;
+        if(rightUp < 0) rightUp = 0.0;
+
+        return dp[query_row][query_glass] = leftUp + rightUp;
+    }
+public:
+    double dp[101][101];
+    double champagneTower(int poured, int query_row, int query_glass) {
+        memset(dp,-1,sizeof(dp));
+        return min(1.0,solve(poured,query_row,query_glass));
+    }
+};
