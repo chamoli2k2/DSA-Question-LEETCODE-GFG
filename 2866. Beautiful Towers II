@@ -1,0 +1,79 @@
+class Solution {
+private:
+    void FindPreviousSmaller(vector<int> &nums,vector<int> &ans,long long n){
+        stack<int> st;
+        for(int i=0;i<n;i++){
+            while(!st.empty() && nums[st.top()] > nums[i]){
+                st.pop();
+            }
+
+            if(st.empty()){
+                ans[i] = -1;
+            }
+            else{
+                ans[i] = st.top();
+            }
+            
+            st.push(i);
+        }
+    }
+
+    void FindNextSmaller(vector<int> &nums,vector<int> &ans,long long n){
+        stack<int> st;
+        for(int i=n-1;i>=0;i--){
+            while(!st.empty() && nums[st.top()] > nums[i]){
+                st.pop();
+            }
+
+            if(st.empty()){
+                ans[i] = n;
+            }
+            else{
+                ans[i] = st.top();
+            }
+
+            st.push(i);
+        }
+    }
+public:
+    long long maximumSumOfHeights(vector<int>& maxHeights) {
+        long long n = maxHeights.size(), ans = INT_MIN;
+        vector<int> Left(n), Right(n);
+        // Finding previous Smaller Element
+        FindPreviousSmaller(maxHeights,Left,n);
+        // Finding next smaller Element 
+        FindNextSmaller(maxHeights,Right,n);
+        
+        // Evaluating prefix result
+        vector<long long> prefix(n), suffix(n);
+        for(int i=0;i<n;i++){
+            int idx = Left[i];
+            // If we don't find smaller element left of tower i
+            if(idx == -1){
+                prefix[i] = (maxHeights[i] *1LL* (i-idx));
+            }
+            else{
+                prefix[i] = prefix[idx] + maxHeights[i] *1LL* (i-idx);
+            }
+        }
+
+        // Evaluating Suffix Result
+        for(int i=n-1;i>=0;i--){
+            int idx = Right[i];
+            // If we don't find any smaller element right of tower i
+            if(idx == n){
+                suffix[i] = maxHeights[i] *1LL* (idx-i);
+            }
+            else{
+                suffix[i] = suffix[idx] + maxHeights[i] *1LL* (idx-i);
+            }
+        }
+
+        // Finally Evaluating result
+        for(int i=0;i<n;i++){
+            ans = max(ans,prefix[i]+suffix[i]-maxHeights[i]);
+        }
+
+        return ans;
+    }
+};
