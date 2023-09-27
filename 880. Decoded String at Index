@@ -1,0 +1,34 @@
+class Solution {
+public:
+    string decodeAtIndex(string s, int k) {
+        long long n = s.size(), len = 0;
+        // Finding the total length of desired string
+        for(int i=0; i<n; i++){
+            if(isdigit(s[i])){
+                len *= (s[i]-'0');
+            }
+            else{
+                len++;
+            }
+        }
+
+        // From behind we are iterating and trying to find either 
+        for(int i=n-1;i>=0;i--){
+            k = k % len;
+            if(k == 0 && isdigit(s[i])){
+                len--;
+            }
+            else if(k == 0){
+                return string(1,s[i]);
+            }
+            else if(isdigit(s[i])){
+                len /= (s[i]-'0');
+            }
+            else{
+                len--;
+            }
+        }
+
+        return "";
+    }
+};
