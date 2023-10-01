@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minSizeSubarray(vector<int>& nums, int target) {
+        long long n = size(nums), sum = 0, ans = INT_MAX;
+        for(auto &it : nums){
+            sum += 1LL*it;
+        }
+        
+        if(target % sum == 0) return n * (target / sum);
+        
+        for(int i=0;i<n;i++){
+            nums.push_back(nums[i]);
+        }
+            
+        unordered_map<long long,int> mp;
+        mp[0] = -1;
+        long long newSum = 0;
+        int k = target / sum;
+        target -= k*sum;
+        for(int i=0;i<2*n;i++){
+            newSum += 1LL*nums[i];
+            if(mp.count(newSum-target)){
+                ans = min(ans,1LL*i-mp[newSum-target]);
+            }
+            mp[newSum] = i;
+        }  
+        
+        return ans == INT_MAX ? -1 : ans + k*n;
+    }
+};
