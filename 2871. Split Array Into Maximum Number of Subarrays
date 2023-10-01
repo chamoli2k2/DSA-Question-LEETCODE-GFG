@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maxSubarrays(vector<int>& nums) {
+        int n = size(nums), AND = INT_MAX;
+        for(auto &it : nums){
+            AND = AND & it;
+        }
+        
+        // BASE CASE
+        if(AND > 0) return 1;
+        
+        int ans = 0, newAND = INT_MAX;
+        for(auto &it : nums){
+            newAND = newAND & it;
+            if(newAND == 0){
+                ans++;
+                newAND = INT_MAX;
+            }
+        }
+        
+        return ans;
+    }
+};
