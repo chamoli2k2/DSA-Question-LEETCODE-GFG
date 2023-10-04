@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool winnerOfGame(string colors) {
+        int n = colors.size(), AC = 0, BC = 0;
+        for(int i=1;i<n-1;i++){
+            if(colors[i] == 'A' && colors[i+1] == 'A' && colors[i-1] == 'A'){
+                AC++;
+            }
+            else if(colors[i] == 'B' && colors[i+1] == 'B' && colors[i-1] == 'B'){
+                BC++;
+            }
+        }
+
+        return AC >= BC+1 ? true : false;
+    }
+};
