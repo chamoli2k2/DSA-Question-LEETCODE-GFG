@@ -1,0 +1,29 @@
+class Solution {
+private:
+    int solve(int n,int m,int k,int idx,int prev,int len){
+        // Base case
+        if(idx == n){
+            return len == k;
+        }
+
+        if(dp[idx][prev][len] != -1) return dp[idx][prev][len];
+
+        int result = 0;
+        for(int i=1;i<=m;i++){
+            if(i > prev){
+                result = (result % mod + solve(n,m,k,idx+1,i,len+1) % mod) % mod;
+            }
+            else{
+                result = (result % mod + solve(n,m,k,idx+1,prev,len) % mod) % mod;
+            }
+        }
+
+        return dp[idx][prev][len] = result;
+    }
+public:
+    int dp[51][101][51], mod = 1e9 + 7;
+    int numOfArrays(int n, int m, int k) {
+        memset(dp,-1,sizeof(dp));
+        return solve(n,m,k,0,0,0);
+    }
+};
