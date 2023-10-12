@@ -1,0 +1,78 @@
+/**
+ * // This is the MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class MountainArray {
+ *   public:
+ *     int get(int index);
+ *     int length();
+ * };
+ */
+
+class Solution {
+private:
+    int FindRight(MountainArray &mountainArr,int s,int target){
+        int e = mountainArr.length()-1, ans = -1;
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            int num = mountainArr.get(mid);
+            if(num== target){
+                ans = mid;
+                e = mid - 1;
+            }
+            else if(num> target){
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+    int FindLeft(MountainArray &mountainArr,int e,int target){
+        int s = 0, ans = -1;
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            int num = mountainArr.get(mid);
+            if(num == target){
+                ans = mid;
+                e = mid - 1;
+            }
+            else if(num > target){
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+        
+        return ans;
+    }
+public:
+    int findInMountainArray(int target, MountainArray &mountainArr) {
+        int mIdx, s = 1, e = mountainArr.length()-2, ans;
+        // Finding mountain index
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            int num = mountainArr.get(mid);
+            if(num > mountainArr.get(mid-1) && num > mountainArr.get(mid+1)){
+                mIdx = mid;
+                break;
+            }
+            else if(num> mountainArr.get(mid-1)){
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+
+        // After getting mountain index
+        ans = FindLeft(mountainArr,mIdx,target);
+        if(ans >= 0) return ans;
+        ans = FindRight(mountainArr,mIdx+1,target);
+
+        return ans;
+    }
+};
