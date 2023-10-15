@@ -1,0 +1,30 @@
+class Solution {
+private:
+    int solve(vector<int> &nums,int i,int j,int x){
+        // Base case
+        if(i > j) return 0;
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int c1 = min(x,nums[j]-nums[i]) + solve(nums,i+1,j-1,x);
+        int c2 = min(x,nums[i+1]-nums[i]) + solve(nums,i+2,j,x);
+        int c3 = min(x,nums[j]-nums[j-1]) + solve(nums,i,j-2,x);
+        
+        return dp[i][j] = min({c1,c2,c3});
+    }
+public:
+    int dp[501][501];
+    int minOperations(string s1, string s2, int x) {
+        int n = s1.size();
+        vector<int> num;
+        // Finding the position where s1 and s2 differ
+        for(int i=0;i<n;i++){
+            if(s1[i] != s2[i]) num.push_back(i);
+        }
+
+        // Base case
+        if(num.size() & 1) return -1;
+        memset(dp,-1,sizeof(dp));
+        return solve(num,0,num.size()-1,x);
+    }
+};
