@@ -1,0 +1,26 @@
+class Solution {
+private:
+    static bool cmp(vector<int> &v1,vector<int> &v2){
+        if(v1[0] == v2[0]) return v1[1] > v2[1];
+        return v1[0] < v2[0];
+    }
+public:
+    int maxEnvelopes(vector<vector<int>>& env) {
+        sort(begin(env),end(env),cmp);
+        vector<int> num;
+        num.push_back(env[0][1]);
+        int n = env.size();
+        for(int i=1;i<n;i++){
+            int idx = lower_bound(begin(num),end(num),env[i][1]) - num.begin();
+
+            if(idx == num.size()){
+                num.push_back(env[i][1]);
+            }
+            else{
+                num[idx] = env[i][1];
+            }
+        }
+
+        return num.size();
+    }
+};
