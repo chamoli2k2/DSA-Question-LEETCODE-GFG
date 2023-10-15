@@ -6,11 +6,13 @@ private:
 
         if(dp[i][j] != -1) return dp[i][j];
 
-        int c1 = min(x,nums[j]-nums[i]) + solve(nums,i+1,j-1,x);
-        int c2 = min(x,nums[i+1]-nums[i]) + solve(nums,i+2,j,x);
-        int c3 = min(x,nums[j]-nums[j-1]) + solve(nums,i,j-2,x);
-        
-        return dp[i][j] = min({c1,c2,c3});
+        int ans = INT_MAX;
+        for(int k=i+1;k<=j;k+=2){
+            int c = solve(nums,i+1,k-1,x) + solve(nums,k+1,j,x);
+            ans = min({ans,x+c,nums[k]-nums[i]+c});
+        }
+
+        return dp[i][j] = ans;
     }
 public:
     int dp[501][501];
