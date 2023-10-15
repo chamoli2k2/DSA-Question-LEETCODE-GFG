@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int minProcessingTime(vector<int>& processorTime, vector<int>& tasks) {
+        sort(begin(processorTime),end(processorTime));
+        sort(rbegin(tasks),rend(tasks));
+        int n = size(processorTime), idx = 0, ans = 0;
+        for(int i=0;i<n;i++){
+            ans = max(ans,processorTime[i]+tasks[idx]);
+            idx = idx + 4;
+        }
+        return ans;
+    }
+};
