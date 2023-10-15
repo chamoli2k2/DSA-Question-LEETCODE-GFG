@@ -1,0 +1,25 @@
+class Solution {
+private:
+    int solve(vector<int> &cost,vector<int> &time,int idx,int remWall){
+        // Base case
+        int n = cost.size();
+        if(remWall <= 0) return 0;
+        if(idx == n) return 1e9;
+
+        // Checking the dp
+        if(dp[idx][remWall] != -1) return dp[idx][remWall];
+
+        // Choosing the wall for painting
+        int take = cost[idx] + solve(cost,time,idx+1,remWall-time[idx]-1);
+
+        int notTake = solve(cost,time,idx+1,remWall);
+
+        return dp[idx][remWall] = min(take,notTake);
+    }
+public:
+    int dp[501][501];
+    int paintWalls(vector<int>& cost, vector<int>& time) {
+        memset(dp,-1,sizeof(dp));
+        return solve(cost,time,0,cost.size());
+    }
+};
