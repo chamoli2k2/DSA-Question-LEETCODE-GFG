@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> findIndices(vector<int>& nums, int idxDiff, int valDiff) {
+        vector<int> ans;
+        int n = nums.size();
+        if(idxDiff > n) return {-1,-1};
+        set<pair<int,int>> st;
+    
+        for(int i=idxDiff;i<n;i++){
+            st.insert({nums[i-idxDiff],i-idxDiff});
+            
+            auto it1 = st.begin();
+            auto it2 = st.end();
+            it2--;
+            
+            if(abs(nums[i]-(*it1).first) >= valDiff){
+                return {(*it1).second,i};
+            }
+            
+            if(abs((*it2).first-nums[i]) >= valDiff){
+                return {(*it2).second,i};
+            }
+        }
+        
+        
+        return {-1,-1};
+    }
+};
