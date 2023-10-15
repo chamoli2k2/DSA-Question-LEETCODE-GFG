@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string shortestBeautifulSubstring(string s, int m) {
+        string ans(110,'1');
+        int n = s.size(), i = 0, j = 0, count = 0;
+        while(j < n){
+            if(s[j] == '1'){
+                count++;
+            }
+            
+            while(i <= j && count == m){
+                string temp = "";
+                for(int k=i;k<=j;k++){
+                    temp += s[k];
+                }
+                if(ans.size() > temp.size()){
+                    ans = temp;
+                }
+                else if(ans.size() == temp.size()){
+                    ans = min(ans,temp);
+                }
+                if(s[i] == '1') count--;
+                i++;
+            }
+
+            j++;
+        }
+        
+        return ans.size() > 100 ? "" : ans;;
+    }
+};
