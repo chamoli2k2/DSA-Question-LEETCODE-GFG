@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> lastVisitedIntegers(vector<string>& words) {
+        vector<int> ans, num;
+        int n = size(words), k = 0;
+        for(auto &it : words){
+            if(it == "prev"){
+                k++;
+                if(k > num.size()){
+                    ans.push_back(-1);
+                }
+                else{
+                    int si = num.size();
+                    ans.push_back(num[si-k]);
+                }
+            }
+            else{
+                k =  0;
+                num.push_back(stoi(it));
+            }
+        }
+
+        return ans;
+    }
+};
