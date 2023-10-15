@@ -1,0 +1,23 @@
+class Solution {
+private:
+    int solve(int idx,int steps,int arrlen){
+        // Base case
+        if(steps == 0 && idx == 0) return 1;
+        if(idx < 0 || idx == arrlen || steps < 0) return 0;
+
+        if(dp[idx][steps] != -1) return dp[idx][steps];
+
+        int c1 = solve(idx+1,steps-1,arrlen);
+        int c2 = solve(idx-1,steps-1,arrlen);
+        int c3 = solve(idx,steps-1,arrlen);
+
+        return dp[idx][steps] = (1LL*c1%mod + 1LL*c2%mod + 1LL*c3%mod) % mod;
+    }
+public:
+    int dp[501][501], mod = 1e9 + 7;
+    int numWays(int steps, int arrLen) {
+        arrLen = min(arrLen,steps);
+        memset(dp,-1,sizeof(dp));
+        return solve(0,steps,arrLen);
+    }
+};
