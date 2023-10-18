@@ -1,6 +1,8 @@
 import pandas as pd
 
 def createDataframe(student_data: List[List[int]]) -> pd.DataFrame:
-    df = student_data_to_dataframe(studend_data)
-    return df[[['student_id', 'age']]]
+    # Converting 2D list into data frame
+    # Here we want only two column from 2D list formed as data frame
+    df = pd.DataFrame(student_data,columns=['student_id', 'age'])
+    return df
     
