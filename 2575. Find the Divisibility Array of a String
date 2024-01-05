@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> divisibilityArray(string& word, long long m) {
+        long long n = word.size(), prevDigit = 0;
+        vector<int> ans(n,0);
+
+        for(long long i=0; i<n; i++){
+            long long currentDigit = word[i] - '0';
+            long long num = prevDigit * 10 + currentDigit;
+
+            if(num%m == 0) ans[i] = 1;
+            prevDigit = num % m;
+        }
+
+        return ans;
+    }
+};
