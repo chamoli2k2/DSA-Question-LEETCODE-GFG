@@ -1,0 +1,59 @@
+class Solution
+{
+    private:
+        vector<int> FindLPS(string &s){
+            int n = s.size(), pre = 0, suf = 1;
+            vector<int> LPS(n,0);
+    
+            while(suf < n){
+                if(s[pre] == s[suf]){
+                    LPS[suf] = pre + 1;
+                    pre++, suf++;
+                }
+                else{
+                    if(pre == 0){
+                        LPS[suf] = 0;
+                        suf++;
+                    }
+                    else{
+                        pre = LPS[pre-1];
+                    }
+                }
+            }
+    
+            return LPS;
+        }
+    public:
+        vector <int> search(string txt, string pat)
+        {
+            // Base case
+            int n = pat.size(), m = txt.size();
+            if(n < m) return {-1};
+    
+            vector<int> LPS = FindLPS(txt);
+            vector<int> ans;
+            int i = 0, j = 0;
+            while(j < m && i < n){
+                if(pat[i] == txt[j]){
+                    i++, j++;
+                }
+                else{
+                    if(j == 0){
+                        i++;
+                    }
+                    else{
+                        j = LPS[j-1];
+                    }
+                }
+                
+                if(j == m){
+                    ans.push_back(i-j+1);
+                    j = LPS[j-1];
+                }
+            }
+            
+            if(ans.size() == 0) return {-1};
+            return ans;
+        }
+     
+};
