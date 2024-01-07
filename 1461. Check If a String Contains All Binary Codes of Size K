@@ -1,21 +1,20 @@
 class Solution {
-private:
-    int findSum(string &s,int idx,int k){
-        int sum = 0;
-        for(int i=idx; i<idx+k; i++){
-            sum += (s[i]-'0')*pow(2,idx+k-i-1);
-        }
-        return sum;
-    }
 public:
     bool hasAllCodes(string s, int k) {
-        int n = size(s);
+        int n = size(s), sum = 0;
         if(n < k) return false;
         int t = pow(2,k);
         vector<int> mp(t,0);
 
-        for(int i=0; i<=n-k; i++){
-            int sum = findSum(s,i,k);
+        for(int i=0; i<k; i++){
+            sum += (s[i]-'0')*pow(2,k-i-1);
+        }
+
+        mp[sum] = 1;
+
+        for(int i=k; i<n; i++){
+            sum -= (s[i-k]-'0')*pow(2,k-1);
+            sum = sum * 2 + (s[i]-'0');
             mp[sum] = 1;
         }
 
