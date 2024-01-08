@@ -1,0 +1,62 @@
+class job{
+    public:
+    int start;
+    int end;
+    int profit;
+};
+
+class Solution {
+private:
+    int lowerBound(vector<job> &nums,int i,int target){
+        int s = i, e = nums.size()-1, mid, ans = e+1;
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            if(target <= nums[mid].start){
+                ans = mid;
+                e = mid - 1;
+            } 
+            else{
+                s = mid + 1;
+            }
+        } 
+
+        return ans;
+    }
+    static bool cmp(job &j1, job &j2){
+        return j1.start < j2.start;
+    }
+    int solve(vector<job> &nums,int idx){
+        // Base case
+        if(idx >= nums.size()) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        // We have two case
+        // Take 
+        int k = lowerBound(nums,idx+1,nums[idx].end);
+        int take = nums[idx].profit + solve(nums,k);
+
+        // Not take
+        int notTake = solve(nums,idx+1);
+
+        return dp[idx] = max(take,notTake);
+    }
+public:
+    int dp[50001];
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        memset(dp,-1,sizeof(dp));
+        int n = profit.size();
+        vector<job> nums;
+        for(int i=0; i<n; i++){
+            job newJob;
+            newJob.start = startTime[i];
+            newJob.end = endTime[i];
+            newJob.profit = profit[i];
+            nums.push_back(newJob);
+        }
+
+        sort(begin(nums),end(nums),cmp);
+        return solve(nums,0);
+    }
+};
