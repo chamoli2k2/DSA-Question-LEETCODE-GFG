@@ -1,0 +1,45 @@
+class Solution {
+private:
+    static bool cmp(vector<int> &v1,vector<int> &v2){
+        return v1[0] < v2[0];
+    }
+
+    int lowerBound(vector<vector<int>> &nums,int idx,int target){
+        int s = idx, e = nums.size()-1, mid, ans = e + 1;
+        
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            if(target <= nums[mid][0]){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    long long solve(vector<vector<int>> &nums,int idx,int t){
+        // Base case
+        if(idx >= nums.size() || t == 0) return 0;
+
+        if(dp[idx][t] != -1) return dp[idx][t];
+
+        int k = lowerBound(nums,idx+1,nums[idx][1]+1);
+        long long take = nums[idx][2] + solve(nums,k,t-1);
+
+        long long notTake = solve(nums,idx+1,t);
+
+        return dp[idx][t] = max(take,notTake);
+    }
+public:
+    int dp[100001][3];
+    int maxTwoEvents(vector<vector<int>>& events) {
+        sort(begin(events),end(events),cmp);
+        memset(dp,-1,sizeof(dp));
+        return solve(events,0,2);
+    }
+};
