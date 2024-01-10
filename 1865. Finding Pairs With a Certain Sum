@@ -1,0 +1,27 @@
+class FindSumPairs {
+private:
+    vector<int> nums1, nums2;
+    unordered_map<int,int> mp;
+public:
+    FindSumPairs(vector<int>& arr1, vector<int>& arr2) {
+        nums1 = arr1;
+        nums2 = arr2;
+        for(auto &it : nums2) mp[it]++;
+    }
+    
+    void add(int index, int val) {
+        int k = nums2[index];
+        nums2[index] += val;
+        mp[k]--;
+        mp[nums2[index]]++;
+    }
+    
+    int count(int tot) {
+        int ans = 0;
+        for(int i=0; i<nums1.size(); i++){
+            int k = tot - nums1[i];
+            ans += mp[k];
+        }
+        return ans;
+    }
+};
