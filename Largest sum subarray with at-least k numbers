@@ -1,0 +1,29 @@
+class Solution{
+    public:    
+    long long int maxSumWithK(long long int a[], long long int n, long long int k) 
+    {
+        long long ans = INT_MIN, i = 0, j = 0, sum = 0;
+        vector<long long> nums(n,0);
+        
+        // Preprocessing using kandane algorithm 
+        for(int i=0; i<n; i++){
+            sum += a[i];
+            nums[i] = sum;
+            if(sum < 0) sum = 0;
+        }
+        
+        sum = 0;
+        for(int i=0; i<k; i++){
+            sum += a[i];
+        }
+        ans = sum;
+        
+        for(int i=k; i<n; i++){
+            sum -= a[i-k];
+            sum += a[i];
+            ans = max({ans,sum,sum+nums[i-k]});
+        }
+        
+        return ans;
+    }
+};
