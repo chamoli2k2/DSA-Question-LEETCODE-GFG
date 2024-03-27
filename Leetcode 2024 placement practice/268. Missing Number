@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+
+        for(int i=0; i<n; i++){
+            int number = nums[i];
+            int actualPosition = nums[i];
+
+            while(actualPosition < n && actualPosition >= 0 && number != nums[actualPosition]){
+                swap(nums[i],nums[actualPosition]);
+                number = nums[i];
+                actualPosition = nums[i];
+            }
+        }
+
+        for(int i=0; i<n; i++){
+            if(nums[i] != i) return i;
+        }
+
+        return n;
+    }
+};
