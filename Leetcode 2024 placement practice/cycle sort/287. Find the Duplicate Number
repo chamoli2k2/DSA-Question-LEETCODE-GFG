@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int n = nums.size();
+        for(int i=0; i<n; i++){
+            int actualPosition = (nums[i] % (n+1)) - 1;
+            nums[actualPosition] += n+1;
+        }
+        
+        int ans = 1, maxi = nums[0];
+        for(int i=1; i<n; i++){
+            if(nums[i] > maxi){
+                ans = i+1;
+                maxi = nums[i];
+            }
+        }
+
+        return ans;
+    }
+};

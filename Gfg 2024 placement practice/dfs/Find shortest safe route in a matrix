@@ -1,0 +1,49 @@
+class Solution
+{
+private:
+    int dfs(vector<vector<int>> &nums, vector<vector<bool>> &visited, int i, int j, int n, int m){
+        // Base case
+        if(i == n || j == m || i < 0) return 1e6;
+        if(nums[i][j] == -1 || nums[i][j] == 0 || visited[i][j] == 1) return 1e6;
+        if(j == m-1) return nums[i][j] == 1 ? 1 : 1e6;
+        
+        visited[i][j] = 1;
+        
+        // Moving three side
+        int right = 1 + dfs(nums, visited, i, j+1, n, m);
+        int up = 1 + dfs(nums, visited, i-1, j, n, m);
+        int down = 1 + dfs(nums, visited, i+1, j, n, m);
+        
+        
+        return min({right, up, down});
+    }
+public:
+    int findShortestPath(vector<vector<int>> &mat)
+    {
+       int n = mat.size(), m = mat[0].size(), ans = 1e6;
+       
+       for(int i=0; i<n ; i++){
+           for(int j=0; j<m; j++){
+               if(mat[i][j] == 0){
+                   // Setting left
+                   if(j-1 >= 0) mat[i][j-1] = -1;
+                   // Setting right
+                   if(j+1 < m) mat[i][j+1] = -1;
+                   // Setting down
+                   if(i+1 < n) mat[i+1][j] = -1;
+                   // Setting up
+                   if(i-1 >= 0) mat[i-1][j] = -1;
+               }
+           }
+       }
+       
+       for(int i=0; i<n; i++){
+           if(mat[i][0] == 1){
+               vector<vector<bool>> visited(n,vector<bool>(m,0));
+               ans = min(ans, dfs(mat, visited, i, 0, n, m));
+           }
+       }
+       
+       return ans >= 1e5 ? -1 : ans;
+    }
+};

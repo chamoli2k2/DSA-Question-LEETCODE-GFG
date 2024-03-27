@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int missingInteger(vector<int>& nums) {
+        int n = nums.size(), maxLen = 0, ans = nums[0]+1, len = 1, sum = nums[0];
+
+            for(int j=0; j<n-1; j++){
+                if(nums[j]+1 == nums[j+1]){
+                    len++;
+                    sum += nums[j+1];
+                }
+                else{
+                    len = 1;
+                    sum = nums[j];
+                }
+
+                if(maxLen < len){
+                    maxLen = len;
+                    for(int k=sum; ;k++){
+                        int flag = true;
+                        for(auto it : nums){
+                            if(k == it){
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if(flag){
+                            ans = k;
+                            break;
+                        }
+                    }
+                }
+
+                if(len == 1) break;
+            }
+
+        return ans;
+    }
+};
