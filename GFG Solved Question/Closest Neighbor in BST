@@ -1,0 +1,23 @@
+void solve(Node* root,int n,int &ans){
+    if(root == NULL){
+        return;
+    }
+    
+    if(root->key == n){
+        ans = n;
+        return;
+    }
+    else if(root->key < n){
+        ans = root->key;
+        solve(root->right,n,ans);
+    }
+    else{
+        solve(root->left,n,ans);
+    }
+}
+int findMaxForN(Node* root, int N)
+{
+    int ans = -1;
+    solve(root,N,ans);
+    return ans;
+}

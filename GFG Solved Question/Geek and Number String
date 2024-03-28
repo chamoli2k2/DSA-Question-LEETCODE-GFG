@@ -1,0 +1,35 @@
+class Solution{
+public:
+    int minLength(string s, int n) {
+        stack<char> st;
+        unordered_map<string,int> mp;
+        mp["12"] = true;
+        mp["21"] = true;
+        mp["34"] = true;
+        mp["43"] = true;
+        mp["56"] = true;
+        mp["65"] = true;
+        mp["78"] = true;
+        mp["87"] = true;
+        mp["09"] = true;
+        mp["90"] = true;
+        
+        for(int i=0;i<n;i++){
+            string temp = "";
+            if(!st.empty()){
+                char ch = st.top();
+                temp += ch;
+                temp += s[i];
+            }
+            
+            if(mp.find(temp) != mp.end()){
+                st.pop();
+            }
+            else{
+                st.push(s[i]);
+            }
+        }
+        
+        return st.size();
+    } 
+};

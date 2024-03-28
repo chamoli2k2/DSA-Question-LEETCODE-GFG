@@ -1,0 +1,92 @@
+class Solution{
+private:
+    private:
+    int solve(vector<vector<int>>& matrix,vector<vector<int>>& dp,int i,int j,int n){
+        // base case 
+        // if row == n than we are out of bound than we have to return back
+        if(i == n){
+            return 0;
+        }
+        
+        // checking if our column and row index is not out of bound
+        if(j < 0 or j >= n){
+            return -1e5;
+        }
+        
+        // checking if we already have answer in dp or not
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        
+        // going left side
+        int left = matrix[i][j] + solve(matrix,dp,i+1,j-1,n);
+        
+        // going bottom side
+        int bottom = matrix[i][j] + solve(matrix,dp,i+1,j,n);
+        
+        // going right side
+        int right = matrix[i][j] + solve(matrix,dp,i+1,j+1,n);
+        
+        // storing max of all three answers in dp vector after computing all path
+        dp[i][j] = max(max(left,right),bottom);
+        
+        return dp[i][j];
+        
+    }
+public:
+    int maximumPath(int N, vector<vector<int>> matrix)
+    {
+        // Step 1 : finding the size of matrix
+        int n = matrix.size();
+        // step 2 : Declaration of Dp vector of matrix size as we assumed indexing from 0
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+        // step 3 : declaration of maxi variable to store final answer
+        int maxi = INT_MIN;
+        // step 4 : running the loop from top row with different starting point and finding the minimum one
+        for(int i=0;i<n;i++){
+            maxi = max(maxi,solve(matrix,dp,0,i,n));
+        }
+        
+        return maxi;
+    }
+};
+
+
+Approach 2 : Tabular approach
+#include<bits/stdc++.h>
+int getMaxPathSum(vector<vector<int>> &matrix)
+{
+    int n = matrix.size();
+    int m = matrix[0].size();
+    vector<vector<int>> dp(n,vector<int>(m,-1));
+    // filing last row as base case in dp
+    for(int j=0;j<m;j++){
+        dp[n-1][j] = matrix[n-1][j];
+    }
+    
+    for(int i=n-2;i>=0;i--){
+        for(int j=0;j<m;j++){
+            int left = matrix[i][j];
+             if(j-1 < 0){
+                 left = left - 1e9;
+             }else{
+                 left = left + dp[i+1][j-1];
+             }
+            int right = matrix[i][j];
+             if(j+1 < m){
+                 right = right + dp[i+1][j+1];
+             }else{
+                 right = right - 1e9;
+             }
+             int top = matrix[i][j] + dp[i+1][j];
+             dp[i][j] = max(max(left,right),top);
+        }
+    }
+    
+    //int mini = *min_element(dp[0].begin(),dp[0].end());
+    int maxi = INT_MIN;
+    for(int j=0;j<m;j++){
+       maxi=max(maxi,dp[0][j]);        
+    }
+    return maxi;
+}

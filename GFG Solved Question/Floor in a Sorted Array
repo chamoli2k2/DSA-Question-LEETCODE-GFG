@@ -1,0 +1,16 @@
+class Solution{
+  public:
+    // Function to find floor of x
+    // n: size of vector
+    // x: element whose floor is to find
+    int findFloor(vector<long long> v, long long n, long long x){
+        int idx = lower_bound(v.begin(),v.end(),x) - v.begin();
+        // case 1 : if v[idx]  == x
+        if(v[idx] == x){
+            return idx;
+        }
+        
+        // case 2 : if v[idx] > x
+        return idx - 1;
+    }
+};

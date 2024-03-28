@@ -1,0 +1,36 @@
+class Solution{
+    private:
+    static bool comparator(pair<int,int> &p1,pair<int,int> &p2){
+        if(p1.second==p2.second){
+            return p1.first<p2.first;
+        }
+        
+        return p1.second>p2.second;
+    }
+    public:
+    //Complete this function
+    //Function to sort the array according to frequency of elements.
+    vector<int> sortByFreq(int arr[],int n)
+    {
+        unordered_map<int,int> mp;
+        for(int i=0;i<n;i++){
+            mp[arr[i]]++;
+        }
+        int k=mp.size();
+        pair<int,int> p[k];
+        int j=0;
+        
+        for(auto it=mp.begin();it!=mp.end();it++){
+            p[j++]=make_pair(it->first,it->second);
+        }
+        sort(p,p+k,comparator);
+        
+        vector<int> ans;
+        for(auto i=0;i<k;i++){
+            int num1=p[i].first;
+            int num2=p[i].second;
+            ans.insert(ans.end(),num2,num1);
+        }
+        return ans;
+    }
+};

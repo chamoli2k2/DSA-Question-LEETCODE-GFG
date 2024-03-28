@@ -1,0 +1,29 @@
+class Solution{
+    private:
+    long long solve(vector<long long> &dp,int n,int k){
+        // base case
+        if(n == 1){
+            return k;
+        }
+        
+        if(n == 2){
+            return k*k;
+        }
+        
+        if(dp[n] != -1){
+            return dp[n];
+        }
+        
+        int mod = 1e9 + 7;
+        long long same = (solve(dp,n-2,k) * (k - 1)) % mod;
+        
+        long long diff = (solve(dp,n-1,k) * (k - 1)) % mod;
+        
+        return dp[n] = (same + diff) % mod;
+    }
+    public:
+    long long countWays(int n, int k){
+        vector<long long> dp(n+1,-1);
+        return solve(dp,n,k);
+    }
+};

@@ -1,0 +1,75 @@
+TLE in commented code
+
+// class Solution{
+//   private:
+//     int solve(string &s1,string &s2,vector<vector<int>> &dp,int n,int m){
+//         // base case
+//         if(n == 0 or m == 0){
+//             return 0;
+//         }
+        
+//         if(dp[n][m] != -1){
+//             return dp[n][m];
+//         }
+        
+//         if(s1[n-1] == s2[m-1]){
+//             dp[n][m] = 1 + solve(s1,s2,dp,n-1,m-1);
+//         }else{
+//             // case 1 :
+//             int case1 = solve(s1,s2,dp,n-1,m);
+            
+//             // case 2 :
+//             int case2 = solve(s1,s2,dp,n,m-1);
+            
+//             dp[n][m] = max(case1,case2);
+//         }
+        
+//         return dp[n][m];
+//     }
+//   public:
+//     int longestPalinSubseq(string s1) {
+//         string s2 = s1;
+//         int n = s1.size();
+//         reverse(s2.begin(),s2.end());
+        
+//         vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
+//         return solve(s1,s2,dp,n,n);
+//     }
+// };
+
+Doubt:
+
+class Solution{
+  public:
+    int longestPalinSubseq(string s1) {
+        // Logic is simple to find longest common  pallingdromic subsequence
+        // If we reverse the string and find longest common subsequence that will be the
+        // longest palingdromic subseqence too.
+        
+        string s2 = s1;
+        reverse(s2.begin(),s2.end());
+        
+        int n = s1.length();
+        
+        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=n;j++){
+                // if s1[i] == s2[j]
+                if(s1[i-1] == s2[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                }else{
+                    // case 1
+                    int case1 = dp[i-1][j];
+                    // case 2
+                    int case2 = dp[i][j-1];
+                    
+                    dp[i][j] = max(case1,case2);
+                    
+                }
+            }
+        }
+        
+        return dp[n][n];
+    }
+};

@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    int minimumMultiplications(vector<int>& arr, int start, int end) {
+        queue<pair<int,int>> q;
+        q.push({start,0});
+        vector<int> dist(100000,1e9);
+        dist[start] = 0;
+        
+        while(!q.empty()){
+            int num = q.front().first;
+            int step = q.front().second;
+            q.pop();
+            
+            for(auto it : arr){
+                int newNum = (num * it) % 100000;
+                
+                if(step + 1 < dist[newNum]){
+                    dist[newNum] = step + 1;
+                    if(newNum == end){
+                        return step + 1;
+                    }
+                    q.push({newNum,step+1});
+                }
+            }
+        }
+        
+        return -1;
+    }
+};

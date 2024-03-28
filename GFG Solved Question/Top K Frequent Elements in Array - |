@@ -1,0 +1,33 @@
+class Solution {
+  private:
+    static bool comparator(pair<int,int> &p1,pair<int,int> &p2){
+        if(p1.second==p2.second){
+            return p1.first>p2.first;
+        }
+        
+        return p1.second>p2.second;
+    }
+  public:
+    vector<int> topK(vector<int>& nums, int k) {
+        vector<int> ans;
+        unordered_map<int,int> mp;
+        for(int i=0;i<nums.size();i++){
+            mp[nums[i]]++;
+        }
+        int m=mp.size();
+        pair<int,int> p[m];
+        
+        int j=0;
+        for(auto it=mp.begin();it!=mp.end();it++){
+            p[j++]=make_pair(it->first,it->second);
+        }
+        
+        sort(p,p+m,comparator);
+        for(int i=0;i<k;i++){
+            int num=p[i].first;
+            ans.push_back(num);
+        }
+        
+        return ans;
+    }
+};

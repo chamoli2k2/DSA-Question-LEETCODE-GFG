@@ -1,0 +1,40 @@
+class Solution {
+private:
+    bool check(vector<int> adj[],vector<int> &colored,int V,int idx){
+	    queue<int> q;
+	    q.push(idx);
+	    colored[idx] = 0;
+	    
+	    while(!q.empty()){
+	        int node = q.front();
+	        q.pop();
+	        
+	        for(auto it : adj[node]){
+	            // If adjacent is not coloredd yet
+	            if(colored[it] == -1){
+	                q.push(it);
+	                colored[it] = !colored[node];
+	            }
+	            // If adjacent is same colored as current node
+	            else if(colored[it] == colored[node]){
+	                return false;
+	            }
+	        }
+	    }
+	    
+	    return true;
+    }
+public:
+	bool isBipartite(int V, vector<int>adj[]){
+	    vector<int> colored(V,-1);
+	    for(int i=0;i<V;i++){
+	        if(colored[i] == -1){
+	            if(check(adj,colored,V,i) == false){
+	                return false;
+	            }
+	        }
+	    }
+	    
+	    return true;
+	}
+};

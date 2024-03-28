@@ -1,0 +1,33 @@
+class Solution {
+  public:
+    int CheapestFLight(int n, vector<vector<int>>& flights, int src, int dst, int k)  {
+        unordered_map<int,list<pair<int,int>>> mp;
+        for(auto it : flights){
+            mp[it[0]].push_back({it[1],it[2]});
+        }
+
+        queue<pair<int,pair<int,int>>> pq;
+        pq.push({0,{src,0}});
+        vector<int> ans(n,INT_MAX);
+        ans[src] = 0;
+
+        while(!pq.empty()){
+            int cost = pq.front().second.second;
+            int node = pq.front().second.first;
+            int stops = pq.front().first;
+            pq.pop();
+
+            if(stops > k) continue;
+
+            for(auto it : mp[node]){
+                int adjNode = it.first, fair = it.second;
+                if(cost + fair < ans[adjNode]){
+                    ans[adjNode] = cost + fair;
+                    pq.push({stops+1,{adjNode,cost+fair}});
+                }
+            }
+        }
+
+        return ans[dst] == INT_MAX ? -1 : ans[dst];
+    }
+};

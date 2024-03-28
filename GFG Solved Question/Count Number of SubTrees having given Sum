@@ -1,0 +1,23 @@
+int solve(Node* root,int &count,int sum,int target){
+    // base case
+    if(root == NULL){
+        return 0;
+    }
+    
+    // Doing post order traversal
+    int ls = solve(root->left,count,sum,target);
+    int rs = solve(root->right,count,sum,target);
+    
+    if((ls + rs + root->data) == target){
+        count++;
+    }
+    
+    return sum = (ls + rs + root->data);
+}
+int countSubtreesWithSumX(Node* root, int X)
+{
+	int count = 0;
+	int sum = 0;
+	solve(root,count,sum,X);
+	return count;
+}

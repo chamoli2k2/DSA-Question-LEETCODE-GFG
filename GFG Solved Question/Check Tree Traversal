@@ -1,0 +1,79 @@
+// making tree
+class Node{
+    public:
+    int data;
+    Node* left;
+    Node* right;
+    
+    // constructor
+    Node(int data){
+        this->data = data;
+        left = NULL;
+        right = NULL;
+    }
+};
+
+class Solution{
+    private:
+    // finding index of num in inorder
+    int find(int* arr,int num,int n){
+        int ans = -1;
+        for(int i=0;i<n;i++){
+            if(arr[i] == num){
+                ans = i;
+                break;
+            }
+        }
+        
+        return ans;
+    }
+    
+    // Building tree
+    Node* Buildtree(int* inorder,int* preorder,int &idx,int s,int e,int n){
+        // base case
+        if(idx >= n || s > e){
+            return NULL;
+        }
+        
+        // taking the number form preorder
+        int num = preorder[idx++];
+        
+        Node* root = new Node(num);
+        int position = find(inorder,num,n);
+        root->left = Buildtree(inorder,preorder,idx,s,position-1,n);
+        root->right = Buildtree(inorder,preorder,idx,position+1,e,n);
+        
+        return root;
+    }
+    
+    // Doing postorder traversal
+    void traversalPost(Node* root,int* post,int &idx,bool &flag){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        traversalPost(root->left,post,idx,flag);
+        traversalPost(root->right,post,idx,flag);
+        if(post[idx++] != root->data){
+            flag = false;
+            return;
+        }
+    }
+    
+    public:
+    bool checktree(int preorder[], int inorder[], int postorder[], int N) 
+    { 
+    	//  making bianry tree
+    	int idx = 0;
+    	Node* root = Buildtree(inorder,preorder,idx,0,N-1,N);
+    	
+    	// doing postorder of tree formed
+    	idx = 0;
+    	bool flag = 1;
+    	traversalPost(root,postorder,idx,flag);
+    	
+    	return flag;
+    } 
+
+};

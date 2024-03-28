@@ -1,0 +1,25 @@
+Node* solve(int post[],int &i,int mini,int maxi){
+    // base case
+    if(i < 0){
+        return NULL;
+    }
+    
+    if(post[i] <= mini || post[i] >= maxi){
+        return NULL;
+    }
+    
+    Node* temp = new Node(post[i--]);
+    temp->right = solve(post,i,temp->data,maxi);
+    temp->left = solve(post,i,mini,temp->data);
+    
+    return temp;
+}
+Node *constructTree (int post[], int size)
+{
+    int i = size - 1;
+    int mini = INT_MIN;
+    int maxi = INT_MAX;
+    Node* ans = solve(post,i,mini,maxi);
+    
+    return ans;
+}

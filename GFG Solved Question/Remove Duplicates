@@ -1,0 +1,19 @@
+class Solution{
+public:	
+		
+	string removeDups(string s) 
+	{
+	    unordered_map<char,bool> mp;
+	    int i = 0;
+	    while(i < s.length()){
+	        char ch = s[i];
+	        if(mp.find(ch) != mp.end() || mp[ch] == true){
+	            s.erase(s.begin()+i);
+	        }else{
+	            mp[s[i]] = true;
+	            i++;
+	        }
+	    }
+	    return s;
+	}
+};

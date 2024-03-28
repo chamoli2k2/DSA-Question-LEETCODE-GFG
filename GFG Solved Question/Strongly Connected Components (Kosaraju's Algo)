@@ -1,0 +1,66 @@
+class Solution
+{
+    private:
+    void dfs1(vector<vector<int>> &adj,vector<int> &visited,stack<int> &st,int node){
+        // Base case
+        visited[node] = 1;
+        
+        for(auto it : adj[node]){
+            if(visited[it] == 0){
+                dfs1(adj,visited,st,it);
+            }
+        }
+        
+        st.push(node);
+    }
+    
+    void dfs2(vector<vector<int>> &adj,vector<int> &visited,int node){
+        // Base case
+        visited[node] = 1;
+        
+        for(auto it : adj[node]){
+            if(visited[it] == 0){
+                dfs2(adj,visited,it);
+            }
+        }
+        
+    }
+	public:
+	//Function to find number of strongly connected components in the graph.
+    int kosaraju(int V, vector<vector<int>>& adj)
+    {
+        
+        vector<int> visited(V,0);
+        
+        // Step1 : sorting the graph according to finish time
+        stack<int> st;
+        for(int i=0;i<V;i++){
+            if(visited[i] == 0){
+                dfs1(adj,visited,st,i);
+            }
+        }
+        
+        // Step 2 : reversing the edges of graph
+        vector<vector<int>> adjT(V);
+        for(int i=0;i<V;i++){
+            visited[i] = 0;
+            for(auto it : adj[i]){
+                adjT[it].push_back(i);
+            }
+        }
+        
+        // Step 3 : Doing DFS
+        int scc = 0;
+        while(!st.empty()){
+            int node = st.top();
+            st.pop();
+            
+            if(visited[node] == 0){
+                scc++;
+                dfs2(adjT,visited,node);
+            }
+        }
+        
+        return scc;
+    }
+};

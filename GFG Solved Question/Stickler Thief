@@ -1,0 +1,32 @@
+class Solution
+{
+    private:
+    int solve(int *arr,vector<int> &dp,int n){
+        // base case
+        if(n < 0){
+            return 0;
+        }
+        
+        if(n == 0){
+            return arr[0];
+        }
+        
+        if(dp[n] != -1){
+            return dp[n];
+        }
+        
+        // we have two choice either to loot or not
+        int loot = arr[n] + solve(arr,dp,n-2);
+        
+        int notLoot = solve(arr,dp,n-1);
+        
+        return dp[n] = max(loot,notLoot);
+    }
+    public:
+    //Function to find the maximum money the thief can get.
+    int FindMaxSum(int arr[], int n)
+    {
+        vector<int> dp(n,-1);
+        return solve(arr,dp,n-1);
+    }
+};

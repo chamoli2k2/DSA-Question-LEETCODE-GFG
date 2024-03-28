@@ -1,0 +1,41 @@
+class Solution{
+  private:
+  void solve(Node* root,vector<int> &ans){
+      // base case
+      if(root == NULL){
+          return;
+      }
+      
+      ans.push_back(root->data);
+      solve(root->left,ans);
+      solve(root->right,ans);
+  }
+  
+  void helper(Node* root,vector<int> &ans,int &idx){
+      if(root == NULL){
+          return;
+      }
+      
+      helper(root->left,ans,idx);
+      root->data = ans[idx++];
+      helper(root->right,ans,idx);
+      
+  }
+  public:
+    // The given root is the root of the Binary Tree
+    // Return the root of the generated BST
+    Node *binaryTreeToBST (Node *root)
+    {
+        vector<int> store;
+        solve(root,store);
+        
+        // sort the array
+        sort(store.begin(),store.end());
+        
+        // now construct binary tree from inorder traversal
+        int i = 0;
+        helper(root,store,i);
+        
+        return root;
+    }
+};

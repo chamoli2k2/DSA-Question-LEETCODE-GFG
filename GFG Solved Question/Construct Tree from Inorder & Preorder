@@ -1,0 +1,37 @@
+class Solution{
+    private:
+    int find(int d,int n1,int ini[]){
+        for(int i=0;i<n1;i++){
+            if(ini[i]==d){
+                return i;
+            }
+        }
+        return -1;
+    }
+    Node* solve(int in[],int pre[],int n,int &preOrderIndex,int stin,int edin){
+        if(preOrderIndex>=n or stin>edin){
+            return NULL;
+        }
+        
+        int data = pre[preOrderIndex++];
+        int position = find(data,n,in);
+        
+        Node* root = new Node(data);
+        
+        // left call
+        root->left = solve(in,pre,n,preOrderIndex,stin,position-1);
+        
+        // right call
+        root->right = solve(in,pre,n,preOrderIndex,position+1,edin);
+        
+        return root; 
+    }
+    public:
+    Node* buildTree(int in[],int pre[], int n)
+    {
+        Node* ans;
+        int preOrderIndex = 0;
+        ans = solve(in,pre,n,preOrderIndex,0,n-1);
+        return ans;
+    }
+};

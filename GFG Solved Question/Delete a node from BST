@@ -1,0 +1,51 @@
+int Max(Node* root){
+    while(root->right!=NULL){
+        root = root->right;
+    }
+    return root->data;
+}
+Node *deleteNode(Node *root, int x) {
+    // base case 
+    if(root == NULL){
+        return NULL;
+    }
+    
+    if(root->data == x){
+        
+        // 0 child 
+        if(root->left == NULL and root->right == NULL){
+            delete root;
+            return NULL;
+        }
+        
+        // 1 child
+        // left child exist only
+        if(root->left != NULL and root->right ==NULL){
+            Node* temp = root->left;
+            delete root;
+            return temp;
+        }
+        
+        // right child exist only
+        if(root->left == NULL and root->right !=NULL){
+            Node* temp = root->right;
+            delete root;
+            return temp;
+        }
+        
+        // 2 child
+        if(root->left !=NULL and root->right != NULL){
+            int max = Max(root->left);
+            root->data = max;
+            root->left = deleteNode(root->left,max);
+            return root;
+        }
+        
+    }else if(root->data > x){
+        root->left = deleteNode(root->left,x);
+        return root;
+    }else{
+        root->right = deleteNode(root->right,x);
+        return root;
+    }
+}

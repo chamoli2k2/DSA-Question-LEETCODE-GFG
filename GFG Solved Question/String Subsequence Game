@@ -1,0 +1,32 @@
+class Solution {
+  private:
+    bool isVowel(char ch){
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+    void solve(string &s,set<string> &ans,string temp,int i){
+        if(i >= s.size()){
+            // base case
+            if(temp.size() >= 2){
+                if(isVowel(temp[0]) && !isVowel(temp[temp.size()-1])){
+                    ans.insert(temp);
+                }
+            }
+            
+            return;
+        }
+        
+        // not pick
+        solve(s,ans,temp,i+1);
+        
+        // pick
+        solve(s,ans,temp+s[i],i+1);
+        
+    }
+  public:
+    set<string> allPossibleSubsequences(string s) {
+        set<string> ans;
+        string temp = "";
+        solve(s,ans,temp,0);
+        return ans;
+    }
+};

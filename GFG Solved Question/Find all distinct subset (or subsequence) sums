@@ -1,0 +1,32 @@
+class Solution {
+private:
+    void solve(vector<int> &nums,int idx,vector<vector<int>> &dp,int sum,set<int> &ans){
+        // base case
+        if(idx == nums.size()){
+            ans.insert(sum);
+            return;
+        }
+        
+        if(dp[idx][sum] != -1){
+            return;
+        }
+        
+        // Now we have two choices either we pick this sum or not
+        // case 1 : pick
+        solve(nums,idx+1,dp,sum+nums[idx],ans);
+        
+        // case 2 : notPick
+        solve(nums,idx+1,dp,sum,ans);
+        
+        dp[idx][sum] = 1;
+    }
+public:
+	vector<int> DistinctSum(vector<int>nums){
+	    set<int> ans;
+	    int sum = accumulate(nums.begin(),nums.end(),0);
+	    vector<vector<int>> dp(nums.size(),vector<int>(sum+1,-1));
+	    solve(nums,0,dp,0,ans);
+	    vector<int> v(ans.begin(),ans.end());
+	    return v;
+	}
+};

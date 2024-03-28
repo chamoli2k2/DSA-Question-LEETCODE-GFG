@@ -1,0 +1,48 @@
+class Solution{
+    public:
+        
+    // A[]: input array
+    // N: size of array
+    // Function to find the maximum index difference.
+    int maxIndexDiff(int arr[], int n) 
+    { 
+        // Algorithm to solve the question
+        // Find left minimum of every index start from frontside
+        // Find right maximum of every index start from backside
+        
+        vector<int> leftMin(n);
+        vector<int> rightMax(n);
+        
+        // finding left minimum
+        int minimum = INT_MAX;
+        for(int i=0;i<n;i++){
+            if(minimum > arr[i]){
+                minimum = arr[i];
+            }
+            leftMin[i] = minimum;
+        }
+        
+        // finding right maximum
+        int maximum = INT_MIN;
+        for(int i=n-1;i>=0;i--){
+            if(maximum < arr[i]){
+                maximum = arr[i];
+            }
+            rightMax[i] = maximum;
+        }
+        
+        int ans = -1;
+        // evaluating 
+        int i = 0, j = 0;
+        while(i < n and j < n){
+            if(leftMin[i] <= rightMax[j]){
+                ans = max(ans,j-i);
+                j++;
+            }else{
+                i++;
+            }
+        }
+        
+        return ans;
+    }
+};

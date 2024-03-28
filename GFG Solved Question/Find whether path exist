@@ -1,0 +1,48 @@
+class Solution
+{
+    private:
+    bool dfs(vector<vector<int>> &grid,int i,int j){
+        // base case
+        if(i >= grid.size() || i < 0 || j >= grid[0].size() || j < 0 || grid[i][j] == 0 || grid[i][j] == -1){
+            return false;
+        }
+        
+        if(grid[i][j] == 2){
+            return true;
+        }
+        
+        int temp = grid[i][j];
+        grid[i][j] = -1;
+        
+        // moving in all direction
+        int ds = dfs(grid,i+1,j); // down
+        int up = dfs(grid,i-1,j); // up
+        int rs = dfs(grid,i,j+1); // right
+        int ls = dfs(grid,i,j-1); // left
+        
+        grid[i][j] = temp;
+        
+        return ds | up | rs | ls;
+    }
+    public:
+    //Function to find whether a path exists from the source to destination.
+    bool is_Possible(vector<vector<int>>& grid) 
+    {
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 1){
+                    if(dfs(grid,i,j)){
+                        return true;
+                    }
+                    
+                    return false;
+                }
+            }
+        }
+        
+        return false;
+    }
+};

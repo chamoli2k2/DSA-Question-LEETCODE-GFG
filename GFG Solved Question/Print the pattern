@@ -1,0 +1,53 @@
+class Solution{
+public:
+    vector<string> pattern(int n){
+        // base case
+        vector<string> ans;
+    
+        int x = 1;
+        int y = n * (n + 1);
+        
+        for(int i=0;i<n;i++){
+            // Declaring the string 
+            string st = "";
+            
+            // printing the '-'
+            for(int j=0;j<2*i;j++){
+                st += '-';
+            }
+            
+            // Printing the main pattern
+            // starting print
+            int k = n - i;
+            while(k){
+                st += to_string(x);
+                st += '*';
+                k--;
+                x++;
+            }
+            
+            k = n - i;
+            // Ending print
+            int num = y - n + 1;
+            while(k){
+                if(k == 1){
+                    st += to_string(num);
+                    num++;
+                    k--;
+                }
+                else{
+                    st += to_string(num);
+                    st += '*';
+                    num++;
+                    k--;
+                }
+                y--;
+            }
+            y++;
+            // pushing the st into the answer
+            ans.push_back(st);
+        }
+        
+        return ans;
+    }
+};

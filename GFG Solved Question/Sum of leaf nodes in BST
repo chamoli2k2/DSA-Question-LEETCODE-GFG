@@ -1,0 +1,19 @@
+void solve(Node* root,int &ans){
+    // base case
+    if(root == NULL){
+        return;
+    }
+    
+    if(root->left == NULL && root->right == NULL){
+        ans += root->data;
+        return;
+    }
+    
+    solve(root->left,ans);
+    solve(root->right,ans);
+}
+int sumOfLeafNodes(Node *r ){
+    int ans = 0;
+    solve(r,ans);
+    return ans;
+}

@@ -1,0 +1,22 @@
+class Solution{
+private:
+    void solve(vector<int> &ans,int k){
+        // base case
+        if(k <= 0){
+            ans.push_back(k);
+            return;
+        }
+        
+        ans.push_back(k);
+        solve(ans,k-5);
+        ans.push_back(k);
+    }
+public:
+    
+    vector<int> pattern(int N){
+
+        vector<int> ans;
+        solve(ans,N);
+        return ans;
+    }
+};

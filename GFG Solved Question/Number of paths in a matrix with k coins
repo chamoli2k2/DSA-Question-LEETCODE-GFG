@@ -1,0 +1,30 @@
+class Solution {
+private:
+    long long solve(vector<vector<int>> &arr,long long dp[101][101][101],int i,int j,int target){
+        // base case 1
+        if(i < 0 || j < 0 || target < 0){
+            return 0;
+        }
+        
+        // base case 2
+        if(i == 0 && j == 0){
+            return dp[i][j][target] = (target == arr[i][j]);
+        }
+        
+        if(dp[i][j][target] != -1){
+            return dp[i][j][target];
+        }
+        
+        long long x = solve(arr,dp,i-1,j,(target-arr[i][j])); // up
+        long long y = solve(arr,dp,i,j-1,(target-arr[i][j])); // left
+        
+        return dp[i][j][target] = (x + y);
+    }
+public:
+    
+    long long numberOfPath(int n, int k, vector<vector<int>> arr){
+        long long dp[101][101][101];
+        memset(dp,-1,sizeof(dp));
+        return solve(arr,dp,n-1,n-1,k);
+    }
+};

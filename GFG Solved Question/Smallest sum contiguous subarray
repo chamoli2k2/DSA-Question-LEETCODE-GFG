@@ -1,0 +1,21 @@
+class Solution{
+  public:
+  int smallestSumSubarray(vector<int>& a){
+      // Kandane algorithm 
+      int ans = INT_MAX;
+      int sum = 0;
+      
+      for(auto i : a){
+          sum += i;
+          if(sum < ans){
+              ans = sum;
+          }
+          
+          if(sum > 0){
+              sum = 0;
+          }
+      }
+      
+      return ans;
+  }
+};

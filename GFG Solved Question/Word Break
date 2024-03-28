@@ -1,0 +1,44 @@
+unordered_map<string,int> dp;
+class Solution
+{
+private:
+    int solve(vector<string> &str,string s){
+        // base case
+        int n = s.size();
+        if(n == 0){
+            return 1;
+        }
+        
+        // if found string in map
+        if(dp[s] != 0){
+            return dp[s];
+        }
+        
+        for(int i=1;i<=n;i++){
+            int flag = 0;
+            // Checking if string is in dictionary
+            string temp = s.substr(0,i);
+            for(int j=0;j<str.size();j++){
+                // camparing both string
+                if(temp.compare(str[j]) == 0){
+                    flag = 1;
+                    break;
+                }
+            }
+            if(flag && solve(str,s.substr(i,n-i)) == 1){
+                return dp[s] = 1;
+            }
+        }
+        
+        return dp[s] = -1;
+    }
+public:
+    
+    int wordBreak(string A, vector<string> &B) {
+        int x = solve(B,A);
+        if(x == 1){
+            return true;
+        }
+        return false;
+    }
+};

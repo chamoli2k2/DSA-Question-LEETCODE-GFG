@@ -1,0 +1,49 @@
+class Solution
+{
+    public:
+    Node* reverseBetween(Node* head, int left, int right)
+    {
+        // Base Case 
+        if(head == NULL || left == right){
+            return head;
+        }
+        
+        // Creating a Dummy node so that we don't need to take care of additional base cases
+        Node* dummy = new Node(0);
+        dummy->next = head;
+        
+        // making previos and current pointer
+        Node* Lftprevious = dummy;
+        Node* current = head;
+        
+        // Step 1 : 
+        // We want Previous pointer to point one before the left pointer and current pointer point at left
+        for(int i=0;i<left-1;i++){
+            current = current->next;
+            Lftprevious = Lftprevious->next;
+        }
+        
+        // Step 2 : 
+        // reversing the linked list
+        Node *previous = NULL;
+        for(int i=0;i<(right-left+1);i++){
+            Node* temp = current->next;
+            current->next = previous;
+            previous = current;
+            current = temp;
+        }
+        
+        
+        // Step 3 :
+        // Rejoining links
+        Node* rightlink = Lftprevious->next;
+        Lftprevious->next = previous;
+        rightlink->next = current;
+        
+        // Answer will always be dummy->next
+        head = dummy->next;
+        delete dummy;
+        
+        return head;
+    }
+};

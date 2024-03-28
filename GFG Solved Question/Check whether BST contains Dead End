@@ -1,0 +1,23 @@
+bool solve(Node* root,int mini,int maxi){
+    // base case
+    if(root == NULL){
+        return false;
+    }
+    
+    if(mini == maxi){
+        return true;
+    }
+    
+    bool left = solve(root->left,mini,root->data-1);
+    bool right = solve(root->right,root->data+1,maxi);
+    
+    return (left || right);
+    
+}
+bool isDeadEnd(Node *root)
+{
+    int mini = 1;
+    int maxi = INT_MAX;
+    
+    return solve(root,mini,maxi);
+}

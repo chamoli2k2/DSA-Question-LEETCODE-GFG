@@ -1,0 +1,72 @@
+struct Node* partition(struct Node* head, int x) {
+    if(head == NULL || head->next == NULL){
+            return head;
+        }
+        // Logic we make left and right as two different list and finally we just merge them together
+        Node* left = NULL;
+        Node* mid = NULL;
+        Node* right = NULL;
+        Node* l = NULL;
+        Node* m = NULL;
+        Node* r = NULL;
+        
+        while(head){
+            if(head->data < x){
+                if(left == NULL){
+                    left = head;
+                    l = left;
+                }else{
+                    l->next = head;
+                    l = l->next;
+                }
+            }
+            else if(head->data == x){
+                if(mid == NULL){
+                    mid = head;
+                    m = head;
+                }else{
+                    m->next = head;
+                    m = m->next;
+                }
+            }
+            else{
+                if(right == NULL){
+                    right = head;
+                    r = right;
+                }else{
+                    r->next = head;
+                    r = r->next;
+                }
+            }
+            
+            head = head->next;
+        }
+        
+        // Now just attaching the both list
+        // checking if left list exist or not
+        if(left){
+            if(mid){
+                l->next = mid;
+            }
+            else{
+                l->next = right;
+            }
+        }
+        
+        if(mid){
+            m->next = right;
+        }
+        
+        if(right){
+            r->next = NULL;
+        }
+        
+        if(left){
+            return left;
+        }
+        if(mid){
+            return mid;
+        }
+        
+        return right;
+}

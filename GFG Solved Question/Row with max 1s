@@ -1,0 +1,32 @@
+class Solution{
+public:
+	int rowWithMax1s(vector<vector<int> > arr, int n, int m) {
+	    // making a variable to store the first place where we encounter the 1
+	    int virgin = INT_MAX;
+	    int ans = -1;
+	    
+	    for(int i=0;i<n;i++){
+	        for(int j=0;j<m;j++){
+	            if(arr[i][j] == 1){
+	                
+	                // checking if 1st element is not virgin or "1"
+	                if(j == 0){
+	                    return i;
+	                }
+	                
+	                // storing the index of vargin element for futher comparision
+	                if(j < virgin){
+	                    vargin = j;
+	                    ans = i;
+	                }
+	                
+	                // don't need for futher computation
+	                break;
+	            }
+	        }
+	    }
+	    
+	    return ans;
+	}
+
+};

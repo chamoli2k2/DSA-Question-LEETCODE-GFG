@@ -1,0 +1,15 @@
+class Solution{
+    public:
+    //Complete this function
+    int i = 1;
+    void printNos(int N)
+    {
+        if(N == 0){
+            return;
+        }
+        
+        cout<<i<<" ";
+        i++;
+        printNos(N-1);
+    }
+};

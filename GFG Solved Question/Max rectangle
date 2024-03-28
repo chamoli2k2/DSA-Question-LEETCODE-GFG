@@ -1,0 +1,84 @@
+class Solution{
+  private:
+    int findArea(vector<int> &col,int m){
+        // finding previous minimum from left side
+        vector<int> ls;
+        vector<int> rs(m,0);
+        stack<pair<int,int>> st;
+        
+        for(int i=0;i<m;i++){
+            int num = col[i];
+            
+            // if stack's top is greater than current than pop it
+            while(!st.empty() && st.top().first >= num){
+                st.pop();
+            }
+            
+            if(st.empty()){
+                ls.push_back(-1);
+            }
+            else{
+                ls.push_back(st.top().second);
+            }
+            
+            // pushing current element into stack
+            st.push({num,i});
+        }
+        
+        // emptying the stack for using it
+        while(!st.empty()){
+            st.pop();
+        }
+        
+        // finding previous minimum from right side
+        for(int i=m-1;i>=0;i--){
+            int num = col[i];
+            while(!st.empty() && st.top().first >= num){
+                st.pop();
+            }
+            
+            if(st.empty()){
+                rs[i] = m;
+            }
+            else{
+                rs[i] = st.top().second;
+            }
+            
+            st.push({num,i});
+        }
+        
+        // Evaluating answer
+        int area = 0;
+        for(int i=0;i<m;i++){
+            int tempArea = (rs[i] - ls[i] - 1) * col[i];
+            area = max(tempArea,area);
+        }
+        
+        return area;
+    }
+  public:
+    int maxArea(int M[MAX][MAX], int n, int m) {
+        // Important question
+        // This question use multiple concept like finding maximum area in histogram
+        vector<int> col(m,0);
+        int maxArea = 0;
+        for(int i=0;i<n;i++){
+            // Step 1 : 
+            int area = 0;
+            for(int j=0;j<m;j++){
+                if(M[i][j] ==  1){
+                    col[j]++;
+                }
+                else{
+                    col[j] = 0;
+                }
+            }
+            
+            // Step 2 : 
+            area = findArea(col,m);
+            maxArea = max(maxArea,area);
+        }
+        
+        return maxArea;
+    }
+};

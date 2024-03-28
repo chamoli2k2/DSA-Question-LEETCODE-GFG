@@ -1,0 +1,33 @@
+class Solution {
+  public:
+    int smallestSubstring(string s) {
+        int i = 0;
+        int j = 0;
+        int n = s.size();
+        unordered_map<char,int> mp;
+        int ans = INT_MAX;
+        
+        
+        while(j < n){
+            mp[s[j]]++;
+            // case 1 : if map size is less than 3
+            if(mp.size() < 3){
+                j++;
+            }
+            else if(mp.size() == 3){
+                
+                while(mp.size() == 3){
+                    ans = min(ans,(j - i + 1));
+                    mp[s[i]]--;
+                    if(mp[s[i]] == 0){
+                        mp.erase(s[i]);
+                    }
+                    i++;
+                }
+                j++;
+            }
+        }
+        
+        return ans == INT_MAX ? -1 : ans;
+    }
+};

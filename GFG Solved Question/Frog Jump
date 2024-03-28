@@ -1,0 +1,29 @@
+#include<bits/stdc++.h>
+int solve(int index,vector<int> &heights,vector<int> &dp){
+    // base case
+    if(index == 0){
+        return 0;
+    }
+    
+    // checking if answer if present in dp array of not
+    if(dp[index] != -1){
+        return dp[index];
+    }
+    // left answer
+        int left = solve(index-1,heights,dp) + abs(heights[index] - heights[index-1]);
+    
+    // right answer
+    // checking condition if index is valid or not 
+    int right = INT_MAX;
+    if(index > 1){
+        right =  solve(index-2,heights,dp) + abs(heights[index] - heights[index-2]);
+    }
+    
+    dp[index] = min(right,left);
+    return dp[index];
+}
+int frogJump(int n, vector<int> &heights)
+{
+    vector<int> dp(n+1,-1);
+    return solve(n-1,heights,dp);
+}

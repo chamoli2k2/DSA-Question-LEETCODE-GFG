@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+int lcs(string &str,string &ptr,int n,int m){
+    vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+    
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            if(str[i-1] == ptr[j-1]){
+                dp[i][j] = 1 + dp[i-1][j-1];
+            }else{
+                // case 1 :
+                int case1 = dp[i-1][j];
+                // case 2 : 
+                int case2 = dp[i][j-1];
+                
+                dp[i][j] = max(case1,case2);
+            }
+        }
+    }
+    
+    return dp[n][m];
+}
+int canYouMake(string &str, string &ptr)
+{
+    // Minimum no of deletion = length of string str - longest common subsequence
+    // minimum no of insertion = m - longest common subsequence 
+    
+    // Dry run this logic to get more feel
+    int n = str.length();
+    int m = ptr.length();
+    
+    int Deletion = n - lcs(str,ptr,n,m);
+    int insertion = m - lcs(str,ptr,n,m);
+    
+    return Deletion + insertion;
+}

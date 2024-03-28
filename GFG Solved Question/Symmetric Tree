@@ -1,0 +1,22 @@
+class Solution{
+    private:
+    bool solve(Node* left,Node* right){
+        if(left == NULL || right == NULL){
+            return (left == right);
+        }
+        
+        if(left->data == right->data){
+            return solve(left->right,right->left) and solve(left->left,right->right);
+        }
+        return false;
+    }
+    public:
+    // return true/false denoting whether the tree is Symmetric or not
+    bool isSymmetric(struct Node* root)
+    {
+        if(root == NULL){
+            return true;
+        }
+	    return solve(root->left,root->right);
+    }
+};

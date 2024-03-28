@@ -1,0 +1,14 @@
+class Solution
+{
+public:
+    int i = 1;
+    void printTillN(int N)
+    {
+        if(N == 0){
+            return;
+        }
+        cout<<i<<" ";
+        i++;
+        printTillN(N-1);
+    }
+};

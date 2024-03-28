@@ -1,0 +1,21 @@
+class Solution {
+  private:
+    void solve(Node* root,int low,int high,vector<int> &ans){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        solve(root->left,low,high,ans);
+        if(root->data >= low && root->data <= high){
+            ans.push_back(root->data);
+        }
+        solve(root->right,low,high,ans);
+    }
+  public:
+    vector<int> printNearNodes(Node *root, int low, int high) {
+        vector<int> ans;
+        solve(root,low,high,ans);
+        return ans;
+    }
+};

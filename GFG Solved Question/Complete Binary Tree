@@ -1,0 +1,40 @@
+class Solution{
+private:
+    void counter(Node* root,int &count){
+        if(root == NULL){
+            return;
+        }
+        
+        count++;
+        counter(root->left,count);
+        counter(root->right,count);
+    }
+    
+    bool isCBT(Node* root,int i,int count){
+        if(root == NULL){
+            return true;
+        }
+        
+        if(i > count){
+            return false;
+        }
+        
+        bool left = isCBT(root->left,2*i,count);
+        bool right = isCBT(root->right,2*i+1,count);
+        
+        return (left && right);
+    }
+    
+public:    
+    bool isCompleteBT(Node* root){
+        int count = 0;
+        counter(root,count);
+        
+        int i = 1;
+        if(isCBT(root,i,count)){
+            return true;
+        }
+        
+        return false;
+    }
+};

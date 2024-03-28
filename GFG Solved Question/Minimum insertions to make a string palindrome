@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+int minInsertion(string &s1)
+{
+    // Logic : if we substract length of longest palingdromic string 
+    // from the length of string , it is equal to minimum Insertion 
+    // required to make string palingdromic
+    
+    // a b a d d c b a -> n = 8
+    // length of longest palingdromic subsequence = 6
+    // min operation required -> 8 - 6 = 2
+    // operation 1 : ab a d d c | a ba
+    // opertion 2 : aba c | d d c aba
+    
+    // operation range [0,length of string]
+    
+    int n = s1.length();
+    // finding longest palingdromic subsequence
+    string s2 = s1;
+    reverse(s2.begin(),s2.end());
+    vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+    
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            if(s1[i-1] == s2[j-1]){
+                dp[i][j] = 1 + dp[i-1][j-1];
+            }else{
+                // case 1 :
+                int case1 = dp[i-1][j];
+                
+                // case 2 :
+                int case2 = dp[i][j-1];
+                
+                dp[i][j] = max(case1,case2);
+            }
+        }
+    }
+    
+    return (n - dp[n][n]);
+}

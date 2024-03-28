@@ -1,0 +1,46 @@
+class Solution {
+  private:
+    pair<bool,int> solve(Node* root,int &count){
+        if(root == NULL){
+            pair<bool,int> p = {true,0};
+            return p;
+        }
+        
+        pair<bool,int> left = solve(root->left,count);
+        pair<bool,int> right = solve(root->right,count);
+        
+        bool flag = (root->data > left.second) and (root->data > right.second);
+        pair<bool,int> ans;
+        count++;
+        
+        if(flag and left.first and right.first){
+            ans.first = true;
+            ans.second = root->data;
+        }else{
+            ans.first = false;
+            ans.second = root->data;
+        }
+        
+        return ans;
+    }
+    
+    bool balanced(Node* root,int i,int count){
+         // base case
+         if(root == NULL){
+             return true;
+         }
+         
+         if(i > count){
+             return false;
+         }
+         
+         bool left = balanced(root->left,2*i,count);
+         bool right = balanced(root->right,2*i+1,count);
+        return left and right;
+    }
+  public:
+    bool isHeap(struct Node* tree) {
+        int count = 0;
+        return solve(tree,count).first and balanced(tree,1,count);
+    }
+};

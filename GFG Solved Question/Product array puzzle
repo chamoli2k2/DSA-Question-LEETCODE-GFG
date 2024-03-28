@@ -1,0 +1,50 @@
+class Solution{
+  public:
+    // nums: given vector
+    // return the Product vector P that hold product except self at each index
+    
+    // there can be three case in this problem
+    // case 1 : No zeros
+    // case 2 : only one zero -> Product of every element except zero
+    // case 3 : more than one zeros -> Direct answer zero at every index
+    vector<long long int> productExceptSelf(vector<long long int>& nums, int n) {
+        // Step 1 : Find total product of nums
+        long long int product = 1;
+        int count = 0;
+        for(int i=0;i<n;i++){
+            if(nums[i] != 0){
+                product *= nums[i];
+            }else{
+                count ++ ;
+            }
+        }
+        
+        // Checking count variable
+        // Case 3 :
+        if(count > 1){
+            vector<long long int> a(n);
+            return a;
+        }
+        
+        // Case 2 :
+        if(count == 1){
+            vector<long long int> b;
+            for(int i=0;i<n;i++){
+                if(nums[i] == 0){
+                    b.push_back(product);
+                }else{
+                    b.push_back(0);
+                }
+            }
+            return b;
+        }
+        
+        // Case 1 : Divide by each element at that index to find tha answer 
+        vector<long long int> ans;
+        for(int i=0;i<n;i++){
+            ans.push_back(product / nums[i]);
+        }
+        
+        return ans;
+    }
+};

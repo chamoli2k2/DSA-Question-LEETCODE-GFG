@@ -1,0 +1,40 @@
+class Solution
+{
+    public:
+    //Function to rotate a linked list.
+    Node* rotate(Node* head, int k)
+    {
+        // base cases
+        if(head == NULL){
+            return head;
+        }
+        
+        // Finding length of linked list
+        int len = 0;
+        Node* temp = head;
+        
+        while(temp->next != NULL){
+            temp = temp->next;
+            len++;
+        }
+        // Actual length of LL
+        len = len + 1; // as we didn't count the last node
+        
+        
+        // making linked list circular
+        temp->next = head;
+        
+        temp = head;
+        int i = 0;
+        while(i < k -1){
+            temp = temp->next;
+            i++;
+        }
+        
+        Node* ans = temp->next;
+        temp->next = NULL;
+        
+        return ans;
+    }
+};
+ 

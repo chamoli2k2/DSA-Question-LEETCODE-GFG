@@ -1,0 +1,21 @@
+class Solution{
+public:
+    int toyCount(int n, int k, vector<int> arr)
+    {
+        // sorting the array
+        sort(arr.begin(),arr.end());
+        int toy = 0;
+        
+        for(int i=0;i<n;i++){
+            if(arr[i] <= k){
+                k -= arr[i];
+                toy++;
+            }
+            else{
+                break;
+            }
+        }
+        
+        return toy;
+    }
+};

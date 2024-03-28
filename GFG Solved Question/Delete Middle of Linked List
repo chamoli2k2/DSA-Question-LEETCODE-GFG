@@ -1,0 +1,22 @@
+Node* deleteMid(Node* head)
+{
+    int length=0;
+    Node* temp=head;
+    while(temp){
+        length++;
+        temp=temp->next;
+    }
+    
+    int mid=length/2;
+    int i=1;
+    temp=head;
+    while(i<mid){
+        i++;
+        temp=temp->next;
+    }
+    Node* backup=temp->next->next;
+    Node* dlt=temp->next;
+    temp->next=backup;
+    delete dlt;
+    return head;
+}

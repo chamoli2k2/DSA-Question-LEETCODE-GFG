@@ -1,0 +1,31 @@
+class Solution{
+public:
+    vector<long long> smallerSum(int n,vector<int> &arr){
+        vector<long long> ans(n);
+        vector<long long> prefix(n,0);
+        vector<int> soArray(arr);
+        sort(begin(soArray),end(soArray));
+        prefix[0] = soArray[0];
+        
+        // calculating prefix array
+        for(int i=1;i<n;i++){
+            prefix[i] = prefix[i-1] + 1LL*soArray[i];
+        }
+        
+        // evaluating the answer
+        for(int i=0;i<n;i++){
+            int num = arr[i];
+            int idx = lower_bound(begin(soArray),end(soArray),num) - begin(soArray);
+            
+            // evaluting the answer
+            if(idx == 0){
+                ans[i] = 0;
+            }
+            else{
+                ans[i] = prefix[idx-1];
+            }
+        }
+        
+        return ans;
+    }
+};

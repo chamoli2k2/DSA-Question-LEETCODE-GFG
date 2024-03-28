@@ -1,0 +1,45 @@
+class Solution{
+public:
+    int *findTwoElement(int *arr, int n) {
+        // s1 = sum of acutal no. 1 -> N
+        // s2 = sum of arr 
+        // e = missing no
+        // b = repeated no
+        // by basic maths s1 - s2 = e - b
+        // s1^2 - S2^2 = e^2 - b^2
+        
+        long long s1 = 0, s2 = 0;
+        s1 = (n * 1LL * (n+1)) / 2;
+        
+        for(int i=0;i<n;i++){
+            s2 += arr[i];
+        }
+        
+        long long constant1 = s1 - s2;
+        
+        // finding squares of 1st N natural numbers
+        long long s1Square = (n * 1LL * (n + 1) * 1LL * (2 * 1LL * n + 1)) / 6;
+        long long s2Square = 0;
+        
+        // finding squares of arr
+        for(int i=0;i<n;i++){
+            s2Square += arr[i] * 1LL * arr[i];
+        }
+        
+        long long int constant2 = s1Square - s2Square;
+        // constant2 / constan1 = e + b
+        
+        constant2 = constant2 / constant1;
+        
+        long long e = (constant1 + constant2)/2;
+        long long b = (constant2 - constant1)/2;
+        
+        int *ans = new int[2];
+        
+        ans[0] = b;
+        ans[1] = e;
+        
+        return ans;
+        
+    }
+};

@@ -1,0 +1,23 @@
+ListNode *removeDuplicates(ListNode *head)
+{
+    // base case
+    if(head == NULL or head->next == NULL){
+        return head;
+    }
+    
+    ListNode* previous = head;
+    ListNode* current = head->next;
+    
+    while(current){
+        if(current->data == previous->data){
+            ListNode* temp = current->next;
+            previous->next = current->next;
+            delete current;
+            current = temp;
+        }else{
+            previous = current;
+            current = current->next;
+        }
+    }
+    return head;
+}

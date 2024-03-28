@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    int toggleBits(int N , int L , int R) {
+        int mask = 1 << (L - 1);
+        for(int i=L;i<=R;i++){
+            if(N & mask){
+                N = N & (~ mask); 
+            }
+            else{
+                N = N | mask;
+            }
+            mask = mask << 1;
+        }
+        
+        return N;
+    }
+};

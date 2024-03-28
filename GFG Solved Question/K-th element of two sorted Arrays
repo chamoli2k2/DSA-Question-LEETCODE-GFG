@@ -1,0 +1,111 @@
+class Solution{
+    public:
+    int kthElement(int arr1[], int arr2[], int n, int m, int k)
+    {
+        // Concept merge two sorted array
+        for(int i=n-1,j=0;i>=0 and j<m;i--,j++){
+            if(arr1[i] > arr2[j]){
+                swap(arr1[i],arr2[j]);
+            }
+        }
+        
+        // sort the both array
+        sort(arr1,arr1+n);
+        sort(arr2,arr2+m);
+        
+        if(k <= n){
+            return arr1[k-1];
+        }
+        
+        return arr2[k-n-1];
+    }
+};
+
+Approach 2 : By using two pointer approach
+
+class Solution{
+    public:
+    int kthElement(int arr1[], int arr2[], int n, int m, int k)
+    {
+        // Trying to solve the question by two pointer approach
+        int i = 0;
+        int j = 0;
+        int count = 0;
+        while(i < n and j < m){
+            if(arr1[i] <= arr2[j]){
+                count ++;
+                if(count == k){
+                    return arr1[i];
+                }
+                i++;
+            }else{
+                count ++;
+                if(count == k){
+                    return arr2[j];
+                }
+                j++;
+            }
+        }
+        
+        while(i < n){
+            count++;
+            if(count == k){
+                return arr1[i];
+            }
+            i++;
+        }
+        
+        while(j < m){
+            count++;
+            if(count == k){
+                return arr2[j];
+            }
+            j++;
+        }
+    }
+};
+
+Approach 3 : By using Binary Search Algorithm
+
+class Solution{
+    public:
+    int kthElement(int arr1[], int arr2[], int n, int m, int k)
+    {
+        // By Binary search Algorithm
+        // Base case : if n > m 
+        if(n > m){
+            // We do binary search in smaller array
+            return kthElement(arr2,arr1,m,n,k);
+        }
+        
+        // Kum say kum kitna le sakta h... Bhut important step **
+        int low = max(0,k-m);
+        
+        // Jyda say Jyda kitna le sakta h .. Bhut important step **
+        int high = min(k,n);
+        
+        while(low <= high){
+            
+            // taking cut1 element from arr1
+            int cut1 = low + (high - low) / 2;
+            
+            // taking remaining element froma arr2
+            int cut2 = k - cut1;
+            
+            int l1 = cut1 == 0 ? INT_MIN : arr1[cut1 - 1];
+            int l2 = cut2 == 0 ? INT_MIN : arr2[cut2 - 1];
+            int r1 = cut1 == n ? INT_MAX : arr1[cut1];
+            int r2 = cut2 == m ? INT_MAX : arr2[cut2];
+            
+            if(l1 <= r2 and l2 <= r1){
+                return max(l1,l2);
+            }else if(l1 > r2){
+                high = cut1 - 1;
+            }else{
+                low = cut1 + 1;
+            }
+        }
+        
+        return 1;
+    }
+};

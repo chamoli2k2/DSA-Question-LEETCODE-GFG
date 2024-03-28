@@ -1,0 +1,42 @@
+class Solution
+{
+    private:
+    void solve(string str,int k){
+        // base case
+        if(str.compare(maxi) > 0){
+            maxi = str;
+        }
+        
+        if(k == 0){
+            return;
+        }
+        
+        for(int i=0;i<str.size()-1;i++){
+            char ch = str[i];
+            int idx = i;
+            for(int j=i+1;j<str.size();j++){
+                if(ch <= str[j]){
+                    idx = j;
+                    ch = str[j];
+                }
+            }
+            
+            if(idx != i){
+                swap(str[i],str[idx]);
+                solve(str,k-1);
+                swap(str[i],str[idx]);
+            }
+        }
+    }
+    
+    public:
+    string maxi;
+    //Function to find the largest number after k swaps.
+    string findMaximumNum(string str, int k)
+    {
+        int n = str.size();
+        maxi = str;
+        solve(str,k);
+        return maxi;
+    }
+};

@@ -1,0 +1,122 @@
+Approach 1 : 
+
+class Solution
+{   
+    public:
+    //Function to modify the matrix such that if a matrix cell matrix[i][j]
+    //is 1 then all the cells in its ith row and jth column will become 1.
+    void booleanMatrix(vector<vector<int> > &arr)
+    {
+        set<int> row;
+        set<int> col;
+        
+        int n = arr.size();
+        int m = arr[0].size();
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(arr[i][j] == 1){
+                    row.insert(i);
+                    col.insert(j);
+                }
+            }
+        }
+        
+        // changing every row to 1
+        for(auto it=row.begin();it!=row.end();it++){
+            int num = *it;
+            for(int j=0;j<m;j++){
+                arr[num][j] = 1;
+            }
+        }
+        
+        // changing every col to 1
+        for(auto it=col.begin();it!=col.end();it++){
+            int num = *it;
+            for(int j=0;j<n;j++){
+                arr[j][num] = 1;
+            }
+        }
+    }
+};
+
+Approach 2 :
+
+class Solution
+{   
+    public:
+    //Function to modify the matrix such that if a matrix cell matrix[i][j]
+    //is 1 then all the cells in its ith row and jth column will become 1.
+    void booleanMatrix(vector<vector<int> > &arr)
+    {
+        // Algorithm
+        int n = arr.size();
+        int m = arr[0].size();
+        
+        // Step 1 : 
+        // Check if there is naturally '1' present in 0th col and 0th row 
+        bool rowflag = false;
+        bool colflag = false;
+        
+        // checking 0th col
+        for(int i=0;i<n;i++){
+            if(arr[i][0] == 1){
+                colflag = true;
+                break;
+            }
+        }
+        
+        // checking 0th row
+        for(int j=0;j<m;j++){
+            if(arr[0][j] == 1){
+                rowflag = true;
+                break;
+            }
+        }
+        
+        // Step 2 : 
+        // Solve the question by taking 0th col and 0th row by assuming as extra space
+        // if found '1' in matrix mark true in corresponding row and col of 0th matrix as true
+        
+        for(int i=1;i<n;i++){
+            for(int j=1;j<m;j++){
+                if(arr[i][j] == 1){
+                    arr[i][0] = 1;
+                    arr[0][j] = 1;
+                }
+            }
+        }
+        
+        // marking all row -> 1 
+        for(int i=1;i<n;i++){
+            if(arr[i][0] == 1){
+                for(int j=1;j<m;j++){
+                    arr[i][j] = 1;
+                }
+            }
+        }
+        
+        // marking all col -> 1 
+        for(int j=1;j<m;j++){
+            if(arr[0][j] == 1){
+                for(int i=1;i<n;i++){
+                    arr[i][j] = 1;
+                }
+            }
+        }
+        
+        // row 0 checking 
+        if(rowflag){
+            for(int j=0;j<m;j++){
+                arr[0][j] = 1;
+            }
+        }
+        
+        // col 0 checking
+        if(colflag){
+            for(int i=0;i<n;i++){
+                arr[i][0] = 1;
+            }
+        }
+    }
+};

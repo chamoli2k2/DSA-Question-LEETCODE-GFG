@@ -1,0 +1,45 @@
+class Solution
+
+{
+    private:
+    void topology(vector<int> adj[],bool visited[],stack<int> &st,int node){
+        // marking node as visited 
+        visited[node] = true;
+        for(auto it : adj[node]){
+            if(!visited[it]){
+                topology(adj,visited,st,it);
+            }
+        }
+        
+        // after backtracking pushing node in stack
+        st.push(node);
+    }
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int n, vector<int> adj[]) 
+	{
+	     // DAG -> means Directed Acyclic Graph 
+	     // (u,v) -> inorder of u <= inorder of v [ A -> B ]
+	     
+	     // creating ans array and stack
+	     vector<int> ans;
+	     stack<int> st;
+	     
+	     // creating visited array
+	     bool visited[n] = {0};
+	     
+	     for(int i=0;i<n;i++){
+	         // if we don't visited the edge
+	         if(visited[i] == false){
+	             topology(adj,visited,st,i);
+	         }
+	     }
+	     
+	     while(!st.empty()){
+	         ans.push_back(st.top());
+	         st.pop();
+	     }
+	     
+	     return ans;
+	}
+};

@@ -1,0 +1,23 @@
+class Solution{
+	public:
+	int findMaxSubarraySum(long long arr[], int n, long long sum)
+	{
+	    long long mSum = arr[0];
+	    long long ans = INT_MIN;
+	    int i = 0;
+	    int j = 0;
+	    while(j < n){
+	        if(mSum <= sum){
+	            ans = max(ans,mSum);
+	            j++;
+	            mSum += arr[j];
+	        }
+	        else{
+	            mSum -= arr[i];
+	            i++;
+	        }
+	    }
+	    
+	    return ans;
+	}  
+};

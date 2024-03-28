@@ -1,0 +1,63 @@
+Approach 1 :
+
+class Node{
+    public:
+    int data;
+    Node* left;
+    Node* right;
+    
+    Node(int data){
+        this->data = data;
+        this->left = NULL;    
+        this->right = NULL;
+    }
+};
+
+class Solution {
+  private:
+  Node* solve(int post[],int &i,int size,int mini,int maxi){
+        // base case
+        if(i >= size){
+            return NULL;
+        }
+        
+        if(post[i] <= mini || post[i] >= maxi){
+            return NULL;
+        }
+        
+        Node* temp = new Node(post[i++]);
+        temp->left = solve(post,i,size,mini,temp->data);
+        temp->right = solve(post,i,size,temp->data,maxi);
+        
+        return temp;
+    }
+    
+    void solve2(Node* ans,vector<int> &leaf){
+        if(ans == NULL){
+            return;
+        }
+        
+        if(ans->left == NULL && ans->right == NULL){
+            leaf.push_back(ans->data);
+        }
+        
+        solve2(ans->left,leaf);
+        solve2(ans->right,leaf);
+    }
+    
+  public:
+    vector<int> leafNodes(int arr[],int size) {
+        
+        // step 1 : make bst
+        int i = 0;
+        int mini = INT_MIN;
+        int maxi = INT_MAX;
+        Node* ans = solve(arr,i,size,mini,maxi);
+        
+        // step 2 : print leaf
+        vector<int> leaf;
+        solve2(ans,leaf);
+        
+        return leaf;
+    }
+};

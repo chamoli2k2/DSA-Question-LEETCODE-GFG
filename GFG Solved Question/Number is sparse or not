@@ -1,0 +1,33 @@
+class Solution
+{
+    public:
+    //Function to check if the number is sparse or not.
+    bool isSparse(int n)
+    {
+        // base case;
+        if(n==0){
+            return true;
+        }
+        
+        // variable declaration
+        bool flag1=false;
+        bool flag2=false;
+        
+        if((n&1)==1){
+            flag1=true;
+        }
+        n>>=1;
+        if(n==0){
+            return true;
+        }
+        if((n&1)==1){
+            flag2=true;
+        }
+        
+        if(flag1 and flag2){
+            return false;
+        }
+        
+        return isSparse(n);
+    }
+};

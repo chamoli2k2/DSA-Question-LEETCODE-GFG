@@ -1,0 +1,55 @@
+class info{
+    public:
+    // Data member
+    int maxi;
+    int mini;
+    bool isBst;
+    int size;
+};
+
+info solve(Node* root,int &ans){
+    // base case
+    if(root == NULL){
+        // We need to return {maxi,mini,isBst,size} 
+        // We treat Null as Bst and size is consider as 0
+        
+        return {INT_MIN,INT_MAX,true,0};
+    }
+    
+    // Doing postorder traversal
+    info left = solve(root->left,ans);
+    info right = solve(root->right,ans);
+    
+    info currentNode;
+    // storing maximum and minimum from left and right and current root
+    currentNode.maxi = max(right.maxi,root->data);
+    currentNode.mini = min(left.mini,root->data);
+    currentNode.size = left.size + right.size + 1;
+    
+    // checking if current node is dataid BST or not
+    if(left.isBst && right.isBst && root->data > left.maxi && root->data < right.mini){
+        currentNode.isBst = true;
+    }
+    else{
+        currentNode.isBst = false;
+    }
+    
+    // updating answer
+    if(currentNode.isBst){
+        ans = max(ans,currentNode.size);
+    }
+    
+    return currentNode;
+}
+class Solution{
+    public:
+    /*You are required to complete this method */
+    // Return the size of the largest sub-tree which is also a BST
+    int largestBst(Node *root)
+    {
+    	int ans = 0;
+    	solve(root,ans);
+    	
+    	return ans;
+    }
+};

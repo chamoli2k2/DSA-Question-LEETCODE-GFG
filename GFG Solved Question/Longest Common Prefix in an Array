@@ -1,0 +1,54 @@
+class Solution{
+  private:
+  
+    bool solve(string arr[],int n,int index){
+        string previous = arr[0];
+        for(int i=1;i<n;i++){
+            string temp = arr[i];
+            if(temp[index] == previous[index]){
+                previous = temp;
+            }else{
+                return false;
+            }
+        }
+        
+        return true;
+    }
+  public:
+    
+    string longestCommonPrefix (string arr[], int n)
+    {
+        
+        
+        // sorting the string
+        sort(arr,arr+n);
+        
+        // finding the size of smallest string
+        int len = arr[0].size();
+        
+        // if array has only one element
+        if(n == 1){
+            return arr[0];
+        }
+        
+        // creating the answer string 
+        string ans = "";
+        string temp = arr[0];
+        
+        for(int i=0;i<len;i++){
+            if(solve(arr,n,i)){
+                ans.push_back(temp[i]);
+            }else{
+                break;
+            }
+        }
+        
+        //if ans is empty 
+        if(ans.size() == 0){
+            return "-1";
+        }
+        
+        // returning the answer
+        return ans;
+    }
+};

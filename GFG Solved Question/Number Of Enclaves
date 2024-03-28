@@ -1,0 +1,59 @@
+class Solution {
+  private:
+    void dfs(vector<vector<int>> &grid,vector<vector<int>> &visited,int i,int j){
+        // base case
+        if(i >= grid.size() || j >= grid[0].size() || i < 0 || j < 0 || visited[i][j] == 1 || grid[i][j] == 0){
+            return;
+        }
+        
+        // marking the visited
+        visited[i][j] = 1;
+        
+        // marking all direction
+        dfs(grid,visited,i+1,j); // down
+        dfs(grid,visited,i-1,j); // up
+        dfs(grid,visited,i,j+1); // right
+        dfs(grid,visited,i,j-1); // left
+        
+    }
+  public:
+    int numberOfEnclaves(vector<vector<int>> &grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        vector<vector<int>> visited(n,vector<int>(m,-1));
+        int count = 0;
+        
+        // Left & Right
+        for(int i=0;i<n;i++){
+            if(grid[i][0] == 1){
+                dfs(grid,visited,i,0);
+            }
+            
+            if(grid[i][m-1] == 1){
+                dfs(grid,visited,i,m-1);
+            }
+        }
+        
+        // Top & Bottom
+        for(int j=0;j<m;j++){
+            if(grid[0][j] == 1){
+                dfs(grid,visited,0,j);
+            }
+            
+            if(grid[n-1][j] == 1){
+                dfs(grid,visited,n-1,j);
+            }
+        }
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 1 && visited[i][j] == -1){
+                    count++;
+                }
+            }
+        }
+        
+        return count;
+    }
+};

@@ -1,0 +1,40 @@
+class Solution{
+    public:
+    // Function to check if given number n is a power of two.
+    bool isPowerofTwo(long long n){
+        
+        while(n!=1 and n!=0){
+            if(n%2==0){
+                n/=2;
+            }else{
+                return false;
+            }
+        }
+        if(n==1){
+            return true;
+        }
+        return false;
+    }
+};
+
+
+// bit masking
+
+class Solution{
+    public:
+    // Function to check if given number n is a power of two.
+    bool isPowerofTwo(long long n){
+        
+        if(n==0){
+            return false;
+        }
+        
+        // bit magic
+        n=(n&(n-1));     // Let n=4 and then (n-1)=3; in bits n=(100&(011))=0
+        if(n==0){
+            return true;
+        }
+        
+        return false;
+    }
+};

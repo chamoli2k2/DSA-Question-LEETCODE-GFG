@@ -1,0 +1,41 @@
+class Solution {
+private:
+    bool dfs(unordered_map<int,list<int>> &adj,vector<int> &visited,vector<int> &dfsVisited,int node){
+        visited[node] = 1;
+        dfsVisited[node] = 1;
+
+        for(auto it : adj[node]){
+            if(visited[it] == 0){
+                if(dfs(adj,visited,dfsVisited,it)){
+                    return true;
+                }
+            }
+            else if(dfsVisited[it] == 1){
+                return true;
+            }
+        }
+
+        dfsVisited[node] = 0;
+        return false;
+    }
+public:
+	bool isPossible(int V, vector<pair<int, int> >& pre) {
+	    unordered_map<int,list<int>> adj;
+        for(auto it : pre){
+            adj[it.second].push_back(it.first);
+        }
+
+        vector<int> visited(V,0);
+        vector<int> dfsVisited(V,0);
+
+        for(int i=0;i<V;i++){
+            if(visited[i] == 0){
+                if(dfs(adj,visited,dfsVisited,i)){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+	}
+};

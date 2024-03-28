@@ -1,0 +1,25 @@
+class Solution{
+private:
+    void solve(int idx,int N,long long &sum,int &pre){
+        // base case
+        if(idx > N){
+            return;
+        }
+        
+        long long temp = 1;
+        for(int i=1;i<=idx;i++){
+            temp *= pre;
+            pre++;
+        }
+        sum += temp;
+        solve(idx+1,N,sum,pre);
+    }
+public:
+    
+    long long sequence(int N){
+        int pre = 1;
+        long long sum = 0;
+        solve(1,N,sum,pre);
+        return sum;
+    }
+};

@@ -1,0 +1,39 @@
+class Solution {
+private:
+    bool check(vector<int> &stalls,int target,int n,int k){
+        long long prev = stalls[0], cow = 1;
+        for(int i=1;i<n;i++){
+            if(stalls[i]-prev >= target){
+                prev = stalls[i];
+                cow++;
+            }
+        }
+        
+        return cow >= k;
+    }
+public:
+    int solve(int n, int k, vector<int> &stalls) {
+        // Base case 
+        if(n < k) return -1;
+        long long s = 0, e = 0, ans = -1; 
+        // Sort
+        sort(stalls.begin(),stalls.end());
+        
+        for(auto &it : stalls){
+            e += 1LL*it;
+        }
+        
+        while(s <= e){
+            long long mid = s + (e - s) / 2;
+            if(check(stalls,mid,n,k)){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+        
+        return ans;
+    }
+};

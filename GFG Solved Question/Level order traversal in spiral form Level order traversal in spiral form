@@ -1,0 +1,39 @@
+vector<int> findSpiral(Node *root)
+{
+    vector<int> ans;
+    if(root == NULL){
+        return ans;
+    }
+    
+    queue<Node*> q;
+    q.push(root);
+    
+    bool leftToright = false;
+    while(!q.empty()){
+        int n = q.size();
+        vector<int> row(n);
+        
+        for(int i=0;i<n;i++){
+            Node* temp = q.front();
+            q.pop();
+            
+            int idx = leftToright ? i : n - 1 - i;
+            
+            row[idx] = temp->data;
+            
+            if(temp->left){
+                q.push(temp->left);
+            } 
+            
+            if(temp->right){
+                q.push(temp->right);
+            }
+        }
+        
+        leftToright = !leftToright;
+        for(auto i : row){
+            ans.push_back(i);
+        }
+    }
+    return ans;
+}

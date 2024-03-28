@@ -1,0 +1,45 @@
+class Solution{
+    private:
+    
+    
+    // Function to find the trapped water between the blocks.
+    public:
+    long long trappingWater(int arr[], int n){
+        // Making the max to store left side and right side min
+        vector<int> leftMax(n);
+        vector<int> rightMax(n);
+        
+        int maxHeight = arr[0];
+        leftMax[0] = maxHeight;
+        for(int i=1;i<n;i++){
+            
+            if(maxHeight < arr[i]){
+                maxHeight = arr[i];
+            }
+            
+            leftMax[i] = maxHeight;
+        }
+        
+        maxHeight = arr[n-1];
+        rightMax[n-1] = maxHeight;
+        for(int i=n-2;i>=0;i--){
+            
+            if(maxHeight < arr[i]){
+                maxHeight = arr[i];
+            }
+            
+            rightMax[i] = maxHeight;
+        }
+        
+        // reverse(rightMax.begin(),rightMax.end());
+        
+        long long water = 0;
+        
+        for(int i=1;i<n-1;i++){
+            water = water + min(rightMax[i],leftMax[i]) - arr[i];
+        }
+        
+        return water;
+        
+    }
+};

@@ -1,0 +1,36 @@
+class Solution{
+  private: 
+    LNode* find(LNode* s,LNode* e){
+        LNode* slow = s;
+        LNode* fast = s;
+        
+        while(fast != e && fast->next != e){
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+        
+        return slow;
+    }
+    TNode* solve(LNode* s,LNode* e){
+        // base case
+        if(s == NULL || s == e){
+            return NULL;
+        }
+        
+        LNode* mid = find(s,e);
+        
+        // making node 
+        TNode* temp = new TNode(mid->data);
+        
+        temp->left = solve(s,mid);
+        temp->right = solve(mid->next,e);
+        
+        return temp;
+    }
+  public:
+    TNode* sortedListToBST(LNode *head) {
+        TNode* ans = solve(head,NULL);
+        
+        return ans;
+    }
+};

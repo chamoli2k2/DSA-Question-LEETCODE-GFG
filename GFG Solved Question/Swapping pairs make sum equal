@@ -1,0 +1,38 @@
+class Solution{
+
+	public:
+	int findSwapValues(int a[], int n, int b[], int m)
+	{
+        sort(a,a+n);
+        sort(b,b+m);
+        
+        int sumA = 0;
+        int sumB = 0;
+        
+        for(int i=0;i<n;i++) sumA = sumA + a[i];
+        for(int i=0;i<m;i++) sumB = sumB + b[i];
+        
+        int diff = abs(sumA - sumB);
+        if(diff & 1){
+            return -1;
+        }
+    
+        diff /= 2;
+        
+        int i = 0;
+        int j = 0;
+        while(j<m && i<n){
+              int tempA = sumA - a[i] + b[j];
+              int tempB = sumB - b[j] + a[i];
+              //when place is found , it returns 1
+              if (tempA == tempB) return 1;
+              //finding index of i and j
+              if (tempB - tempA < 0) i++;
+              else j++;
+        }
+        
+        return -1;
+	}
+ 
+
+};

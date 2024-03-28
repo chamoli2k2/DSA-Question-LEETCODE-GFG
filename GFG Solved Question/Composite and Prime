@@ -1,0 +1,32 @@
+class Solution {
+	public:
+		int Count(int L, int R){
+		    // Doing composite
+		    vector<int> arr(R+1,1);
+		    arr[0] = 0;
+		    arr[1] = 0;
+		    for(int i=2;i<=R;i++){
+		        if(arr[i]){
+		            for(int j=2*i;j<=R;j+=i){
+		                arr[j] = 0;
+		            }
+		        }
+		    }
+		    
+		    // Finding the Prime no B/w L and R
+		    int prime = 0;
+		    
+		    for(int j=L;j<=R;j++){
+		        if(arr[j]){
+		            prime++;
+		        }
+		    }
+
+		    int composite = (R - L + 1) - prime;
+		    if(L <= 1){
+		        composite--;
+		    }
+		    return composite - prime;
+		}
+
+};

@@ -1,0 +1,32 @@
+class Solution
+{
+    private:
+    bool solve(Node* root,int mini,int maxi){
+        
+        // base case
+        if(root == NULL){
+            return true;
+        }
+        
+        
+        if(root->data > mini and root->data < maxi){
+            // checking for left part
+            bool ls = solve(root->left,mini,root->data);
+            
+            // checking for right part
+            bool rs = solve(root->right,root->data,maxi);
+            
+            return ls & rs;
+        }
+        else{
+            return false;
+        }
+        
+    }
+    public:
+    //Function to check whether a Binary Tree is BST or not.
+    bool isBST(Node* root) 
+    {
+        return solve(root,INT_MIN,INT_MAX);
+    }
+};

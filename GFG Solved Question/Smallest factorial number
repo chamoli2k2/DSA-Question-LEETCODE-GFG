@@ -1,0 +1,38 @@
+class Solution
+{
+    private:
+        bool helper(int mid,int n){
+            int countZero = 0;
+            
+            for(int i=5;i<=mid;i*=5){
+                countZero += mid / i;
+            }
+            
+            if(countZero >= n){
+                return true;
+            }
+            
+            return false;
+        }
+    public:
+        int findNum(int n)
+        {
+            //Binary search application
+            int s = 0;
+            int e = 1e9;
+            int mid;
+            int ans = -1;
+            while(s <= e){
+                mid = s + (e - s) / 2;
+                if(helper(mid,n)){
+                    ans = mid;
+                    e = mid - 1;
+                }
+                else{
+                    s = mid + 1;  
+                }
+            }
+            
+            return ans;
+        }
+};

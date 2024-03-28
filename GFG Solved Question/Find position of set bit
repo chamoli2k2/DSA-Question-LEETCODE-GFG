@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    int findPosition(int n) {
+        if(n==0){
+            return -1;
+        }
+        int x=0;
+        while((1<<x)<=n){
+            x++;
+        }
+        if((1<<(x-1))==n){
+            return x;
+        }
+        return -1;
+    }
+};

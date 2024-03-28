@@ -1,0 +1,56 @@
+class Solution {
+private:
+    void dfs(unordered_map<int,list<int>> adjList,unordered_map<int,bool> &mp,int s,int d,int &count){
+        
+        // base case 
+        if(s == d){
+            count++;
+            return;
+        }
+        
+        for(auto i : adjList[s]){
+            if(mp[i] == false){
+                mp[i] = true;
+                dfs(adjList,mp,i,d,count);
+                
+                // backtracking 
+                mp[i] = false;
+            }
+        }
+    }
+public:
+	int possible_paths(vector<vector<int>>edges, int n, int s, int d){
+	    
+	    if(s == d) return 1;
+	    
+	    // making adjustant list 
+	    unordered_map<int,list<int>> adjList;
+	    
+	    // size of edges vector
+	    int m = edges.size();
+	    
+	    for(int i=0;i<m;i++){
+	        int u = edges[i][0];
+	        int v = edges[i][1];
+	        
+	        // making directed graph
+	        adjList[u].push_back(v);
+	    }
+	    
+	    int count = 0;
+	    
+	    // making visited array
+	    unordered_map<int,bool> mp;
+	    
+	    for(auto i : adjList[s]){
+	        
+	        if(mp[i] == false){
+	            mp[i] = true;
+	            dfs(adjList,mp,i,d,count);
+	            
+	        }
+	    }
+	    
+	    return count;
+	}
+};

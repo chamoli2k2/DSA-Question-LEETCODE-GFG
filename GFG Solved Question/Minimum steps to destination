@@ -1,0 +1,14 @@
+class Solution{
+    public:
+     int minSteps(int D){
+        for(int i = 1; ; i++){
+            if(i == D) return i;
+            if(i > D) {
+                if((i-D)%2 == 0) return i;
+                else if(i%2 == 0)return i+1;
+                else return i+2;
+            }
+            D -= i;
+        }
+    }
+};

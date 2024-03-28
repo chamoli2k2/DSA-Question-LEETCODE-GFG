@@ -1,0 +1,48 @@
+class Solution {
+  public:
+    vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+        unordered_map<int,list<pair<int,int>>> mp;
+        for(auto it : edges){
+            mp[it[0]].push_back({it[1],it[2]});
+            mp[it[1]].push_back({it[0],it[2]});
+        }
+        
+        priority_queue<pair<int,int>> pq;
+        vector<int> ans(n+1,INT_MAX), parent(n+1,-1);
+        parent[1] = 1;
+        ans[1] = 0;
+        pq.push({0,1});
+        
+        while(!pq.empty()){
+            int dist = -pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+            
+            for(auto it : mp[node]){
+                int adjNode = it.first, d = it.second;
+                if(dist+d < ans[adjNode]){
+                    ans[adjNode] = dist + d;
+                    pq.push({-(dist+d),adjNode});
+                    parent[adjNode] = node;
+                }
+            }
+        }
+        
+        vector<int> path;
+        if(ans[n] == INT_MAX){
+            path.push_back(-1);
+            return path;
+        }
+        
+        int node = n;
+        while(parent[node] != node){
+            path.push_back(node);
+            node = parent[node];
+        }
+        
+        path.push_back(node);
+        reverse(begin(path),end(path));
+        
+        return path;
+    }
+};

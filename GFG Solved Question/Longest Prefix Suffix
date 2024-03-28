@@ -1,0 +1,28 @@
+class Solution{
+  public:		
+	int lps(string &s) {
+	    int ans = 0, n = s.size();
+	    vector<int> LPS(n,0);
+	    int pre = 0, suf = 1;
+	    
+	    while(suf < n){
+	        // Case 1 : if prefix == suffix
+	        if(s[pre] == s[suf]){
+	            LPS[suf] = pre + 1;
+	            pre++, suf++;
+	        }
+	        // Case 2 : if prefix != suffix
+	        else if(s[pre] != s[suf]){
+	            if(pre == 0){
+	                LPS[suf] = 0;
+	                suf++;
+	            }
+	            else{
+	                pre = LPS[pre-1];
+	            }
+	        }
+	    }
+	    
+	    return LPS[n-1];
+	}
+};

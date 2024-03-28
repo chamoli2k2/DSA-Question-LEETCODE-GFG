@@ -1,0 +1,100 @@
+// Method 1 TC : O(n2) and SC : O(1) 
+
+class Solution
+{
+    public:
+    //Function to find largest rectangular area possible in a given histogram.
+    long long getMaxArea(long long arr[], int n)
+    {
+        long long ans=0;
+        for(int i=0;i<n;i++){
+            long long curr=arr[i];
+            
+            // checking for smaller value on left side 
+            for(int j=i-1;j>=0;j--){
+                if(arr[j]>=arr[i]){
+                    curr=curr+arr[i];
+                }else{
+                    break;
+                }
+            }
+            
+            // checking for bigger value on right sid
+            for(int k=i+1;k<n;k++){
+                if(arr[k]>=arr[i]){
+                    curr=curr+arr[i];
+                }else{
+                    break;
+                }
+            }
+            
+            ans=max(ans,curr);
+        }
+        return ans;
+    }
+};
+
+// Method 2 TC : O(N) and SC : O(N)
+
+class Solution
+{
+    public:
+    //Function to find largest rectangular area possible in a given histogram.
+    long long getMaxArea(long long arr[], int n)
+    {
+        stack<pair<long long,int>>  st;
+        vector<int> ls;
+        vector<int> rs;
+        
+        // step 1 find previous smaller element from left side
+        for(int i=0;i<n;i++){
+            long long num=arr[i];
+            while(!st.empty() and st.top().first>=num){
+                st.pop();
+            }
+            
+            if(st.empty()){
+                ls.push_back(-1);
+            }else{
+                ls.push_back(st.top().second);
+            }
+            
+            st.push({num,i});
+        }
+        
+        // emptying the stack
+        while(!st.empty()){
+            st.pop();
+        }
+        
+        // step 1 find previous smaller element from right side
+        for(int i=n-1;i>=0;i--){
+            long long num=arr[i];
+            while(!st.empty() and st.top().first>=num){
+                st.pop();
+            }
+            
+            if(st.empty()){
+                rs.push_back(n);
+            }else{
+                rs.push_back(st.top().second);
+            }
+            
+            st.push({num,i});
+        }
+        
+        // Reversing the rs
+        reverse(rs.begin(),rs.end());
+        
+        // calculating the area
+        long long ans=0;
+        
+        for(int i=0;i<n;i++){
+            long long area=(rs[i]-ls[i]-1)*arr[i];
+            ans=max(ans,area);
+        }
+        
+        // returning the finally answer
+        return ans;
+    }
+};

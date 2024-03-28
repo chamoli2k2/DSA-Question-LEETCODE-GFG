@@ -1,0 +1,32 @@
+class Solution{
+    public:
+    int maxLen(vector<int> &a, int n)
+    {   
+        // creating map of tracking prefix sum
+        unordered_map<int,int> mp;
+        
+        // creating maxSum and sum variable 
+        int maxLen = 0;
+        int sum = 0;
+        
+        for(int i=0;i<n;i++){
+            sum = sum + a[i];
+            
+            if(sum == 0){
+                maxLen = i + 1;
+            }
+            else if(mp.find(sum) != mp.end()){
+                int j = mp[sum];
+                maxLen = max(maxLen,i-j);
+            }
+            else{
+                mp[sum] = i;
+            }
+            
+        }
+        
+        // returning the maxLen
+        
+        return maxLen;
+    }
+};

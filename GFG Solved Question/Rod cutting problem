@@ -1,0 +1,45 @@
+int solve(vector<int> &price,vector<int> &lenOfRod,vector<vector<int>> &dp,int n,int length){
+        // base case
+        if(length == 0){
+            return 0;
+        }
+        
+        if(n == 0){
+            if(length >= 1){
+                return length*price[0];
+            }
+            
+            return 0;
+        }
+        
+        
+        if(dp[n][length] != -1){
+            return dp[n][length];
+        }
+        
+        // pick
+        int pick = 0;
+        if(lenOfRod[n] <= length){
+            pick = price[n] + solve(price,lenOfRod,dp,n,length-lenOfRod[n]);
+        }
+        
+        int notPick = solve(price,lenOfRod,dp,n-1,length);
+        
+        dp[n][length] = max(pick,notPick);
+        
+        return dp[n][length];
+        
+    }
+int cutRod(vector<int> &price, int n)
+{
+	vector<int> len;
+        for(int i=1;i<=n;i++){
+            len.push_back(i);
+        }
+        
+        // creating the dynamic array 
+        vector<vector<int>> dp(n,vector<int>(n+1,-1));
+        
+        // return 
+        return solve(price,len,dp,n-1,n);
+}

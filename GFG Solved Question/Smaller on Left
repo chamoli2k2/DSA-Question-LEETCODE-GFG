@@ -1,0 +1,22 @@
+vector<int> Smallestonleft(int arr[], int n)
+{
+    // Simple logic 
+    set<int> sat;
+    vector<int> ans(n,-1);
+    
+    for(int i=0;i<n;i++){
+        // inserting element at set
+        sat.insert(arr[i]);
+        
+        // searching index at arr[i] at set
+        // if index of element is not begining than put the element one before it in ans bucket
+        auto it = sat.find(arr[i]);
+        
+        if(it != sat.begin()){
+            it--;
+            ans[i] = *it;
+        }
+    }
+    
+    return ans;
+}

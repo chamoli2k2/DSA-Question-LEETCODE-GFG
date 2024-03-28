@@ -1,0 +1,33 @@
+string transform(string s){
+    int n=s.size();
+    int count=1;
+    string ans="";
+    if(s.size()==1){
+        ans+=to_string(count);
+        ans.push_back(tolower(s[0]));
+        return ans;
+    }
+    for(int i=0;i<n-1;i++){
+        int num = abs(s[i+1]-s[i]);
+        if(num==0 or num==32){
+            count++;
+            if(i==n-2){
+                string x=to_string(count);
+                ans+=x;
+                ans.push_back(tolower(s[i]));
+                count=1;
+            }
+        }else{
+            string x=to_string(count);
+            ans+=x;
+            ans.push_back(tolower(s[i]));
+            count=1;
+        }
+    }
+    int num=abs(s[n-1]-s[n-2]);
+    if(s[n-1]!=s[n-2] and num!=32){
+        ans+="1";
+        ans.push_back(tolower(s[n-1]));
+    }
+    return ans;
+}

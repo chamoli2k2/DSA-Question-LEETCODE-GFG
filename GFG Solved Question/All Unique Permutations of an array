@@ -1,0 +1,23 @@
+class Solution {
+  private:
+    void solve(vector<int> &arr,int idx){
+        // base case
+        if(idx == arr.size()){
+            st.insert(arr);
+            return;
+        }
+        
+        for(int i=idx;i<arr.size();i++){
+            swap(arr[i],arr[idx]);
+            solve(arr,idx+1);
+            swap(arr[i],arr[idx]);
+        }
+    }
+  public:
+    set<vector<int>> st;
+    vector<vector<int>> uniquePerms(vector<int> arr ,int n) {
+        solve(arr,0);
+        vector<vector<int>> ans(st.begin(),st.end());
+        return ans;
+    }
+};

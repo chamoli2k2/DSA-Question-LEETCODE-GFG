@@ -1,0 +1,26 @@
+class Solution{
+private:
+    void solve(string s,int idx,string temp){
+        // base case
+        if(idx == s.size()){
+            if(temp[temp.size()-1] == ' '){
+                temp.pop_back();
+            }
+            st.insert(temp);
+            return;
+        }
+        
+        // taking
+        solve(s,idx+1,temp+s[idx]+" ");
+        
+        // not taking
+        solve(s,idx+1,temp+s[idx]);
+    }
+public:
+    set<string> st;
+    vector<string> permutation(string S){
+        solve(S,0,"");
+        vector<string> ans(st.begin(),st.end());
+        return ans;
+    }
+};

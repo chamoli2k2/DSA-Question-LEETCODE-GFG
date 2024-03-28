@@ -1,0 +1,36 @@
+class Solution{
+	public:
+	long double maximumProfit(int N, long long C, vector<long long> w, vector<long long> p){
+	    priority_queue<pair<double,pair<long long,long long>>> pq;
+	    // sorting 
+	    for(int i=0;i<N;i++){
+	        double ratio = (double) p[i] / w[i];
+	        pq.push({ratio,{p[i],w[i]}});
+	    }
+	    
+	    long double result = 0;
+	    while(!pq.empty() && C > 0){
+	        long long weight = pq.top().second.second;
+	        long long profit = pq.top().second.first;
+	        double ratio = pq.top().first;
+	        pq.pop();
+	        
+	        // checking if this weight is perfect square or not
+	        int x = sqrt(weight);
+	        if(x * x == weight){
+	            continue;
+	        }
+	        
+	        if(C >= weight){
+	            result += double(profit);
+	            C -= weight;
+	        }
+	        else{
+	            result += double(ratio * C);
+	            C -= C;
+	        }
+	    }
+	    
+	    return result;
+	}
+};

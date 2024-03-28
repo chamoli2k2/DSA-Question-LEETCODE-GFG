@@ -1,0 +1,57 @@
+class Solution
+{
+    public:
+    void merge(int arr[], int l, int m, int r)
+    {
+        
+        int left = l;
+        int right = m + 1;
+        int idx = l;
+        
+        // we make a copy array of size "r" to store data of merge sort
+        int copy[r];
+        
+        while(left <= m and right <= r){
+            if(arr[left] <= arr[right]){
+                copy[idx++] = arr[left++];
+            }else{
+                copy[idx++] = arr[right++];
+            }
+        }
+        
+        while(left <= m){
+            copy[idx++] = arr[left++];
+        }
+        
+        
+        while(right <= r){
+            copy[idx++] = arr[right++];
+        }
+        
+        // finally copying data into actuall array
+        for(int i=l ; i<=r ; i++){
+            arr[i] = copy[i];
+        }
+        
+    }
+    public:
+    void mergeSort(int arr[], int l, int r)
+    {
+        // base case;
+        if(l >= r){
+            return;
+        }
+        
+        int mid = l + (r - l)/2;
+        
+        // calling left half
+        mergeSort(arr,l,mid);
+        
+        // calling right half
+        mergeSort(arr,mid+1,r);
+        
+        // calling merge function to merge array
+        merge(arr,l,mid,r);
+        
+    }
+};

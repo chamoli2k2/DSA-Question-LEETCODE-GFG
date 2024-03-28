@@ -1,0 +1,18 @@
+class Solution {
+  public:
+    int countNumberswith4(int N) {
+        int count = 0;
+        for(int i=4;i<=N;i++){
+            int j = i;
+            while(j){
+                int num = j % 10;
+                if(num == 4){
+                    count++;
+                    break;
+                }
+                j /= 10;
+            }
+        }
+        return count;
+    }
+};

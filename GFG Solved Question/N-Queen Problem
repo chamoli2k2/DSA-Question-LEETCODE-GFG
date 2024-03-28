@@ -1,0 +1,66 @@
+class Solution{
+private:
+    bool isSafe(vector<vector<int>> &board,int row,int col){
+        // checking it is safe in horizontal & vertical direction
+        int j = col;
+        // col checked
+        while(j >= 0){
+            if(board[row][j] == 1){
+                return false;
+            }
+            j--;
+        }
+        
+        // uper diagonal check
+        int i = row;
+        j = col;
+        
+        while(i >= 0 && j >= 0){
+            if(board[i][j] == 1){
+                return false;
+            }
+            i--;
+            j--;
+        }
+        
+        // lower diagonal check
+        i = row;
+        j = col;
+        
+        while(i < board.size() && j >= 0){
+            if(board[i][j] == 1){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        
+        return true;
+    }
+    
+    void solve(int col,vector<vector<int>> &board,vector<int> temp){
+        // base case
+        if(col >= board[0].size()){
+            ans.push_back(temp);
+            return;
+        }
+        
+        for(int row=0;row<board.size();row++){
+            if(isSafe(board,row,col)){
+                temp.push_back(row+1);
+                board[row][col] = 1;
+                solve(col+1,board,temp);
+                board[row][col] = -1;
+                temp.pop_back();
+            }
+        }
+    }
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> nQueen(int n) {
+        vector<vector<int>> board(n,vector<int>(n,-1));
+        vector<int> temp;
+        solve(0,board,temp);
+        return ans;
+    }
+};

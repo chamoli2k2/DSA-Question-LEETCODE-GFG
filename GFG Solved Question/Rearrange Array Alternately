@@ -1,0 +1,39 @@
+class Solution{
+    public:
+    // This function wants you to modify the given input
+    // array and no need to return anything
+    // arr: input array
+    // n: size of array
+    //Function to rearrange  the array elements alternately.
+    void rearrange(long long *arr, int n) 
+    { 
+         // Logic of this question : We have to fix two element at same index
+         // We can do it with simple logic
+         // Dividend = Quotient * Divisor + remainder
+         
+         // By oberservation we can see that Max element will be at even positon in array
+         // and min element at odd index
+         
+         int minIdx = 0;
+         int maxIdx = n-1;
+         int maxi = arr[n-1] + 1;
+         
+         for(int i=0;i<n;i++){
+// arr[i](new value) = (arr[min/maxIdx](New value) % maxi) * maxi + arr[i] (old value)
+             if(i & 1){
+                 arr[i] = (arr[minIdx] % maxi) * maxi + arr[i];
+                 minIdx ++;
+             }else{
+                 arr[i] = (arr[maxIdx] % maxi) * maxi + arr[i];
+                 maxIdx --;
+             }
+         }
+         
+         // Dividing by maxi to get new values
+         
+            for(int i=0;i<n;i++){
+                arr[i] /= maxi;
+            }
+         
+    }
+};

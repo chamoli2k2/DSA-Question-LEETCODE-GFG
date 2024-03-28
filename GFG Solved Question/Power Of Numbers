@@ -1,0 +1,33 @@
+class Solution{
+    private:
+    
+    long long solve(int N,int P){
+        // base case
+        if(P == 0){
+            return 1;
+        }
+        
+        if(P == 1){
+            return N;
+        }
+        
+        int modul = (int)1e9 + 7;
+        
+        long long halfAnswer = solve(N,P/2) % modul;
+        halfAnswer = (halfAnswer * halfAnswer) % modul;
+        
+        if(P & 1){
+            return (halfAnswer * N) % modul;
+        }
+        
+        return halfAnswer;
+    }
+    public:
+    //You need to complete this fucntion
+    
+    long long power(int N,int R)
+    {
+        return solve(N,R);
+    }
+
+};

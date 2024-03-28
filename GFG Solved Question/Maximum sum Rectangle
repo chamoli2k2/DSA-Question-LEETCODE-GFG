@@ -1,0 +1,38 @@
+class Solution {
+  private:
+    int Kandane(vector<int> &temp){
+        int maxi = INT_MIN;
+        int n = temp.size();
+        int curr = 0;
+        for(int i=0;i<n;i++){
+            curr += temp[i];
+            if(curr > maxi){
+                maxi = curr;
+            }
+            
+            if(curr < 0){
+                curr = 0;
+            }
+        }
+        
+        return maxi;
+    }
+  public:
+    int maximumSumRectangle(int R, int C, vector<vector<int>> M) {
+        int kA = INT_MIN;
+        
+        for(int col=0;col<C;col++){
+            // Creating the temp for storing the column
+            vector<int> temp(R,0);
+            for(int cStart=col;cStart<C;cStart++){
+                for(int row=0;row<R;row++){
+                    temp[row] += M[row][cStart];
+                }
+                // Kandane's Algo
+                kA = max(kA,Kandane(temp));
+            }
+        }
+        
+        return kA;
+    }
+};

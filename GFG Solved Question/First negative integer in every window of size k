@@ -1,0 +1,50 @@
+vector<long long> printFirstNegativeInteger(long long int A[],long long int N, long long int k) {
+    
+    vector<long long> ans;
+    deque<int> window;
+    
+    for(int i=0;i<k;i++){
+        // Entering the -ve element index in queue
+        if(A[i] < 0){
+            window.push_back(i);
+        }
+    }
+    
+    // putting answer from queue to bucket
+    if(!window.empty()){
+        ans.push_back(A[window.front()]);
+    }
+    else{
+        ans.push_back(0);
+    }
+    
+    // Doing calculation for rest 
+    for(int i=k;i<N;i++){
+        if(A[i] < 0){
+            window.push_back(i);
+        }
+        
+        if(!window.empty()){
+            int num = window.front();
+            if(num > (i - k)){
+                ans.push_back(A[num]);
+            }
+            else{
+                window.pop_front();
+                if(!window.empty()){
+                    num = window.front();
+                    ans.push_back(A[num]);
+                }
+                else{
+                    ans.push_back(0);
+                }
+            }
+        }
+        else{
+            ans.push_back(0);
+        }
+    }
+    
+    return ans;
+                                                 
+ }

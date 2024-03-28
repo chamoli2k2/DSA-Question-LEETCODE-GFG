@@ -1,0 +1,8 @@
+vector<int> firstAndLast(vector<int> &arr, int n, int x) {
+       auto f=lower_bound(arr.begin(),arr.end(),x);
+       auto l=upper_bound(arr.begin(),arr.end(),x);
+       if(f==l)
+       return {-1};
+       return {f-arr.begin(),l-arr.begin()-1};
+       
+}

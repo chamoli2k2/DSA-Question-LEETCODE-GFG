@@ -1,0 +1,11 @@
+class Solution {
+  public:
+    unsigned long long int noOfWays(unsigned long long int n){
+        // base case
+        if(n == 1){
+            return 2;
+        }
+     
+        return n * (n - 1) + 2;
+    }
+};

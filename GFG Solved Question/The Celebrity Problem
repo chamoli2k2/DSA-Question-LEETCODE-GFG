@@ -1,0 +1,60 @@
+class Solution 
+{
+    public:
+    //Function to find if there is a celebrity in the party or not.
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        // Logic :
+        // step 1 : Pur every person in stack
+        
+        int ans = -1;
+        stack<int> st;
+        
+        for(int i=0;i<n;i++){
+            st.push(i);
+        }
+        
+        // check if P1 person know P2 person or not
+        // if P1 know P2 that mean P1 can't be a celebrity
+        // else P2 can't be celebrity
+        
+        while(st.size() != 1){
+            
+            int P1 = st.top();
+            st.pop();
+            
+            int P2 = st.top();
+            st.pop();
+            
+            // checking if P1 know P2 or not
+            if(M[P1][P2] == 1){
+                // It means P1 knows P2
+                // P2 is valid containder for celebrity pushing it back to stack for futher compition
+                st.push(P2);
+            }else{
+                // It means P1 doesn't know P2. Hence P2 can't be a celebrity
+                st.push(P1);
+            }
+        }
+        
+        // The final Person in stack is a probable containder for be celebratiy
+        int Probable_celebrity = st.top();
+        
+        // Verifying IS celbrity Know anyone other or not?
+        for(int j=0;j<n;j++){
+            if(M[Probable_celebrity][j] != 0){
+                return ans;
+            }
+        }
+        
+        // Verifying Is celebrity known by everyone other or not?
+        for(int i=0;i<n;i++){
+            if(M[i][Probable_celebrity] != 1 and i != Probable_celebrity){
+                return ans;
+            }
+        }
+        
+        // Finally after verification 
+        return Probable_celebrity;
+    }
+};

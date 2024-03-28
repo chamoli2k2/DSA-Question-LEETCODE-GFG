@@ -1,0 +1,32 @@
+class Solution
+{
+    public:
+    //Function to reverse words in a given string.
+    string reverseWords(string s) 
+    { 
+        // Basic workout 
+        int n = s.size();
+        string result = "";
+        
+        // itrating loop from back side
+        string temp = "";
+        for(int i=n-1;i>=0;i--){
+            if(s[i] != '.'){
+                temp.push_back(s[i]);
+            }
+            
+            if(s[i] == '.'){
+                reverse(temp.begin(),temp.end());
+                result = result + temp;
+                result.push_back('.');
+                temp = "";
+            }
+        }
+        
+        // Taking care of boundary case
+        reverse(temp.begin(),temp.end());
+        result = result + temp;
+        
+        return result;
+    } 
+};

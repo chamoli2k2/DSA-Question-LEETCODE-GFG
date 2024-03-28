@@ -1,0 +1,54 @@
+
+const int mod = 1e9 + 7;
+
+int countPartitions(int n, int d, vector<int> &arr) {
+
+    // Stores the sum of all the elements in the array.
+    int totalSum = 0;
+
+    // Iterate over the array and add the element to 'totalSum'.
+    for (int i = 0; i < n; ++i) {
+        totalSum += arr[i];
+    }
+
+    // If totalSum is less than 'D', or their difference is odd.
+    if (totalSum < d || (totalSum - d) % 2) {
+        // Then no partitions are possible.
+        return 0;
+    }
+
+    // We want to find the number of subsets, with subset sum target.
+    int target = (totalSum - d) / 2;
+
+    /*
+     * Create a 2D dp table.
+     * dp[i][j] represents the number of subsets which form a sum of j
+     * if we only consider first i elements.
+     */
+    vector<vector<int>> dp(n + 1, vector<int> (target + 1));
+
+    // If we want to find the number of subsets with sum 0,
+    // but considering 0 elements, only way is take an empty subset.
+    dp[0][0] = 1;
+
+    // Iterate over the number of elements to consider.
+    for (int i = 1; i <= n; ++i) {
+
+        // Iterate over the sum.
+        for (int j = 0; j <= target; ++j) {
+
+            // Take the entry from the previous row
+            dp[i][j] = dp[i - 1][j];
+
+            // If we include this element.
+            if (j >= arr[i - 1]) {
+                dp[i][j] = (dp[i][j] + dp[i - 1][j - arr[i - 1]]) % mod;
+            }
+
+        }
+    }
+    
+    // Return the answer
+    return dp[n][target];
+}
+

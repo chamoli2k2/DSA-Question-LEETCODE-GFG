@@ -1,0 +1,32 @@
+class Solution
+{
+    private:
+    void solve(Node* root,int k,int &ans){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        if(root->data > k){
+            ans = min(abs(k - root->data),ans);
+            solve(root->left,k,ans);
+        }
+        else if(root->data < k){
+            ans = min(abs(k - root->data),ans);
+            solve(root->right,k,ans);
+        }
+        else{
+            ans = 0;
+            return;
+        }
+    }
+    public:
+    //Function to find the least absolute difference between any node
+	//value of the BST and the given integer.
+    int minDiff(Node *root, int k)
+    {
+        int ans = INT_MAX;
+        solve(root,k,ans);
+        return ans;
+    }
+};

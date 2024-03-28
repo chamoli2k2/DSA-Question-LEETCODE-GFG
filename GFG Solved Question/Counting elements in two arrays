@@ -1,0 +1,16 @@
+class Solution{
+  public:
+    vector<int> countEleLessThanOrEqual(int arr1[], int arr2[], 
+                                 int m, int n)
+    {
+        // sorting the array
+        sort(arr2,arr2+n);
+        
+        vector<int> ans;
+        for(int i=0;i<m;i++){
+            int idx = upper_bound(arr2,arr2+n,arr1[i]) - arr2;
+            ans.push_back(idx);
+        }
+        return ans;
+    }
+};

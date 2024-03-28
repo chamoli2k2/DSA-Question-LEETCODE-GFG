@@ -1,0 +1,40 @@
+class Solution
+{
+private:
+    unordered_map<int,int> mp;
+    void solve1(Node* root){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        mp[root->data]++;
+        solve1(root->left);
+        solve1(root->right);
+    }
+    
+    void solve2(Node* &root,int &ans,int x){
+        // base case
+        if(root == NULL){
+            return;
+        }
+        
+        if(mp.find(x - root->data) != mp.end()){
+            ans += 1;
+        }
+        
+        solve2(root->left,ans,x);
+        solve2(root->right,ans,x);
+        
+    }
+    
+public:
+    int countPairs(Node* root1, Node* root2, int x)
+    {
+         solve1(root2);
+         int ans = 0;
+         solve2(root1,ans,x);
+         
+         return ans;
+    }
+};

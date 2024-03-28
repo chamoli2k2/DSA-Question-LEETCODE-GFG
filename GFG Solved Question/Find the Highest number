@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int findPeakElement(vector<int>& a) 
+    {
+        int s = 0;
+        int e = a.size() - 1;
+        int mid;
+        
+        // Doing binary search 
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            
+            if(a[mid] > a[mid-1] && a[mid] > a[mid+1]){
+                return a[mid];
+            }
+            else if(a[mid] > a[mid+1] && a[mid] < a[mid-1]){
+                e = mid - 1;
+            }
+            else if(a[mid] > a[mid-1] && a[mid] < a[mid+1]){
+                s = mid + 1;
+            }
+        }
+        
+        return a[e];
+    }
+};

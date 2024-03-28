@@ -1,0 +1,61 @@
+#define ll long long
+int mod = 1003;
+
+class Solution{
+private:
+    int solve(string &s,int i,int j,bool isTrue){
+        // Base case
+        if(i > j) return 0;
+        
+        if(i == j){
+            if(isTrue){
+                return s[i] == 'T';
+            }
+            return s[i] == 'F';
+        }
+        
+        if(dp[i][j][isTrue] != -1) return dp[i][j][isTrue];
+        
+        ll way = 0;
+        for(int idx=i+1;idx<=j-1;idx+=2){
+            ll LT = solve(s,i,idx-1,1);
+            ll LF = solve(s,i,idx-1,0);
+            ll RT = solve(s,idx+1,j,1);
+            ll RF = solve(s,idx+1,j,0);
+            
+            // If we got & 
+            if(s[idx] == '&'){
+                if(isTrue){
+                    way = way + LT * RT;
+                }
+                else{
+                    way = way + LT * RF + LF * RT + LF * RF;
+                }
+            }
+            else if(s[idx] == '|'){
+                if(isTrue){
+                    way = way + LT * RT + LF * RT + LT * RF;
+                }
+                else{
+                    way = way + LF * RF;
+                }
+            }
+            else{
+                if(isTrue){
+                    way = way + LF * RT + LT * RF;
+                }
+                else{
+                    way = way + LF * RF + LT * RT;
+                }
+            }
+        }
+        
+        return dp[i][j][isTrue] = way % mod;
+    }
+public:
+    vector<vector<vector<ll>>> dp;
+    int countWays(int n, string S){
+        dp.resize(n,vector<vector<ll>>(n,vector<ll>(2,-1)));
+        return solve(S,0,n-1,1);
+    }
+};

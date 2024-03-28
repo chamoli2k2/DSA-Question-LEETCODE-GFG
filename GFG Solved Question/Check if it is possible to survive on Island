@@ -1,0 +1,22 @@
+class Solution{
+public:
+    int minimumDays(int S, int N, int M){
+        // base case
+        // if daily need is greater than daily rasan
+        if(N < M){
+            return -1;
+        }
+        else if((N * 6) < (M * 7) && S > 6){
+            return -1;
+        }
+        
+        int foodRequired = S * M;
+        int foodBuy = foodRequired / N;
+        
+        if(foodRequired % N != 0){
+            foodBuy ++;
+        }
+        
+        return foodBuy;
+    }
+};

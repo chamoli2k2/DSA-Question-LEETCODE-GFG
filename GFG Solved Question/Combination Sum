@@ -1,0 +1,35 @@
+class Solution {
+  private:
+    void solve(vector<int> &arr,vector<int> temp,vector<vector<int>> &ans,int idx,int sum){
+        // base case
+        if(idx >= arr.size()){
+            return;
+        }
+        
+        if(sum == 0){
+            ans.push_back(temp);
+            return;
+        }
+        
+        // taking element into considration
+        if(arr[idx] <= sum){
+            temp.push_back(arr[idx]);
+            solve(arr,temp,ans,idx,sum-arr[idx]);
+            temp.pop_back();
+        }
+        // not taking current index into consideration
+        solve(arr,temp,ans,idx+1,sum);
+    }
+  public:
+    //Function to return a list of indexes denoting the required 
+    //combinations whose sum is equal to given number.
+    vector<vector<int> > combinationSum(vector<int> &A, int B) {
+        vector<int> temp;
+        sort(A.begin(), A.end());
+        A.erase(unique(A.begin(), A.end()), A.end());
+        vector<vector<int>> ans;
+        solve(A,temp,ans,0,B);
+        
+        return ans;
+    }
+};

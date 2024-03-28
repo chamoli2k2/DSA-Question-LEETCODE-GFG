@@ -1,0 +1,90 @@
+class Solution{ 
+private:
+    string solve(string s,string t){
+        string ans = "";
+        int carry = 0;
+        int i = s.size() - 1;
+        int j = t.size() - 1;
+        
+        while(i >= 0){
+            int num = 0;
+            
+            // checking if i >= 0
+            if(i >= 0){
+                num = num + (s[i] - '0');
+                i--;
+            }
+            
+            // checking if j >= 0
+            if(j >= 0){
+                num = num + (t[j] - '0');
+                j--;
+            }
+            
+            // adding carry to num
+            num = num + carry;
+            
+            
+            // finally evaluting 
+            int m;
+            if(num > 9){
+                m = num % 10;
+                ans.append(to_string(m));
+            }
+            else{
+                ans.append(to_string(num));
+            }
+            
+            carry = num / 10;
+        }
+        
+        // additional case
+        if(carry != 0){
+            ans.append(to_string(carry));
+        }
+        
+        return ans;
+    }
+public:
+    string solve(int arr[], int n) {
+        // sort the array
+        sort(arr,arr+n);
+        
+        string s1;
+        string s2;
+        
+        for(int i=0;i<n;i++){
+            if(i & 1){
+                s1.append(to_string(arr[i]));
+            }
+            else{
+                s2.append(to_string(arr[i]));
+            }
+        }
+        
+        // erasing zeroes if they are at begining of array s1
+        while(s1[0] == '0'){
+            s1.erase(s1.begin()+0);
+        }
+        
+        
+        // erasing zeroes if they are at begining of array s2
+        while(s2[0] == '0'){
+            s2.erase(s2.begin()+0);
+        }
+        
+        string ans;
+        
+        // Checking the length
+        if(s1.size() >= s2.size()){
+            ans = solve(s1,s2);
+        }
+        else{
+            ans = solve(s2,s1);
+        }
+        
+        reverse(ans.begin(),ans.end());
+        
+        return ans;
+    }
+};

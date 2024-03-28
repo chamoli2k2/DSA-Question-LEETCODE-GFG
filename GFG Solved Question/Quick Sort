@@ -1,0 +1,64 @@
+class Solution
+{
+    public:
+    //Function to sort an array using quicpivotIndex sort algorithm.
+    void quickSort(int arr[], int low, int high)
+    {
+        // base case
+        if(low >= high){
+           return;
+        }
+        
+        // finding pivot 
+        int pivot = partition(arr,low,high);
+        
+        // sorting left part of pivot
+        quickSort(arr,low,pivot-1);
+        
+        // sorting right part of pivot
+        quickSort(arr,pivot+1,high);
+        
+    }
+    
+    public:
+    int partition (int arr[], int low, int high)
+    {
+        // setting first element as pivotElement 
+       int pivotElement = arr[low];
+       
+       // counting all element less than pivotElement
+       int count = 0;
+       for(int i=low+1;i<=high;i++){
+           if(arr[i] <= pivotElement){
+               count++;
+           }
+       }
+       
+       // sending pivotElement to its correct position
+       int pivotIndex = low + count;
+       swap(arr[low],arr[pivotIndex]);
+       
+       // not tapivotIndexing all element <= pivotElement on left and all element >= pivotElement on right
+       int i = low;
+       int j = high;
+       
+       while(i < pivotIndex && j > pivotIndex){
+           // if arr[i] < pivotElement increase i
+           while(arr[i] <= pivotElement){
+               i++;
+           }
+           
+           // if arr[j] > pivotElement decrese j
+           while(arr[j] > pivotElement){
+               j--;
+           }
+           
+           // sending element to there right place
+           if(i < pivotIndex && j > pivotIndex){
+               swap(arr[i++],arr[j--]);
+           }
+       }
+       
+       return pivotIndex;
+    }
+};

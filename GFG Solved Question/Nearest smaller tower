@@ -1,0 +1,74 @@
+class Solution
+{
+public:
+    vector<int> nearestSmallerTower(vector<int> arr)
+    {
+        int n = arr.size();
+        stack<int> pq1, pq2;
+        vector<int> ls(n), rs(n), ans(n);
+        
+        // Nearest left smallest
+        for(int i=0;i<n;i++){
+            
+            while(!pq1.empty() && arr[pq1.top()] >= arr[i]){
+                pq1.pop();
+            }
+            
+            if(pq1.empty()){
+                ls[i] = -1;
+            }
+            else{
+                ls[i] = pq1.top();
+            }
+            
+            pq1.push(i);
+        }
+        
+        // Nearest right smallest
+        for(int i=n-1;i>=0;i--){
+            
+            while(!pq2.empty() && arr[pq2.top()] >= arr[i]){
+                pq2.pop();
+            }
+            
+            if(pq2.empty()){
+                rs[i] = -1;
+            }
+            else{
+                rs[i] = pq2.top();
+            }
+            
+            pq2.push(i);
+        }
+        
+        // Evaluating answer
+        for(int i=0;i<n;i++){
+            int disLs = ls[i] == -1 ? INT_MAX : i - ls[i] + 1;
+            int disRs = rs[i] == -1 ? INT_MAX : rs[i] - i + 1;
+            
+            // case 1 :
+            if(disLs == INT_MAX && disRs == INT_MAX){
+                ans[i] = -1;
+            }
+            // case 2 : 
+            else if(disLs == disRs){
+                if(arr[ls[i]] <= arr[rs[i]]){
+                    ans[i] = ls[i];
+                }
+                else{
+                    ans[i] = rs[i];
+                }
+            }
+            // case 3 : 
+            else if(disLs < disRs){
+                ans[i] = ls[i];
+            }
+            // case 4 :
+            else{
+                ans[i] = rs[i];
+            }
+        }
+        
+        return ans;
+    }
+};

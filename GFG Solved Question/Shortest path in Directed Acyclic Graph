@@ -1,0 +1,52 @@
+class Solution {
+  public:
+     vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
+         unordered_map<int,list<pair<int,int>>> adj;
+         vector<int> indegree(N,0);
+         for(auto it : edges){
+             adj[it[0]].push_back({it[1],it[2]});
+             indegree[it[1]]++;
+         }
+         
+         queue<int> q;
+         for(int i=0;i<N;i++){
+             if(indegree[i] == 0){
+                 q.push(i);
+             }
+         }
+         
+         vector<int> topo;
+         while(!q.empty()){
+             int node = q.front();
+             q.pop();
+             topo.push_back(node);
+             
+             for(auto it : adj[node]){
+                 indegree[it.first]--;
+                 if(indegree[it.first] == 0){
+                     q.push(it.first);
+                 }
+             }
+         }
+         
+         vector<int> distance(N,1e9);
+         distance[topo[0]] = 0;
+         distance[0] = 0;
+         
+         for(int i=0;i<N;i++){
+             int node = topo[i];
+             for(auto it : adj[node]){
+                 int k = it.second + distance[node];
+                 distance[it.first] = min(k,distance[it.first]);
+             }
+         }
+         
+         for(int i=0;i<N;i++){
+             if(distance[i] == 1e9){
+                 distance[i] = -1;
+             }
+         }
+         
+         return distance;
+    }
+};
