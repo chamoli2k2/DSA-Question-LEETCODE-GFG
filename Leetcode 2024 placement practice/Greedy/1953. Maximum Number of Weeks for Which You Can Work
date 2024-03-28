@@ -1,0 +1,17 @@
+class Solution {
+public:
+    long long numberOfWeeks(vector<int>& milestones) {
+        long long n = milestones.size(), sum = 0;
+        for(auto &it : milestones) sum += 1LL*it;
+        sort(milestones.rbegin(), milestones.rend());
+        long long maxFreq = milestones[0];
+        long long gapCount = maxFreq - 1;
+        long long idealSeat = gapCount;
+
+        for(int i=1; i<n; i++){
+            idealSeat -= min(gapCount,1LL*milestones[i]);
+        }
+
+        return idealSeat <= 0 ? sum : sum - idealSeat;
+    }
+};

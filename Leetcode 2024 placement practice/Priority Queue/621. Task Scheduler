@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int k) {
+        int n = tasks.size();
+        int mp[26] = {0};
+
+        for(auto &ch : tasks) mp[ch-'A']++;
+
+        priority_queue<int> pq;
+
+        for(int i=0; i<26; i++){
+            if(mp[i]) pq.push(mp[i]);
+        }
+
+        int time = 0;
+
+        while(!pq.empty()){
+            vector<int> temp;
+
+            for(int i=1; i<=k+1; i++){
+                if(!pq.empty()){
+                    int freq = pq.top();
+                    pq.pop();
+                    freq--;
+                    temp.push_back(freq);
+                }
+            }
+
+            for(auto &freq : temp){
+                if(freq) pq.push(freq);
+            }
+
+            if(pq.empty()){
+                time += temp.size();
+            }
+            else{
+                time += k+1;
+            }
+        }
+
+        return time;
+    }
+};
