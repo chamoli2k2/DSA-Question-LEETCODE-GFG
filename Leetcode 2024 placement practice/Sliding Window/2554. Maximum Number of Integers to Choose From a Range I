@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maxCount(vector<int>& banned, int n, int maxSum) {
+        vector<int> nums;
+        unordered_map<int,int> mp;
+        for(auto it : banned) mp[it]++;
+        for(int i=1; i<=n; i++){
+            if(mp[i] == 0) nums.push_back(i);
+        }
+
+        int i=0, j = 0, m = nums.size(), sum = 0, ans = 0;
+
+        while(j < m){
+            sum += nums[j];
+
+            while(i <= j && sum > maxSum){
+                sum -= nums[i++];
+            }
+
+            ans = max(ans, j-i+1);
+            j++;
+        }
+
+        return ans;
+    }
+};

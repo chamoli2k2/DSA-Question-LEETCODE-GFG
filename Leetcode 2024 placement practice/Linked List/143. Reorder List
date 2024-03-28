@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        // Base case
+        if(head == NULL || head->next == NULL || head->next->next == NULL) return;
+
+        ListNode* reorderedNode = head, *tempNode;
+        while(reorderedNode && reorderedNode->next){
+            tempNode = reorderedNode;
+            reorderedNode = reorderedNode->next;
+        }
+        
+        ListNode* nextNode = head->next;
+        head->next = reorderedNode;
+        reorderedNode->next = nextNode;
+        if(tempNode)    tempNode->next = NULL;
+        reorderList(nextNode);
+    }
+};
