@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+        string ans = "";
+        int n = s.size(), maxFreq = 0;
+        unordered_map<char,int> mp;
+
+        for(auto &ch : s){
+            mp[ch]++;
+            if(maxFreq < mp[ch]){
+                maxFreq = mp[ch];
+            }
+        }
+
+        // Base case
+        if(maxFreq-1 > n-maxFreq) return "";
+
+        priority_queue<pair<int,char>> pq;
+        for(auto &[ch, fq] : mp) pq.push({fq, ch});
+
+        while(!pq.empty()){
+            int fq1 = 0, fq2 = 0;
+            char c1, c2;
+
+            c1 = pq.top().second;
+            fq1 = pq.top().first;
+            pq.pop();
+
+            if(!pq.empty()){
+                c2 = pq.top().second;
+                fq2 = pq.top().first;
+                pq.pop();
+            }
+
+            ans += c1;
+            if(fq2) ans += c2;
+
+            if(fq1 > 1) pq.push({fq1-1, c1});
+            if(fq2 > 1) pq.push({fq2-1, c2});
+        }
+
+        return ans;
+    }
+};

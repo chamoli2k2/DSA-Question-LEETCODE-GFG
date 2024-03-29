@@ -1,0 +1,40 @@
+class Solution {
+private:
+    int dfs(vector<int> adj[], vector<int> &visited, int node){
+        // marking visited
+        visited[node] = 1;
+        
+        int k = 1;
+        for(auto &it : adj[node]){
+            if(visited[it] == 0){
+                k += dfs(adj, visited, it);
+            }
+        }
+        
+        return k;
+    }
+public:
+	int isEulerCircuit(int V, vector<int>adj[]){
+	    int countOdd = 0;
+	    for(int i=0; i<V; i++){
+	        if(adj[i].size() & 1) countOdd++;
+	    }
+	    
+	    int num = 0;
+	    vector<int> visited(V, 0);
+	    for(int i=0; i<V; i++){
+	        if(visited[i] == 0){
+	            int k = dfs(adj, visited, i);
+	            if(k > 1) num++;
+	        }
+	    }
+	    
+	    // Case 1 : Euler circuit
+	    if(countOdd == 0 && num == 1) return 2;
+	    
+	    // Case 2 : Euler path
+	    if(countOdd == 2 && num == 1) return 1;
+	    
+	    return 0;
+	}
+};

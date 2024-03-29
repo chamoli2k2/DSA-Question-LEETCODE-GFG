@@ -1,0 +1,40 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+        int n = s.size(), maxFreq = 0;
+        unordered_map<char,int> mp;
+        char maxChar;
+
+        for(auto &ch : s){
+            mp[ch]++;
+            if(maxFreq < mp[ch]){
+                maxFreq = mp[ch];
+                maxChar = ch;
+            }
+        }
+
+        // Base case
+        if(maxFreq-1 > n-maxFreq) return "";
+
+        string ans(n,' ');
+        int idx = 0;
+        while(maxFreq--){
+            ans[idx%n] = maxChar;
+            idx += 2;
+        }
+        mp[maxChar] = 0;
+
+        for(char ch='a'; ch<='z'; ch++){
+            int fq = mp[ch];
+            while(fq--){
+                if(idx >= n) idx = 1;
+                int k = idx % n;
+                ans[k] = ch;
+                idx += 2;
+            }
+            mp[ch] = 0;
+        }
+
+        return ans;
+    }
+};
