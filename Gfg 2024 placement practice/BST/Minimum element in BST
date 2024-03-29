@@ -1,0 +1,16 @@
+class Solution {
+private:
+    void solve(Node* root, int &ans){
+        // Base case
+        if(root == NULL) return;
+        
+        ans = min(ans, root->data);
+        solve(root->left, ans);
+    }
+public:   
+    int minValue(Node* root) {
+        int ans = INT_MAX;
+        solve(root, ans);
+        return ans;
+    }
+};

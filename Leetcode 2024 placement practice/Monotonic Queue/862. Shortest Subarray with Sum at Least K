@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int shortestSubarray(vector<int>& nums, int k) {
+        long n = nums.size(), sum = 0, ans = INT_MAX;
+        deque<pair<long,long>> dq;
+
+        dq.push_back({0, -1});
+
+        for(int i=0; i<n; i++){
+            sum += 1LL*nums[i];
+            long target = sum - k;
+
+            // Checking if we got the value
+            while(!dq.empty() && target >= dq.front().first){
+                ans = min(ans, 1L*i-1L*dq.front().second);
+                dq.pop_front();
+            }
+
+            // Making it monotonous
+            while(!dq.empty() && sum <= dq.back().first){
+                dq.pop_back();
+            }
+
+            dq.push_back({sum, 1LL*i});
+        }
+
+        return ans == INT_MAX ? -1 : ans;
+    }
+};
