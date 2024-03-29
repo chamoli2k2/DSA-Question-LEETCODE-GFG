@@ -1,0 +1,52 @@
+/**
+ * The Floyd Warshall algorithm is used to find the shortest distance between all pairs of vertices in a weighted graph.
+ * It works by iteratively updating the distance matrix by considering all intermediate vertices.
+ * 
+ * How it works:
+ * 1. Initialize the distance matrix with the weights of the edges. If there is no edge between two vertices, set the weight to a large value.
+ * 2. For each vertex 'via', consider all pairs of vertices 'i' and 'j' and update the distance matrix as follows:
+ *    - If the distance from 'i' to 'j' through 'via' is shorter than the current distance, update the distance.
+ * 3. Repeat step 2 for all vertices as the intermediate vertex.
+ * 4. Convert the large values in the distance matrix back to -1 for unreachable vertices.
+ * 
+ * The Floyd Warshall algorithm has a time complexity of O(V^3), where V is the number of vertices in the graph.
+ * 
+ * Applications:
+ * - Finding the shortest path between all pairs of vertices in a graph.
+ * - Detecting negative cycles in a graph.
+ * 
+ * Note: The input matrix should be a square matrix representing the graph, where matrix[i][j] represents the weight of the edge between vertices 'i' and 'j'.
+ */
+ 
+class Solution {
+  public:
+	// Function to find the shortest distance between all pairs of vertices
+	void shortest_distance(vector<vector<int>>& matrix) {
+		int n = matrix.size();
+		
+		// Setting the initial values for unreachable vertices to a large value
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				if(matrix[i][j] == -1)
+					matrix[i][j] = 1e8;
+			}
+		}
+		
+		// Applying the Floyd Warshall algorithm
+		for(int via = 0; via < n; via++) {
+			for(int i = 0; i < n; i++) {
+				for(int j = 0; j < n; j++) {
+					matrix[i][j] = min(matrix[i][j], matrix[i][via] + matrix[via][j]);
+				}
+			}
+		}
+		
+		// Converting the large values back to -1 for unreachable vertices
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				if(matrix[i][j] == 1e8)
+					matrix[i][j] = -1;
+			}
+		}
+	}
+};

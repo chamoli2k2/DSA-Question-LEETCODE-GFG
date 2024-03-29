@@ -1,0 +1,57 @@
+/**
+ * This class provides a solution to find the city with the smallest number of neighbors at a threshold distance.
+ */
+class Solution {
+  public:
+    /**
+     * Finds the city with the smallest number of neighbors at a threshold distance.
+     * 
+     * @param n The number of cities.
+     * @param m The number of edges.
+     * @param edges The list of edges between cities.
+     * @param distanceThreshold The maximum distance threshold.
+     * @return The city with the smallest number of neighbors at the threshold distance.
+     */
+    int findCity(int n, int m, vector<vector<int>>& edges, int distanceThreshold) {
+        // Create an adjacency matrix to represent the graph
+        vector<vector<int>> adjMat(n,vector<int>(n,1e8));
+        
+        // Initialize the adjacency matrix with edge costs
+        for(auto &it : edges){
+            int city1 = it[0], city2 = it[1], cost = it[2];
+            adjMat[city1][city2] = cost;
+            adjMat[city2][city1] = cost;
+        }
+        
+        // Set the distance from a city to itself as 0
+        for(int i=0; i<n; i++) adjMat[i][i] = 0;
+        
+        // Apply the Floyd-Warshall algorithm to find the shortest distances between all pairs of cities
+        for(int via=0; via<n; via++){
+            for(int i=0; i<n; i++){
+                for(int j=0; j<n; j++){
+                    adjMat[i][j] = min(adjMat[i][j], adjMat[i][via]+adjMat[via][j]);
+                }
+            }
+        }
+        
+        // Find the city with the smallest number of neighbors at the threshold distance
+        int minCity = INT_MAX, ans = -1;
+        
+        for(int i=0; i<n; i++){
+            int city = 0;
+            for(int j=0; j<n; j++){
+                if(adjMat[i][j] <= distanceThreshold){
+                    city++;
+                }
+            }
+            
+            if(city <= minCity){
+                ans = i;
+                minCity = city;
+            }
+        }
+        
+        return ans;
+    }
+};
