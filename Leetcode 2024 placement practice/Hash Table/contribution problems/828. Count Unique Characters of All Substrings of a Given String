@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int uniqueLetterString(string s) {
+        vector<vector<int>> mp(26);
+        int n = s.size(), ans = 0;
+
+        for(int i=0; i<26; i++){
+            mp[i].push_back(-1);
+        }
+
+        // Mapping the occurance of each character
+        for(int i=0; i<n; i++){
+            int idx = s[i] - 'A';
+            mp[idx].push_back(i);
+        }
+
+        for(int i=0; i<26; i++){
+            // Checking if curring char exist
+            if(mp[i].size() == 1) continue;
+
+            mp[i].push_back(n);
+
+            for(int j=1; j<mp[i].size()-1; j++){
+                int ls = mp[i][j] - mp[i][j-1];
+                int rs = mp[i][j+1] - mp[i][j];
+
+                ans += ls*rs;
+            }
+        }
+
+        return ans;
+    }
+};
