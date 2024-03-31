@@ -1,0 +1,36 @@
+class Solution {
+private:
+    long long solve(string &s, int k){
+        long long n = s.size(), res = 0, total = (n * (n+1)) / 2, window = 0;
+
+        for(int i=0; i<n; i++){
+            if(s[i]-'a' == k){
+                window = 0;
+            }
+            else{
+                window++;
+            }
+            res += window;
+        }
+
+        return total - res;
+    }
+public:
+    long long appealSum(string s) {
+        long long n = s.size(), ans = 0;
+        vector<vector<int>> mp(26);
+
+        for(int i=0; i<n; i++){
+            int idx = s[i] - 'a';
+            mp[idx].push_back(i);
+        }
+
+        for(int i=0; i<26; i++){
+            if(mp[i].size() == 0) continue;
+            ans += solve(s, i);
+        }
+        
+
+        return ans;
+    }
+};

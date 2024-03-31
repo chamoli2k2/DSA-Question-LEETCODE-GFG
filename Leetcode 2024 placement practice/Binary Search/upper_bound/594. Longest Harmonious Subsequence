@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int findLHS(vector<int>& nums) {
+        int n = nums.size(), ans = 0, len = 1;
+        sort(begin(nums),end(nums));
+
+        for(int i=0; i<n; i++){
+            int idx = upper_bound(begin(nums), end(nums), nums[i]+1) - nums.begin();
+            // Case 1 : if we don't find
+            if(idx-1 < n){
+                if(nums[idx-1]-nums[i] == 1){
+                    ans = max(ans, idx-i);
+                }
+            }
+        }
+
+        return ans;
+    }
+};

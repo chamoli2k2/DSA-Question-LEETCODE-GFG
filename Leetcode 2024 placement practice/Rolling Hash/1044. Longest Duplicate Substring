@@ -1,0 +1,89 @@
+class Solution {
+private:
+    long long mod = 19260817;
+
+    long long powCalc(long long a, long long b){
+        // Base case
+        if(b == 0) return 1;
+
+        long long ans = powCalc(a, b/2);
+
+        if(b & 1) return (a%mod * ans%mod * ans%mod) % mod;
+
+        return (ans%mod * ans%mod) % mod;
+    }
+    bool solve(string &s, int k, string &ans){
+        // making map to track the rolling hash
+        int n = s.size();
+        unordered_map<int,vector<int>> mp;
+        // we will store the index where rolling hash is equal
+
+        long long rolledHash = 0, previous = powCalc(26,k-1);
+        for(int i=0; i<k; i++){
+            long long num = s[i] - 'a';
+            rolledHash = (rolledHash%mod + (num * powCalc(26,k-i-1))%mod)%mod;
+        }
+
+        // Putting rolledHash
+        mp[rolledHash].push_back(0);
+        bool flag = 0;
+
+
+        for(int i=k; i<n; i++){
+            // Removing the old 
+            long long num = s[i-k]-'a';
+            rolledHash = ((rolledHash%mod - (num * previous)%mod) + mod)%mod;
+
+            // Adding new
+            rolledHash = (rolledHash%mod * 26) %mod;
+            rolledHash = rolledHash + (s[i]-'a');
+
+            
+            // Checking curring rolledHash is in map or not
+            if(mp.count(rolledHash) == 0){
+                mp[rolledHash].push_back(i-k+1);
+            }
+            else{
+                string windowAns = s.substr(i-k+1,k);
+                if(k == 3) cout<<windowAns<<" ";
+                for(auto idx : mp[rolledHash]){
+                    string tempAns = "";
+                    for(int j=idx; j<idx+k; j++){
+                        tempAns += s[j];
+                    }
+
+                    // Checking if we got the answer
+                    if(tempAns == windowAns){
+                        flag = true;
+                        ans = tempAns;
+                        break;
+                    }
+                }
+
+                if(flag) break;
+                mp[rolledHash].push_back(i-k+1);
+            }
+        }
+
+        return flag;
+    }
+public:
+    string longestDupSubstring(string str) {
+        string ans = "";
+        int n = str.size(), s = 1, e = n-1, mid;
+
+        // Applying binary search
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            if(solve(str, mid, ans)){
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        } 
+
+        return ans;
+    }
+};

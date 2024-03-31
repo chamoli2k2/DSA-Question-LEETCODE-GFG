@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minimumLevels(vector<int>& nums) {
+        int n = nums.size(), ans;
+        vector<int> prefix(n);
+        prefix[0] = (nums[0] == 1 ? 1 : -1);
+
+        for(int i=1; i<n; i++){
+            prefix[i] = prefix[i-1] + (nums[i] == 1 ? 1 : -1);
+        }
+
+        int total = prefix[n-1];
+
+        for(int i=0; i<n-1; i++){
+            if(prefix[i] > (total-prefix[i])) return i+1;
+        }
+        
+        return -1;
+    }
+};

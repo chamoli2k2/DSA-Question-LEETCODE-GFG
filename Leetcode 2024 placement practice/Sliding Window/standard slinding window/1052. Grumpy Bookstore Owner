@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int window) {
+        int n = customers.size(), sum = 0, ans;
+
+        // making the answer
+        for(int i=0; i<n; i++){
+            if(grumpy[i] == 0) sum += customers[i];
+        }
+
+        ans = sum;
+
+        // let the size of window
+        for(int i=0; i<window; i++){
+            if(grumpy[i] == 1) sum += customers[i];
+        }
+
+        ans = max(ans, sum);
+
+        for(int i=window; i<n; i++){
+            // Evaluating 
+            sum -= (grumpy[i-window] == 1 ? customers[i-window] : 0);
+
+            sum += (grumpy[i] == 1 ? customers[i] : 0);
+
+            ans = max(ans, sum); 
+        }
+
+        return ans;
+    }
+};
