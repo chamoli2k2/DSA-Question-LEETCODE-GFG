@@ -1,0 +1,71 @@
+class Solution {
+private:
+    int findMaxMan(vector<vector<int>> &points, int idx){
+        int n = points.size();
+        // Sum = x1 + y1, Diff = X1 - Y1
+        int maxSum = INT_MIN, minSum = INT_MAX, maxDiff = INT_MIN, minDiff = INT_MAX;
+
+        for(int i=0; i<n; i++){
+            if(i == idx) continue;
+            int x = points[i][0], y = points[i][1];
+            maxSum = max(maxSum, x+y);
+            minSum = min(minSum, x+y);
+
+            maxDiff = max(maxDiff, x-y);
+            minDiff = min(minDiff, x-y);
+        }
+
+        // We  have four case
+        int c1 = maxSum - minSum;
+        int c2 = maxDiff - minDiff;
+
+        return max({c1, c2});
+    }
+public:
+    int minimumDistance(vector<vector<int>>& points) {
+        int n = points.size(), p1, p2;
+        // Sum = x1 + y1, Diff = X1 - Y1
+        pair<int,int> maxSum = {INT_MIN, -1}, minSum = {INT_MAX, -1}, maxDiff = {INT_MIN, -1}, minDiff = {INT_MAX, -1};
+
+        for(int i=0; i<n; i++){
+            int x = points[i][0], y = points[i][1];
+            int sum = x + y, diff = x - y;
+
+            if(maxSum.first < sum){
+                maxSum.first = sum;
+                maxSum.second = i;
+            }
+            
+            if(minSum.first > sum){
+                minSum.first = sum;
+                minSum.second = i;
+            }
+
+            if(maxDiff.first < diff){
+                maxDiff.first = diff;
+                maxDiff.second = i;
+            }
+
+            if(minDiff.first > diff){
+                minDiff.first = diff;
+                minDiff.second = i;
+            }
+        }
+
+        // We  have two case
+        if((maxSum.first - minSum.first) > (maxDiff.first - minDiff.first)){
+            p1 = maxSum.second;
+            p2 = minSum.second;
+        }
+        else{
+            p1 = maxDiff.second;
+            p2 = minDiff.second;
+        }
+
+        
+        int f1 = findMaxMan(points, p1);
+        int f2 = findMaxMan(points, p2);
+        
+        return min(f1, f2);
+    }
+};

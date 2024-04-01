@@ -1,0 +1,56 @@
+class Solution {
+    private:
+    int ans = 0;
+    void solve(Node* root, vector<int> &nums){
+        // Base case
+        if(root == NULL) return;
+        
+        solve(root->left, nums);
+        nums.push_back(root->data);
+        solve(root->right, nums);
+    }
+    
+    void merge(vector<int> &nums, int s, int mid, int e){
+        vector<int> temp(e-s+1);
+        int i = s, j = mid+1, k = 0;
+        
+        while(i <= mid && j <= e){
+            if(nums[i] > nums[j]){
+                ans += mid-i+1;
+                temp[k++] = nums[j++];
+            }
+            else{
+                temp[k++] = nums[i++];
+            }
+        }
+        
+        while(i <= mid) temp[k++] = nums[i++];
+        while(j <= e) temp[k++] = nums[j++];
+        
+        k = 0;
+        for(i=s; i<=e; i++){
+            nums[i] = temp[k++];
+        }
+        
+    }
+    void mergeSort(vector<int> &nums, int s, int e){
+        // Base case
+        if(s >= e) return;
+        
+        int mid = s + (e - s) / 2;
+        
+        mergeSort(nums, s, mid);
+        mergeSort(nums, mid+1, e);
+        merge(nums, s, mid, e);
+    }
+  public:
+
+    /*You are required to complete below function */
+    int pairsViolatingBST(int n, Node *root) {
+        vector<int> nums;
+        solve(root, nums);
+        mergeSort(nums, 0, n-1);
+        
+        return ans;
+    }
+};

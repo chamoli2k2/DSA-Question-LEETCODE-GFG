@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int minimumSubarrayLength(vector<int>& nums, int k) {
+        int n = nums.size(), ans = INT_MAX, i = 0, j = 0, OR = 0;
+        vector<int> mp(32,0);
+
+        while(j < n){
+            OR = OR | nums[j];
+
+            // Putting in the contribution
+            int temp = nums[j], idx = 0;
+            while(temp){
+                if(temp & 1) mp[idx]++;
+                idx++;
+                temp = temp >> 1;
+            }
+            
+
+            while(i <= j && OR >= k){
+                ans = min(ans, j-i+1);
+                temp = nums[i], idx = 0;
+                while(temp){
+                    if(temp & 1) mp[idx]--;
+                    if(mp[idx] == 0){
+                        // Unseting the bit
+                        int mask = ~(1 << idx);
+                        OR = OR & mask;
+                    }
+                    idx++;
+                    temp = temp >> 1;
+                }
+                i++;
+            }
+
+            j++;
+        }
+
+
+        return ans == INT_MAX ? -1 : ans;
+    }
+};

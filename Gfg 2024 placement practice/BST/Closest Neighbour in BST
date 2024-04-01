@@ -1,0 +1,22 @@
+class Solution {
+    private:
+        void solve(Node* root, int k, int &ans){
+            // Base case
+            if(root == NULL) return;
+        
+            
+            if(root->key > k){
+                solve(root->left, k, ans);
+            }
+            else{
+                ans = max(ans, root->key);
+                solve(root->right, k, ans);
+            }
+        }
+  public:
+    int findMaxForN(Node* root, int n) {
+        int ans = -1;
+        solve(root, n, ans);
+        return ans;
+    }
+};
