@@ -1,0 +1,36 @@
+class Solution {
+private:
+    bool dfs(vector<vector<char>> &board, vector<vector<bool>> &visited, string &word, int i, int j, int idx, int n, int m){
+        if(idx == word.size()) return true;
+        if(i < 0 || j < 0 || i == n || j == m || board[i][j] != word[idx] || visited[i][j]) return false;
+        visited[i][j] = true;
+
+
+        // We have 4 option
+        bool c1 = dfs(board, visited, word, i+1, j, idx+1, n, m);
+        bool c2 = dfs(board, visited, word, i-1, j, idx+1, n, m);
+        bool c3 = dfs(board, visited, word, i, j-1, idx+1, n, m);
+        bool c4 = dfs(board, visited, word, i, j+1, idx+1, n, m);
+
+        visited[i][j] = false;
+
+        return (c1 || c2 || c3 || c4);
+    }
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int n = board.size(), m = board[0].size();
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(board[i][j] == word[0]){
+                    vector<vector<bool>> visited(n, vector<bool>(m, false));
+                    if(dfs(board, visited, word, i, j, 0, n, m)){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+};
