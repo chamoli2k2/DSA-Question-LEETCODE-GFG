@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int maxDepth(string s) {
+        int n = s.size(), ans = 0, count = 0;
+
+        for(auto it : s){
+            if(it == '('){
+                count++;
+            }
+            else if(it == ')'){
+                count--;
+            }
+            ans = max(ans, count);
+        }
+
+        return ans;
+    }
+};

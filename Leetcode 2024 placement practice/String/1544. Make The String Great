@@ -1,0 +1,20 @@
+class Solution {
+public:
+    string makeGood(string s) {
+        string ans = "";
+        int n = s.size(), idx = 0;
+
+        while(idx < n){
+            if(idx+1 < n && (s[idx]+32 == s[idx+1]) || (s[idx]-32 == s[idx+1])){
+                idx += 2;
+            }
+            else{
+                ans += s[idx];
+                idx++;
+            }
+        }
+
+        if(ans == s) return ans;
+        return makeGood(ans);
+    }
+};
