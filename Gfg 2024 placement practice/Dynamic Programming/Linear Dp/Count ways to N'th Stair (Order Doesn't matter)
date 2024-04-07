@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    // Function to count number of ways to reach the nth stair
+    // when order does not matter.
+    long long countWays(int n) {
+        vector<int> dp(n+2);
+        dp[1] = 1, dp[2] = 2, dp[3] = 2;
+        
+        for(int i=4; i<=n; i++){
+            int k = i-2;
+            dp[i] = dp[k] + 1;
+        }
+        
+        return dp[n];
+    }
+};

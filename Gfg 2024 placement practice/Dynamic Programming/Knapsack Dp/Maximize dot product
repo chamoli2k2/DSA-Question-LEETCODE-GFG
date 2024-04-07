@@ -1,0 +1,37 @@
+class Solution{
+    private:
+    // This function calculates the maximum dot product of two arrays with some constraints.
+    // It takes two arrays 'a' and 'b', their respective sizes 'n' and 'm', and two indices 'i' and 'j' as input.
+    // The indices 'i' and 'j' denote the current positions in arrays 'a' and 'b' respectively.
+    int solve(int a[], int b[], int i, int j, int n, int m){
+        // Base case: If either of the arrays is exhausted (i.e., 'i' reaches 'n' or 'j' reaches 'm'),
+        // we return INT_MIN if 'b' is not completely processed (j < m), otherwise we return 0.
+        if(i == n || j == m){
+            return j < m ? INT_MIN : 0;
+        }
+        
+        // If the result for the current state (i, j) is already calculated, return it.
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        // We have two options at each step:
+        // 1. Multiply the current elements of both arrays and add it to the result obtained from the next recursive call.
+        int c1 = a[i] * b[j] + solve(a, b, i+1, j+1, n, m);
+        
+        // 2. Skip the current element from 'a' (multiplying it by 0) and continue with the next element in 'a'.
+        int c2 = a[i] * 0 + solve(a, b, i+1, j, n, m);
+        
+        // Choose the maximum of the above two options and store it in dp[i][j].
+        return dp[i][j] = max(c1, c2);
+    }
+		
+	public:
+	int dp[1001][1001]; // Memoization table to store intermediate results
+	// This function initializes the memoization table and calls the 'solve' function with initial parameters.
+	int maxDotProduct(int n, int m, int a[], int b[]) 
+	{ 
+		// Initialize memoization table with -1.
+		memset(dp, -1, sizeof(dp));
+		// Call the recursive function to find the maximum dot product and return the result.
+		return solve(a, b, 0, 0, n, m);
+	} 
+};

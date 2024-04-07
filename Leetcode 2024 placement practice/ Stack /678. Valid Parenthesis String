@@ -1,0 +1,52 @@
+class Solution {
+public:
+    bool checkValidString(string s) {
+        int n = s.size();
+        stack<int> openBracket, dot;
+
+        // Iterate through the string
+        for(int i=0; i<n; i++){
+            // If the character is an opening bracket, push its index to the stack
+            if(s[i] == '('){
+                openBracket.push(i);
+            }
+            // If the character is a wildcard '*', push its index to the dot stack
+            else if(s[i] == '*'){
+                dot.push(i);
+            }
+            else{ // If the character is a closing bracket
+                // If there's an open bracket, pop it from the stack
+                if(!openBracket.empty()){
+                    openBracket.pop();
+                }
+                // If there's no open bracket but there's a wildcard, use the wildcard as an open bracket
+                else if(!dot.empty()){
+                    dot.pop();
+                }
+                // If there's neither an open bracket nor a wildcard to match the closing bracket, return false
+                else{
+                    return false;
+                }
+            }
+        }
+
+        // If we don't have any open brackets left and only wildcards are left
+        if(openBracket.empty()) return true;
+
+        // Match the remaining open brackets with the wildcards
+        while(!openBracket.empty() && !dot.empty()){
+            // If the index of the open bracket is less than the index of the wildcard,
+            // they can pair up and the open bracket can be popped from the stack
+            if(openBracket.top() < dot.top()){
+                openBracket.pop();
+                dot.pop();
+            }
+            else{ // If the index of the wildcard is less than or equal to the index of the open bracket, return false
+                return false;
+            }
+        }
+
+        // If all open brackets are paired up with wildcards, return true
+        return openBracket.empty();
+    }
+};

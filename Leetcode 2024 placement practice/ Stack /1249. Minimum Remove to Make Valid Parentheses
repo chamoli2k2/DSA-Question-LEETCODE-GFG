@@ -1,0 +1,53 @@
+// Approach 1 : 
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        // Initialize an empty string to store the result
+        string ans = "";
+
+        // Initialize a stack to keep track of indices of '(' characters
+        stack<int> st;
+
+        // Get the size of the input string
+        int n = s.size();
+
+        // Initialize an unordered_set to store indices of ')' characters that need to be removed
+        unordered_set<int> mp;
+
+        // Iterate through each character in the input string
+        for(int i=0; i<n; i++){
+            // If the current character is '(', push its index onto the stack
+            if(s[i] == '('){
+                st.push(i);
+            }
+            // If the current character is ')'
+            else if(s[i] == ')'){
+                // If there is a matching '(' on the stack, pop it
+                if(!st.empty()){
+                    st.pop();
+                }
+                // If there is no matching '(' on the stack, mark this ')' for removal
+                else{
+                    mp.insert(i);
+                }
+            }
+        }
+
+        // After processing all characters, if there are unmatched '(' characters left on the stack,
+        // mark them for removal
+        while(!st.empty()){
+            mp.insert(st.top());
+            st.pop();
+        }
+
+        // Iterate through the original string again
+        for(int i=0; i<n; i++){
+            // If the current character is not marked for removal, append it to the result string
+            if(mp.find(i) == mp.end()) 
+                ans += s[i];
+        }
+
+        // Return the resulting string with minimum removals to make it valid
+        return ans;
+    }
+};
