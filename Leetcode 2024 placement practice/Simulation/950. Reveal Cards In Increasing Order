@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> deckRevealedIncreasing(vector<int>& deck) {
+        int n= deck.size(), skip = false, idx = 0;
+        sort(deck.begin(), deck.end());
+        vector<int> ans(n,0);
+
+        for(int i=0; i<n; i++){
+            int card = deck[i], flag = true;
+
+            while(flag){
+                if(skip == false && ans[idx] == 0){
+                    ans[idx] = card;
+                    flag = false;
+                    skip = true;
+                }
+                else if(skip == true && ans[idx] == 0){
+                    skip = false;
+                }
+                idx = (idx + 1) % n;
+            }
+        }
+
+        return ans;
+    }
+};

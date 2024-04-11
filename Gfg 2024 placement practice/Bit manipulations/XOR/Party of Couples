@@ -1,0 +1,9 @@
+class Solution{
+    public:
+    int findSingle(int n, int arr[]){
+        int single = 0;
+        for(int i=0; i<n; i++) single ^= arr[i];
+        
+        return single;
+    }
+};
