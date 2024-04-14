@@ -1,0 +1,30 @@
+class Solution{
+    private:
+    int solve(vector<vector<int>> &nums, int i, int j, int n, int m){
+        // Base case
+        if(i == n || j == m){
+            return 1e7;
+        }
+        
+        if(i == n-1 && j == m-1) return 1-nums[i][j] <= 0 ? 1 : 1-nums[i][j];
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        
+        // We have following cases
+        int down = solve(nums, i+1, j, n, m);
+        int right = solve(nums, i, j+1, n, m);
+        
+        int k = min(down, right) - nums[i][j];
+        
+        return dp[i][j] = k <= 0 ? 1 : k;
+    }
+
+	public:
+	int dp[1001][1001];
+	int minPoints(int m, int n, vector<vector<int>> points) 
+	{ 
+	    memset(dp, -1, sizeof(dp));
+	    return solve(points, 0, 0, m, n);
+	} 
+};

@@ -1,0 +1,16 @@
+int findXOR(int x){
+        // Base case
+        if(x%4 == 0) return x;
+        if(x%4 == 1) return 1;
+        if(x%4 == 2) return x+1;
+        return 0;
+}
+
+int findXOR(int start, int n){
+    // What we do
+        // Remove xor from (start-1);
+        int rs = start-1 >= 0 ?  start-1 : 0;
+        int totalXOR = findXOR(n);
+        int RemovedXOR = findXOR(rs);
+        return totalXOR ^ RemovedXOR;
+}

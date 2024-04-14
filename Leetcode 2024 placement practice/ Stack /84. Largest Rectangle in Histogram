@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& nums) {
+        int n = size(nums);
+        vector<int> ls(n,0), rs(n,0);
+        stack<int> st;
+
+        // Finding the next smaller elment from left
+        for(int i=0;i<n;i++){
+            while(!st.empty() && nums[st.top()] >= nums[i]){
+                st.pop();
+            }
+
+            if(st.empty()){
+                ls[i] = -1;
+            }
+            else{
+                ls[i] = st.top();
+            }
+
+            st.push(i);
+        }
+
+        // Clearing the stack
+        while(!st.empty()) st.pop();
+
+        // Finding next smaller element from right
+        for(int i=n-1;i>=0;i--){
+            while(!st.empty() && nums[st.top()] >= nums[i]){
+                st.pop();
+            }
+
+            if(st.empty()){
+                rs[i] = n;
+            }
+            else{
+                rs[i] = st.top();
+            }
+
+            st.push(i);
+        }
+
+        // Finding the area
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            int area = (rs[i]-ls[i]-1) * nums[i];
+            ans = max(ans,area);
+        }
+
+        return ans;
+    }
+};

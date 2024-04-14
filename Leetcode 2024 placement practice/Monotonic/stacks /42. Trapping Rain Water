@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int trap(vector<int>& arr) {
+        int n = arr.size(), ans = 0, maxi = INT_MIN;
+        vector<int> leftMax(n, 0), rightMax(n, 0);
+        
+        for(int i=0; i<n; i++){
+            if(maxi < arr[i]) maxi = arr[i];
+            leftMax[i] = maxi;
+        }
+
+        maxi = INT_MIN;
+
+        for(int i=n-1; i>=0; i--){
+            if(maxi < arr[i]) maxi = arr[i];
+            rightMax[i] = maxi;
+        }
+        
+        for(int i=0; i<n; i++){
+            ans += max(0, min(leftMax[i], rightMax[i]) - arr[i]);
+        }
+
+        return ans;
+    }
+};

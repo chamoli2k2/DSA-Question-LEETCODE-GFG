@@ -1,0 +1,17 @@
+class Solution{
+    public:
+    // function to convert a given Gray equivalent n to Binary equivalent.
+    int grayToBinary(int n)
+    {
+        
+        int ans = 0;
+        for(int i=30; i>=0; i--){
+            bool bit1 = (ans & (1<<(i+1)));
+            bool bit2 = (n & (1<<i));
+            if(bit1 ^ bit2){
+                ans += (1<<i);
+            }
+        }
+        return ans;
+    }
+};

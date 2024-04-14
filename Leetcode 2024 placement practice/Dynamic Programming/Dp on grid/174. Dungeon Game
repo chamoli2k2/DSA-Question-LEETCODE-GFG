@@ -1,0 +1,22 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &dungeon,int i,int j){
+        // Base case
+        if(i == dungeon.size() || j == dungeon[0].size()) return 1e7;
+        if(i == dungeon.size()-1 && j == dungeon[0].size()-1) return 1-dungeon[i][j] <= 0 ? 1 : 1-dungeon[i][j];
+
+        if(dp[i][j] != -1)  return dp[i][j];
+
+        int right = solve(dungeon,i,j+1);
+        int down = solve(dungeon,i+1,j);
+
+        int k = min(right,down)-dungeon[i][j];
+        return dp[i][j] = k <= 0 ? 1 : k;
+    }
+public:
+    int dp[201][201];
+    int calculateMinimumHP(vector<vector<int>>& dungeon) {
+        memset(dp,-1,sizeof(dp));
+        return solve(dungeon,0,0);
+    }
+};

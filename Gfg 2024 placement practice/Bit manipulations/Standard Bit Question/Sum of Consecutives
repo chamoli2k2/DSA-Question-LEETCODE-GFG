@@ -1,0 +1,10 @@
+class Solution {
+  public:
+    long long int canBeSumofConsec(long long int n) { 
+        if(n == 1L) return 0L;
+        
+        if((n & (n-1)) == 0) return 0L;
+        
+        return 1L;
+    }
+};

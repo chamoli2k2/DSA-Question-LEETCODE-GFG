@@ -1,0 +1,56 @@
+class Solution {
+private:
+    vector<int> solve(vector<int> nums, bool flag){
+        int n = nums.size();
+        vector<int> ans(n,0);
+        stack<pair<int,int>> st;
+        st.push({INT_MIN, -1});
+
+        if(flag == false) reverse(nums.begin(), nums.end());
+
+        for(int i=0; i<n; i++){
+            int idx = flag ? i : n-1-i;
+            while(!st.empty() && st.top().first >= nums[i]){
+                st.pop();
+            }
+
+            ans[idx] = i-st.top().second;
+            st.push({nums[i], i});
+        }
+
+        return ans;
+    }
+
+    int solve(vector<int>& nums) {
+        int n = nums.size(), ans = 0;
+        vector<int> ls = solve(nums, 1);
+        vector<int> rs = solve(nums, 0);
+
+        for(int i=0; i<n; i++){
+            int tempAns = ls[i] * nums[i] + (rs[i]-1) * nums[i];
+            ans = max(ans, tempAns);
+        }
+
+        return ans;
+    }
+public:
+    int maximalRectangle(vector<vector<char>>& nums) {
+        int n = nums.size(), m = nums[0].size(), ans = 0;
+        vector<int> arr(m, 0);
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(nums[i][j] == '1'){
+                    arr[j] += 1;
+                }
+                else{
+                    arr[j] = 0;
+                }
+            }
+
+            ans = max(ans, solve(arr));
+        }
+
+        return ans;
+    }
+};

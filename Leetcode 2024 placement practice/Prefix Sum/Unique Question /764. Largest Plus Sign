@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int orderOfLargestPlusSign(int n, vector<vector<int>>& mines) {
+        vector<vector<int>> nums(n, vector<int> (n, 1));
+        vector<vector<int>> ls(n, vector<int> (n, 0)), rs(n, vector<int> (n, 0));
+        vector<vector<int>> ds(n, vector<int> (n, 0)), us(n, vector<int> (n, 0));
+        int ans = 0;
+
+        for(auto it : mines) nums[it[0]][it[1]] = 0;
+
+        // Evaluating Prefix Sum of left and right
+        for(int i=0; i<n; i++){
+            int sum1 = 0, sum2 = 0;
+            for(int j=0; j<n; j++){
+                sum1 = (nums[i][j] == 0) ? 0 : sum1 + 1;
+                sum2 = (nums[i][n-j-1] == 0) ? 0 : sum2 + 1;
+                ls[i][j] = sum1;
+                rs[i][n-j-1] = sum2;
+            }
+        }
+
+        // Evaluating Prefix Sum of up and down
+        for(int j=0; j<n; j++){
+            int sum1 = 0, sum2 = 0;
+            for(int i=0; i<n; i++){
+                sum1 = (nums[i][j] == 0) ? 0 : sum1 + 1;
+                sum2 = (nums[n-i-1][j] == 0) ? 0 : sum2 + 1;
+                us[i][j] = sum1;
+                ds[n-i-1][j] = sum2;
+            }
+        }
+
+        // Evaluating Answer
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(nums[i][j] == 1){
+                    int tempAns = min({ls[i][j], rs[i][j], ds[i][j], us[i][j]});
+                    ans = max(ans, tempAns);
+                }
+            }
+        }
+
+        return ans;
+    }
+};

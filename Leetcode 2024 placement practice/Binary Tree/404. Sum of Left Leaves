@@ -1,0 +1,17 @@
+class Solution {
+private:
+    int solve(TreeNode* root, bool isLeft){
+        // Base case
+        if(root == NULL) return 0;
+        if(root->left == NULL && root->right == NULL) return isLeft ? root->val : 0;
+
+        int left = solve(root->left, true);
+        int right = solve(root->right, false);
+
+        return left + right;
+    }
+public:
+    int sumOfLeftLeaves(TreeNode* root) {
+        return solve(root, false);
+    }
+};
