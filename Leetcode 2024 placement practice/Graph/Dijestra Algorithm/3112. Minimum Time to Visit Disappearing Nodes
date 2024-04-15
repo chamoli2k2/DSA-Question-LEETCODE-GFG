@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> minimumTime(int n, vector<vector<int>>& edges, vector<int>& disappear) {
+        vector<pair<int,int>> adjList[n];
+
+        for(auto edge : edges){
+            int u = edge[0], v = edge[1], cost = edge[2];
+            adjList[u].push_back({v, cost});
+            adjList[v].push_back({u, cost});
+        }
+
+        priority_queue<pair<int,int>> pq;
+        pq.push({0, 0});
+        vector<int> ans(n, INT_MAX);
+        ans[0] = 0;
+
+        while(!pq.empty()){
+            int time = -pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+
+            if(time >= disappear[node] || ans[node] < time) continue;
+
+            for(auto it : adjList[node]){
+                int adjNode = it.first, cost = it.second;
+                if(time+cost < disappear[adjNode] && time+cost < ans[adjNode]){
+                    ans[adjNode] = time + cost;
+                    pq.push({-ans[adjNode], adjNode});
+                }
+            }
+
+        }
+
+        for(int i=0; i<n; i++){
+            if(ans[i] == INT_MAX) ans[i] = -1;
+        }
+
+        return ans;
+    }
+};

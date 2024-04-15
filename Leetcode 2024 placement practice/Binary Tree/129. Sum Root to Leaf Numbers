@@ -1,0 +1,23 @@
+class Solution {
+private:
+    void solve(TreeNode* root,int k, int &ans){
+        // Base case
+        if(root == NULL) return;
+
+        if(root->left == NULL && root->right == NULL){
+            k = k * 10 + root->val;
+            ans += k;
+            return;
+        }
+
+        int currentAns = k * 10 + root->val;
+        solve(root->left, currentAns, ans);
+        solve(root->right, currentAns, ans);
+    }
+public:
+    int sumNumbers(TreeNode* root) {
+        int ans = 0;
+        solve(root, 0, ans);
+        return ans;
+    }
+};

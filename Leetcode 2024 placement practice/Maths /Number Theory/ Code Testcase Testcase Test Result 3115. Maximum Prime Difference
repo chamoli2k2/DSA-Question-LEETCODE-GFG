@@ -1,0 +1,38 @@
+class Solution {
+private:
+    bool find(int x){
+        // Base case
+        if(x == 1) return false;
+
+        for(int i=2; i<=sqrt(x); i++){
+            if(x % i == 0) return false;
+        }
+
+        return true;
+    }
+public:
+    int maximumPrimeDifference(vector<int>& nums) {
+        int n = nums.size(), i = 0, j = n-1, ans = 0;
+        bool prime1 = false, prime2 = false;
+
+        while(i < j){
+            if(prime1 == false){
+                prime1 = find(nums[i]);
+            }
+
+            if(prime2 == false){
+                prime2 = find(nums[j]);
+            }
+
+            if(prime1 && prime2){
+                ans = j-i;
+                break;
+            }
+
+            if(prime1 == false) i++;
+            if(prime2 == false) j--;
+        }
+
+        return ans;
+    }
+};

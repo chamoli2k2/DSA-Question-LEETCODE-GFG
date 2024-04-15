@@ -1,0 +1,58 @@
+class Solution {
+private:
+    vector<int> parent;
+    int findParent(int x){
+        if(parent[x] == x){
+            return x;
+        }
+        return parent[x] = findParent(parent[x]);
+    }
+
+    void Union(int x, int y){
+        // Parent of y is x
+        parent[y] = x;
+    }
+public:
+    vector<int> minimumCost(int n, vector<vector<int>>& edges, vector<vector<int>>& query) {
+        parent.resize(n);
+        vector<int> cost(n);
+
+        for(int i=0; i<n; i++){
+            parent[i] = i;
+            cost[i] = -1;
+        }
+
+        for(auto edge : edges){
+            int u = edge[0], v = edge[1], wt = edge[2];
+
+            int parent_u = findParent(u);
+            int parent_v = findParent(v);
+
+            if(parent_u != parent_v){
+                Union(parent_u, parent_v);
+                cost[parent_u] &= cost[parent_v];
+            }
+
+            cost[parent_u] &= wt;
+        }
+
+        vector<int> ans;
+
+        for(auto it : query){
+            int s = it[0];
+            int e = it[1];
+
+            int parent_s = findParent(s);
+            int parent_e = findParent(e);
+
+            if(parent_s == parent_e){
+                ans.push_back(cost[parent_s]);
+            }
+            else{
+                ans.push_back(-1);
+            }
+        }
+
+        return ans;
+    }
+};

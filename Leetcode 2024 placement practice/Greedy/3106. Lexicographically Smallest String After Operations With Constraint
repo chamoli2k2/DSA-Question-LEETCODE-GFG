@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string getSmallestString(string s, int k) {
+        string ans = "";
+        int n = s.size();
+        for(int i=0; i<n; i++){
+            bool flag = true;
+            for(char ch='a'; ch<s[i]; ch++){
+                // d1 is distance of current character in straight
+                // d2 is distance of purposed character in straight
+                int d1 = s[i]-'a', d2 = ch-'a';
+                int straightDistance = d1-d2;
+                int circularDistance = 26-d1+d2;
+                int mini = min(circularDistance, straightDistance);
+
+                if(k >= mini){
+                    ans += ch;
+                    k -= mini;
+                    flag = false;
+                    break;
+                }
+            }
+
+            if(flag){
+                ans += s[i];
+            }
+        }
+
+        return ans;
+    }
+};
