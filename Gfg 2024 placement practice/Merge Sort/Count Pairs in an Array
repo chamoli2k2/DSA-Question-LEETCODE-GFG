@@ -1,0 +1,52 @@
+class Solution{
+    private:
+    
+    void merge(vector<int> &arr, int i, int mid,int j){
+        vector<int> tempArr(j-i+1);
+        int idx1 = i, idx2 = mid+1, k = 0;
+        
+        while(idx1 <= mid && idx2 <= j){
+            if(arr[idx1] > arr[idx2]){
+                ans += mid-idx1+1;
+                tempArr[k++] = arr[idx2++];
+            }
+            else{
+                tempArr[k++] = arr[idx1++];
+            }
+        }
+        
+        
+        while(idx1 <= mid) tempArr[k++] = arr[idx1++];
+        
+        while(idx2 <= j) tempArr[k++] = arr[idx2++];
+        
+        k = 0;
+        for(int t=i; t<=j; t++){
+            arr[t] = tempArr[k++];
+        }
+        
+    }
+    
+    void solve(vector<int> &arr, int i, int j){
+        // Base case
+        if(i >= j) return;
+        
+        int mid = i + (j - i) / 2;
+        
+        solve(arr, i, mid);
+        solve(arr, mid+1, j);
+        merge(arr, i, mid, j);
+    }
+    
+    public:
+    int ans = 0;
+    int countPairs(int nums[] , int n ) 
+    {
+        vector<int> arr;
+        for(int i=0; i<n; i++){
+            arr.push_back(nums[i]*i);
+        }
+        solve(arr, 0, n-1);
+        return ans;
+    }
+};

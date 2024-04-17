@@ -1,0 +1,15 @@
+class Solution {
+  public:
+    vector<int> countElements(vector<int> &a, vector<int> &b, int n, vector<int> &query,
+                              int q) {
+            vector<int> ans;
+            sort(begin(b), end(b));
+            for(auto idx : query){
+                int num = a[idx];
+                int k = upper_bound(b.begin(), b.end(), num) - b.begin();
+                ans.push_back(k);
+            }
+            
+            return ans;
+    }
+};

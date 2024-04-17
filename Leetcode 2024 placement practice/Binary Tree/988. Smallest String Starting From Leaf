@@ -1,0 +1,28 @@
+class Solution {
+private:
+    void solve(TreeNode* root, string s){
+        // Base case
+        if(root == NULL){
+            return;
+        }
+
+        char ch = 'a' + root->val;
+        
+        if(root->left == NULL && root->right == NULL){
+            string k = ch + s;    
+            ans = min(ans, k);
+            return;
+        }
+
+    
+        solve(root->left, ch + s);
+        solve(root->right, ch + s);
+    }
+public:
+    string ans;
+    string smallestFromLeaf(TreeNode* root) {
+        ans.resize(1000, 'z');
+        solve(root, "");
+        return ans;
+    }
+};

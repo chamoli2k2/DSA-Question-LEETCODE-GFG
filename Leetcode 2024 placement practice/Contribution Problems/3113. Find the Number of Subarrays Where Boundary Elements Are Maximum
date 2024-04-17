@@ -1,0 +1,47 @@
+class Solution {
+private:
+    vector<int> findNXT(vector<int> &nums, int n){
+        stack<pair<int,int>> st;
+        st.push({INT_MAX, n});
+        vector<int> ans(n);
+        
+        for(int i=n-1; i>=0; i--){
+
+            while(!st.empty() && st.top().first <= nums[i]){
+                st.pop();
+            }
+
+            ans[i] = st.top().second;
+            st.push({nums[i], i});
+        }
+
+        return ans;
+    }
+public:
+    long long numberOfSubarrays(vector<int>& nums) {
+        long long n = nums.size(), ans = 0;
+        unordered_map<int,vector<int>> mp;
+        for(int i=0; i<n; i++){
+            mp[nums[i]].push_back(i);
+        }
+
+        // Calculating the next greater element
+        vector<int> nextG = findNXT(nums, n);
+        unordered_map<int,bool> visited;
+        
+        for(int i=0; i<n; i++){
+            if(mp[nums[i]].size() == 1 || visited[nums[i]]) continue;
+
+            vector<int> arr = mp[nums[i]];
+            visited[nums[i]] = true;
+            int m = arr.size();
+            for(int j=0; j<m-1; j++){
+                int idx = nextG[arr[j]];
+                int k = lower_bound(arr.begin()+j, arr.end(), idx) - (arr.begin()+j);
+                ans += 1LL*(k-1);
+            }
+        }
+
+        return ans + n;
+    }
+};

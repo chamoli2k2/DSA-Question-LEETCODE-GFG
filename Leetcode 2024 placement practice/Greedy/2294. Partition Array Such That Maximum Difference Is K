@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int partitionArray(vector<int>& nums, int k) {
+        int n = nums.size(), ans = 1;
+        sort(nums.begin(), nums.end());
+        int current = nums[0] + k;
+
+        for(int i=1; i<n; i++){
+            if(nums[i] > current){
+                ans++;
+                current = nums[i] + k;
+            }
+        }
+
+        return ans;
+    }
+};

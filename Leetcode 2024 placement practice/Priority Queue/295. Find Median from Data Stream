@@ -1,0 +1,63 @@
+class MedianFinder {
+private:
+    priority_queue<double> maxHeap;
+    priority_queue<double, vector<double>, greater<double>> minHeap;
+public:
+    MedianFinder() {
+        
+    }
+    
+    void addNum(int num) {
+        // If size of maxHeap and minHeap is same
+        if(maxHeap.size() == minHeap.size()){
+            // Checking in which Heap does the current number lies
+            if(!maxHeap.empty() &&  1.0*num <= maxHeap.top()){
+                // It lies in maxHeap
+                maxHeap.push(1.0*num);
+            }
+            else if(!minHeap.empty() && 1.0*num >= minHeap.top()){
+                minHeap.push(1.0*num);
+            }
+            else{
+                maxHeap.push(1.0*num);
+            }
+        }
+        else if(maxHeap.size() > minHeap.size()){
+            // Checking if it lies in maxHeap or not
+            if(num < maxHeap.top()){
+                int topNum = maxHeap.top();
+                maxHeap.pop();
+                maxHeap.push(num);
+                minHeap.push(topNum);
+            }
+            else{
+                minHeap.push(num);
+            }
+        }
+        else{
+            if(num > minHeap.top()){
+                int topNum = minHeap.top();
+                minHeap.pop();
+                minHeap.push(num);
+                maxHeap.push(topNum);
+            }
+            else{
+                maxHeap.push(num);
+            }
+        }
+    }
+    
+    double findMedian() {
+        // If size of minHeap and maxHeap is same
+        if(maxHeap.size() == minHeap.size()){
+            double d1 = maxHeap.top();
+            double d2 = minHeap.top();
+            return (d1 + d2) / 2.0;
+        }
+        else if(maxHeap.size() > minHeap.size()){
+            return maxHeap.top();
+        }
+        return minHeap.top();
+    }
+};
+
