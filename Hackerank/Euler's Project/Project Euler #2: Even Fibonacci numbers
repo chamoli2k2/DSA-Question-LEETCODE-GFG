@@ -1,0 +1,51 @@
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+
+long long solve(long n){
+    long long k1 = 1, k2 = 2, k3, k4, k5, sum = 0;
+    
+    while(k2 < n){
+        sum += k2;
+        k3 = k2 + k1;
+        k4 = k2 + k3;
+        k5 = k4 + k3;
+        k2 = k5;
+        k1 = k4;
+    }
+    
+    return sum;
+}
+
+int main(){
+    int t;
+    cin >> t;
+    for(int a0 = 0; a0 < t; a0++){
+        long n;
+        cin >> n;
+        long long ans = solve(n);
+        cout<<ans<<endl;
+    }
+    return 0;
+}

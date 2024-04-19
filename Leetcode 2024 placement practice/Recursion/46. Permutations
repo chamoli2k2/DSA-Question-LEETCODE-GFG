@@ -1,0 +1,24 @@
+class Solution {
+private:
+    void makePermutation(vector<int> &nums, int idx){
+        // Base case
+        int n = nums.size();
+        if(idx == n){
+            ans.push_back(nums);
+            return;
+        }
+
+
+        for(int i=idx; i<n; i++){
+            swap(nums[idx], nums[i]);
+            makePermutation(nums, idx+1);
+            swap(nums[idx], nums[i]);
+        }
+    }
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> permute(vector<int>& nums) {
+        makePermutation(nums, 0);
+        return ans;
+    }
+};

@@ -1,0 +1,22 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int n = nums.size(), breakPoint = n-2;
+
+
+        while(breakPoint >= 0 && nums[breakPoint] >= nums[breakPoint+1]){
+            breakPoint--;
+        }
+
+        int swapIdx = n-1;
+        while(breakPoint >= 0 && swapIdx > breakPoint && nums[breakPoint] >= nums[swapIdx]){
+            swapIdx--;
+        }
+
+        if(breakPoint >= 0){
+            swap(nums[breakPoint], nums[swapIdx]);
+        }
+
+        reverse(nums.begin()+breakPoint+1, nums.end());
+    }
+};
