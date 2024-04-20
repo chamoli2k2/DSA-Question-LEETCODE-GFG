@@ -1,0 +1,37 @@
+class Solution {
+private:
+    bool solve(vector<vector<int>> &grid, vector<vector<bool>> &visited, vector<int> &cors, int i, int j, int n, int m){
+        // Base case
+        if(i == n || j == m || grid[i][j] == 0) return false;
+        if(visited[i][j]) return true;
+
+        visited[i][j] = true;
+        bool rs = solve(grid, visited, cors, i, j+1, n, m);
+        bool ls = solve(grid, visited, cors, i+1, j, n, m);
+
+        if(rs == false && ls == false){
+            cors.push_back(i);
+            cors.push_back(j);
+        }
+
+        return true;
+    }
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> findFarmland(vector<vector<int>>& land) {
+        int n = land.size(), m = land[0].size();
+        vector<vector<bool>> visited(n, vector<bool> (m, false));
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(visited[i][j] == false && land[i][j] == 1){
+                    vector<int> cors = {i, j};
+                    solve(land, visited, cors, i, j, n, m);
+                    ans.push_back(cors);
+                }
+            }
+        }
+
+        return ans;
+    }
+};
