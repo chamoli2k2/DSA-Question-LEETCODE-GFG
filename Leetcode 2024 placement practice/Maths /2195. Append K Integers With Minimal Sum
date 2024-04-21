@@ -1,0 +1,29 @@
+class Solution {
+private:
+    long long getSum(long long a, long long n){
+        return (n * (2*a + (n-1))) / 2;
+    }
+public:
+    long long minimalKSum(vector<int>& nums, int k) {
+        long long n = nums.size(), ans = 0, start = 1;
+        sort(nums.begin(), nums.end());
+
+        for(int i=0; i<n; i++){
+            // checking how many number can be inserted
+            int numInsert = nums[i] - start;
+            if(numInsert > 0){
+                int m = min(k, numInsert);
+                ans += getSum(start, m);
+                k -= m;
+            }
+
+            start = nums[i] + 1;
+        }
+
+        // If k is still there
+        start = nums[n-1] + 1;
+        ans += getSum(start, k);
+
+        return ans;
+    }
+};

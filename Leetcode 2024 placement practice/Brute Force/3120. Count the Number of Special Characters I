@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int numberOfSpecialChars(string word) {
+        int n = word.size(), ans = 0;
+        unordered_map<char, int> mp, visited;
+        sort(begin(word), end(word));
+
+        for(int i=n-1; i>=0; i--){
+            // If we got a upper case english letter
+            if(word[i] >= 'A' && word[i] <= 'Z' && visited[word[i]] == 0){
+                char lower = word[i] + 32;
+                if(mp[lower]){
+                    ans++;
+                }
+                visited[word[i]] = 1;
+            }
+            mp[word[i]] = 1;
+        }
+
+        return ans;
+    }
+};

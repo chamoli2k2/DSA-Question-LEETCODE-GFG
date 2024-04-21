@@ -1,0 +1,24 @@
+class Solution{   
+public:
+    //Function to partition the array around the range such 
+    //that array is divided into three parts.
+    void threeWayPartition(vector<int>& arr,int a, int b)
+    {
+        int i = 0, j = arr.size()-1, k = 0;
+        
+        while(k <= j){
+            if(arr[k] < a){
+                swap(arr[i], arr[k]);
+                i++;
+                k++;
+            }
+            else if(arr[k] > b){
+                swap(arr[j], arr[k]);
+                j--;
+            }
+            else{
+                k++;
+            }
+        }
+    }
+};

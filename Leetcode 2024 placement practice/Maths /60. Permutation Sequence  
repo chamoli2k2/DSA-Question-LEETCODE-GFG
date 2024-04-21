@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        string ans = "";
+        vector<char> nums;
+        int no_of_term_in_each_partision = 1;
+
+        for(int i=1; i<n; i++){
+            nums.push_back(i+'0');
+            no_of_term_in_each_partision *= i;
+        }
+
+        nums.push_back(n+'0');
+        k--;
+
+        while(true){
+            int idx = k / no_of_term_in_each_partision;
+            ans += nums[idx];
+            // Erasing that no of the permutation
+            nums.erase(nums.begin()+idx);
+
+            // Base case
+            if(nums.size() == 0) break;
+
+            k = k % no_of_term_in_each_partision;
+            no_of_term_in_each_partision = no_of_term_in_each_partision / nums.size(); 
+        }
+
+        return ans;
+    }
+};

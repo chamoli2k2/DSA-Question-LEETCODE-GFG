@@ -1,0 +1,41 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &grid, int col, int digit){
+        // Base case
+        int m = grid[0].size(), n = grid.size();
+
+        if(col == m) return 0;
+
+        if(dp[col][digit] != -1) return dp[col][digit];
+
+        int cost = 0;
+        for(int i=0; i<n; i++){
+            if(grid[i][col] != digit) cost++; 
+        }
+
+        // Evaluating cost 
+        int ans = INT_MAX;
+        for(int num=0; num<=9; num++){
+            if(num != digit){
+                int tempAns = cost + solve(grid, col+1, num);
+                ans = min(ans, tempAns);
+            }
+        }
+
+        return dp[col][digit] = ans;
+    }
+public:
+    int dp[1001][11];
+    int minimumOperations(vector<vector<int>>& grid) {
+        memset(dp, -1, sizeof(dp));
+        int n = grid.size(), m = grid[0].size(), ans = INT_MAX;
+        
+        // trying all digit
+        for(int digit=0; digit<=9; digit++){
+            int tempAns = solve(grid, 0, digit);
+            ans = min(ans, tempAns);
+        }
+
+        return ans;
+    }
+};

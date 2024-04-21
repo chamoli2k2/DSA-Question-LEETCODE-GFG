@@ -1,0 +1,151 @@
+// Approach 1 :
+class Solution {
+private:
+    bool dfs(vector<pair<int,int>> adj[], unordered_map<string,int> &mp, vector<bool> &visited, int cost, int maxCost, int node, int target){
+        // Base case
+        if(node == target){
+            return cost == maxCost;
+        }
+        
+        if(cost > maxCost) return false;
+        
+        visited[node] = true;
+        
+        int check = false;
+        for(auto it : adj[node]){
+            int adjNode = it.first, walkCost = it.second;
+            if(visited[adjNode] == false){
+                bool flag = dfs(adj, mp, visited, cost+walkCost, maxCost, adjNode, target);
+                check = check || flag;
+                string k = to_string(adjNode) + "lol" + to_string(node);
+                if(flag == false && mp[k] == false){
+                    mp[k] = false;
+                }
+                else{
+                    mp[k] = true;
+                }
+            }
+        }
+        
+        visited[node] = false;
+        
+        return check;
+    }
+public:
+    vector<bool> findAnswer(int n, vector<vector<int>>& edges) {
+        vector<pair<int,int>> adj[n];
+        for(auto edge : edges){
+            adj[edge[0]].push_back({edge[1], edge[2]});
+            adj[edge[1]].push_back({edge[0], edge[2]});
+        }
+        
+        priority_queue<pair<int,int>> pq;
+        vector<int> path(n, INT_MAX);
+        pq.push({0, 0});
+        path[0] = 0;
+        int ans = INT_MAX;
+        
+        while(!pq.empty()){
+            int cost = -pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+            
+            if(node == n-1){
+                ans = cost;
+                break;
+            }
+            
+            
+            for(auto it : adj[node]){
+                int adjNode = it.first, walkCost = it.second;
+                if(cost+walkCost < path[adjNode]){
+                    pq.push({-(cost+walkCost), adjNode});
+                    path[adjNode] = cost+walkCost;
+                }
+            }
+        }
+        
+        int m = edges.size();
+        vector<bool> nums(m, false), visited(n, false);
+        if(ans == INT_MAX) return nums;
+        unordered_map<string,int> mp;
+        dfs(adj, mp, visited, 0, ans, 0, n-1);
+        
+        for(int i=0; i<m; i++){
+            int a = edges[i][0], b = edges[i][1];
+            string k1 = to_string(a) + "lol" + to_string(b);
+            string k2 = to_string(b) + "lol" + to_string(a);
+            if(mp[k1] || mp[k2]){
+                nums[i] = true;
+            }
+        }
+        
+        return nums;
+    }
+};
+
+// Approach 2:
+class Solution {
+private:
+    vector<int> solve(vector<pair<int,int>> adjList[], int source, int destination, int n){
+        vector<int> maxPath(n, 1e8);
+        maxPath[source] = 0;
+        priority_queue<pair<int,int>> pq;
+        pq.push({0, source});
+
+        while(!pq.empty()){
+            int cost = -pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+
+            for(auto it : adjList[node]){
+                int adjNode = it.first, walkCost = it.second;
+                if(cost+walkCost < maxPath[adjNode]){
+                    pq.push({-(cost+walkCost), adjNode});
+                    maxPath[adjNode] = cost+walkCost;
+                }
+            }
+        }
+
+        return maxPath;
+    }
+public:
+    vector<bool> findAnswer(int n, vector<vector<int>>& edges) {
+        int m = edges.size();
+        vector<pair<int,int>> adjList[n];
+
+        for(int i=0; i<m; i++){
+            int a = edges[i][0];
+            int b = edges[i][1];
+            int cost = edges[i][2];
+
+            adjList[a].push_back({b, cost});
+            adjList[b].push_back({a, cost});
+        }
+        
+        // Applying dijestra from source to destination
+        vector<int> sourceToDestination = solve(adjList, 0, n-1, n);
+        // Applying dijestra from destination to source
+        vector<int> destinationToSource = solve(adjList, n-1, 0, n);
+
+        vector<bool> ans(m , false);
+        // Base case
+        int maxCost = sourceToDestination[n-1];
+
+        if(maxCost == 1e8) return ans;
+        
+        for(int i=0; i<m; i++){
+            int a = edges[i][0];
+            int b = edges[i][1];
+            int cost = edges[i][2];
+
+            // Calculating the cost
+            int walkCost = min({sourceToDestination[a] + destinationToSource[b],sourceToDestination[b] + destinationToSource[a]});
+
+            if(walkCost+cost == maxCost){
+                ans[i] = true;
+            }
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,28 @@
+class Solution {
+private:
+    bool solve(vector<int> adj[], vector<bool> &visited, int node, int dest){
+        // Base case
+        if(node == dest) return true;
+
+        visited[node] = true;
+        for(auto it : adj[node]){
+            int adjNode = it;
+            if(visited[adjNode] == false && solve(adj, visited, adjNode, dest)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<int> adj[n];
+        for(auto it : edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+
+        vector<bool> visited(n, false);
+        return solve(adj, visited, source, destination);
+    }
+};

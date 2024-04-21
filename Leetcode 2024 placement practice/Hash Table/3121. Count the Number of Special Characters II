@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int numberOfSpecialChars(string word) {
+        int n = word.size(), ans = 0;
+        unordered_map<char, int> mp;
+
+        for(int i=0; i<n; i++){
+            if(word[i] >= 'a' && word[i] <= 'z'){
+                mp[word[i]] = i;
+            }
+            else if(mp.count(word[i]) == 0){
+                mp[word[i]] = i;
+            }
+        }
+
+        unordered_map<char, bool> visited;
+
+        for(int i=0; i<n; i++){
+            // We will check only if we get a upperCase word
+            if(word[i] >= 'A' && word[i] <= 'Z' && visited[word[i]] == false){
+                int idx1 = n;
+                int idx2 = mp[word[i]];
+                char lowerWord = word[i] + 32;
+        
+                if(mp.count(lowerWord)){
+                    idx1 = mp[lowerWord];
+                }
+
+                if(idx1 < idx2) ans++;
+
+                visited[word[i]] = true;
+            }
+        }
+
+        return ans;
+    }
+};

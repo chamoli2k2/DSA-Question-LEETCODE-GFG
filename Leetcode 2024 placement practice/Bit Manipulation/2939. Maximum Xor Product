@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int maximumXorProduct(long long a, long long b, int n) {
+        long long xXora = 0, xXorb = 0;
+        int M = 1e9 + 7;
+
+        // Setting default
+         // Setting default
+        for(long long i=50; i>=n; i--){
+            bool bitA = (a >> i) & 1,  bitB = (b >> i) & 1;
+            long long num = 1LL << i;
+
+            if(bitA) xXora = (xXora | num);
+            if(bitB) xXorb = (xXorb | num);
+        }
+
+
+        for (long long i = n-1; i >= 0; i--) {
+            
+            bool aset = (a & (1ll << i)) > 0; //Finding the ith bit of a
+            bool bset = (b & (1ll << i)) > 0; //Finding the ith bit of b
+
+            //If both ith bit of a and b are same
+            if(aset == bset) {
+                xXora ^= (1ll << i);
+                xXorb ^= (1ll << i);
+                continue;
+            }
+            
+            if(xXora > xXorb) {
+                xXorb ^= (1ll << i);
+            } else {
+                xXora ^= (1ll << i);
+            }
+
+        }   
+
+        xXora %= M;
+        xXorb %= M;
+        return (xXora * xXorb) % M;
+    }
+};

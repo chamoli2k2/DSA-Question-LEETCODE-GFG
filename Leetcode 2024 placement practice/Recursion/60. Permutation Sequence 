@@ -1,0 +1,37 @@
+class Solution {
+private:
+    string solve(vector<char> &nums, int k, int no_of_term_in_each_partision){
+        int idx = k / no_of_term_in_each_partision;
+
+        string ans = "";
+        ans += nums[idx];
+
+        // Removing 
+        nums.erase(nums.begin()+idx);
+
+        // Base case
+        if(nums.size() == 0) return ans;
+
+        k = k % no_of_term_in_each_partision;
+        no_of_term_in_each_partision = no_of_term_in_each_partision / nums.size();
+
+        return ans += solve(nums, k, no_of_term_in_each_partision);
+    }
+public:
+    string getPermutation(int n, int k) {
+        string ans = "";
+        vector<char> nums;
+        int no_of_term_in_each_partision = 1;
+
+        for(int i=1; i<n; i++){
+            nums.push_back(i+'0');
+            no_of_term_in_each_partision *= i;
+        }
+
+        nums.push_back(n+'0');
+        k--;
+
+        ans = solve(nums, k, no_of_term_in_each_partision);
+        return ans;
+    }
+};
