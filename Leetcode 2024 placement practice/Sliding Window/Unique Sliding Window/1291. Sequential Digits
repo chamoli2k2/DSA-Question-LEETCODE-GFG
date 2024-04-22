@@ -1,0 +1,36 @@
+class Solution {
+private:
+    void solve(int start, int k, int low, int high){
+        int num = 0;
+        for(int i=1; i<=k; i++){
+            num = num * 10 + i;
+        }
+
+        if(num > high) return;
+
+        int pow10 = pow(10, k-1);
+        if(num >= low && num <= high) ans.push_back(num);
+        
+        for(int i=k+1; i<=9; i++){
+            // Removing previous
+            num -= (i-k)*pow10;
+
+            // Adding new num
+            num = num * 10 + i;
+
+            if(num > high) break;
+            
+            if(num >= low && num <= high) ans.push_back(num);
+        }
+    }
+public:
+    vector<int> ans;
+    vector<int> sequentialDigits(int low, int high) {
+
+        for(int window=2; window<=9; window++){
+            solve(1, window, low, high);
+        }
+
+        return ans;
+    }
+};

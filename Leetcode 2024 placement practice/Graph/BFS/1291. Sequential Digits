@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> sequentialDigits(int low, int high) {
+        vector<int> ans;
+        queue<int> q;
+
+        for(int i=1; i<9; i++){
+            q.push(i);
+        }
+
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+
+            if(node >= low && node <= high){
+                ans.push_back(node);
+            }
+
+            if(node > high) continue;
+
+            int endNo = node % 10;
+            if(endNo+1 <= 9){
+                int num = node * 10 + (endNo + 1);
+                q.push(num);
+            }
+        }
+
+        return ans;
+    }
+};

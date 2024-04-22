@@ -1,0 +1,42 @@
+class Solution {
+private:
+    // Helper function to calculate the number of candies each child receives
+    int getCandies(vector<int> &nums, int n) {
+        // Initialize a vector to store the number of candies for each child
+        vector<int> candies(n, 1);
+
+        // Traverse the ratings array from left to right
+        for (int i = 1; i < n; i++) {
+            // If the current child's rating is higher than the previous child's rating,
+            // give the current child one more candy than the previous child
+            if (nums[i] > nums[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+
+        // Traverse the ratings array from right to left
+        for (int i = n - 2; i >= 0; i--) {
+            // If the current child's rating is higher than the next child's rating,
+            // and the current child's candy count is not greater than the next child's candy count,
+            // give the current child one more candy than the next child
+            if (nums[i] > nums[i + 1] && candies[i] <= candies[i + 1]) {
+                candies[i] = candies[i + 1] + 1;
+            }
+        }
+
+        // Calculate the total number of candies distributed
+        int totalCandies = accumulate(candies.begin(), candies.end(), 0);
+
+        return totalCandies;
+    }
+public:
+    // Main function to distribute candies to children
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+
+        // Call the helper function to get the total number of candies distributed
+        int ans = getCandies(ratings, n);
+
+        return ans;
+    }
+};

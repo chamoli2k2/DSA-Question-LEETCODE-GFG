@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    long long jumpingNums(long long x) {
+        queue<long long> q;
+        for(long long i=1; i<=9; i++){
+            q.push(i);
+        }
+        
+        long long ans = 1;
+        while(!q.empty()){
+            long long node = q.front();
+            q.pop();
+            
+            // Checking if current number lies in range
+            if(node <= x) ans = max(ans, node);
+            if(node > x) continue;
+            
+            long long k = node % 10;
+            if(k-1 >= 0){
+                int num = node * 10 + (k-1);
+                q.push(num);
+            }
+            
+            if(k+1 < 10){
+                int num = node * 10 + k+1;
+                q.push(num);
+            }
+        }
+        
+        return ans;
+    }
+};

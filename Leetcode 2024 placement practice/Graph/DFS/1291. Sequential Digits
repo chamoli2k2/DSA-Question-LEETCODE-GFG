@@ -1,0 +1,31 @@
+class Solution {
+private:
+    int idx = 0;
+    void solve(unordered_map<int,vector<int>> &adj, vector<int> &ans, int num, int node, int low, int high){
+        for(auto it : adj[node]){
+            
+            int tempNum = num*10 + it;
+            if(tempNum > high) break;
+            if(tempNum >= low && tempNum <= high){
+                ans.push_back(tempNum);
+            }
+     
+            solve(adj, ans, tempNum, it, low, high);
+        }
+    }
+public:
+    vector<int> sequentialDigits(int low, int high) {
+        unordered_map<int,vector<int>> adj;
+        vector<int> ans;
+        for(int i=1; i<9; i++){
+            adj[i].push_back(i+1);
+        }
+
+        for(int i=1; i<9; i++){
+            solve(adj, ans, i, i, low, high);
+        }
+
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
+};

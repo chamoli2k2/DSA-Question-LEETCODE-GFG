@@ -1,0 +1,77 @@
+class Solution {
+private:
+    void dfs(string node, vector<string> &str, int cost){
+        // Base case
+        if(cost == 0){
+            reverse(str.begin(), str.end());
+            ans.push_back(str);
+            reverse(str.begin(), str.end());
+            return;
+        }
+
+        for(int i=0; i<node.size(); i++){
+            char ch = node[i];
+
+            for(char newChar='a'; newChar<='z'; newChar++){
+                node[i] = newChar;
+
+                if(track.find(node) != track.end() && track[node] == cost-1){
+                    str.push_back(node);
+                    dfs(node, str, cost-1);
+                    str.pop_back();
+                }
+            }
+
+            node[i] = ch;
+        }
+    }
+public:
+    vector<vector<string>> ans;
+    unordered_map<string,int> valid;
+    unordered_map<string,int> track;
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        for(auto it : wordList) valid[it] = true;
+
+        // Base case
+        if(valid[endWord] == false) return {};
+
+        queue<pair<string,int>> q;
+        q.push({beginWord, 0});
+        track[beginWord] = 0;
+        valid[beginWord] = false;
+
+        while(!q.empty()){
+            string node = q.front().first;
+            int cost = q.front().second;
+            q.pop();
+
+            // Checking
+            if(node == endWord){
+                vector<string> str;
+                str.push_back(node);
+                dfs(node, str, cost);
+                return ans;
+            }
+
+            for(int i=0; i<node.size(); i++){
+                char ch = node[i];
+
+                for(char k='a'; k<='z'; k++){
+                    if(ch == k) continue;
+
+                    node[i] = k;
+
+                    if(valid[node] == true){
+                        q.push({node, cost+1});
+                        valid[node] = false;
+                        track[node] = cost + 1;
+                    }
+                }
+
+                node[i] = ch;
+            }
+        }
+
+        return {};
+    }
+};

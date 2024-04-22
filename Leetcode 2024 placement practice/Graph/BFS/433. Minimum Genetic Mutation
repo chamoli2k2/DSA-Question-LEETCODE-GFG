@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+        unordered_map<string,bool> valid;
+        vector<char> dna = {'A', 'G', 'C', 'T'};
+
+        for(auto it : bank) valid[it] = true;
+
+        // Base case
+        if(startGene == endGene) return 0;
+        if(valid[endGene] == false) return -1;
+
+        queue<string> q;
+        int ans = 0;
+        q.push(startGene);
+        valid[startGene] = false;
+
+        while(!q.empty()){
+            int n = q.size();
+
+            for(int i=0; i<n; i++){
+                string node = q.front();
+                q.pop();
+
+                if(node == endGene){
+                    return ans;
+                }
+
+                for(int i=0; i<8; i++){
+                    char ch = node[i];
+
+                    for(int j=0; j<4; j++){
+                        if(ch == dna[j]) continue;
+
+                        node[i] = dna[j];
+                        if(valid[node] == true){
+                            q.push(node);
+                            valid[node] = false;
+                        }
+                    }
+                    
+                    node[i] = ch;
+                }
+            }
+
+            ans++;
+        }
+
+        return -1;
+    }
+};

@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_map<string,int> valid;
+        for(auto it : wordList) valid[it] = true;
+
+        // Base case
+        if(valid[endWord] == false) return 0;
+        queue<pair<string,int>> q;
+        q.push({beginWord, 1});
+
+        while(!q.empty()){
+            string node = q.front().first;
+            int cost = q.front().second;
+            q.pop();
+
+            // Checking
+            if(node == endWord) return cost;
+
+            for(int i=0; i<node.size(); i++){
+                char ch = node[i];
+
+                for(char k='a'; k<='z'; k++){
+                    if(ch == k) continue;
+
+                    node[i] = k;
+
+                    if(valid[node] == true){
+                        q.push({node, cost+1});
+                        valid[node] = false;
+                    }
+                }
+
+                node[i] = ch;
+            }
+        }
+
+        return 0;
+    }
+};
