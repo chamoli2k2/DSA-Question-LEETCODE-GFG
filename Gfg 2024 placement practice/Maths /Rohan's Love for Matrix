@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    int firstElement(int n) {
+        int mod = 1e9 + 7;
+        int prev = 1, curr = 2;
+        if(n == 1 || n == 2) return n;
+        
+        for(int i=3; i<n; i++){
+            int temp = (curr%mod + prev%mod) % mod;
+            prev = curr%mod;
+            curr = temp%mod;
+        }
+        
+        return curr;
+    }
+};

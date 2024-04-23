@@ -1,0 +1,29 @@
+class Solution {
+public:
+    unordered_set<int> used;
+    int row, col, total, currSize;
+    Solution(int m, int n) {
+        row = m, col = n;
+        total = m * n;
+    }
+    
+    vector<int> flip() {
+        // Base case
+        if(used.size() == total) {};
+        // Generating the random no
+        int random_no = rand() % total;
+        while(used.count(random_no)){
+            random_no = (++random_no) % total;
+        }
+
+        int x = random_no / col;
+        int y = random_no % col;
+
+        used.insert(random_no);
+        return {x , y};
+    }
+    
+    void reset() {
+        used.clear();
+    }
+};

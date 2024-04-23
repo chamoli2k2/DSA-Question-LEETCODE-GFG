@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> nums;
+    int total;
+    Solution(vector<int>& w) {
+        nums.push_back(w[0]);
+        for(int i=1; i<w.size(); i++){
+            nums.push_back(nums[i-1]+w[i]);
+        }
+        total = nums[nums.size()-1];
+    }
+    
+    int pickIndex() {
+        // Picking a random weight
+        int random_weight = rand() % total + 1;
+        int idx = lower_bound(nums.begin(), nums.end(), random_weight) - nums.begin();
+        return idx;
+    }
+};

@@ -1,21 +1,29 @@
 class Solution{
     private:
-    long long solve(int arr[], int i, int j){
+    long long solve(int arr[], int i, int j, bool flag){
         // Base case
         if(i > j) return 0;
         
         if(dp[i][j] != -1) return dp[i][j];
         
-        // We have two cases
-        long long c1 = arr[i] + min(solve(arr, i+2, j), solve(arr, i+1, j-1));
-        long long c2 = arr[j] + min(solve(arr, i+1, j-1), solve(arr, i, j-2));
+        int c1, c2;
         
-        return dp[i][j] = max(c1, c2);
+        if(flag){
+            c1 = arr[i] + solve(arr, i+1, j, !flag);
+            c2 = arr[j] + solve(arr, i, j-1, !flag);
+            
+            return dp[i][j] = max(c1, c2);
+        }
+        
+        c1 = solve(arr, i+1, j, !flag);
+        c2 = solve(arr, i, j-1, !flag);
+        
+        return dp[i][j] = min(c1, c2);
     }
     public:
     long long dp[1001][1001];
     long long maximumAmount(int n, int arr[]){
         memset(dp, -1, sizeof(dp));
-        return solve(arr, 0, n-1);
+        return solve(arr, 0, n-1, true);
     }
 };

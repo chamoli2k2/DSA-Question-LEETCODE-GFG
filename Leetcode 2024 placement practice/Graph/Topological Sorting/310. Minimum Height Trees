@@ -1,0 +1,51 @@
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        // Base case
+        if(n == 1) return {0};
+        queue<int> q;
+        vector<int> adj[n], indegree(n, 0), visited(n, 0);
+
+        for(auto edge : edges){
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);
+
+            indegree[edge[0]]++;
+            indegree[edge[1]]++;
+        }
+
+        for(int i=0; i<n; i++){
+            // Putting leaf node into the queue
+            if(indegree[i] == 1) q.push(i), visited[i] = 1;
+        }
+
+
+        while(n > 2){
+            int sz = q.size();
+            n -= sz;
+
+            for(int i=0; i<sz; i++){
+                int node = q.front();
+                q.pop();
+
+                for(auto it : adj[node]){
+                    if(visited[it] == 0){
+                        indegree[it]--;
+                        if(indegree[it] == 1){
+                            q.push(it);
+                            visited[it] = 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        vector<int> ans;
+        while(!q.empty()){
+            ans.push_back(q.front());
+            q.pop();
+        }
+
+        return ans;
+    }
+};

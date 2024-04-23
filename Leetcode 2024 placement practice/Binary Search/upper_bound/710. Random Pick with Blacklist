@@ -1,0 +1,44 @@
+class Solution {
+private:
+    int findBound(vector<pair<int,int>> &nums, int target){
+        int s = 0, e = nums.size()-1, ans = nums.size();
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            if(nums[mid].first > target){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+public:
+    vector<pair<int,int>> nums;
+    int sz;
+    Solution(int n, vector<int>& blacklist) {
+        sort(blacklist.begin(), blacklist.end());
+        int previousImpact = 0;
+        int m = blacklist.size();
+        sz = n - m;
+
+        for(int i=0; i<blacklist.size(); i++){
+            int blackElem = blacklist[i] - previousImpact;
+            nums.push_back({blackElem, previousImpact+1});
+            previousImpact++;
+        }
+    }
+    
+    int pick() {
+        int num = rand() % sz;
+        int idx = findBound(nums, num);
+        if(idx == 0){
+            return num;
+        }
+        
+        return num + nums[idx-1].second;
+    }
+};

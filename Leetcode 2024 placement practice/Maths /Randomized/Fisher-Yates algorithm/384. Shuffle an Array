@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> nums1, nums2;
+    Solution(vector<int>& nums) {
+        nums1 = nums;
+        nums2 = nums;
+    }
+    
+    vector<int> reset() {
+        nums1 = nums2;
+        return nums1;
+    }
+    
+    vector<int> shuffle() {
+        // Suffling 
+        int m = nums1.size() - 1;
+        while(m >= 1){
+            int idx = rand() % (m+1);
+            swap(nums1[idx], nums1[m--]);
+        }
+
+        return nums1;
+    }
+};

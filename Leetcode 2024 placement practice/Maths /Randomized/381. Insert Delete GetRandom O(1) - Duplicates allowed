@@ -1,0 +1,50 @@
+class RandomizedCollection {
+public:
+    unordered_map<int,priority_queue<int>> mp;
+    vector<int> nums;
+    RandomizedCollection() {
+        
+    }
+    
+    bool insert(int val) {vector
+        // Checking if number is present 
+        bool flag = mp.count(val) == 0 ? true : false;
+
+        int m = nums.size();
+        mp[val].push(m);
+        nums.push_back(val);
+
+        return flag;
+    }
+    
+    bool remove(int val) {
+        if(mp.count(val) == 0) return false;
+
+        //  Finding the word to get replaced
+        int num = nums[nums.size()-1];
+
+        int idx1 = mp[val].top();
+        int idx2 = mp[num].top();
+
+        // Removing the last index
+        mp[num].pop();
+        // Adding the index
+        mp[num].push(idx1);
+
+        // Removing the val from map
+        mp[val].pop();
+        // Base case
+        if(mp[val].size() == 0) mp.erase(val);
+
+        nums[idx1] = num;
+        nums.pop_back();
+        
+        return true;
+    }
+    
+    int getRandom() {
+        int m = nums.size();
+        int idx = rand() % m;
+        return nums[idx];
+    }
+};
