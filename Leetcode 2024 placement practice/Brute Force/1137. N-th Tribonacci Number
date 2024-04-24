@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int tribonacci(int n) {
+        int T0 = 0, T1 = 1, T2 = 1, Tn;
+        // Base case
+        if(n == 0 || n == 1) return n;
+        if(n == 2) return 1;
+
+        for(int i=3; i<=n; i++){
+            Tn = T2 + T1 + T0;
+            T0 = T1;
+            T1 = T2;
+            T2 = Tn;
+        }
+
+        return Tn;
+    }
+};

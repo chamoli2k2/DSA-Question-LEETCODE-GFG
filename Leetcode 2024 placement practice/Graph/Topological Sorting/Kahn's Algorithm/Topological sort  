@@ -1,0 +1,42 @@
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // Khan's Algorithm
+	    // If there is a edge between U & V and U appears before V then U must appear before V in topological sorting order
+	    
+	    
+	    queue<int> q;
+	    vector<int> inorder(V, 0), ans;
+	    
+	    for(int i=0; i<V; i++){
+	        for(auto it : adj[i]){
+	            inorder[it]++;
+	        }
+	    }
+	    
+	    for(int i=0; i<V; i++){
+	        if(inorder[i] == 0) q.push(i);
+	    }
+	    
+	    while(!q.empty()){
+	        int node = q.front();
+	        ans.push_back(node);
+	        q.pop();
+	        
+	        
+	        for(auto it : adj[node]){
+	            inorder[it]--;
+	            
+	            if(inorder[it] == 0){
+	                q.push(it);
+	            }
+	        }
+	    }
+	    
+	    
+	    return ans;
+	}
+};

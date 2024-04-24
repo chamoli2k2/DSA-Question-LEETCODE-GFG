@@ -1,0 +1,25 @@
+class Solution
+{
+    private:
+    int solve(int x, int y){
+        // Base case
+        if(x == 0 && y == 0) return 1;
+        if(x < 0 || y < 0) return 0;
+        
+        if(dp[x][y] != -1) return dp[x][y];
+        
+        int c1 = solve(x-1, y);
+        int c2 = solve(x, y-1);
+        
+        return dp[x][y] = (c1%mod + c2%mod) % mod;
+    }
+public:
+    int dp[501][501];
+    int mod = 1e9 + 7;
+    int ways(int x, int y)
+    {
+        
+        memset(dp, -1, sizeof(dp));
+        return solve(x, y);
+    }
+};

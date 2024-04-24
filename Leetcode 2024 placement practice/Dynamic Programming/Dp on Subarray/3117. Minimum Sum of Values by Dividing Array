@@ -1,0 +1,33 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, vector<int> &andValues, int i, int j, int currAnd){
+        // Base case
+        if(i == nums.size()){
+            return j == andValues.size() ? 0 : 1e7;
+        }
+        else if(j == andValues.size()){
+            return 1e7;
+        }
+
+        if(dp[i][j].count(currAnd)) return dp[i][j][currAnd];
+
+        // We have two cases inculude or not include
+        // We can include only if
+        int inCluded = 1e7;
+        if((currAnd & nums[i]) == andValues[j]){
+            inCluded = nums[i] + solve(nums, andValues, i+1, j+1, ((1<<20)-1));
+        }
+
+        int exCluded = solve(nums, andValues, i+1, j, currAnd & nums[i]);
+
+        return dp[i][j][currAnd] = min(inCluded, exCluded);
+    }
+public:
+    vector<vector<unordered_map<int,int>>> dp;
+    int minimumValueSum(vector<int>& nums, vector<int>& andValues) {
+        int n = nums.size(), m = andValues.size();
+        dp.resize(n, vector<unordered_map<int,int>>(10));
+        int ans = solve(nums, andValues, 0, 0, ((1<<20)-1));
+        return ans == 1e7 ? -1 : ans;
+    }
+};
