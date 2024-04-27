@@ -1,0 +1,62 @@
+class Solution {
+private:
+    ListNode* findMid(ListNode* node){
+        // Base case
+        if(node == NULL || node->next == NULL) return node;
+        ListNode* slow = node, *fast = node->next;
+        while(slow && fast && fast->next){
+            slow = slow -> next;
+            fast = fast->next->next;
+        }
+
+        return slow;
+    }
+
+    // Mergin the two sorted linked list
+    ListNode* mergeList(ListNode* l1, ListNode* l2){
+        // Base case
+        if(l1 == NULL) return l2;
+        if(l2 == NULL) return l1;
+
+        ListNode* small = l1, *large = l2;
+        if(l2->val < l1->val){
+            small = l2;
+            large = l1;
+        }
+
+        ListNode* ans = small;
+
+        while(small && large){
+            ListNode* prev = small;
+            while(small && small->val <= large->val){
+                prev = small;
+                small = small->next;
+            }
+
+            prev->next = large;
+            large = small;
+            small = prev->next;
+        }
+
+        return ans;
+    }
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+
+        ListNode* mid = findMid(head);
+
+        ListNode* left = head;
+        ListNode* right = mid->next;
+        mid->next = NULL;
+
+        // Recursively sort the left and right list
+        ListNode* ls = sortList(left);
+        ListNode* rs = sortList(right);
+
+        // Merging both list
+        ListNode* ans = mergeList(ls, rs);
+
+        return ans;
+    }
+};

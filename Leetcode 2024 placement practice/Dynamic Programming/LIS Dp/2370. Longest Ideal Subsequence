@@ -1,0 +1,27 @@
+class Solution {
+private:
+    int solve(string &s, int idx, char prev, int k){
+        // Base case
+        if(idx == s.size()){
+            return 0;
+        }
+
+        if(dp[idx][prev-'a'] != -1) return dp[idx][prev-'a'];
+
+        int c1 = 0, c2 = 0;
+
+        if((prev == '{') || (abs(prev-s[idx]) <= k)){
+            c1 = 1 + solve(s, idx+1, s[idx], k);
+        }
+
+        c2 = solve(s, idx+1, prev, k);
+
+        return dp[idx][prev-'a'] = max(c1, c2);
+    }
+public:
+    int dp[100001][30];
+    int longestIdealString(string s, int k) {
+        memset(dp, -1, sizeof(dp));
+        return solve(s, 0, '{', k);
+    }
+};

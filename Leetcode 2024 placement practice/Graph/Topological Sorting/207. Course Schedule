@@ -1,0 +1,41 @@
+class Solution {
+private:
+    bool dfs(vector<int> adj[], vector<int> &visited, vector<int> &dfsVisited, int node){
+        visited[node] = true;
+        dfsVisited[node] = true;
+
+
+        for(auto it : adj[node]){
+            if(visited[it] == 0){
+                if(dfs(adj, visited, dfsVisited, it)) return true;
+            }
+            else if(dfsVisited[it]){
+                return true;
+            }
+        }
+
+        dfsVisited[node] = false;
+        return false;
+    }
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        // Toposort work only on directed acyclic graph
+        // Hence if cycle is there in graph that means we can't complete the course
+        vector<int> adj[numCourses];
+
+        for(auto it : prerequisites){
+            int u = it[0], v = it[1];
+            adj[v].push_back(u);
+        }
+
+        vector<int> visited(numCourses, 0), dfsVisited(numCourses, 0);
+
+        for(int i=0; i<numCourses; i++){
+            if(visited[i] == 0){
+                if(dfs(adj, visited, dfsVisited, i)) return false;
+            }
+        }
+
+        return true;
+    }
+};

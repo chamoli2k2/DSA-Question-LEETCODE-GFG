@@ -1,0 +1,55 @@
+class Solution {
+    private:
+        void solve(vector<vector<int>> &nums, int i, int j, int pi, int pj, char direction){
+            // Base case
+            int n = nums.size(), m = nums[0].size();
+            if(i < 0 || j < 0 || i == n || j == m){
+                x = pi, y = pj;
+                return;
+            }
+            
+            if(direction == 'R'){
+                if(nums[i][j] == 1){
+                    nums[i][j] = 0;
+                    solve(nums, i+1, j, i, j, 'D');
+                }
+                else{
+                    solve(nums, i, j+1, i, j, 'R');
+                }
+            }
+            else if(direction == 'L'){
+                if(nums[i][j] == 1){
+                    nums[i][j] = 0;
+                    solve(nums, i-1, j, i, j, 'U');
+                }
+                else{
+                    solve(nums, i, j-1, i, j, 'L');
+                }
+            }
+            else if(direction == 'D'){
+                if(nums[i][j] == 1){
+                    nums[i][j] = 0;
+                    solve(nums, i, j-1, i, j, 'L');
+                }
+                else{
+                    solve(nums, i+1, j, i, j, 'D');
+                }
+            }
+            else{
+                if(nums[i][j] == 1){
+                    nums[i][j] = 0;
+                    solve(nums, i, j+1, i, j, 'R');
+                }
+                else{
+                    solve(nums, i-1, j, i, j, 'U');
+                }
+            }
+            
+        }
+  public:
+    int x, y;
+    vector<int> FindExitPoint(int n, int m, vector<vector<int>>& matrix) {
+        solve(matrix, 0, 0, -1, -1, 'R');
+        return {x, y};
+    }
+};

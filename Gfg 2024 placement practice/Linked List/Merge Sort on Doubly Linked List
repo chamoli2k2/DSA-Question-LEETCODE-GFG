@@ -1,0 +1,67 @@
+class Solution {
+    private:
+    Node* findMid(Node* head){
+        // Base case
+        if(head == NULL || head->next == NULL) return head;
+        
+        Node* slow = head, *fast = head->next;
+        
+        while(slow && fast && fast->next){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        return slow;
+    }
+    
+    Node* mergedList(Node* l1, Node* l2){
+        Node* dummyNode = new Node(-1);
+        Node* tempNode = dummyNode;
+        
+        while(l1 && l2){
+            if(l1->data <= l2->data){
+                tempNode->next = l1;
+                l1->prev = tempNode;
+                l1 = l1->next;
+            }
+            else{
+                tempNode->next = l2;
+                l2->prev = tempNode;
+                l2 = l2->next;
+            }
+            
+            tempNode = tempNode->next;
+        }
+        
+        if(l1) tempNode->next = l1, l1->prev = tempNode;
+        if(l2) tempNode->next = l2, l2->prev = tempNode;
+        
+        Node* ans = dummyNode->next;
+        ans->prev = NULL;
+        
+        return ans;
+    }
+  public:
+    // Function to sort the given doubly linked list using Merge Sort.
+    struct Node *sortDoubly(struct Node *head) {
+        // Base case
+        if(head == NULL || head->next == NULL) return head;
+        
+        Node* mid = findMid(head);
+        
+        Node* ls = head;
+        Node* rs = mid->next;
+        mid->next = NULL;
+        rs->prev = NULL;
+        
+        // Sorting the left and right part of the list
+        Node* left = sortDoubly(ls);
+        Node* right = sortDoubly(rs);
+        
+        
+        // Merging the linked list
+        Node* ans = mergedList(left, right);
+        
+        return ans;
+    }
+};
