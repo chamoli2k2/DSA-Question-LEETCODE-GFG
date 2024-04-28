@@ -1,0 +1,37 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &nums, int i, int j, int n){
+        // Base case
+        if(j < 0 || j == n) return INT_MAX;
+        if(i == n-1) return nums[i][j];
+
+
+        if(dp[i][j] != INT_MAX) return dp[i][j];
+
+        int ans = INT_MAX;
+        for(int newCol=0; newCol<n; newCol++){
+            if(newCol == j) continue;
+            ans = min(ans, solve(nums, i+1, newCol, n));
+        }
+
+        return dp[i][j] = nums[i][j] + ans;
+    }
+public:
+    int dp[201][201];
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        int n = grid.size(), ans = INT_MAX;
+
+        for(int i=0; i<=200; i++){
+            for(int j=0; j<=200; j++){
+                dp[i][j] = INT_MAX;
+            }
+        }
+
+        for(int col=0; col<n; col++){
+            int soln = solve(grid, 0, col, n);
+            ans = min(ans, soln);
+        }
+
+        return ans;
+    }
+};

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.md": "markdown",
+        "*.css": "tailwindcss",
+        "sas": "c"
+    }
+}

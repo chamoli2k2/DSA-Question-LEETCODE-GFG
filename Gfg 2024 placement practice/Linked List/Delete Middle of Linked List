@@ -1,0 +1,29 @@
+class Solution{
+    public:
+    Node* deleteMid(Node* head)
+    {
+        // Base case
+        if(head == NULL || head->next == NULL) return NULL;
+        
+
+        Node* slow = head, *fast = head->next, *prev = head;
+        
+        while(slow && fast && fast->next){
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        if(fast == NULL){
+            prev->next = slow->next;
+            delete slow;
+            return head;
+        }
+        
+        prev = slow;
+        slow = slow->next;
+        prev->next = slow->next;
+        delete slow;
+        return head;
+    }
+};
