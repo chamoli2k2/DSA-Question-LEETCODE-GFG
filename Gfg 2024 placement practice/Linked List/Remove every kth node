@@ -1,0 +1,28 @@
+class Solution {
+    public:
+    Node* deleteK(Node *head,int K){
+        // Base case
+        if(K == 1) return NULL;
+        
+        Node* dummyNode = new Node(-1);
+        dummyNode->next = head;
+        Node *curr = head, *prev = dummyNode;
+        
+        int k = K;
+        while(curr){
+            k--;
+            if(k == 0){
+                prev->next = curr->next;
+                delete curr;
+                curr = prev->next;
+                k = K;
+            }
+            else{
+                prev = curr;
+                curr = curr->next;
+            }
+        }
+        
+        return dummyNode->next;
+    }
+};

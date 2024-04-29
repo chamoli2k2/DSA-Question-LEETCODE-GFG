@@ -1,0 +1,60 @@
+class Solution {
+private:
+    int dfs1(vector<int> adj[], vector<int> &visited, vector<int> &count_child, int node, int len, int &ansRoot){
+        visited[node] = 1;
+        ansRoot += len;
+        len++;
+
+        for(auto it : adj[node]){
+            if(visited[it] == 0){
+                count_child[node] += dfs1(adj, visited, count_child, it, len, ansRoot);
+            }
+        }
+
+        count_child[node]++;
+        return count_child[node];
+    }
+
+    void dfs2(vector<int> adj[], vector<int> &visited, vector<int> &count_child, int node, int total_node){
+        // Marking visited
+        visited[node] = 1;
+
+
+        // Evaluating answer for children node
+        for(auto adjNode : adj[node]){
+            if(visited[adjNode] == 0){
+                // Evaluating answer
+                ans[adjNode] = ans[node] - count_child[adjNode] + (total_node - count_child[adjNode]);
+                dfs2(adj, visited, count_child, adjNode, total_node);
+            }
+        }
+    }
+public:
+    vector<int> ans;
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        vector<int> visited(n, 0);
+        vector<int> count_child(n, 0);
+        vector<int> adj[n];
+        int ansRoot = 0;
+
+        for(auto it : edges){
+            int u = it[0], v = it[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        // Evaluating the answer for the root Node
+        dfs1(adj, visited, count_child, 0, 0, ansRoot);
+
+        ans.resize(n);
+        ans[0] = ansRoot;
+
+        for(int i=0; i<n; i++) visited[i] = 0;
+
+        // Evaluating answer for the rest node
+        dfs2(adj, visited, count_child, 0, n);
+
+
+        return ans;
+    }
+};

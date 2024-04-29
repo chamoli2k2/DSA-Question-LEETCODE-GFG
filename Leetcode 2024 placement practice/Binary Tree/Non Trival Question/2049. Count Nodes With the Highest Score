@@ -1,0 +1,53 @@
+class Solution {
+private:
+    int post_order(int node){
+        bool left = true;
+
+        for(auto it : adj[node]){
+            if(left){
+                child_nodes[node][0] = post_order(it);
+                left = false; 
+            }
+            else{
+                child_nodes[node][1] = post_order(it);
+            }
+        }
+
+        return child_nodes[node][0] + child_nodes[node][1] + 1;
+    }
+public:
+    unordered_map<int,vector<int>> adj;
+    vector<vector<int>> child_nodes;
+    int countHighestScoreNodes(vector<int>& parents) {
+        int n = parents.size();
+        
+        for(int i=0; i<n; i++){
+            adj[parents[i]].push_back(i);
+        }
+
+        child_nodes.resize(n, vector<int>(2, 0));
+        post_order(0);
+
+        long long maxScore = INT_MIN;
+        int ans = 0;
+        // Evaluating the answer
+        for(int i=0; i<n; i++){
+            // For the ith node
+            int left_child = child_nodes[i][0] == 0 ? 1 : child_nodes[i][0];
+            int right_child = child_nodes[i][1] == 0 ? 1 : child_nodes[i][1];
+            int upper_edge_nodes = (n - (child_nodes[i][0]+child_nodes[i][1]+1)) == 0 ? 1 : (n - (child_nodes[i][0]+child_nodes[i][1]+1));
+
+            long long score = left_child *1ll* right_child *1ll* upper_edge_nodes;
+            
+            if(score > maxScore){
+                maxScore = score;
+                ans = 1;
+            }
+            else if(score == maxScore){
+                ans++;
+            }
+        }
+
+        return ans;
+    }
+};

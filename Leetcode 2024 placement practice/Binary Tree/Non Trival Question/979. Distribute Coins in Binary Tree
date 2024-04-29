@@ -1,0 +1,20 @@
+class Solution {
+private:
+    int dfs(TreeNode* root){
+        // Base case
+        if(root == NULL) return 0;
+
+        int ls = dfs(root->left);
+        int rs = dfs(root->right);
+
+        moves += abs(rs) + abs(ls);
+
+        return root->val + rs + ls - 1;
+    }
+public:
+    int moves = 0;
+    int distributeCoins(TreeNode* root) {
+        dfs(root);
+        return moves;
+    }
+};

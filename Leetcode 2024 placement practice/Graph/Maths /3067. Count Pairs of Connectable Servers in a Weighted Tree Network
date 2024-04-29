@@ -1,0 +1,49 @@
+class Solution {
+private:
+    void dfs(vector<pair<int,int>> adj[], int node, int parent, int weight, int &count){
+        if(weight%mod == 0) count++;
+
+        for(auto it : adj[node]){
+            int adjNode = it.first, currWeight = it.second;
+            if(adjNode != parent){
+                dfs(adj, adjNode, node, weight+currWeight, count);
+            }
+        }
+
+    }
+public:
+    int mod;
+    vector<int> countPairsOfConnectableServers(vector<vector<int>>& edges, int signalSpeed) {
+        int n = edges.size();
+        mod = signalSpeed;
+        vector<pair<int,int>> adj[n+1];
+
+        for(int i=0; i<n; i++){
+            int u = edges[i][0], v = edges[i][1], w = edges[i][2];
+            adj[u].push_back({v, w});
+            adj[v].push_back({u, w});
+        }
+
+        vector<int> ans(n+1, 0);
+
+        for(int i=0; i<=n; i++){
+            vector<int> valid_child_nodes;
+            int sum = 0, pairs = 0;
+
+            for(auto it : adj[i]){
+                int count = 0, adjNode = it.first, weight = it.second;
+                dfs(adj, adjNode, i, weight, count);
+                sum += count;
+                valid_child_nodes.push_back(count);
+            }
+
+            for(auto it : valid_child_nodes){
+                pairs += (sum-it) * it;
+            }
+
+            ans[i] = pairs/2;
+        }
+
+        return ans;
+    }
+};

@@ -1,0 +1,23 @@
+
+class Solution
+{
+    private:
+    int dfs(Node* root){
+        // Base case
+        if(root == NULL) return 0;
+
+        int ls = dfs(root->left);
+        int rs = dfs(root->right);
+
+        moves += abs(rs) + abs(ls);
+
+        return root->key + rs + ls - 1;
+    }
+    public:
+    int moves = 0;
+    int distributeCandy(Node* root)
+    {
+        dfs(root);
+        return moves;
+    }
+};

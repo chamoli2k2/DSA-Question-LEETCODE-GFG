@@ -1,0 +1,35 @@
+class Solution {
+private:
+    long long dfs(vector<pair<int,int>> adj[], vector<int> &values, int node, int parent){
+        // Base case
+        if(adj[node].size() == 1 && node != 0) return 1LL*values[node];
+
+        long long totalPoints = 0;
+        for(auto it : adj[node]){
+            int adjNode = it.first, point = values[adjNode];
+            if(adjNode != parent){
+                totalPoints += dfs(adj, values, adjNode, node);
+            }
+        }
+
+        long long currPoint = 1LL*values[node];
+
+        return min(currPoint, totalPoints);
+    }
+public:
+    long long maximumScoreAfterOperations(vector<vector<int>>& edges, vector<int>& values) {
+        int n = values.size();
+        vector<pair<int,int>> adj[n];
+
+        for(auto it : edges){
+            adj[it[0]].push_back({it[1], values[it[0]]});
+            adj[it[1]].push_back({it[0], values[it[1]]});
+        }
+
+        long long Total = 0;
+        for(int i=0; i<n; i++) Total += 1LL*values[i];
+        long long minTotal = dfs(adj, values, 0, -1);
+
+        return Total - minTotal;
+    }
+};
