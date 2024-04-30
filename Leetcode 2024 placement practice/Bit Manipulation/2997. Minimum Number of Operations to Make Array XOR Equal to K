@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int k) {
+        int n = nums.size(), ans = 0;
+        vector<int> setBit(32, 0);
+
+        for(int i=0; i<n; i++){
+            int num = nums[i], idx = 0;
+            while(num){
+                if(num & 1){
+                    setBit[idx]++;
+                }
+                num = num >> 1;
+                idx++;
+            }
+        }
+
+        for(int i=0; i<32; i++){
+            if((k&(1<<i))){
+                if(setBit[i]%2 == 0) ans++;
+            }
+            else{
+                if(setBit[i]&1) ans++;
+            }
+        }
+
+        return ans;
+    }
+};

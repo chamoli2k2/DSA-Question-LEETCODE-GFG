@@ -1,0 +1,41 @@
+class Solution {
+public:
+    long long countGood(vector<int>& nums, int k) {
+        long long ans = 0, n = nums.size(), j = 0, i = 0, pairs = 0;
+        unordered_map<int,int> mp;
+
+        while(j < n){
+            // Counting the number of pairs
+            long long t = 1ll*mp[nums[j]];
+            pairs -= (t * (t-1) / 2);
+
+            mp[nums[j]]++;
+
+            t = mp[nums[j]];
+            
+            pairs += (t * (t-1) / 2);
+
+            while(i < j && pairs >= k){
+                ans += n-j;
+                
+                t = mp[nums[i]];
+
+                // Removing the pair
+                pairs -= (t * (t-1) / 2);
+
+                mp[nums[i]]--;
+
+                t = mp[nums[i]];
+
+                // Adding the pair
+                pairs += (t * (t-1) / 2);
+
+                i++;
+            }
+
+            j++;
+        }
+
+        return ans;
+    }
+};

@@ -1,0 +1,22 @@
+class Solution {
+public:
+    long long wonderfulSubstrings(string word) {
+        long long ans = 0, n = word.size(), prefix_xor = 0;
+        unordered_map<long long, long long> mp;
+        mp[0] = 1;
+
+        for(int i=0; i<n; i++){
+            prefix_xor = prefix_xor ^ (1 << (word[i]-'a'));
+            ans += mp[prefix_xor];
+
+            for(char ch='a'; ch<='j'; ch++){
+                int odd_xor = prefix_xor ^ (1 << (ch-'a'));
+                ans += mp[odd_xor];
+            }
+
+            mp[prefix_xor]++;
+        }
+
+        return ans;
+    }
+};
