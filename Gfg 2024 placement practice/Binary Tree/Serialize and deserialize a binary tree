@@ -1,0 +1,45 @@
+class Solution
+{
+    private:
+    void solve(Node* root, vector<int> &nums){
+        // Base case
+        if(root == NULL){
+            nums.push_back(-1);
+            return;
+        }
+        
+        nums.push_back(root->data);
+        solve(root->left, nums);
+        solve(root->right, nums);
+    }
+    public:
+    //Function to serialize a tree and return a list containing nodes of tree.
+    vector<int> serialize(Node *root) 
+    {
+        vector<int> nums;
+        solve(root, nums);
+        return nums;
+    }
+    
+    Node* makeTree(vector<int> &nums, int &idx){
+        // Base case
+        if(idx >= nums.size() || nums[idx] == -1) return NULL;
+        
+        Node* newNode = new Node(nums[idx]);
+        idx++;
+        newNode->left = makeTree(nums, idx);
+        idx++;
+        newNode->right = makeTree(nums, idx);
+        
+        return newNode;
+        
+    }
+    //Function to deserialize a list and construct the tree.
+    Node * deSerialize(vector<int> &A)
+    {
+       int idx = 0;
+       Node* ans = makeTree(A, idx);
+       return ans;
+    }
+
+};

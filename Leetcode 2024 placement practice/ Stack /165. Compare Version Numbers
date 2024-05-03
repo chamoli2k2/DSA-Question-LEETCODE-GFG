@@ -1,0 +1,81 @@
+class Solution {
+private:
+    string solve(string &s){
+        int n = s.size();
+        stack<char> st;
+        st.push('.');
+        string ans = "";
+
+
+        for(int i=0; i<n; i++){
+            if(st.top() == '.' && s[i] == '0') continue;
+            if(st.top() == '.' && s[i] == '.'){
+                st.push('0');
+                st.push('.');
+                ans += '0';
+                ans += '.';
+            }
+            else{
+                ans += s[i];
+                st.push(s[i]);
+            }
+        }
+
+        return ans;
+    }
+
+    int compare(string &s1, string &s2){
+        int n = s1.size(), m = s2.size(), i = 0, j = 0;
+
+        while(i < n && j < m){
+            int idx1 = i, idx2 = j;
+            int num1 = 0, num2 = 0;
+            while(idx1 < n && s1[idx1] != '.'){
+                num1 = num1 * 10 + (s1[idx1]-'0');
+                idx1++;
+            }
+
+            while(idx2 < m && s2[idx2] != '.'){
+                num2 = num2 * 10 + (s2[idx2]-'0');
+                idx2++;
+            }
+
+            i = idx1 + 1;
+            j = idx2 + 1;
+
+            if(num1 < num2) return -1;
+            if(num1 > num2) return 1;
+        }
+
+        while(i < n){
+            int idx1 = i;
+            int num1 = 0;
+            while(idx1 < n && s1[idx1] != '.'){
+                num1 = num1 * 10 + (s1[idx1]-'0');
+                idx1++;
+            }
+            if(num1) return 1;
+            i = idx1 + 1;
+        }
+
+        while(j < m){
+            int idx2 = j;
+            int num2 = 0;
+            while(idx2 < m && s2[idx2] != '.'){
+                num2 = num2 * 10 + (s2[idx2]-'0');
+                idx2++;
+            }
+            if(num2) return -1;
+            j = idx2+1;
+        }
+
+        return 0;
+    }
+public:
+    int compareVersion(string version1, string version2) {
+        string s1 = solve(version1);
+        string s2 = solve(version2);
+
+        return compare(s1, s2);
+    }
+};

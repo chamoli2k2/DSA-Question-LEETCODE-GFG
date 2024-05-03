@@ -1,0 +1,41 @@
+class Solution {
+  public:
+    // task is to complete this function
+    // function should return head to the list after making
+    // necessary arrangements
+    struct Node* arrangeCV(Node* head) {
+        // Base case
+        if(head == NULL || head->next == NULL) return head;
+        
+        
+        // Recursion will do the work
+        Node* goodList = arrangeCV(head->next);
+        
+        // Checking if current node is good node
+        if(head->data == 'a' || head->data == 'e' || head->data == 'i' || head->data == 'o' || head->data == 'u'){
+            head->next = goodList;
+            return head;
+        }
+        
+        Node* tempNode = goodList, *prev = head;
+        while(tempNode){
+            if(tempNode->data == 'a' || tempNode->data == 'e' || tempNode->data == 'i' || tempNode->data == 'o' || tempNode->data == 'u'){
+                prev = tempNode;
+                tempNode = tempNode->next;
+            }
+            else{
+                break;
+            }
+        }
+        
+        if(prev == head){
+            head->next = goodList;
+            return head;
+        }
+        
+        prev->next = head;
+        head->next = tempNode;
+        
+        return goodList;
+    }
+};
