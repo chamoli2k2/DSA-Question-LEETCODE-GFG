@@ -1,0 +1,38 @@
+class Solution
+{
+    private:
+    int findIDX(int in[], int s_in, int e_in, int data){
+        
+        for(int i=s_in; i<=e_in; i++){
+            if(in[i] == data){
+                return i;
+            }
+        }
+        
+        return -1;
+    
+    }
+    Node* solve(int in[], int post[], int &post_order_IDX, int s_in, int e_in, int n){
+        // Base case
+        if(post_order_IDX < 0 || s_in > e_in) return NULL;
+        
+        int data = post[post_order_IDX--];
+        int idx = findIDX(in, s_in, e_in, data);
+        
+        Node* root = new Node(data);
+        
+        root->right = solve(in, post, post_order_IDX, idx+1, e_in, n);
+        root->left = solve(in, post, post_order_IDX, s_in, idx-1, n);
+
+        
+        return root;
+    }
+    public:
+
+    //Function to return a tree created from postorder and inoreder traversals.
+    Node *buildTree(int in[], int post[], int n) {
+        int post_order_IDX = n-1;
+        Node* ans = solve(in, post, post_order_IDX, 0, n-1, n);
+        return ans;
+    }
+};
