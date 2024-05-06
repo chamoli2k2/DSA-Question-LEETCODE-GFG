@@ -1,0 +1,33 @@
+class Solution {
+private:
+    int find(vector<int> &in,int idx,int target){
+        for(int i=idx;i<in.size();i++){
+            if(in[i] == target){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    TreeNode* solve(vector<int> &in,vector<int> &po,int si,int ei,int &idx){
+        // Base case
+        if(si > ei || idx < 0){
+            return NULL;
+        }
+
+        int val = po[idx--];
+        TreeNode* node = new TreeNode(val);
+
+        int k = find(in,si,val);
+
+        node->right = solve(in,po,k+1,ei,idx);
+        node->left = solve(in,po,si,k-1,idx);
+    
+        return node;
+    }
+public:
+    TreeNode* buildTree(vector<int>& in, vector<int>& po) {
+        int n = in.size()-1;
+        return solve(in,po,0,n,n);
+    }
+};

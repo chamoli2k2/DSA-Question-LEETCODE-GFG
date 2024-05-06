@@ -1,0 +1,20 @@
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) {
+        // Base case
+        if(head == NULL || head->next == NULL) return head;
+
+        // Assumption
+        ListNode* correctedNode = removeNodes(head->next);
+
+        ListNode* tempNode = correctedNode;
+
+        if(correctedNode && correctedNode->val > head->val){
+            return correctedNode;
+        }
+
+        head->next = correctedNode;
+
+        return head;
+    }
+};
