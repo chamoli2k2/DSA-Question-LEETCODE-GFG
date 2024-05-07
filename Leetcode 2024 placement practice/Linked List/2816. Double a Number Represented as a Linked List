@@ -1,0 +1,46 @@
+class Solution {
+private:
+    ListNode* reverser(ListNode* head){
+        ListNode* curr = head, *prev = NULL, *next;
+
+        while(curr){
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+
+    void solve(ListNode* head, int carry){
+        // Base case
+        if(head->next == NULL){
+            int val = (head->val * 2) + carry;
+            if(val > 9){
+                carry = val / 10;
+                head->val = val % 10;
+                ListNode* newEnd = new ListNode(carry);
+                head->next = newEnd;
+            }
+            else{
+                head->val = val;
+            }
+
+            return;
+        }
+
+        int currVal = (head->val*2) + carry;
+        head->val = currVal%10;
+        solve(head->next, currVal/10);
+
+    }
+public:
+    ListNode* doubleIt(ListNode* head, int carry = 0) {
+        ListNode* reversedList = reverser(head);
+        solve(reversedList, 0);
+        ListNode* ans = reverser(reversedList);
+
+        return ans;
+    }
+};
