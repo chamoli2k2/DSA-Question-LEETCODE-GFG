@@ -1,0 +1,26 @@
+class Solution {
+    private:
+    void solve(Node* root, vector<int> path){
+        // Base case
+        if(root == NULL){
+            return;
+        }
+        
+        if(root->left == NULL && root->right == NULL){
+            path.push_back(root->data);
+            ans.push_back(path);
+            return;
+        }
+        
+        path.push_back(root->data);
+        solve(root->left, path);
+        solve(root->right, path);
+    }
+  public:
+    vector<vector<int>> ans;
+    vector<vector<int>> Paths(Node* root) {
+        vector<int> path;
+        solve(root, path);
+        return ans;
+    }
+};
