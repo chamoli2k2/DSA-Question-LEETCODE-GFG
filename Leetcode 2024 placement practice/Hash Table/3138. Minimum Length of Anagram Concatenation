@@ -1,0 +1,37 @@
+class Solution {
+private:
+    bool check(string &s, int len){
+        int n = s.size(), mp[26] = {0};
+
+        for(int i=0; i<len; i++) mp[s[i]-'a']++;
+
+        for(int i=0; i<n; i+=len){
+            string k = s.substr(i, len);
+            int freq[26] = {0};
+
+            for(int j=0; j<len; j++){
+                freq[k[j]-'a']++;
+            }
+
+            for(int j=0; j<26; j++){
+                if(mp[j] != freq[j]) return false;
+            }
+        }
+
+        return true;
+    }
+public:
+    int minAnagramLength(string s) {
+        int n = s.size();
+
+        for(int len=1; len<n; len++){
+            if(n%len == 0){
+                if(check(s, len)){
+                    return len;
+                }
+            }
+        }
+
+        return n;
+    }
+};
