@@ -1,0 +1,22 @@
+class Solution {
+private:
+    int solve(int curr, int target, int k){
+        // Base Case
+        if(k == 0)  return curr == target;
+        if(k < 0)   return 0;
+
+        if(dp[curr+2000][k] != -1) return dp[curr+2000][k];
+
+        int ls = solve(curr-1, target, k-1);
+        int rs = solve(curr+1, target, k-1);
+
+        return dp[curr+2000][k] = (ls%mod + rs%mod) % mod;
+    }
+public:
+    int mod = 1e9 + 7;
+    int dp[4005][1001];
+    int numberOfWays(int startPos, int endPos, int k) {
+        memset(dp,-1,sizeof(dp));
+        return solve(startPos, endPos, k);
+    }
+};

@@ -1,0 +1,40 @@
+class Solution {
+private:
+    bool check(int num){
+        while(num > 1){
+            if(num%5 != 0) return false;
+
+            num /= 5;
+        }
+
+        return num == 1;
+    }
+    int solve(string &s, int idx){
+        // Base case
+        int n = s.size();
+        if(idx == n) return 0;
+        if(s[idx] == '0') return 1e8;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        int ans = 1e8, currNum = 0;
+
+        for(int i=idx; i<n; i++){
+            currNum = currNum * 2 + (s[i]-'0');
+
+            if(check(currNum)){
+                int tempAns = 1 + solve(s, i+1);
+                ans = min(ans, tempAns);
+            }
+        }
+
+        return dp[idx] = ans;
+    }
+public:
+    int dp[16];
+    int minimumBeautifulSubstrings(string s) {
+        memset(dp, -1, sizeof(dp));
+        int ans = solve(s, 0);
+        return ans < 1e8 ? ans : -1;
+    }
+};
