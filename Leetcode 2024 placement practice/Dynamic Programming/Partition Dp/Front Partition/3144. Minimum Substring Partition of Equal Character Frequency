@@ -1,0 +1,39 @@
+class Solution {
+private:
+    int solve(string &s, int idx){
+        // Base case
+        int n = s.size();
+        if(idx == n) return 0;
+        
+        if(dp[idx] != -1) return dp[idx];
+        
+        int ans = INT_MAX, maxFreq = 0;
+        int mp[26] = {0};
+
+        for(int i=idx; i<n; i++){
+            mp[s[i]-'a']++;
+            maxFreq = max(maxFreq, mp[s[i]-'a']);
+
+            bool flag = true;
+            
+            for(int i=0; i<26; i++){
+                if(mp[i] > 0 && mp[i] != maxFreq){
+                    flag = false;
+                    break;
+                }
+            }
+
+            if(flag){
+                ans = min(ans, 1 + solve(s, i+1));
+            }
+        }
+        
+        return dp[idx] = ans;
+    }
+public:
+    int dp[1005];
+    int minimumSubstringsInPartition(string s) {
+        memset(dp, -1, sizeof(dp));
+        return solve(s, 0);
+    }
+};

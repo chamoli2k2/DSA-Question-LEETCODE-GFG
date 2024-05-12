@@ -1,0 +1,26 @@
+class Solution {
+private:
+    int solve(vector<int> &arr, int idx, int k){
+        // Base case
+        int n = arr.size();
+        if(idx == n) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        int maxi = INT_MIN, ans = 0;
+        int m = min(idx+k, n);
+        for(int i=idx; i<m; i++){
+            maxi = max(maxi, arr[i]);
+            int tempSum = (i-idx+1)*maxi;
+            ans = max(ans, tempSum + solve(arr, i+1, k));
+        }
+
+        return dp[idx] = ans;
+    }
+public:
+    int dp[501];
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        memset(dp, -1, sizeof(dp));
+        return solve(arr, 0, k);
+    }
+};

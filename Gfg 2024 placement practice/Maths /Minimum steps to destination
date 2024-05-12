@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    int minSteps(int target) {
+        // Base case
+        target = abs(target);
+
+        // Moves
+        //               4th  3rd  2nd  1st  2nd  3rd  4th
+        //             -6 <- -3  <- -1 <- 0 -> 1 -> 3 -> 6 -> 
+
+        int sum = 0;
+        int steps = 0;
+        while(sum < target){
+            steps++;
+            sum += steps;
+        }
+
+        // Checking if difference of sum & target is even than no of steps are same
+        return (sum - target) % 2 == 0 ? steps : steps % 2 == 0 ? steps+1 : steps+2;
+    }
+};

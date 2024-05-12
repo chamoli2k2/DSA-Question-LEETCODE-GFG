@@ -1,0 +1,25 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int idx, int k){
+        // Base case
+        if(idx >= nums.size()) return 0;
+        
+        if(dp[idx] != -1) return dp[idx];
+        
+        int ans = nums[idx] + solve(nums, idx+k, k);
+        
+        return dp[idx] = ans;
+    }
+public:
+    int dp[100001];
+    int maximumEnergy(vector<int>& nums, int k) {
+        int n = nums.size(), ans = -1e9;
+        memset(dp, -1, sizeof(dp));
+        for(int i=0; i<n; i++){
+            int tempAns = solve(nums, i, k);
+            ans = max(ans, tempAns);
+        }
+        
+        return ans;
+    }
+};

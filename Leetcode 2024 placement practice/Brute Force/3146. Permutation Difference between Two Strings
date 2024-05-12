@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int findPermutationDifference(string s, string t) {
+        int sum = 0, mps[26] = {0}, mpt[26] = {0};
+        
+        for(int i=0; i<s.size(); i++){
+            mps[s[i]-'a'] = i;
+            mpt[t[i]-'a'] = i;
+        }
+        
+        for(int i=0; i<26; i++){
+            sum += abs(mps[i]-mpt[i]);
+        }
+        
+        return sum;
+    }
+};

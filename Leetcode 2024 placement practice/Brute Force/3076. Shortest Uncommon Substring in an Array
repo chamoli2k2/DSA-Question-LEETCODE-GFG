@@ -1,0 +1,62 @@
+class Solution {
+private:
+    bool check(vector<string> &arr, string &s, int idx){
+        for(int i=0; i<arr.size(); i++){
+            if(i == idx) continue;
+            
+            for(int j=0; j<arr[i].size(); j++){
+                string subString = "";
+                int x = 0;
+                for(int k=j; k<arr[i].size(); k++){
+                    if(arr[i][k] == s[x]){
+                        x++;
+                        if(x == s.size()) return false;
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    static bool cmp(const string &a, const string &b){
+        if(a.size() == b.size()) return a < b;
+        return a.size() < b.size();
+    }
+public:
+    vector<string> shortestSubstrings(vector<string>& arr) {
+        int n = arr.size();
+        vector<string> ans;
+
+        for(int i=0; i<n; i++){
+            set<string, decltype(cmp)*> st(&cmp);
+            // Finding all the substring of the arr[i]
+            for(int j=0; j<arr[i].size(); j++){
+                string subString = "";
+                
+                for(int k=j; k<arr[i].size(); k++){
+                    subString += arr[i][k];
+
+                    // Checking the substring is present in other string or not
+                    if(check(arr, subString, i)){
+                        st.insert(subString);
+                        break;
+                    }
+                }
+            }
+
+            if(st.size()){
+                auto it = st.begin();
+                ans.push_back(*it);
+            }
+            else{
+                ans.push_back("");
+            }
+        }
+
+        return ans;
+    }
+};

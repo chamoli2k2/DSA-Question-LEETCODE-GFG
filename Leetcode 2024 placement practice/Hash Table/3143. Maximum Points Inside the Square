@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int maxPointsInsideSquare(vector<vector<int>>& points, string s) {
+        unordered_map<int,pair<int,int>> mp;
+
+        for(int i=0; i<26; i++){
+            mp[i].first = INT_MAX;
+            mp[i].second = INT_MAX;
+        }
+
+        int n = s.size();
+
+        for(int i=0; i<n; i++){
+            int x = points[i][0], y = points[i][1];
+            int pt = s[i]-'a';
+
+            int dist = max(abs(x), abs(y));
+
+            if(dist < mp[pt].first){
+                mp[pt].second = mp[pt].first;
+                mp[pt].first = dist;
+            }
+            else if(dist < mp[pt].second){
+                mp[pt].second = dist;
+            }
+        }
+
+        int limitDist = INT_MAX;
+
+        for(int i=0; i<26; i++){
+            if(mp[i].second < limitDist){
+                limitDist = mp[i].second;
+            }
+        }
+
+        int totalPoints = 0;
+        for(int i=0; i<n; i++){
+            int x = points[i][0], y = points[i][1];
+            int dist = max(abs(x), abs(y));
+
+            if(dist < limitDist){
+                totalPoints++;
+            }
+        }
+
+        return totalPoints;
+    }
+};

@@ -1,0 +1,52 @@
+class Solution {
+private:
+    bool check(vector<vector<int>> &points, int distance){
+        int mp[26] = {0};
+        int n = points.size();
+
+        for(int i=0; i<n; i++){
+            int x = points[i][0], y = points[i][1], pt = points[i][2];
+
+            // Important finding current point lies in which square
+            long long currDist = max(abs(x), abs(y));
+
+            if(currDist <= distance && mp[pt] == 0){
+                mp[pt] = true;
+            }
+            else if(currDist <= distance){
+                return false;
+            }
+        }
+
+        return true;
+    }
+public:
+    int totalPoints = 0;
+    int maxPointsInsideSquare(vector<vector<int>>& points, string str) {
+        int n = points.size(), s = 0, e = 1e9, mid, ans = 0;
+        totalPoints = 0;
+        for(int i=0; i<n; i++){
+            points[i].push_back(str[i]-'a');
+        }
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            
+            if(check(points, mid)){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+
+
+        for(auto it : points){
+            long long dist = max(abs(it[0]), abs(it[1]));
+            if(dist <= ans) totalPoints++;
+        }
+
+        return totalPoints;
+    }
+};
