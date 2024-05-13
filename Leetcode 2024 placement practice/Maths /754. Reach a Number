@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int reachNumber(int target) {
+        target = abs(target);
+        int steps = 0, ans = 0, sum = 0;
+        while(true){
+            steps++;
+            sum += steps;
+
+            if(sum >= target && (sum-target)%2 == 0){
+                return steps;
+            }
+        }
+
+        return -1;
+    }
+};
