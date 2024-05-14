@@ -1,0 +1,35 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &grid, int i, int j){
+        // Base case
+        if(i < 0 || j < 0 || j == m || i == n || grid[i][j] == 0 || visited[i][j]) return 0;
+
+        visited[i][j] = 1;
+
+        int c1 = solve(grid, i+1, j);
+        int c2 = solve(grid, i-1, j);
+        int c3 = solve(grid, i, j+1);
+        int c4 = solve(grid, i, j-1);
+
+        visited[i][j] = 0;
+        return grid[i][j] + max({c1, c2, c3, c4});
+    }
+public:
+    int n, m;
+    int visited[16][16];
+    int getMaximumGold(vector<vector<int>>& grid) {
+        n = grid.size(), m = grid[0].size();
+        int ans = 0;
+        memset(visited, 0, sizeof(visited));
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] == 0) continue;
+                int tempAns = solve(grid, i, j);
+                ans = max(ans, tempAns);
+            }
+        }
+
+        return ans;
+    }
+};
