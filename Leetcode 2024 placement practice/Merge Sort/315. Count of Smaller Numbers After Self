@@ -1,0 +1,49 @@
+class Solution {
+private:
+    void merge(vector<pair<int,int>> &nums, int s, int mid, int e){
+        int i = s, j = mid+1, k = 0;
+        vector<pair<int,int>> copy(e-s+1, {0, 0});
+
+        while(i <= mid && j <= e){
+            if(nums[i].first > nums[j].first){
+                ans[nums[i].second] += e-j+1;
+                copy[k++] = nums[i++];
+            }
+            else{
+                copy[k++] = nums[j++];
+            }
+        }
+
+        while(i <= mid) copy[k++] = nums[i++];
+        while(j <= e) copy[k++] = nums[j++];
+
+        k = 0;
+        for(int t=s; t<=e; t++){
+            nums[t] = copy[k++];
+        }
+    }
+private:
+    void solve(vector<pair<int,int>> &nums, int s, int e){
+        // Base case
+        if(s >= e) return;
+
+        int mid = s + (e - s) / 2;
+
+        solve(nums, s, mid);
+        solve(nums, mid+1, e);
+
+        merge(nums, s, mid, e);
+    }
+public:
+    vector<int> ans;
+    vector<int> countSmaller(vector<int>& nums) {
+        int n = nums.size();
+        ans.resize(n, 0);
+        vector<pair<int,int>> arr;
+        for(int i=0; i<n; i++) arr.push_back({nums[i], i});
+
+        solve(arr, 0, n-1);
+
+        return ans;
+    }
+};
