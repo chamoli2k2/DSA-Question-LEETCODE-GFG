@@ -1,0 +1,71 @@
+class DSU{
+    public:
+    vector<int> parent;
+    
+    DSU(int n){
+        for(int i=0; i<n+2; i++){
+            parent.push_back(i);
+        }
+    }
+    
+    int findParent(int x){
+        if(parent[x] == x) return x;
+        
+        return parent[x] = findParent(parent[x]);
+    }
+    
+    void findUnion(int u, int v){
+        int parentu = findParent(u);
+        int parentv = findParent(v);
+        
+        parent[parentv] = parentu;
+    }
+};
+
+class Solution{
+  public:
+    vector<vector<string>> accountsMerge(vector<vector<string>> &accounts) {
+        unordered_map<string,int> mp;
+        int n = accounts.size();
+        DSU ds(n);
+        
+        for(int i=0; i<n; i++){
+            int m = accounts[i].size();
+            for(int j=1; j<m;j ++){
+                string account = accounts[i][j];
+                
+                if(mp.count(account) == 0){
+                    mp[account] = i;
+                }
+                else{
+                    ds.findUnion(i, mp[account]);
+                }
+            }
+        }
+        
+        vector<string> mergeAccount[n];
+        
+        for(auto it : mp){
+            string account = it.first;
+            int node = ds.findParent(it.second);
+            mergeAccount[node].push_back(account);
+        }
+        
+        vector<vector<string>> ans;
+        for(int i=0; i<n; i++){
+            if(mergeAccount[i].size() == 0) continue;
+            
+            vector<string> temp;
+            temp.push_back(accounts[i][0]);
+            sort(mergeAccount[i].begin(),mergeAccount[i].end());
+
+            for(auto it : mergeAccount[i]){
+                temp.push_back(it);
+            }
+
+            ans.push_back(temp);
+        }
+        
+        return ans;
+    }
+};

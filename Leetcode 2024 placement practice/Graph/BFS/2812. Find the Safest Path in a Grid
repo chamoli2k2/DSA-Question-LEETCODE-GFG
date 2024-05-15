@@ -1,0 +1,71 @@
+class Solution {
+public:
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        int n = grid.size();
+        // Base case
+        if(grid[0][0] == 1 || grid[n-1][n-1] == 1) return 0;
+        vector<vector<int>> path(n, vector<int> (n, 1e9));
+        queue<pair<int, pair<int,int>>> q;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j] == 1){
+                    q.push({0, {i, j}});
+                    path[i][j] = 0;
+                }
+            }
+        }
+
+        int dc[] = {1, -1, 0, 0};
+        int dr[] = {0, 0, 1, -1};
+        while(!q.empty()){
+            int cost = q.front().first;
+            int i = q.front().second.first;
+            int j = q.front().second.second;
+            q.pop();
+
+
+            for(int k=0; k<4; k++){
+                int row = i + dr[k];
+                int col = j + dc[k];
+
+                if(row >= 0 && row < n && col >= 0 && col < n){
+                    if(path[row][col] > cost+1){
+                        q.push({cost+1, {row, col}});
+                        path[row][col] = cost + 1;
+                    }
+                }
+            }
+        }
+
+        priority_queue<pair<int,pair<int,int>>> pq;
+        pq.push({path[0][0], {0, 0}});
+        vector<vector<int>> dist(n, vector<int> (n, -1e9));
+        dist[0][0] = path[0][0];
+        
+        while(!pq.empty()){
+            int cost = pq.top().first;
+            int i = pq.top().second.first;
+            int j = pq.top().second.second;
+            pq.pop();
+
+            if(i == n-1 && j == n-1){
+                return cost;
+            }
+
+            for(int k=0; k<4; k++){
+                int row = i + dr[k];
+                int col = j + dc[k];
+
+                if(row >= 0 && row < n && col >= 0 && col < n){
+                    int currentCost = min(cost, path[row][col]);
+                    if(dist[row][col] < currentCost){
+                        pq.push({currentCost, {row, col}});
+                        dist[row][col] = currentCost;
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+};
