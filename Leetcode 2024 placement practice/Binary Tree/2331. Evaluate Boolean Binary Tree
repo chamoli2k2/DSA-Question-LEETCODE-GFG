@@ -1,0 +1,14 @@
+class Solution {
+public:
+    bool evaluateTree(TreeNode* root) {
+        // Base case
+        if(root->left == NULL && root->right == NULL){
+            return root->val;
+        }
+
+        bool ls = evaluateTree(root->left);
+        bool rs = evaluateTree(root->right);
+
+        return root->val == 2 ? (ls || rs) : (ls && rs);
+    }
+};
