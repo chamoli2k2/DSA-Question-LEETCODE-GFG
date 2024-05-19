@@ -1,0 +1,22 @@
+class Solution{
+    public:
+    int findClosest( int n, int k,int arr[]) 
+    {
+        int idx = lower_bound(arr, arr+n, k) - arr;
+        
+        if(idx == n){
+            return arr[n-1];
+        }
+        else if(idx == 0){
+            return arr[0];
+        }
+   
+        int t1 = abs(arr[idx-1]-k);
+        int t2 = abs(arr[idx]-k);
+        if(t1 < t2){
+            return arr[idx-1];
+        }
+            
+        return arr[idx];
+    } 
+};

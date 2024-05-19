@@ -1,0 +1,27 @@
+class Solution {
+private:
+    int solve(int currentIdx, int jump, int flag, int k){
+        // Base case
+        if(currentIdx > k+1) return 0;
+
+        if(dp.count(currentIdx) && dp[currentIdx].count(jump) && dp[currentIdx][jump].count(flag)){
+            return dp[currentIdx][jump][flag];
+        }
+
+        // We have two choices
+        int ans = (currentIdx == k);
+
+        ans += solve(currentIdx+(1<<jump), jump+1, true, k);
+
+        if(flag && currentIdx > 0){
+            ans += solve(currentIdx-1, jump, false, k);
+        }
+
+        return dp[currentIdx][jump][flag] = ans;
+    }
+public:
+    unordered_map<int,unordered_map<int,unordered_map<int,int>>> dp;
+    int waysToReachStair(int k) {
+        return solve(1, 0, true, k);
+    }
+};

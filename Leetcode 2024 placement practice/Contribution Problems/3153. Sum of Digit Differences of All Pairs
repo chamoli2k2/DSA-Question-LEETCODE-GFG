@@ -1,0 +1,32 @@
+class Solution {
+public:
+    long long sumDigitDifferences(vector<int>& nums) {
+        long long n = nums.size(), ans = 0;
+        vector<vector<int>> mp(10, vector<int>(10, 0));
+        vector<string> str;
+        
+        for(int i=0; i<n; i++){
+            str.push_back(to_string(nums[i]));
+        }
+        
+        int m = str[0].size();
+        
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                mp[i][str[j][i]-'0']++;
+            }
+        }
+        
+        for(int i=0; i<m; i++){
+            long long temp = 0;
+            for(int j=0; j<10; j++){
+                // Total Contribution of digit i is = freq_ith_digit * (total_freq - freq_ith_digit)
+                temp += (mp[i][j] *1LL* (n - mp[i][j]));
+            }
+            
+            ans += temp/2;
+        }
+        
+        return ans;
+    }
+};

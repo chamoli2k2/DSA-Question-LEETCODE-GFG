@@ -1,0 +1,18 @@
+class Solution {
+  public:
+    int findPair(int n, int x, vector<int> &arr) {
+        set<int> st;
+        for(int i=n-1; i>=0; i--){
+            int findEle1 = arr[i] - x;
+            int findEle2 = arr[i] + x;
+            
+            if((st.find(findEle1) != st.end()) || (st.find(findEle2) != st.end())){
+                return 1;
+            }
+            
+            st.insert(arr[i]);
+        }
+        
+        return -1;
+    }
+};

@@ -1,0 +1,43 @@
+class Solution {
+private:
+    int dfs(vector<int> adj[], vector<int> &visited, int node, int &ans){
+        visited[node] = 1;
+        
+        
+        int nodeCount = 1;
+        for(auto it : adj[node]){
+            if(visited[it] == 0){
+                int subTreeCount = dfs(adj, visited, it, ans);
+                
+                if(subTreeCount % 2 == 0){
+                    ans++;
+                }
+                else{
+                    nodeCount += subTreeCount;
+                }
+            }
+        }
+        
+        return nodeCount;
+    }
+public:
+	int minimumEdgeRemove(int n, vector<vector<int>>edges){
+	    vector<int> adj[n];
+	    
+	    for(auto it : edges){
+	        adj[it[1]-1].push_back(it[0]-1);
+	        adj[it[0]-1].push_back(it[1]-1);
+	    }
+	    
+	    vector<int> visited(n, 0);
+	    
+	    int ans = 0;
+	    for(int i=0; i<n; i++){
+	        if(visited[i] == 0){
+	            dfs(adj, visited, i, ans);
+	        }
+	    }
+	    
+	    return ans;
+	}
+};
