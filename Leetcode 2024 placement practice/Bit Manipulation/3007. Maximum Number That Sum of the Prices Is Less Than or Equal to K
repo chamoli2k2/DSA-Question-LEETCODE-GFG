@@ -1,0 +1,62 @@
+class Solution {
+private:
+    void solve(long long num, vector<long long> &setBit){
+        // Base case
+        if(num == 0) return;
+        if(num == 1){
+            setBit[0] += 1;
+            return;
+        }
+        if(num == 2){
+            setBit[0] += 1;
+            setBit[1] += 1;
+            return;
+        }
+
+        long long bitLen = log2(num);
+        long long nearPower2 = (1ll << bitLen);
+        setBit[bitLen] += (num -nearPower2 + 1);
+
+        for(int i=0; i<bitLen; i++){
+            setBit[i] += nearPower2/2;
+        }
+
+        num = num - nearPower2;
+        solve(num, setBit);
+    }
+
+    long long getCount(long long num, long long x, long long k){
+        vector<long long> setBit(64, 0);
+        solve(num, setBit);
+        long long count = 0, bitLen = log2(num);
+
+        for(int i=0; i<bitLen+1; i++){
+            if((i+1)%x == 0){
+                count += setBit[i];
+            }
+            if(count > k) return false;
+        }
+
+        return count <= k;
+    }
+public:
+    long long findMaximumNumber(long long k, int x) {
+        long long s = 1, e = 1e15, mid, ans;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            bool flagCheck = getCount(mid, x, k);
+
+            if(flagCheck){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+};
