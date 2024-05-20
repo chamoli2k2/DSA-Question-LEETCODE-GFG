@@ -1,0 +1,40 @@
+class Solution {
+private:
+    vector<int> dfs(vector<int> adj[], vector<int> &visited, int node){
+        visited[node] = 1;
+        vector<int> mp(26, 0);
+        for(auto it : adj[node]){
+            if(visited[it] == 0){
+                vector<int> temp = dfs(adj, visited, it);
+                for(int i=0; i<26; i++){
+                    mp[i] += temp[i];
+                }
+            }
+        }
+        
+        mp[value[node]-'a']++;
+        result[node] = mp[value[node]-'a'];
+
+        return mp;
+    }
+public:
+    string value;
+    vector<int> result;
+    vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) {
+        result.resize(n);
+        vector<int> visited(n, 0);
+        vector<int> adj[n];
+        value = labels;
+
+        for(auto it : edges){
+            int u = it[0], v = it[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+
+        dfs(adj, visited, 0);
+
+        return result;
+    }
+};

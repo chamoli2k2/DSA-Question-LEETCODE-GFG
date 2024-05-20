@@ -1,0 +1,21 @@
+class Solution
+{
+	public:
+		long long int PowMod(long long int x,long long int n,long long int M)
+		{
+		    // Base case
+		    if(n == 0){
+		        return 1;
+		    }
+		    
+		    
+		    long long int halfAns = PowMod(x, n/2, M);
+		    
+		    // If n is odd
+		    if(n&1){
+		        return (halfAns%M * halfAns%M * x%M) % M;
+		    }
+		    
+		    return (halfAns%M * halfAns%M) % M;
+		}
+};

@@ -1,0 +1,23 @@
+class Solution {
+private:
+    void solve(vector<int> &nums, int idx, int XOR){
+        // Base case
+        int n = nums.size();
+        if(idx == n){
+            sum += XOR;
+            return;
+        }
+
+        // Take
+        solve(nums, idx+1, XOR^nums[idx]);
+
+        // Not take
+        solve(nums, idx+1, XOR);
+    }
+public:
+    int sum = 0;
+    int subsetXORSum(vector<int>& nums) {
+        solve(nums, 0, 0);
+        return sum;
+    }
+};
