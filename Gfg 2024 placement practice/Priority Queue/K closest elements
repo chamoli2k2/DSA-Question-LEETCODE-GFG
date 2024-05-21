@@ -1,0 +1,34 @@
+class Solution {
+  public:
+    struct Compare {
+        bool operator()(const pair<int, int>& p1, const pair<int, int>& p2) {
+            // Compare the first elements of the pairs
+            // If they are equal, compare the second elements
+            if (p1.first == p2.first){
+                return p1.second > p2.second;
+            }
+            return p1.first < p2.first;
+        }
+    };
+    vector<int> printKClosest(vector<int> arr, int n, int k, int x) {
+        priority_queue<pair<int,int>, vector<pair<int,int>>, Compare> pq;
+        
+        for(int i=n-1; i>=0; i--){
+            if(x == arr[i]) continue;
+            int diff = abs(x-arr[i]);
+            pq.push({diff, arr[i]});
+            
+            if(pq.size() > k) pq.pop();
+        }
+        
+        vector<int> ans;
+        while(!pq.empty()){
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+        
+        reverse(ans.begin(), ans.end());
+        
+        return ans;
+    }
+};

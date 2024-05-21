@@ -1,0 +1,43 @@
+class Solution {
+private:
+    void solve(vector<int> &nums, vector<int> &permute, int currScore){
+        // Base case
+        int m = permute.size();
+        if(currScore > minScore) return;
+        if(m == n){
+            currScore += abs(permute[n-1]-nums[permute[0]]);
+            if(currScore < minScore){
+                ans = permute;
+                minScore = currScore;
+            }
+            return;
+        }
+
+
+        for(int i=0; i<n; i++){
+            if(visited[i] == false){
+                permute.push_back(i);
+                visited[i] = true;
+
+                solve(nums, permute, currScore+abs(permute[m-1]-nums[i]));
+
+                // backtracking step
+                permute.pop_back();
+                visited[i] = false;
+            }
+        }
+    }
+public:
+    vector<int> ans;
+    vector<bool> visited;
+    int minScore, n;
+    vector<int> findPermutation(vector<int>& nums) {
+        n = nums.size();
+        minScore = INT_MAX;
+        vector<int> permute = {0};
+        visited.resize(n, 0);
+        visited[0] = true;
+        solve(nums, permute, 0);
+        return ans;
+    }
+};
