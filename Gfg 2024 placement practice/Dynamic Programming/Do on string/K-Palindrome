@@ -1,0 +1,28 @@
+class Solution{
+public:
+    int solve(string &s, int i, int j){
+        // Base case
+        if(i >= j){
+            return 0;
+        }
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        if(s[i] == s[j]){
+            return dp[i][j] = solve(s, i+1, j-1);
+        }
+        
+        int c1 = 1 + solve(s, i+1, j);
+        int c2 = 1 + solve(s, i, j-1);
+        
+        return dp[i][j] = min(c1, c2, c3);
+    }
+public:
+    int dp[1001][1001];
+    int kPalindrome(string str, int n, int k)
+    {
+        memset(dp, -1, sizeof(dp));
+        int minRemoval = solve(str, 0, n-1);
+        return minRemoval <= k;
+    }
+};
