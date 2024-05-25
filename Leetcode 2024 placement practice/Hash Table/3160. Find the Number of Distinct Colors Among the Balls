@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> queryResults(int limit, vector<vector<int>>& queries) {
+        vector<int> ans;
+        unordered_map<int,int> mp;
+        unordered_map<int,int> colored;
+        int unColored = limit + 1;
+        for(auto &it : queries){
+            int x = it[0], y = it[1];
+            
+            // Coloring the x ball with y color
+            if(mp.count(x)){
+                int oldColored = mp[x];
+                
+                // Removing the old color
+                colored[oldColored]--;
+                
+                // Checking
+                if(colored[oldColored] == 0) colored.erase(oldColored);
+                
+                // marking x is colored to y
+                mp[x] = y;
+                
+                // Increasing the count of 
+                colored[y]++;
+                
+                ans.push_back(colored.size());
+            }
+            else{
+                mp[x] = y;
+                colored[y]++;
+                ans.push_back(colored.size());
+            }
+        }
+        
+        return ans;
+    }
+};

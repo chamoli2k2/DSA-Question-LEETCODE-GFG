@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> occurrencesOfElement(vector<int>& nums, vector<int>& queries, int x) {
+        vector<pair<int,int>> arr;
+        int n = nums.size();
+        for(int i=0; i<n; i++){
+            if(nums[i] == x)    arr.push_back({nums[i], i});
+        }
+        
+        int m = arr.size();
+        vector<int> ans;
+        for(auto it : queries){
+            if(it-1 < m){
+                ans.push_back(arr[it-1].second);
+            }
+            else{
+                ans.push_back(-1);
+            }
+        }
+        
+        return ans;
+    }
+};
