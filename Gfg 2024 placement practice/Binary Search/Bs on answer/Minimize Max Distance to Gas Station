@@ -1,0 +1,36 @@
+class Solution {
+    private:
+    int check(vector<int> &stations, double maxDist){
+        int count = 0, n = stations.size();
+        
+        for(int i=0; i<n-1; i++){
+            double diff = stations[i+1]-stations[i];
+            if(diff > maxDist){
+                count += (int)(diff/maxDist);
+            }
+        }
+        
+        return count;
+    }
+  public:
+    double findSmallestMaxDist(vector<int> &stations, int k) {
+        int n = stations.size();
+        double s = 0, e = 1e6, ans, mid;
+        
+        while(s <= e){
+            mid = s + (e - s) / 2;
+            
+            int Count_Stations = check(stations, mid);
+            
+            if(Count_Stations <= k){
+                ans = mid;
+                e = mid - 0.00001;
+            }
+            else{
+                s = mid + 0.00001;
+            }
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,45 @@
+class Solution {
+private:
+    int solve(vector<string> &words, vector<int> &score, int idx){
+        // Base case
+        if(idx == words.size()){
+            return 0;
+        }
+
+        int currFreq[26] = {0}, flag = true, take = 0, currScore = 0;
+        for(int i=0; i<26; i++) currFreq[i] = freq[i];
+
+        // Trying to find Current Word
+        for(auto &it : words[idx]){
+            if(currFreq[it-'a'] > 0){
+                currFreq[it-'a']--;
+                currScore += score[it-'a'];
+            }
+            else{
+                flag = false;
+                break;
+            }
+        }
+
+        
+        if(flag){
+            int temp[26] = {0};
+            for(int i=0; i<26; i++) temp[i] = freq[i];
+            for(int i=0; i<26; i++) freq[i] = currFreq[i];
+
+            take = currScore + solve(words, score, idx+1);
+            
+            for(int i=0; i<26; i++) freq[i] = temp[i];
+        }
+
+        int notTake = solve(words, score, idx+1);
+
+        return max(take, notTake);
+    }
+public:
+    int freq[26];
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+        for(auto it : letters) freq[it-'a']++;
+        return solve(words, score, 0);
+    }
+};

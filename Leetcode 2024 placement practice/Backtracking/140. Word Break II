@@ -1,0 +1,43 @@
+class Solution {
+private:
+    void solve(string &s, string str, int idx){
+        // Base case
+        int n = s.size();
+        if(idx == n){
+            str.pop_back();
+            ans.push_back(str);
+            return;
+        }
+
+        string m = "";
+
+        for(int i=idx; i<n; i++){
+            m += s[i];
+            if(mp[m]){
+                m += " ";
+                solve(s, str+m, i+1);
+                m.pop_back();
+            }
+        }
+
+    }
+public:
+    unordered_map<string,bool> mp;
+    vector<string> ans;
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        for(auto &it : wordDict) mp[it] = true;
+        string str = "";
+
+        for(int i=0; i<s.size(); i++){
+            str += s[i];
+
+            if(mp[str]){
+                str += " ";
+                solve(s, str, i+1);
+                str.pop_back();
+            }
+        }
+
+        return ans;
+    }
+};
