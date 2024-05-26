@@ -1,0 +1,32 @@
+class Solution {
+public:
+    long long numberOfPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        unordered_map<long long, long long> mp;
+        long long ans = 0;
+        
+        for(auto &it : nums2){
+            mp[it*1LL*k]++;
+        }
+        
+        
+        for(int i=0; i<nums1.size(); i++){
+            int sqt = sqrt(nums1[i]);
+            if(nums1[i]%k != 0) continue;
+            
+            for(int f1=1; f1<=sqt; f1++){
+                if(nums1[i]%f1 == 0){
+                    int f2 = nums1[i] / f1;
+
+                    ans += mp[f1];
+
+                    if(f1 != f2){
+                        ans += mp[f2];
+                    }
+                }
+            }
+            
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,37 @@
+int dp[101][101][101][27]; // Heap me store hoga ye 
+
+class Solution {
+private:
+    int solve(string &s, int idx, int k, int runLen, int prev){
+        // Base case
+        int n = s.size();
+        if(idx == n) return 0;
+
+        if(dp[idx][k][runLen][prev] != -1) return dp[idx][k][runLen][prev];
+
+        // Deleting the char
+        int c1 = 1e8;
+        if(k){
+            c1 = solve(s, idx+1, k-1, runLen, prev);
+        }
+
+        // Keeping
+        int c2;
+        if(prev != s[idx]-'a'){
+            c2 = 1 + solve(s, idx+1, k, 1, s[idx]-'a');
+        }
+        else{
+            int add_count = 0;
+            if(runLen == 1 || runLen == 9 || runLen == 99) add_count++;
+
+            c2 = add_count + solve(s, idx+1, k, runLen+1, prev);
+        }
+
+        return dp[idx][k][runLen][prev] = min(c1, c2); 
+    }
+public:
+    int getLengthOfOptimalCompression(string s, int k) {
+        memset(dp, -1, sizeof(dp));
+        return solve(s, 0, k, 0, 26);
+    }
+};
