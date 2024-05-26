@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool checkPerfectNumber(int num) {
+        int sum = 0, sqt = sqrt(num);
+        for(int f1=1; f1<=sqt; f1++){
+            if(num%f1 == 0){
+                int f2 = num/f1;
+
+                sum += f1;
+                if(f1 != f2) sum += f2;
+            }
+        }
+
+        return sum == 2*num;
+    }
+};

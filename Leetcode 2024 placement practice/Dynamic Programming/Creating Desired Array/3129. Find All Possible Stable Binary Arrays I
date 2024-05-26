@@ -1,0 +1,78 @@
+class Solution {
+private:
+    int solve(int zero, int one, int consi, int prev_elem, int limit){
+        // Base case
+        if(zero == 0 && one == 0) return 1;
+
+        if(dp[zero][one][prev_elem+1][consi] != -1) return dp[zero][one][prev_elem+1][consi];
+
+        int c1 = 0, c2 = 0;
+        if(zero){
+            // Trying to place zero
+            if(prev_elem == -1 || (prev_elem == 0 && consi < limit)){
+                c1 = solve(zero-1, one, consi+1, 0, limit);
+            }
+            else if(prev_elem == 1){
+                c1  = solve(zero-1, one, 1, 0, limit) % mod;
+            }
+        }
+        
+        if(one){
+            if(prev_elem == -1 || (prev_elem == 1 && consi < limit)){
+                c2 = solve(zero, one-1, consi+1, 1, limit);
+            }
+            else if(prev_elem == 0){
+                c2 = solve(zero, one-1, 1, 1, limit) % mod;
+            }
+        }
+
+
+        return dp[zero][one][prev_elem+1][consi] = (c1%mod + c2%mod) % mod;
+    }
+public:
+    vector<vector<vector<vector<int>>>> dp;
+    int mod = 1e9 + 7;
+    int numberOfStableArrays(int zero, int one, int limit) {
+        dp.resize(zero+1,vector<vector<vector<int>>>(one+1, vector<vector<int>>(3, vector<int>(limit+1, -1))));
+        return solve(zero, one, 0, -1, limit);
+    }
+};
+
+class Solution {
+private:
+    int solve(int zero, int one, int prev, int limit){
+        // Base case
+        if(zero == 0 && one == 0) return 1;
+
+        if(dp[zero][one][prev+1] != -1) return dp[zero][one][prev+1];
+
+        int c1 = 0, c2 = 0;
+
+        if(prev != 0){
+            // We need to set zero
+            int max_zero = min(zero, limit);
+
+            for(int z=1; z<=max_zero; z++){
+                c1 = (c1 % mod + solve(zero-z, one, 0, limit) % mod) % mod;
+            }
+        }
+
+        if(prev != 1){
+            // We need to set one
+            int max_one = min(one, limit);
+
+            for(int o=1; o<=max_one; o++){
+                c2 = (c2 % mod + solve(zero, one-o, 1, limit) % mod) % mod;
+            }
+        }
+
+        return dp[zero][one][prev+1] = (c1%mod + c2%mod) % mod;
+    }
+public:
+    int dp[201][201][3];
+    int mod = 1e9 + 7;
+    int numberOfStableArrays(int zero, int one, int limit) {
+        memset(dp, -1, sizeof(dp));
+        return solve(zero, one, -1, limit);
+    }
+};

@@ -1,0 +1,27 @@
+class Solution {
+    private:
+        int solve(string &x, string &y, int i, int j, int costX, int costY){
+            // Base case
+            int n = x.size(), m = y.size();
+            if(i == n || j == m){
+                return ((m-j)*costY + (n-i)*costX);
+            }
+            
+            if(dp[i][j] != -1) return dp[i][j];
+            
+            if(x[i] == y[j]){
+                return dp[i][j] = solve(x, y, i+1, j+1, costX, costY);
+            }
+            
+            int c1 = costX + solve(x, y, i+1, j, costX, costY);
+            int c2 = costY + solve(x, y, i, j+1, costX, costY);
+            
+            return dp[i][j] = min(c1, c2);
+        }
+  public:
+    int dp[1001][1001];
+    int findMinCost(string x, string y, int costX, int costY) {
+        memset(dp, -1, sizeof(dp));
+        return solve(x, y, 0, 0, costX, costY);
+    }
+};

@@ -1,0 +1,35 @@
+class Solution {
+private:
+    int solve(int n, int absent, int lateConsi, int len){
+        // Base case
+        if(len == n){
+            return 1;
+        }
+
+        if(dp[len][absent][lateConsi] != -1) return dp[len][absent][lateConsi];
+
+        // We have 3 choices
+        int ans = 0;
+
+        // absent
+        if(absent){
+            ans = (ans % mod + solve(n, absent-1, 0, len+1) % mod) % mod;
+        }
+
+        // going late
+        if(lateConsi < 2){
+            ans = (ans % mod + solve(n, absent, lateConsi+1, len+1) % mod) % mod;
+        }
+
+        // Present on time
+        ans = (ans % mod + solve(n, absent, 0, len+1) % mod) % mod;
+
+        return dp[len][absent][lateConsi] = ans%mod;
+    }
+public:
+    int dp[100001][2][3], mod = 1e9 + 7;
+    int checkRecord(int n) {
+        memset(dp, -1, sizeof(dp));
+        return solve(n, 1, 0, 0);
+    }
+};

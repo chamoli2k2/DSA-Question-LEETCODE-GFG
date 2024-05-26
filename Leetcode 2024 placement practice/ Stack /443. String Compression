@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int compress(vector<char>& chars) {
+        string s = "";
+        int n = chars.size(), j = 0;
+
+        while(j < n){
+            char st = '!';
+            int sz = 1;
+
+            while(j < n && (st == '!' || st == chars[j])){
+                st = chars[j];
+                sz++;
+                j++;
+            }
+
+            s += st;
+            if(sz > 2) s += to_string(sz-1);
+        }
+
+        for(int i=0; i<s.size(); i++){
+            chars[i] = s[i];
+        }
+
+        return s.size();
+    }
+};
