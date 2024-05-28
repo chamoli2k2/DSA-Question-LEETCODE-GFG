@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int specialArray(vector<int>& nums) {
+        int n = nums.size();
+        sort(begin(nums), end(nums));
+        for(int x=0; x<=1000; x++){
+            int idx = lower_bound(nums.begin(), nums.end(), x) - nums.begin();
+            if(n-idx == x){
+                return x;
+            }
+            else if(x > n-idx) return -1;
+        }
+        return -1;
+    }
+};

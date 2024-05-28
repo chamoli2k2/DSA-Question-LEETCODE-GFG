@@ -1,0 +1,55 @@
+const int N = 1e4;
+int seg[N];
+
+
+void build(int idx,int left,int right, int *arr){
+    // Base case
+    if(left == right){
+        seg[idx] = arr[left];
+        return;
+    }
+    
+    int mid = left + (right - left) / 2;
+    build(2*idx+1, left, mid, arr);
+    build(2*idx+2, mid+1, right, arr);
+    seg[idx] = min(seg[2*idx+1], seg[2*idx+2]);
+}
+
+
+int query(int idx,int low,int high,int l,int r){
+    // If it lies in range completely
+    if(low >= l && high <= r){
+        return seg[idx];
+    }
+    
+    // If it doesn't lies in range
+    if(low > r || high < l) return INT_MAX;
+    
+    // When it overlaps
+    int mid = low + (high - low) / 2;
+    int left = query(2*idx+1, low, mid, l, r);
+    int right = query(2*idx+2, mid+1, high, l, r);
+    
+    return min(left,right);
+}
+
+int *constructST(int nums[],int n)
+{
+    
+    for(int i=0; i<N; i++){
+        seg[i] = 0;
+    }
+  
+  build(0, 0, n-1, nums);
+  return seg;
+}
+
+
+/* The functions returns the
+ min element in the range
+ from a and b */
+int RMQ(int st[] , int n, int a, int b)
+{
+    int ans = query(0, 0, n-1, a, b);
+    return ans;
+}

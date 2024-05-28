@@ -1,0 +1,31 @@
+class Solution {
+    private:
+    int solve(vector<int> &cost, int idx, int w, int n){
+        // Base case
+        if(w == 0){
+            return 0;
+        }
+        if(idx == n){
+            return 1e8;
+        }
+        
+        
+        if(dp[idx][w] != -1) return dp[idx][w];
+        
+        int take = 1e8;
+        if(w >= (idx+1) && cost[idx] != -1){
+            take = cost[idx] + solve(cost, idx, w-idx-1, n);
+        }
+        
+        int notTake = solve(cost, idx+1, w, n);
+        
+        return dp[idx][w] = min(take, notTake);
+    }
+  public:
+    int dp[300][300];
+    int minimumCost(int n, int w, vector<int> &cost) {
+        memset(dp, -1, sizeof(dp));
+        int ans = solve(cost, 0, w, n);
+        return ans < 1e8 ? ans : -1;
+    }
+};

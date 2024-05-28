@@ -1,0 +1,79 @@
+class segTree{
+    private:
+    int arr[3*10001], tree[2*100001];
+
+    public:
+    segTree(vector<int> &nums){
+        int n = nums.size();
+        for(int i=0; i<n; i++) arr[i] = nums[i];
+    }
+
+    // Building the tree
+    int build(int idx, int s, int e){
+        if(s == e){
+            return tree[idx] = arr[s];
+        }
+
+        int mid = s + (e - s) / 2;
+        int left = build(2*idx+1, s, mid);
+        int right = build(2*idx+2, mid+1, e);
+
+        return tree[idx] = left + right;
+    }
+
+    // Query 
+    int query(int idx, int currS, int currE, int queryS, int queryE){
+        // Base case
+        // If completely in the range
+        if(currS >= queryS && currE <= queryE){
+            return tree[idx];
+        }
+
+        // If we are outside the range
+        if(currS > queryE || currE < queryS) return 0;
+
+        // Rest partially overlapp
+        int mid = currS + (currE - currS) / 2;
+        int left = query(2*idx+1, currS, mid, queryS, queryE);
+        int right = query(2*idx+2, mid+1, currE, queryS, queryE);
+
+        return left + right;
+    }
+
+
+    // Update
+    int update(int idx, int currS, int currE, int targetIdx, int val){
+        // Base case
+        if(currS == targetIdx && currE == targetIdx){
+            return tree[idx] = val;
+        }
+
+        // If out of bound
+        if(currS > targetIdx || currE < targetIdx) return tree[idx];
+
+        int mid = currS + (currE - currS) / 2;
+        int left = update(2*idx+1, currS, mid, targetIdx, val);
+        int right = update(2*idx+2, mid+1, currE, targetIdx, val);
+
+        return tree[idx] = left + right;
+    }
+};
+class NumArray {
+private:
+    segTree *tree;
+    int n;
+public:
+    NumArray(vector<int>& nums) {
+        tree = new segTree(nums);
+        n = nums.size();
+        tree->build(0, 0, n-1);
+    }
+    
+    void update(int index, int val) {
+        tree->update(0, 0, n-1, index, val);
+    }
+    
+    int sumRange(int left, int right) {
+        return tree->query(0, 0, n-1, left, right);
+    }
+};

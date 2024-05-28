@@ -1,0 +1,63 @@
+class segTree{
+    private:
+    int segment_Tree[4*10001];
+    int arr[10001];
+
+    public:
+
+    segTree(vector<int> &nums){
+        int n = nums.size();
+        for(int i=0; i<n; i++) arr[i] = nums[i];
+    }
+
+    // Building the tree
+    int build(int idx, int s, int e){
+        // Base case
+        if(s == e){
+           return segment_Tree[idx] = arr[s];
+        }
+
+        int mid = s + (e - s) / 2;
+        int leftSum = build(2*idx+1, s, mid);
+        int rightSum = build(2*idx+2, mid+1, e);
+
+        return segment_Tree[idx] = leftSum + rightSum;
+    }
+
+    // Query 
+    int query(int idx, int s, int e, int q_Start, int q_End){
+        // Base case
+        // If current range complete overlap 
+        if(s >= q_Start && e <= q_End){
+            return segment_Tree[idx];
+        }
+
+        // Checking if out of range
+        if(e < q_Start || s > q_End) return 0;
+
+        // When it overlaps
+        int mid = s + (e - s) / 2;
+
+        int left = query(2*idx+1, s, mid, q_Start, q_End);
+        int right = query(2*idx+2, mid+1, e, q_Start, q_End);
+
+        return left + right;
+    }
+};
+
+class NumArray {
+private:
+    segTree *tree;
+    int n;
+public:
+    NumArray(vector<int>& nums) {
+        n = nums.size();
+        tree = new segTree(nums);
+        tree->build(0, 0, n-1);
+    }
+    
+    int sumRange(int left, int right) {
+        int ans = tree->query(0, 0, n-1, left, right);
+        return ans;
+    }
+};
