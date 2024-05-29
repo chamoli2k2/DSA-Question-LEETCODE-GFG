@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        int n = nums.size(), i = 0, j = 0, ans = 0, freq = 0;
+
+        while(j < n){
+            freq += nums[j];
+
+            // Extra character can be atmost k
+            while(((j-i+1)-freq) > k){
+                freq -= nums[i++];
+            }
+
+            ans = max(ans, j-i+1);
+            j++;
+        }
+
+        return ans;
+    }
+};

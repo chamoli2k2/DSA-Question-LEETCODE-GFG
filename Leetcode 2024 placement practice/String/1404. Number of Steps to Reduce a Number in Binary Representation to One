@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int numSteps(string s) {
+        int i = 0, ans = 0;
+        reverse(s.begin(), s.end());
+
+        while(!(i == s.size()-1 && s[i] == '1')){
+            // If we get even
+            if(s[i] == '0'){
+                ans++;
+                i++;
+            }
+            else{
+                // We need to add one
+                int j = i;
+                while(j < s.size() && s[j] == '1'){
+                    s[j++] = '0';
+                }
+
+                if(j == s.size()){
+                    s.push_back('1');
+                }
+                else{
+                    s[j] = '1';
+                }
+
+                ans++;
+            }
+        }
+
+        return ans;
+    }
+};
