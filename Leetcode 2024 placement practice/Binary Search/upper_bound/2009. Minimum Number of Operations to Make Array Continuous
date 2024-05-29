@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        set<int> st(nums.begin(), nums.end());
+        vector<int> arr(st.begin(), st.end());
+        int m = arr.size(), ans = INT_MAX, n = nums.size();
+
+        for(int i=0; i<m; i++){
+            // If current element is the minimum 
+            int maxi = arr[i] + n - 1;
+
+            int j = upper_bound(arr.begin(), arr.end(), maxi) - arr.begin();
+            int withInRange = j - i;
+            int outOfRange = n - withInRange;
+        
+            ans = min(ans, outOfRange);
+        }
+
+        return ans;
+    }
+};

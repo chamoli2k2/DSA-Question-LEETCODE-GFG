@@ -1,0 +1,38 @@
+const int N = 1e5 + 5;
+class Solution {
+    private:
+    bool solve(int n, int x, int y, int p){
+        // Base case
+        if(p == 1 && (n == 1 || n == x || n == y)) return 1;
+        if(p == 0 && (n == 1 || n == x || n == y)) return 0;
+        
+        
+        if(dp[n][p] != -1) return dp[n][p];
+        
+        
+        int ans = 0;
+        if(p == 1){
+            ans = solve(n-1, x, y, 0);
+            if(n > x) ans = ans || solve(n-x, x, y, 0);
+            if(n > y) ans = ans || solve(n-y, x, y, 0);
+            
+            return dp[n][p] = ans;
+        }
+        
+        ans = solve(n-1, x, y, 1);
+        if(n > x) ans = ans and solve(n-x, x, y, 1);
+        if(n > y) ans = ans and solve(n-y, x, y, 1);
+        
+        return dp[n][p] = ans;
+    }
+  public:
+    int dp[N][2];
+    int findWinner(int n, int x, int y) {
+        for(int i=0; i<N; i++){
+            for(int j=0; j<2; j++){
+                dp[i][j] = -1;
+            }
+        }
+        return solve(n, x, y, 1);
+    }
+};

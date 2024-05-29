@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxConsecutiveAnswers(string answerKey, int k) {
+        int n = answerKey.size(), ans = 0, maxFreq = 0, countTrue = 0, countFalse = 0, i = 0, j = 0;
+
+        while(j < n){
+            countTrue += answerKey[j] == 'T';
+            countFalse += answerKey[j] == 'F';
+
+            maxFreq = max({maxFreq, countTrue, countFalse});
+
+            // we can replace atmost k
+            while(((j-i+1)-maxFreq) > k){
+                countTrue -= answerKey[i] == 'T';
+                countFalse -= answerKey[i] == 'F';
+                i++;
+            }
+
+            ans = max(ans, j-i+1);
+            j++;
+        }
+
+        return ans;
+    }
+};
