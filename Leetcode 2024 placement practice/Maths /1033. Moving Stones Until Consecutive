@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> numMovesStones(int x, int y, int z) {
+        int a = min({x, y, z}), c = max({x, y, z}), b;
+        if(a == x && c == y || a == y && c == x) b = z;
+        if(a == y && c == z || a == z && c == y) b = x;
+        if(a == z && c == x || a == x && c == z) b = y;
+
+        int maxMove = max({c-b-1, b-a-1, b-a-1+c-b-1});
+        int minMove = min({b-a-1, c-b-1, 2});
+
+        if(b-a-1 == 0 && c-b-1) minMove = 1;
+        if(c-b-1 == 0 && b-a-1) minMove = 1;
+
+        return {minMove, maxMove};
+    }
+};

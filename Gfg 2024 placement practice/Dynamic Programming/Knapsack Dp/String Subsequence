@@ -1,0 +1,26 @@
+class Solution {
+    private:
+    int solve(string &s1, string &s2, int i, int j){
+        int n = s1.size(), m = s2.size();
+        // Base case
+        if(i == n || j == m) return j == m;
+        
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        int take = 0;
+        if(s1[i] == s2[j]){
+            take = solve(s1, s2, i+1, j+1);
+        }
+        
+        int notTake = solve(s1, s2, i+1, j);
+        
+        return dp[i][j] = (notTake%mod + take%mod) % mod;
+    }
+  public:
+    int dp[500][501], mod = 1e9 + 7;
+    int countWays(string s1, string s2) {
+        memset(dp, -1, sizeof(dp));
+        return solve(s1, s2, 0, 0);
+    }
+};

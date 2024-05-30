@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int countTriplets(vector<int>& arr) {
+        int n = arr.size(), ans = 0;
+        vector<int> prefix_xor(n+1, 0);
+
+        for(int i=0; i<n; i++){
+            prefix_xor[i+1] = prefix_xor[i] ^ arr[i];
+        }
+        unordered_map<int,int> count_xor, sumIdx;
+        count_xor[0] = 1, sumIdx[0] = 0;
+
+        for(int k=1; k<=n; k++){
+            int x = prefix_xor[k];
+
+            ans += k*(count_xor[x]) - (sumIdx[x] + count_xor[x]);
+
+            count_xor[x]++;
+            sumIdx[x] += k;
+        }
+
+        return ans;
+    }
+};
