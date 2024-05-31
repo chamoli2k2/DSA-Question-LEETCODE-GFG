@@ -1,35 +1,30 @@
 class Solution {
 public:
-    vector<int> singleNumber(vector<int>& arr) {
-        int XOR = 0, n = arr.size();
-        for(int i=0; i<n; i++){
-            XOR = XOR ^ arr[i];
-        }
-        
-        // Checking the 1st set bit
-        int setBit = 0;
-        
+    vector<int> singleNumber(vector<int>& nums) {
+        int XOR = 0, n = nums.size();
+        for(auto &it : nums) XOR = XOR ^ it;
+
+        // Finding first set bit
+        int setBitIdx = 0;
+
         while(XOR){
-            if(XOR & 1){
+            if(XOR&1){
                 break;
             }
-            setBit++;
+            setBitIdx++;
             XOR = XOR >> 1;
         }
-        
-        
-        int setZero = 0, setOne = 0;
-        
+
+        int Elem1 = 0, Elem2 = 0;
         for(int i=0; i<n; i++){
-            bool bit = arr[i] & (1<<setBit);
-            if(bit){
-                setOne = setOne ^ arr[i];
+            if(nums[i]&(1<<setBitIdx)){
+                Elem1 = Elem1 ^ nums[i];
             }
             else{
-                setZero = setZero ^ arr[i];
+                Elem2 = Elem2 ^ nums[i];
             }
         }
 
-        return {setZero, setOne};
+        return {Elem1, Elem2};
     }
 };

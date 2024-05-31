@@ -1,0 +1,9 @@
+class Solution {
+  public:
+    int swapNibbles(int n) {
+        int a = n >> 4, b = n << 4, ans = a | b;
+        int mask = (1<<8)-1;
+        ans = ans & mask;
+        return ans;
+    }
+};

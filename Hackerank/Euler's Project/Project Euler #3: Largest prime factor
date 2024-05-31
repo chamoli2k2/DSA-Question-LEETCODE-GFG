@@ -1,0 +1,57 @@
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+
+bool check(long n){
+    for(long i=2; i<=sqrt(n); i++){
+        if(n%i == 0) return false;
+    }
+    return true;
+}
+long solve(long n){
+    // Base case
+    long ans = -1, temp = n;
+    for(long i=2; i<=1LL*sqrt(n); i++){
+        while(n%i == 0){
+            long f1 = i, f2 = check(n/i) ? n/i : -1;
+            ans = max({f1, f2, ans});
+            n /= i;
+        }
+    }
+    if(n == temp) ans = n;
+    
+    return ans;
+}
+int main(){
+    int t;
+    cin >> t;
+    for(int a0 = 0; a0 < t; a0++){
+        long n;
+        cin >> n;
+        
+        long ans = solve(n);
+        cout<<ans<<"\n";
+    }
+    return 0;
+}

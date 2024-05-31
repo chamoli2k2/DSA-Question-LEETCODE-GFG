@@ -1,0 +1,87 @@
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+vector<int> str;
+
+bool check(int num){
+    for(int i=999; i>=100; i--){
+        if(num%i == 0){
+            if(i <= 999 && i >= 100){
+                int f2 = num/i;
+                if(f2 <= 999 && f2 >= 100){
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+int solve(int n){
+    int s = 0, e = str.size()-1, ans = -1;
+    while(s <= e){
+        int mid = s + (e - s) / 2;
+        if(str[mid] >= n){
+            e = mid - 1;
+        }
+        else{
+            s = mid + 1;
+            ans = mid;
+        }
+    }
+    
+    return str[ans];
+}
+
+int main(){
+    int t;
+    cin >> t;
+    
+    string s1 = "xxx", s2 = "xxx";
+    
+    for(char i='1'; i<='9'; i++){
+        s1[0] = i, s2[2] = i;
+        for(char j='0'; j<='9'; j++){
+            s1[1] = j, s2[1] = j;
+            for(char k='0'; k<='9'; k++){
+                s1[2] = k, s2[0] = k;
+                string fi = s1 + s2;
+                int num = stoi(fi);
+                if(check(num) == false){
+                    str.push_back(num);
+                }
+            }
+        }
+    }
+    
+    sort(begin(str), end(str));
+    
+    for(int a0 = 0; a0 < t; a0++){
+        int n;
+        cin >> n;
+        int ans = solve(n);
+        cout<<ans<<endl;
+    }
+    return 0;
+}
