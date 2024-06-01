@@ -1,0 +1,27 @@
+class Solution {
+    private:
+    int solve(int currLen, int usedSong, int goal, int k, int n){
+        // Base case
+        if(currLen == goal) return usedSong == n;
+
+
+        if(dp[currLen][usedSong] != -1) return dp[currLen][usedSong];
+
+        // Choosing a already played song
+        int replayedSong = 0;
+        if(usedSong > k){ // then only we can choose a already played song
+            replayedSong = (solve(currLen+1, usedSong, goal, k, n) *1LL* (usedSong-k)) % mod;
+        }
+
+        int newPlayedSong = (solve(currLen+1, usedSong+1, goal, k, n) *1LL* (n-usedSong)) % mod;
+
+        return dp[currLen][usedSong] = (replayedSong%mod + newPlayedSong%mod) % mod;
+    }
+public:
+    int dp[101][101];
+    int mod = 1e9 + 7;
+    int numMusicPlaylists(int n, int goal, int k) {
+        memset(dp, -1, sizeof(dp));
+        return solve(0, 0, goal, k, n);
+    }
+};

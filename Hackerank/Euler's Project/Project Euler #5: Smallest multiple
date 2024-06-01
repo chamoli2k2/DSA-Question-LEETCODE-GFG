@@ -1,0 +1,43 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int gcd(int a, int b) {
+    // Euclidean algorithm to find GCD
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int lcm(int a, int b) {
+    // Compute LCM using GCD
+    return (a / gcd(a, b)) * b;
+}
+
+int solve(int n){
+    int ans = 1;
+    for(int i=2; i<=n; i++){
+        ans = lcm(ans, i);
+    }
+    
+    return ans;
+}
+
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */  
+    int t, n;
+    cin>>t;
+    
+    while(t--){
+        cin>>n;
+        
+        cout<<solve(n)<<endl;
+    } 
+    return 0;
+}
