@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int countDays(int days, vector<vector<int>>& meetings) {
+        int n = meetings.size();
+        vector<vector<int>> newRoom;
+        sort(begin(meetings), end(meetings));
+        int s = meetings[0][0], e = meetings[0][1];
+
+        for(int i=1; i<n; i++){
+            if(e < meetings[i][0]){
+                newRoom.push_back({s, e});
+                s = meetings[i][0];
+                e = meetings[i][1];
+            }
+            else{
+                e = max(e, meetings[i][1]);
+            }
+        }
+
+        newRoom.push_back({s, e});
+
+        int totalTimeWorked = 0;
+        for(auto it : newRoom){
+            totalTimeWorked += it[1]-it[0]+1;
+        }
+
+        return days-totalTimeWorked;
+    }
+};

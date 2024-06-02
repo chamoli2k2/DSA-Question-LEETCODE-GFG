@@ -1,0 +1,40 @@
+// Very important concept 
+// How to do sliding window AND 
+// Similar to Question Find Subarray sum equal to k
+
+class Solution {
+public:
+    int minimumDifference(vector<int>& nums, int k) {
+        int n = nums.size(), i = 0, j = 0, currAnd = INT_MAX, ans = INT_MAX;
+        vector<int> notSetBit(32, 0); // Will count nonSetBit
+
+        while(j < n){
+            currAnd &= nums[j];
+
+            for(int k=0; k<32; k++){
+                if((nums[j]&(1<<k)) == 0){
+                    notSetBit[k]++;
+                }
+            }
+
+            while(i < j && currAnd < k){
+                ans = min(ans, abs(currAnd-k));
+                for(int k=0; k<32; k++){
+                    if((nums[i]&(1<<k)) == 0){
+                        notSetBit[k]--;
+                    }
+
+                    if(notSetBit[k] == 0){
+                        currAnd |= (1<<k);
+                    }
+                }
+                i++;
+            }
+
+            ans = min(ans, abs(currAnd-k));
+            j++;
+        }
+
+        return ans;
+    }
+};
