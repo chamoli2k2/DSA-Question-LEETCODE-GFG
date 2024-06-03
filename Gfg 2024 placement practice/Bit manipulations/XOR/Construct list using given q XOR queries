@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    vector<int> constructList(int m, vector<vector<int>> &queries) {
+        vector<int> ans;
+        int XOR = 0;
+        
+        for(int i=m-1; i>=0; i--){
+            int type = queries[i][0], x = queries[i][1];
+            if(type == 0){
+                ans.push_back(x^XOR);
+            }
+            else{
+                XOR = XOR ^ x;
+            }
+        }
+        
+        ans.push_back(XOR);
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
+};

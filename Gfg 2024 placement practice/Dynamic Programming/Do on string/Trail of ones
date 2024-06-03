@@ -1,0 +1,44 @@
+class Solution {
+    private:
+    int find(int idx, int flag, int n){
+        // Base case
+        if(idx == n) return 1;
+        
+        if(dp[idx][flag] != -1) return dp[idx][flag];
+        
+        // Taking one
+        int take = 0, notTake = 0;
+        if(flag){
+            take = find(idx+1, 0, n); 
+            notTake = find(idx+1, 1, n);
+        }
+        else{
+            notTake = find(idx+1, 1, n);
+        }
+        
+        return dp[idx][flag] = (take%mod + notTake%mod) % mod;
+    }
+    
+    int findPow(int a, int b){
+        // Base case
+        if(b == 0) return 1;
+        
+        int halfAns = findPow(a, b/2);
+        
+        if(b&1){
+            return (a%mod *1LL* halfAns%mod *1LL* halfAns%mod) % mod;
+        }
+        
+        return (halfAns%mod *1LL* halfAns%mod) % mod;
+    }
+  public:
+    int mod = 1e9 + 7;
+    int dp[100001][2];
+    int numberOfConsecutiveOnes(int n) {
+        memset(dp, -1, sizeof(dp));
+        int neverAlternate1 = find(0, 1, n);
+        int totalString = findPow(2, n);
+        
+        return (totalString%mod - neverAlternate1%mod + mod)  % mod;;
+    }
+};
