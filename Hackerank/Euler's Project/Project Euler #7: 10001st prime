@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+const int N = 2e5+1;
+int arr[N];
+vector<int> prime;
+
+int main()
+{
+    string t_temp;
+    getline(cin, t_temp);
+
+    int t = stoi(ltrim(rtrim(t_temp)));
+    for(int i=0; i<N; i++) arr[i] = 1;
+    arr[0] = 0, arr[1] = 0;
+    
+    for(int i=2; i*i<N; i++){  // Fix the range limit to i*i < N
+        if(arr[i]){
+            for(int j=i*i; j<N; j+=i){  // Start j from i*i instead of i
+                arr[j] = 0;
+            }
+        }
+    }
+    
+    for(int i=2; i<N; i++){
+        if(arr[i]) prime.push_back(i);
+    }
+
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        string n_temp;
+        getline(cin, n_temp);
+
+        int n = stoi(ltrim(rtrim(n_temp)));
+        cout<<prime[n-1]<<endl;
+    }
+
+    return 0;
+}
+
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
