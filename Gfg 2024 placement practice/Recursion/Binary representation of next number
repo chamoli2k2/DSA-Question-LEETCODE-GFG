@@ -1,0 +1,38 @@
+class Solution {
+    private:
+    string solve(string &s, int idx, int carry){
+        // Base case
+        if(idx == s.size()){
+            if(carry) return "1";
+            return "";
+        }
+        
+        
+        if(carry){
+            if(s[idx] == '0'){
+                return "1" + solve(s, idx+1, 0);
+            }
+            else{
+                return "0" + solve(s, idx+1, 1);
+            }
+        }
+        
+        return s.substr(idx);
+    }
+  public:
+    string binaryNextNumber(string s) {
+        reverse(s.begin(), s.end());
+        
+        //       0 + 1  -> 1 & carry = 0
+        //       1 + 0  -> 1 & carry = 0
+        //       1 + 1  -> 0 & carry = 1
+        
+
+        string ans = solve(s, 0, 1);
+        reverse(ans.begin(), ans.end());
+        int idx = 0;
+        while(idx < ans.size() && ans[idx] == '0') idx++;
+        
+        return idx == ans.size() ? "0" : ans.substr(idx);
+    }
+};

@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& words) {
+        vector<string> ans;
+
+        for(int i=0; i<=0; i++){
+            for(int j=0; j<words[i].size(); j++){
+                int flag = true;
+                
+                for(int k=1; k<words.size(); k++){
+                    int found = false;
+                    for(auto &it : words[k]){
+                        if(it == words[i][j]){
+                            it = '!';
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if(found == false){
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if(flag){
+                    string k = "";
+                    k += words[i][j];
+                    ans.push_back(k);
+                }
+            }
+        }
+
+        return ans;
+    }
+};

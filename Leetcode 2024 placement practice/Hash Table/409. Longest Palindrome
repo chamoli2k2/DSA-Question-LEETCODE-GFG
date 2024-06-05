@@ -1,0 +1,25 @@
+class Solution {
+public:
+    // Time Complexity = O(N)
+    // Space Complexity = O(N)
+    int longestPalindrome(string s) {
+        int n = s.size(), ans = 0;
+
+        unordered_map<char,int> mp;
+        for(auto &it : s) mp[it]++;
+
+        int doFind = 0;
+        for(auto &[ch, fq] : mp){
+            // if freq of current character is even 
+            if(fq%2 == 0){
+                ans += fq;
+            }
+            else{
+                ans += fq-1;
+                doFind = 1;
+            }
+        }
+
+        return ans+doFind;
+    }
+};
