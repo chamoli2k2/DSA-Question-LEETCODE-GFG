@@ -1,0 +1,19 @@
+class Solution {
+
+  public:
+    int findSwapValues(int a[], int n, int b[], int m) {
+        int sum1 = accumulate(a, a+n, 0), sum2 = accumulate(b, b+m, 0);
+        unordered_map<int, int> mp;
+        for(int i=0; i<m; i++) mp[b[i]]++;
+        
+        for(int i=0; i<n; i++){
+            // If I swap current character than
+            if((sum2 - sum1 + 2*a[i])&1) continue;
+            int target = (sum2 - sum1 + 2*a[i]) / 2;
+            
+            if(mp.count(target)) return true;
+        }
+        
+        return -1;
+    }
+};
