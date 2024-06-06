@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int maxSumRangeQuery(vector<int>& nums, vector<vector<int>>& requests) {
+        int n = nums.size();
+        vector<int> prefix(n, 0);
+
+
+        // Basic request : we are creating a prefix array
+        // Why are creating a prefix array
+        // We want to track the overlapping ranges cause the range which is most overlapped will be the 
+        // most desireable to fix the maximum valued number at that position
+        // So we are finding the contribution of the number only
+
+        // [1, 3] [0, 1]
+        // [0 , 0 , 0 , 0] -> [0, 1, 0, 0, -1] -> [1, 1, -1, 0, -1] = [1, 2, 1, 1, 0]
+        for(auto &it : requests){
+            if(it[1]+1 < n) prefix[it[1]+1] -= 1;
+            prefix[it[0]] += 1;
+        }
+
+        for(int i=1; i<n; i++){
+            prefix[i] += prefix[i-1];
+        }
+
+        sort(prefix.begin(), prefix.end());
+        sort(nums.begin(), nums.end());
+        int ans = 0, mod = 1e9 + 7;
+        for(int i=0; i<n; i++){
+            ans = (ans%mod + (nums[i]*1LL*prefix[i])%mod) % mod;
+        }
+
+        return ans;
+    }
+};

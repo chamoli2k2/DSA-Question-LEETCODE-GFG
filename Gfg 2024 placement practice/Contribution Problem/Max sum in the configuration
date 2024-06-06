@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    long long max_sum(int arr[], int n) {
+        long long ans = 0, totalSum = 0, prevSum = 0;
+        
+        for(int i=0; i<n; i++){
+            totalSum += 1LL*arr[i];
+            prevSum += 1LL*arr[i]*i;
+        }
+        
+        ans = prevSum;
+        
+        for(int i=1; i<n; i++){
+            long long currSum = prevSum + totalSum - n*1LL*arr[n-i];
+            ans = max(ans, currSum);
+            prevSum = currSum;
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int k) {
+        int n = hand.size();
+        // Base case
+        if(n%k) return false;
+
+        map<int,int> mp;
+
+        for(auto &it : hand) mp[it]++;
+
+        // Approach 
+        for(auto &[num, fq] : mp){
+            if(fq == 0) continue;
+            // We check
+            int currNum = num, freq = fq;
+            for(int i=currNum; i<currNum+k; i++){
+                if(mp[i] >= freq){
+                    mp[i] -= freq;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+};
