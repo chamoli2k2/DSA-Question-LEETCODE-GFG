@@ -1,0 +1,20 @@
+class Solution {
+    private:
+    void dfs(vector<int> adj[], int node){
+        ans.push_back(node);
+        visited[node] = 1;
+        
+        for(auto &it : adj[node]){
+            if(visited[it] == 0){
+                dfs(adj, it);
+            }
+        }
+    }
+  public:
+    vector<int> ans, visited;
+    vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+        visited.resize(V, 0);
+        dfs(adj, 0);
+        return ans;
+    }
+};

@@ -1,0 +1,15 @@
+class Solution {
+  public:
+    // Function to return the adjacency list for each vertex.
+    vector<vector<int>> printGraph(int V, vector<pair<int,int>>edges) {
+        vector<vector<int>> adjList(V);
+        
+        for(auto &it : edges){
+            int s = it.first, e = it.second;
+            adjList[s].push_back(e);
+            adjList[e].push_back(s);
+        }
+        
+        return adjList;
+    }
+};

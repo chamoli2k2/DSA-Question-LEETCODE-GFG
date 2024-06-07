@@ -1,0 +1,22 @@
+class Solution
+{
+    public:
+        int numberOfTriangles(vector<vector<int>> &g,int n)
+        {
+            int m = n, count = 0, ans = 0;
+        
+            for(int i=0; i<n; i++){
+                for(int j=0; j<m; j++){
+                    for(int k=0; k<n; k++){
+                        if(i != j && j != k && k != i){
+                            if(g[i][j] == 1 && g[j][k] == 1 && g[k][i] == 1){
+                                ans++;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return ans/3;
+        }
+};

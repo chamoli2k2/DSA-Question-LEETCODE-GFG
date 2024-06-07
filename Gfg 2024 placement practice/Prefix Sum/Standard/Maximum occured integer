@@ -1,0 +1,33 @@
+const int N = 1e5+5;
+int prefix[N];
+class Solution {
+  public:
+    // l and r are input array
+    // maxx : maximum in r[]
+    // n: size of array
+    // arr[] : declared globally with size equal to maximum in l[] and r[]
+    // Function to find the maximum occurred integer in all ranges.
+    int maxOccured(int n, int l[], int r[], int maxx) {
+        for(int i=0; i<N; i++) prefix[i] = 0;
+        
+        for(int i=0; i<n; i++){
+            int s = l[i], e = r[i];
+            prefix[s] += 1;
+            prefix[e+1] -= 1;
+        }
+        
+        for(int i=1; i<=maxx+2; i++){
+            prefix[i] += prefix[i-1];
+        }
+        
+        int ans = INT_MAX, maxFreq = 0;
+        for(int i=0; i<=maxx; i++){
+            if(maxFreq < prefix[i]){
+                ans = i;
+                maxFreq = prefix[i];
+            }
+        }
+        
+        return ans;
+    }
+};

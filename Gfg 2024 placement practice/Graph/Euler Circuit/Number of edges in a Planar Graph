@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    int findNoOfEdges(string C, string F) {
+        
+        // V - E + F = 2
+        
+        string a="";
+
+        string b="";
+
+        a+=C.back();
+
+        b+=F.back();
+
+        int x=stoi(a);
+
+        int y=stoi(b);
+
+        int ans=x+y-2;
+
+        return ans%10;
+    }
+};

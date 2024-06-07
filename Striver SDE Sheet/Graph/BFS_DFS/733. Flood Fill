@@ -1,0 +1,28 @@
+class Solution {
+private:
+    void dfs(vector<vector<int>> &image, int i, int j, int color, int stColor){
+        // Base case
+        if(i < 0 || i >= n || j < 0 || j >= m || image[i][j] != stColor){
+            return;
+        }
+
+        image[i][j] = color;
+
+        dfs(image, i+1, j, color, stColor);
+        dfs(image, i-1, j, color, stColor);
+        dfs(image, i, j+1, color, stColor);
+        dfs(image, i, j-1, color, stColor);
+    }
+public:
+    int n, m;
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        n = image.size(), m = image[0].size();
+        // Base case
+        if(image[sr][sc] == color) return image;
+
+        int stColor = image[sr][sc];
+        dfs(image, sr, sc, color, stColor);
+
+        return image;
+    }
+};

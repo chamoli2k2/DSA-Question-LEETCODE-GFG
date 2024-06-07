@@ -1,0 +1,11 @@
+class Solution {
+  public:
+    long long count(int n) {
+        // code here
+        // n * (n-1) --> for every n vertex we can connect n-1 other vertex (consider self edge not exist)
+        //(n*(n-1)) / 2 --> divide by 2 to remove the double-counting each edge (since edges are undirected).
+        //so we get total no. of possible edge count
+        //return 2^count reason pick or notpick (connect / disconnect each vertex)
+        return 1L<<((n*(n-1))/2);
+    }
+};

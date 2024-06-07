@@ -1,0 +1,42 @@
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string s) {
+        string ans = "", word = "";
+        int n = s.size();
+        map<string,bool> mp;
+        for(auto &it : dictionary) mp[it] = true;
+        int i = 0;
+
+        while(i < n){
+            if(s[i] == ' '){
+                ans += word;
+                ans += " ";
+                word = "";
+                i++;
+                continue;
+            }
+
+            word += s[i];
+
+            if(mp[word]){
+                ans += word;
+                ans += " ";
+                word = "";
+                while(i < n && s[i] != ' '){
+                    i++;
+                }
+                i++;
+                continue;
+            }
+
+            i++;
+        }
+        if(word.size()){
+            ans += word;
+        }
+        else
+            ans.pop_back();
+            
+        return ans;
+    }
+};

@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n = grid.size(), m = grid[0].size();
+        queue<pair<pair<int,int>, int>> q;
+        int countNonRottenOranges = 0, minTime = 0;
+        vector<vector<bool>> visited(n, vector<bool> (m, false));
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] == 2){
+                    q.push({{i, j}, 0});
+                    visited[i][j] = true;
+                }
+                else if(grid[i][j] == 1){
+                    countNonRottenOranges++;
+                }
+            }
+        }
+
+        int dr[] = {1, -1, 0, 0};
+        int dc[] = {0, 0, -1, 1};
+
+        while(!q.empty()){
+            int i = q.front().first.first;
+            int j = q.front().first.second;
+            int time = q.front().second;
+            q.pop();
+
+            minTime = max(minTime, time);
+
+            for(int k=0; k<4; k++){
+                int row = dr[k] + i;
+                int col = dc[k] + j;
+
+                if(row >= 0 && row < n && col >= 0 && col < m){
+                    if(visited[row][col] == false && grid[row][col] == 1){
+                        q.push({{row, col}, time+1});
+                        visited[row][col] = true;
+                        countNonRottenOranges--;
+                    }
+                }
+            }
+        }
+
+        return countNonRottenOranges == 0 ? minTime : -1;
+    }
+};

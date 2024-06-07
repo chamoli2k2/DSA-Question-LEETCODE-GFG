@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        // Toposorting : If there is a directed edge betweeen u & v and u appears before v then in ordering
+        // u must appear before v
+
+        vector<int> inorder(numCourses, 0);
+        vector<int> adj[numCourses];
+
+        for(auto &it : prerequisites){
+            int a = it[0], b = it[1];
+            adj[b].push_back(a);
+            inorder[a]++;
+        }
+
+        queue<int> q;
+        for(int i=0; i<numCourses; i++){
+            if(inorder[i] == 0){
+                q.push(i);
+            }
+        }
+
+        vector<int> ans;
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+
+            ans.push_back(node);
+
+            for(auto &it : adj[node]){
+                inorder[it]--;
+                if(inorder[it] == 0){
+                    q.push(it);
+                }
+            }
+        }
+
+        if(ans.size() != numCourses) return {};
+        return ans;
+    }
+};

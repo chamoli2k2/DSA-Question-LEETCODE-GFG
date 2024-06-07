@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int n = mat.size(), m = mat[0].size();
+        vector<vector<int>> ans(n, vector<int> (m, 0));
+        queue<pair<pair<int,int>, int>> q;
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] == 0){
+                    q.push({{i, j}, 0});
+                }
+                else{
+                    ans[i][j] = 1e8;
+                }
+            }
+        }
+
+        int dc[] = {1, -1, 0, 0};
+        int dr[] = {0, 0, 1, -1};
+
+        while(!q.empty()){
+            int i = q.front().first.first;
+            int j = q.front().first.second;
+            int dist = q.front().second;
+            q.pop();
+
+            for(int k=0; k<4; k++){
+                int row = i + dr[k];
+                int col = j + dc[k];
+
+                if(row >= 0 && row < n && col >= 0 && col < m){
+                    if(ans[row][col] > dist+1){
+                        ans[row][col] = dist+1;
+                        q.push({{row, col}, dist+1});
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+};
