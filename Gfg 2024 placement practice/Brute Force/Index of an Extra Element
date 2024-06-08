@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    int findExtra(int n, int arr1[], int arr2[]) {
+        int i = 0, j = 0;
+        while(j < n){
+            if(arr1[i] == arr2[j]){
+                i++, j++;
+            }
+            else{
+                return i;
+            }
+        }
+        
+        return n;
+    }
+};

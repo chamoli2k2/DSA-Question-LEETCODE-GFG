@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<long long> minOperations(vector<int>& nums, vector<int>& query) {
+        int n= nums.size(), m = query.size();
+        vector<long long> prefix(n+1, 0), ans(m);
+
+        // Sorting the array
+        sort(nums.begin(), nums.end());
+
+        for(int i=0; i<n; i++){
+            prefix[i+1] = prefix[i] + 1LL*nums[i];
+        }
+
+        for(int i=0; i<m; i++){
+            int idx = upper_bound(nums.begin(), nums.end(), query[i]) - nums.begin();
+
+            // We need to make smaller number equal to query
+            long long smaller = (idx*1LL*query[i]) - prefix[idx];
+            long long bigger = (prefix[n] - prefix[idx]) - (n-idx)*1LL*query[i];
+
+            ans[i] = smaller + bigger;
+        }
+
+        return ans;
+    }
+};

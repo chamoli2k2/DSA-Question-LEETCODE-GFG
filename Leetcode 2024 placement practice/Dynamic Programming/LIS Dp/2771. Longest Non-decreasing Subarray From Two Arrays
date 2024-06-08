@@ -1,0 +1,111 @@
+class Solution {
+private:
+    int solve(vector<int> &nums1, vector<int> &nums2, int idx, int prev){
+        int n = nums1.size();
+        if(idx == n) return 0;
+
+        if(dp[idx][prev] != -1) return dp[idx][prev];
+
+        int ans = 0;
+        if(prev == 0){
+            int c1 = 0, c2 = 0, c3 = 0;
+            if(nums1[idx] <= nums2[idx]){
+                c1 = 1 + solve(nums1, nums2, idx+1, 1);
+            }
+            else{
+                c2 = 1 + solve(nums1, nums2, idx+1, 2);
+            }
+
+            c3 = 0 + solve(nums1, nums2, idx+1, 0);
+
+            ans = max({c1, c2, c3});
+        }
+        else if(prev == 1){
+            int c1 = 0, c2 = 0;
+            // Greedly we should choose the nearest number to previous
+            if(nums1[idx] <= nums2[idx]){
+                // We should try to choose nums1 
+                if(nums1[idx-1] <= nums1[idx]){
+                    c1 = 1 + solve(nums1, nums2, idx+1, 1);
+                }
+                else if(nums1[idx-1] <= nums2[idx]){
+                    c2 = 1 + solve(nums1, nums2, idx+1, 2);
+                }
+            }
+            else{
+                if(nums1[idx-1] <= nums2[idx]){
+                    c2 = 1 + solve(nums1, nums2, idx+1, 2);
+                }
+                else if(nums1[idx-1] <= nums1[idx]){
+                    c1 = 1 + solve(nums1, nums2, idx+1, 1);
+                }
+            }
+
+            ans = max(c1, c2);
+        }
+        else{
+            int c1 = 0, c2 = 0;
+            // Greedly we should choose the nearest number to previous
+            if(nums1[idx] <= nums2[idx]){
+                // We should try to choose nums1 
+                if(nums2[idx-1] <= nums1[idx]){
+                    c1 = 1 + solve(nums1, nums2, idx+1, 1);
+                }
+                else if(nums2[idx-1] <= nums2[idx]){
+                    c2 = 1 + solve(nums1, nums2, idx+1, 2);
+                }
+            }
+            else{
+                if(nums2[idx-1] <= nums2[idx]){
+                    c2 = 1 + solve(nums1, nums2, idx+1, 2);
+                }
+                else if(nums2[idx-1] <= nums1[idx]){
+                    c1 = 1 + solve(nums1, nums2, idx+1, 1);
+                }
+            }
+
+            ans = max(c1, c2);
+        }
+        
+
+        return dp[idx][prev] = ans;
+    }
+public:
+    int dp[100001][3];
+    int maxNonDecreasingLength(vector<int>& nums1, vector<int>& nums2) {
+        memset(dp, -1, sizeof(dp));
+        return solve(nums1, nums2, 0, 0);
+    }
+};
+
+// Main Solution
+class Solution {
+public:
+    int maxNonDecreasingLength(vector<int>& nums1, vector<int>& nums2) {
+        int ans = 1, n = nums1.size();
+        vector<int> dp1(n, 1), dp2(n, 1);
+
+        for(int i=1; i<n; i++){
+            // If nums1[i] >= nums1[i-1]
+            if(nums1[i] >= nums1[i-1]){
+                dp1[i] = max(dp1[i], dp1[i-1]+1);
+            }
+
+            if(nums1[i] >= nums2[i-1]){
+                dp1[i] = max(dp1[i], dp2[i-1]+1);
+            }
+
+            if(nums2[i] >= nums2[i-1]){
+                dp2[i] = max(dp2[i], dp2[i-1]+1);
+            }
+
+            if(nums2[i] >= nums1[i-1]){
+                dp2[i] = max(dp2[i], dp1[i-1]+1);
+            }
+
+            ans = max({ans, dp1[i], dp2[i]});
+        }
+
+        return ans;
+    }
+};

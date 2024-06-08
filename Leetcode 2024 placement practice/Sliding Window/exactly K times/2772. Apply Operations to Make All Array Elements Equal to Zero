@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool checkArray(vector<int>& nums, int k) {
+        int n = nums.size(), impact = 0;
+        for(int i=0; i<n; i++){
+            // If impact to the current element is greater than current element than 
+            if(impact > nums[i]) return false;
+
+            // Making the impact
+            nums[i] -= impact;
+
+            // Due to current element what is the impact 
+            impact += nums[i];
+
+            // Removing the impact
+            if(i >= k-1){
+                impact -= nums[i-k+1];
+            }
+        }
+        
+        return impact == 0;
+    }
+};
