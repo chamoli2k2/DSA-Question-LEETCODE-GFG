@@ -1,0 +1,40 @@
+class Solution {
+private:
+    private:
+    bool dfs(vector<vector<int>> &adjList, vector<int> &visited, int node){
+        visited[node] = 1;
+        dfsVisited.insert(node);
+
+        for(auto &it : adjList[node]){
+            if(visited[it] == 0){
+                if(dfs(adjList, visited, it)) return true;
+            }
+            else if(dfsVisited.find(it) != dfsVisited.end()){
+                return true;
+            }
+        }
+
+        dfsVisited.erase(node);
+        return false;
+    }
+public:
+    set<int> dfsVisited;
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int V = graph.size();
+        // Every node is the safe node if it is not the part of cycle
+        vector<int> visited(V, 0);
+
+        for(int i=0; i<V; i++){
+            if(visited[i] == 0){
+                dfs(graph, visited, i);
+            }
+        }
+
+        vector<int> ans;
+        for(int i=0; i<V; i++){
+            if(dfsVisited.find(i) == dfsVisited.end()) ans.push_back(i);
+        }
+
+        return ans;
+    }
+};

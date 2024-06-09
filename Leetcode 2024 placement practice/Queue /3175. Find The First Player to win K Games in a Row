@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int findWinningPlayer(vector<int>& skills, int k) {
+        deque<pair<int,int>> q;
+        int n = skills.size(), maxi = INT_MIN, maxIdx;
+        for(int i=0; i<n; i++){
+            q.push_back({skills[i], i});
+            if(maxi < skills[i]){
+                maxi = skills[i];
+                maxIdx = i;
+            }
+            
+        }
+        if(k > n-1) return maxIdx;
+        
+        int winner = -1, win = 0, prevWinner = -1;
+        while(win != k){
+            int p1 = q.front().first, p1idx = q.front().second;
+            q.pop_front();
+            int p2 = q.front().first, p2idx = q.front().second;
+            q.pop_front();
+            
+            if(p2 >= p1){
+                q.push_back({p1, p1idx});
+                q.push_front({p2, p2idx});
+                winner = p2idx;
+            }
+            else{
+                q.push_back({p2, p2idx});
+                q.push_front({p1, p1idx});
+                winner = p1idx;
+            }
+            
+            if(prevWinner == winner){
+                win++;
+            }
+            else{
+                prevWinner = winner;
+                win = 1;
+            }
+            
+            if(win == k) return winner;
+        }
+        
+        return -1;
+    }
+};

@@ -1,0 +1,30 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, vector<vector<vector<int>>> &dp, int idx, int prev, int curr, int k){
+        // Base case
+        int n = nums.size();
+        if(idx == n){
+            return 0;
+        }
+        
+        if(dp[idx][curr][prev+1] != -1) return dp[idx][curr][prev+1];
+        
+        int take = 0, notTake = 0;
+        if(prev == -1 || nums[prev] == nums[idx]){
+            take = 1 + solve(nums, dp, idx+1, idx, curr, k);
+        }
+        else if(curr < k){
+            take = 1 + solve(nums, dp, idx+1, idx, curr+1, k);
+        }
+        
+        notTake = solve(nums, dp, idx+1, prev, curr, k);
+        
+        return dp[idx][curr][prev+1] = max(take, notTake);
+    }
+public:
+    int maximumLength(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<vector<vector<int>>> dp(n+1, vector<vector<int>> (30, vector<int> (n+3, -1)));
+        return solve(nums, dp, 0, -1, 0, k);
+    }
+};

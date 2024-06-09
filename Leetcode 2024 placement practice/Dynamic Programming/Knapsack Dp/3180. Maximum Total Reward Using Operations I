@@ -1,0 +1,27 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, vector<vector<int>> &dp, int idx, int curr){
+        // Base case
+        if(idx == n) return 0;
+        
+        if(dp[idx][curr] != -1) return dp[idx][curr];
+        
+        int take = 0;
+        if(curr < nums[idx]){
+            take = nums[idx] + solve(nums, dp, idx+1, curr+nums[idx]);
+        }
+        
+        int notTake = solve(nums, dp, idx+1, curr);
+        
+        return dp[idx][curr] = max(take, notTake);
+    }
+public:
+    int n;
+    int maxTotalReward(vector<int>& nums) {
+        sort(begin(nums), end(nums));
+        n = nums.size();
+        vector<vector<int>> dp(n, vector<int> (4005, -1));
+        return solve(nums, dp,  0, 0);
+    }
+};
+

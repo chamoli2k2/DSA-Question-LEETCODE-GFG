@@ -1,0 +1,41 @@
+class Solution {
+private:
+    private:
+    void bfs(vector<int> adjList[], vector<int> &inorder){
+        queue<int> q;
+        for(int i=0; i<V; i++){
+            if(inorder[i] == 0) q.push(i);
+        }
+
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            ans.push_back(node);
+
+            for(auto &it : adjList[node]){
+                inorder[it]--;
+                if(inorder[it] == 0){
+                    q.push(it);
+                }
+            }
+        }
+
+    }
+public:
+    vector<int> ans;
+    int V;
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        V = graph.size();
+        vector<int> adjList[V], inorder(V, 0);
+        for(int i=0; i<V; i++){
+            for(auto &node : graph[i]){
+                adjList[node].push_back(i);
+                inorder[i]++;
+            }
+        }
+
+        bfs(adjList, inorder);
+        sort(begin(ans), end(ans));
+        return ans;
+    }
+};
