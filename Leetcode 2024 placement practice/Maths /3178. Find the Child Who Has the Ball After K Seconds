@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int numberOfChild(int n, int k) {
+        n--;
+
+        int noOfRound = k / n;
+        int goTo = k % n;
+
+        if(noOfRound%2 == 0){
+            return goTo;
+        } 
+
+        return n - goTo;
+    }
+};

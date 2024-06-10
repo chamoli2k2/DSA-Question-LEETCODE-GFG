@@ -1,0 +1,27 @@
+// Define the custom order
+unordered_map<char, int> customOrder = {
+    {'!', 0},
+    {'#', 1},
+    {'$', 2},
+    {'%', 3},
+    {'&', 4},
+    {'*', 5},
+    {'?', 6},
+    {'@', 7},
+    {'^', 8}};
+
+// Custom comparator function
+bool customComparator(char a, char b)
+{
+    return customOrder[a] < customOrder[b];
+}
+class Solution
+{
+private:
+public:
+    void matchPairs(int n, char nuts[], char bolts[])
+    {
+        sort(nuts, nuts + n, customComparator);
+        sort(bolts, bolts + n, customComparator);
+    }
+};
