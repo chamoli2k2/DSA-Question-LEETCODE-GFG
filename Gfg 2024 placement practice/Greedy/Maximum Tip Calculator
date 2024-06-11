@@ -1,0 +1,39 @@
+class Solution {
+  public:
+    long long maxTip(int n, int x, int y, vector<int> &arr, vector<int> &brr) {
+        priority_queue<pair<int,int>> pq;
+        
+        for(int i=0; i<n; i++){
+            pq.push({abs(arr[i]-brr[i]), i});
+        }
+        
+        long long ans = 0;
+        while(!pq.empty()){
+            int idx = pq.top().second;
+            pq.pop();
+            
+            if(arr[idx] >= brr[idx]){
+                if(x){
+                    ans += 1LL*arr[idx];
+                    x--;
+                }
+                else{
+                    ans += 1LL*brr[idx];
+                    y--;
+                }
+            }
+            else{
+                if(y){
+                    ans += 1LL*brr[idx];
+                    y--;
+                }
+                else{
+                    ans += 1LL*arr[idx];
+                    x--;
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
