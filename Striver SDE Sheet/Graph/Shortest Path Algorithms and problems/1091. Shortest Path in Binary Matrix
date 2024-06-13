@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        int n = grid.size();
+        // Base case
+        if(grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;
+
+        queue<pair<int,pair<int,int>>> q;
+        q.push({1, {0, 0}});
+        vector<vector<bool>> visited(n, vector<bool>(n, 0));
+        visited[0][0] = true;
+        int ans = INT_MAX;
+
+        int dr[] = {1, 1, 1, -1, -1, -1, 0, 0};
+        int dc[] = {-1, 1, 0, -1, 1, 0, -1, 1};
+        while(!q.empty()){
+            int dist = q.front().first;
+            int i = q.front().second.first;
+            int j = q.front().second.second;
+            q.pop();
+
+            if(i == n-1 && j == n-1){
+                ans = min(ans, dist);
+                continue;
+            }
+
+            for(int k=0; k<8; k++){
+                int row = i + dr[k];
+                int col = j + dc[k];
+
+                if(row >= 0 && row < n && col >= 0 && col < n && visited[row][col] == false && grid[row][col] == 0){
+                    q.push({dist+1, {row, col}});
+                    visited[row][col] = true;
+                }
+            }
+        }
+
+        return ans == INT_MAX ? -1 : ans;;
+    }
+};

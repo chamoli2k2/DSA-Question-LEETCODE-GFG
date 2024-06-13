@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    int minimumMultiplications(vector<int>& arr, int start, int end) {
+         vector<int> visited(100001,0);
+        queue<pair<int,int>> q;
+        q.push({start, 0});
+        visited[start] = 0;
+        int mod = 100000;
+        
+        while(!q.empty()){
+            int node = q.front().first;
+            int dist = q.front().second;
+            q.pop();
+            
+            if(node == end){
+                return dist;
+            }
+            
+            for(auto &it : arr){
+                int k = (node%mod * it%mod) % mod;
+                if(visited[k] == 0){
+                    q.push({k, dist+1});
+                    visited[k] = 1;
+                }
+            }
+        }
+        
+        return -1;
+    }
+};
