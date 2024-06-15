@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size(), m = grid[0].size();
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        pq.push({grid[0][0], 0, 0});
+        int dr[] = {1, -1, 0, 0};
+        int dc[] = {0, 0, 1, -1};
+        vector<vector<int>> maxTime(n, vector<int> (m, INT_MAX));
+        maxTime[0][0] = grid[0][0];
+
+        while(!pq.empty()){
+            int time = pq.top()[0];
+            int i = pq.top()[1];
+            int j = pq.top()[2];
+            pq.pop();
+
+            if(i == n-1 && j == m-1){
+                return time;
+            }
+
+            for(int k=0; k<4; k++){
+                int x = i + dr[k];
+                int y = j + dc[k];
+
+                if(x >= 0 && x < n && y >= 0 && y < m){
+                    int newTime = max(time, grid[x][y]);
+                    if(maxTime[x][y] > newTime){
+                        maxTime[x][y] = newTime;
+                        pq.push({newTime, x, y}); 
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+};
