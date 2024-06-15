@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minIncrementForUnique(vector<int>& nums) {
+        sort(begin(nums), end(nums));
+        priority_queue<int> pq;
+        unordered_map<int,int> mp;
+        int n = nums.size();
+        for(auto &it : nums) mp[it]++;
+        for(int i=0; i<=(int)(2e5+5); i++){
+            if(mp.count(i) == 0) pq.push(-i);
+        }
+
+        int ans = 0;
+        unordered_map<int,int> visited;
+        for(int i=0; i<n; i++){
+            if(visited[nums[i]]){
+                while(-pq.top() <= nums[i]) pq.pop();
+                int k = -pq.top();
+                pq.pop();
+                ans += k-nums[i];
+            }
+            else{
+                visited[nums[i]] = 1;
+            }
+        }
+
+        return ans;
+    }
+};

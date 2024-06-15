@@ -1,0 +1,67 @@
+class DisJointSet {
+private:
+    vector<int> rank, parent;
+public:
+    // Constructor
+    DisJointSet(int n) {
+        rank.resize(n + 1, 0); // Initialize rank to 0
+        parent.resize(n + 1);
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    // Finding ultimate parent of node
+    int findUPar(int node) {
+        // Finding Parent
+        if (node == parent[node]) return node;
+
+        // Path compression
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    // Union by rank 
+    void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+
+        if (ulp_u == ulp_v) return;
+        if (rank[ulp_u] < rank[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_u] > rank[ulp_v]) {
+            parent[ulp_v] = ulp_u;
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+};
+class Solution {
+  public:
+    int numProvinces(vector<vector<int>> adj, int V) {
+        DisJointSet ds(V);
+        
+        for(int i=0; i<V; i++){
+            for(int j=0; j<V; j++){
+                if(adj[i][j] == 1){
+                    int ulp_i = ds.findUPar(i);
+                    int ulp_j = ds.findUPar(j);
+                    
+                    if(ulp_i != ulp_j){
+                        ds.unionByRank(i, j);
+                    }
+                }
+            }
+        }
+        
+        int ans = 0;
+        for(int i=0; i<V; i++){
+            int ulp_i = ds.findUPar(i);
+            if(ulp_i == i) ans++;
+        }
+        
+        return ans;
+    }
+};

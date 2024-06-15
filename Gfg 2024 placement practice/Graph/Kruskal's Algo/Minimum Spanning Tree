@@ -1,0 +1,72 @@
+class DisJointSet{
+private:
+    vector<int> size, parent;
+public:
+    // Constructor
+    DisJointSet(int n){
+        size.resize(n+1,1);
+        parent.resize(n+1);
+        for(int i=0;i<=n;i++){
+            parent[i] = i;
+        }
+    }
+
+    // Finding ulimate parent of node
+    int findUPar(int node){
+        // Finding Parent
+        if(node == parent[node]) return node;
+
+        // Path compression
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    // Union by size 
+    void unionBySize(int u,int v){
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+
+        if(ulp_u == ulp_v) return;
+        if(size[ulp_u] < size[ulp_v]){
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else{
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+};
+
+class Solution
+{
+	public:
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        vector<pair<int, pair<int,int>>> adjList;
+        for(int i=0; i<V; i++){
+            for(auto &it : adj[i]){
+                adjList.push_back({it[1], {i, it[0]}});
+            }
+        }
+        
+        // sorting
+        sort(adjList.begin(), adjList.end());
+        int m = adjList.size(), ans = 0;
+        DisJointSet Ds(V);
+        
+        for(int i=0; i<m; i++){
+            int wt = adjList[i].first;
+            int u = adjList[i].second.first;
+            int v = adjList[i].second.second;
+            
+            // If u and v are not the part of same set
+            if(Ds.findUPar(u) != Ds.findUPar(v)){
+                ans += wt;
+                Ds.unionBySize(u, v);
+            }
+        }
+        
+        return ans;
+    }
+};

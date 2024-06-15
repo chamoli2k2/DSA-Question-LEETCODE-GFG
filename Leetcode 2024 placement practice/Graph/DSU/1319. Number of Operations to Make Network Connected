@@ -1,0 +1,62 @@
+class DisJointSet {
+private:
+    vector<int> rank, parent;
+public:
+    // Constructor
+    DisJointSet(int n) {
+        rank.resize(n + 1, 0); // Initialize rank to 0
+        parent.resize(n + 1);
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    // Finding ultimate parent of node
+    int findUPar(int node) {
+        // Finding Parent
+        if (node == parent[node]) return node;
+
+        // Path compression
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    // Union by rank 
+    void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+
+        if (ulp_u == ulp_v) return;
+        if (rank[ulp_u] < rank[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_u] > rank[ulp_v]) {
+            parent[ulp_v] = ulp_u;
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+};
+class Solution {
+public:
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        // Base case
+        int edgesCount = connections.size();
+        if(edgesCount < n-1) return -1;
+        DisJointSet ds(n);
+        for(auto &it : connections){
+            int u = it[0], v = it[1];
+            if(ds.findUPar(u) != ds.findUPar(v)){
+                ds.unionByRank(u, v);
+            }
+        }
+
+        int componentCount = 0;
+        for(int i=0; i<n; i++){
+            if(ds.findUPar(i) == i) componentCount++;
+        }
+
+        return componentCount-1;
+    }
+};

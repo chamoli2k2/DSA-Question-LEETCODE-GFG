@@ -1,0 +1,14 @@
+class Solution {
+  public:
+    string armstrongNumber(int n){
+        int temp = n, sum = 0;
+        
+        while(temp){
+            int digit = temp % 10;
+            sum += pow(digit, 3);
+            temp /= 10;
+        }
+        
+        return sum == n ? "Yes" : "No";
+    }
+};
