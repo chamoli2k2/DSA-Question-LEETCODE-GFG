@@ -1,0 +1,35 @@
+class Solution {
+private:
+    int solve(vector<pair<int,int>> &arr, int idx){
+        int m = arr.size();
+        if(idx >= m) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        // Not take
+        int notTake = solve(arr, idx+1);
+
+        int take = arr[idx].first*arr[idx].second;
+        if(idx+1 < m && arr[idx+1].first-1 != arr[idx].first){
+            take += solve(arr, idx+1);
+        }
+        else{
+            take += solve(arr, idx+2);
+        }
+
+        return dp[idx] = max(take, notTake);
+    }
+public:
+    int dp[100001];
+    int deleteAndEarn(vector<int>& nums) {
+        memset(dp, -1, sizeof(dp));
+        vector<pair<int,int>> arr;
+        unordered_map<int,int> mp;
+        for(auto &it : nums) mp[it]++;
+        for(auto &it : mp){
+            arr.push_back({it.first, it.second});
+        }
+        sort(begin(arr), end(arr));
+        return solve(arr, 0);
+    }
+};

@@ -1,0 +1,52 @@
+class Solution {
+private:
+    int upperBound(vector<pair<int,int>>& nums, int target) {
+        int s = 0, e = nums.size()-1, ans = e+1;
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            if(nums[mid].first > target){
+                ans = mid;
+                e = mid - 1;
+            }else{
+                s = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    long long solve(vector<pair<int,int>>& nums, int idx) {
+        int n = nums.size();
+        // Base case
+        if(idx >= n) return 0;
+        
+        if(dp[idx] != -1) return dp[idx];
+        
+        long long notTake = solve(nums, idx + 1);
+        
+        int k = upperBound(nums, nums[idx].first + 2);
+        long long take = nums[idx].first * 1LL * nums[idx].second + solve(nums, k);
+        
+        return dp[idx] = max(take, notTake);
+    }
+
+public:
+    unordered_map<int, long long> freq;
+    vector<long long> dp;
+
+    long long maximumTotalDamage(vector<int>& power){
+        for(auto &it : power) freq[it]++;
+        
+        vector<pair<int, int>> nums;
+        for(auto &it : freq){
+            nums.push_back({it.first, it.second});
+        }
+        
+        sort(nums.begin(), nums.end());
+        int m = nums.size();
+        dp.resize(m, -1);
+        
+        return solve(nums, 0);
+    }
+};
+
+

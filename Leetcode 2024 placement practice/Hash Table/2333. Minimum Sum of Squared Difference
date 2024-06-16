@@ -1,0 +1,36 @@
+class Solution {
+public:
+    long long minSumSquareDiff(vector<int>& nums1, vector<int>& nums2, int k1, int k2) {
+        const int N = 1e5+5;
+        vector<int> absDiff(N, 0);
+        long long ans = 0, n = nums1.size();
+        for(int i=0; i<n; i++){
+            int absVal = abs(nums1[i]-nums2[i]);
+            absDiff[absVal]++;
+        }
+
+        int k = k1 + k2;
+        for(int i=N-1; i>0 && k>0; i--){
+            // If curr Diff is 0
+            if(absDiff[i] == 0) continue;
+
+            if(k >= absDiff[i]){
+                k -= absDiff[i];
+                absDiff[i-1] += absDiff[i];
+                absDiff[i] = 0;
+            }
+            else{
+                absDiff[i] -= k;
+                absDiff[i-1] += k;
+                k = 0;
+            }
+        }
+
+        for(int i=0; i<N; i++){
+            if(absDiff[i] == 0) continue;
+            ans += i*1LL*i*1LL*absDiff[i];
+        }
+
+        return ans;
+    }
+};

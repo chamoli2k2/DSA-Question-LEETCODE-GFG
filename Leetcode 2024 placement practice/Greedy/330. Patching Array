@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minPatches(vector<int>& nums, int n) {
+        long long patch = 0, i = 0, maxReach = 0, m = nums.size();
+        while(maxReach < n){
+            if(i < m && nums[i] <= maxReach+1){
+                maxReach += nums[i];
+                i++;
+            }
+            else{
+                maxReach += maxReach+1;
+                patch++;
+            }
+        }
+
+        return patch;
+    }
+};
