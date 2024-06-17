@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int getMaximumConsecutive(vector<int>& coins) {
+        int n = coins.size(), maxVal = 0, idx = 0;
+        sort(coins.begin(), coins.end());
+
+        while(idx < n){
+            if(coins[idx] <= maxVal+1){
+                maxVal += coins[idx];
+                idx++;
+            }
+            else{
+                break;
+            }
+        }
+
+        return maxVal+1;
+    }
+};

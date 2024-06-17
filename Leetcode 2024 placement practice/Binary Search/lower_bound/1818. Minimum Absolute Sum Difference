@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int minAbsoluteSumDiff(vector<int>& nums1, vector<int>& nums2) {
+        long long n = nums1.size(), total = 0, mod = 1e9 + 7;
+        set<int> st;
+        for(int i=0; i<n; i++){
+            int k = abs(nums1[i]-nums2[i]);
+            total += 1LL*k;
+            st.insert(nums1[i]);
+        }
+
+        long long bestAns = total;
+        if(total == 0) return 0;
+
+        for(int i=0; i<n; i++){
+            int currDiff = abs(nums2[i]-nums1[i]);
+            // Finding the nearest number to nums2[i]
+
+            auto it = st.lower_bound(nums2[i]);
+            // Checking 
+            if(it == st.end()){
+                // We just need to check back
+                it--;
+                bestAns = min(bestAns, (total-currDiff+abs(nums2[i]-*it)));
+            }
+            else if(it == st.begin()){
+                bestAns = min(bestAns, (total-currDiff+abs(nums2[i]-*it)));
+            }
+            else{
+                // We have 2 cases
+                int n1 = *it;
+                it--;
+                int n2 = *it;
+
+                if(abs(nums2[i]-n1) <= abs(nums2[i]-n2)){
+                    bestAns = min(bestAns, (total-currDiff+abs(nums2[i]-n1)));
+                }
+                else{
+                    bestAns = min(bestAns, (total-currDiff+abs(nums2[i]-n2)));
+                }
+            }
+        }
+
+        return bestAns%mod;
+    }
+};

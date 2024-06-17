@@ -1,0 +1,68 @@
+class Solution
+{
+    void dfs1(vector<vector<int>> &adj, vector<int> &visited, int node){
+        // Marking visited
+        visited[node] = 1;
+        
+        for(auto &it : adj[node]){
+            if(visited[it] == 0){
+                dfs1(adj, visited, it);
+            }
+        }
+        
+        st.push(node);
+    }
+    
+    int dfs2(vector<int> adjList[], vector<int> &visited, vector<int> &list, int node){
+        // Marking visited
+        visited[node] = 1;
+        
+        for(auto &it : adjList[node]){
+            if(visited[it] == 0){
+                dfs2(adjList, visited, list, it);
+            }
+        }
+        
+        list.push_back(node);
+    }
+	public:
+	//Function to find number of strongly connected components in the graph.
+	stack<int> st;
+    int kosaraju(int V, vector<vector<int>>& adj)
+    {
+        // Step 1 : sorting the graph acccording to the finish time
+        vector<int> visited(V, 0);
+        for(int i=0; i<V; i++){
+            if(visited[i] == 0){
+                dfs1(adj, visited, i);
+            }
+        }
+        
+        // step 2 : changing the direction of edges
+        vector<int> adjList[V];
+        
+        for(int i=0; i<V; i++){
+            visited[i] = 0;
+            for(auto &it : adj[i]){
+                adjList[it].push_back(i);
+            }
+        }
+        
+        // step 3 : doing the dfs to find scc
+        int scc = 0;
+        vector<vector<int>> sccNode;
+        while(!st.empty()){
+            int node = st.top();
+            st.pop();
+            
+            if(visited[node] == 0){
+                scc++;
+                vector<int> list;
+                dfs2(adjList, visited, list, node);
+                sccNode.push_back(list);
+            }
+        }
+        
+        return scc;
+    }
+};

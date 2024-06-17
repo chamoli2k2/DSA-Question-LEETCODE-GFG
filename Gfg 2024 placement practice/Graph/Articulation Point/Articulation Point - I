@@ -1,0 +1,66 @@
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+  private:
+    int timer = 1; // Timer to keep track of the discovery times of nodes
+    
+    // Depth First Search (DFS) function to find articulation points
+    void dfs(vector<int> adj[], vector<int> &visited, vector<int> &mark, int tin[], int low[], int node, int parent) {
+        visited[node] = 1; // Mark the current node as visited
+        tin[node] = low[node] = timer; // Initialize discovery and low values
+        timer++;
+        
+        int child = 0; // Counter for the number of children in the DFS tree
+        for(auto it : adj[node]) { // Traverse all adjacent vertices
+            if(it == parent) continue; // If adjacent vertex is the parent, skip it
+            
+            if(visited[it] == 0) { // If the adjacent vertex is not visited
+                dfs(adj, visited, mark, tin, low, it, node); // Perform DFS on the adjacent vertex
+                
+                low[node] = min(low[node], low[it]); // Update the low value of the current node
+                
+                // Check if the current node is an articulation point
+                if(low[it] >= tin[node] && parent != -1) {
+                    mark[node] = 1;
+                }
+                child++;
+            } else {
+                // Update the low value of the current node for back edges
+                low[node] = min(low[node], tin[it]);
+            }
+        }
+        
+        // Special case for the root node
+        if(child > 1 && parent == -1) {
+            mark[node] = 1;
+        }
+    }
+  
+  public:
+    vector<int> articulationPoints(int V, vector<int> adj[]) {
+        vector<int> visited(V, 0); // To keep track of visited nodes
+        vector<int> mark(V, 0); // To mark articulation points
+        int tin[V], low[V]; // Arrays to store discovery and low values
+        
+        // Perform DFS for each component
+        for(int i = 0; i < V; i++) {
+            if(visited[i] == 0) {
+                dfs(adj, visited, mark, tin, low, i, -1);
+            }
+        }
+        
+        vector<int> ans; // Vector to store the articulation points
+        for(int i = 0; i < V; i++) {
+            if(mark[i] == 1) {
+                ans.push_back(i);
+            }
+        }
+        
+        // If no articulation points are found, return -1
+        if(ans.size() == 0) return {-1};
+        
+        return ans;
+    }
+};

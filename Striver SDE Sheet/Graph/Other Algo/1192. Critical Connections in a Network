@@ -1,0 +1,70 @@
+class Solution {
+private:
+    // DFS helper function to find bridges
+    void dfs(vector<int> adj[], int node, int timeInsert, int parent) {
+        // Mark the current node as visited
+        visited[node] = 1;
+        
+        // Initialize discovery and low value
+        low[node] = time[node] = timeInsert;
+
+        // Iterate over all adjacent nodes
+        for(auto &it : adj[node]) {
+            // If the adjacent node is the parent, continue to the next adjacent node
+            if(parent == it) continue;
+
+            // If the adjacent node is not visited
+            if(visited[it] == 0) {
+                // Recur for the adjacent node
+                dfs(adj, it, timeInsert + 1, node);
+
+                // Update the low value of the current node based on the adjacent node
+                low[node] = min(low[node], low[it]);
+
+                // Check if the edge between the current node and the adjacent node is a bridge
+                // If the earliest visited vertex reachable from subtree under the adjacent node is 
+                // below the current node in DFS tree
+                if(time[node] < low[it]) {
+                    ans.push_back({node, it});
+                }
+            }
+            // If the adjacent node is already visited and is not the parent
+            else {
+                // Update the low value of the current node
+                low[node] = min(low[node], low[it]);
+            }
+        }
+    }
+
+public:
+    // Vectors to store discovery times, low values, and visited status of nodes
+    vector<int> time, low, visited;
+
+    // Vector to store the bridges
+    vector<vector<int>> ans;
+
+    // Function to find all critical connections (bridges)
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        // Create adjacency list for the graph
+        vector<int> adj[n];
+        for(auto &it : connections) {
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+
+        // Initialize vectors
+        time.resize(n + 1, 0);
+        low.resize(n + 1, 0);
+        visited.resize(n + 1, 0);
+
+        // Perform DFS for each unvisited node
+        for(int i = 0; i < n; i++) {
+            if(visited[i] == 0) {
+                dfs(adj, i, 1, -1);
+            }
+        }
+
+        // Return the bridges found
+        return ans;
+    }
+};

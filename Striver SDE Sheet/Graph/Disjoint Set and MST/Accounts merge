@@ -1,0 +1,81 @@
+class DisJointSet {
+private:
+    vector<int> rank, parent;
+public:
+    // Constructor
+    DisJointSet(int n) {
+        rank.resize(n + 1, 0); // Initialize rank to 0
+        parent.resize(n + 1);
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    // Finding ultimate parent of node
+    int findUPar(int node) {
+        // Finding Parent
+        if (node == parent[node]) return node;
+
+        // Path compression
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    // Union by rank 
+    void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+
+        if (ulp_u == ulp_v) return;
+        if (rank[ulp_u] < rank[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_u] > rank[ulp_v]) {
+            parent[ulp_v] = ulp_u;
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+};
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n = accounts.size();
+        vector<vector<string>> ans;
+        DisJointSet ds(n);
+        unordered_map<string,int> mp;
+
+        for(int i=0; i<n; i++){
+            for(int j=1; j<accounts[i].size(); j++){
+                if(mp.count(accounts[i][j]) == 0){
+                    mp[accounts[i][j]] = i;
+                }
+                else{
+                    ds.unionByRank(i, mp[accounts[i][j]]);
+                }
+            }
+        }
+
+        vector<string> merge[n];
+        for(auto &it : mp){
+            int ulp_it = ds.findUPar(it.second);
+            merge[ulp_it].push_back(it.first);
+        }
+
+        for(int i=0; i<n; i++){
+            if(merge[i].size() == 0) continue;
+
+            sort(merge[i].begin(), merge[i].end());
+            vector<string> acc;
+            acc.push_back(accounts[i][0]);
+            for(auto &it : merge[i]){
+                acc.push_back(it);
+            }
+
+            ans.push_back(acc);
+        }
+
+        return ans;
+    }
+};
