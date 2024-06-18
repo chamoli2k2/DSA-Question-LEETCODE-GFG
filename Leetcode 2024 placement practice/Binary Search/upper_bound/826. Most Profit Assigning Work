@@ -1,0 +1,45 @@
+class Solution {
+private:
+    int upperBound(vector<pair<int, int>> &nums, int target){
+        int s = 0, e = nums.size()-1, ans = e + 1, mid;
+
+        while(s <= e){
+            mid = s + (e - s) / 2;
+
+            if(nums[mid].first > target){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+public:
+    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
+        int n = difficulty.size(), m = worker.size(), ans = 0;
+        vector<pair<int,int>> nums;
+
+        for(int i=0; i<n; i++){
+            nums.push_back({difficulty[i], profit[i]});
+        }
+
+        sort(begin(nums), end(nums));
+        int maxProfit = nums[0].second;
+        for(int i=1; i<n; i++){
+            maxProfit = max(maxProfit, nums[i].second);
+            nums[i].second = maxProfit;
+        }
+
+        for(int i=0; i<m; i++){
+            int idx = upperBound(nums, worker[i]);
+            if(idx > 0){
+                ans += nums[idx-1].second;
+            }
+        }
+
+        return ans;
+    }
+};

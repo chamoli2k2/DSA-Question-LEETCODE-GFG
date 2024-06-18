@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
+        int n = worker.size(), m = difficulty.size();
+        priority_queue<pair<int, int>> pq;
+
+        for(int i=0; i<m; i++){
+            pq.push({profit[i], difficulty[i]});
+        }
+
+        int idx = 0, ans = 0;
+        sort(rbegin(worker), rend(worker));
+        
+        while(idx < n && !pq.empty()){
+            int profit = pq.top().first;
+            int power = pq.top().second;
+
+            if(worker[idx] >= power){
+                ans += profit;
+                idx++;
+            }
+            else{
+                pq.pop();
+            }
+        }
+
+        return ans;
+    }
+};

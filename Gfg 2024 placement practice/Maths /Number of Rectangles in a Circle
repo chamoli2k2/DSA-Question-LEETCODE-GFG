@@ -1,0 +1,25 @@
+class Solution
+{
+  public:
+    int rectanglesInCircle(int r) 
+    {
+         int count = 0;
+         int st = 1;
+         int t = 1;
+         int end = 2*r;
+         while(st<=end)
+         {
+            if(st*st + t*t <= 4*r*r)
+            {
+               count++;
+               t++;
+           }
+           else{
+               st++;
+               t=1;
+           }
+       }
+        
+        return count;
+    }
+};
