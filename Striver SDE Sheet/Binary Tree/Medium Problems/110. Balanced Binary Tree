@@ -1,0 +1,22 @@
+class Solution {
+private:
+    pair<int,int> solve(TreeNode* root){
+        // Base case
+        if(root == NULL){
+            return {0, true};
+        }
+
+        // Find out answer from left and right
+        pair<int, int> ls = solve(root->left);
+        pair<int, int> rs = solve(root->right);
+
+        // Checking
+        if(ls.second == false || rs.second == false || abs(rs.first-ls.first) > 1) return {-1, false};
+
+        return {1+max(ls.first, rs.first), true};
+    }
+public:
+    bool isBalanced(TreeNode* root) {
+        return solve(root).second;
+    }
+};

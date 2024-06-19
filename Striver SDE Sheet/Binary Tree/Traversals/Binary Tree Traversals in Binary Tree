@@ -1,0 +1,35 @@
+void preorder(TreeNode* root, vector<int> &prevec){
+    // Base case
+    if(root == NULL) return;
+
+    prevec.push_back(root->data);
+    preorder(root->left, prevec);
+    preorder(root->right, prevec);
+}
+
+void inorder(TreeNode* root, vector<int> &invec){
+    // Base case
+    if(root == NULL) return;
+
+    inorder(root->left, invec);
+    invec.push_back(root->data);
+    inorder(root->right, invec);
+}
+
+void postorder(TreeNode* root, vector<int> &postvec){
+    // Base case
+    if(root == NULL) return;
+
+    postorder(root->left, postvec);
+    postorder(root->right, postvec);
+    postvec.push_back(root->data);
+}
+
+vector<vector<int>> getTreeTraversal(TreeNode *root){
+    vector<int> invec, prevec, postvec;
+    inorder(root, invec);
+    preorder(root, prevec);
+    postorder(root, postvec);
+
+    return {invec, prevec, postvec};
+}
