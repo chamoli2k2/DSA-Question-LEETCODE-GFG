@@ -1,0 +1,20 @@
+class Solution {
+private:
+    int solve(TreeNode* root){
+        // Base case
+        if(root == NULL) return 0;
+
+        int ls = solve(root->left);
+        int rs = solve(root->right);
+
+        ans = max({ans, ls+root->val, rs+root->val, ls+rs+root->val});
+
+        return max({root->val+ls, root->val+rs, 0});
+    }
+public:
+    int ans = -1e6;
+    int maxPathSum(TreeNode* root) {
+        solve(root);
+        return ans;
+    }
+};

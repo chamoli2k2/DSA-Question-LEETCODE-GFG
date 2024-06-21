@@ -1,0 +1,58 @@
+class Solution {
+  public:
+    int minTime(Node* root, int target) 
+    {
+        unordered_map<Node*, vector<Node*>> mp;
+        queue<Node*> q;
+        q.push(root);
+        Node* tgt;
+
+        while(!q.empty()){
+            int n = q.size();
+
+            for(int i=0; i<n; i++){
+                Node* tempNode = q.front();
+                q.pop();
+                
+                if(tempNode->data == target){
+                    tgt = tempNode;
+                }
+
+                if(tempNode->left){
+                    mp[tempNode].push_back(tempNode->left);
+                    mp[tempNode->left].push_back(tempNode);
+                    q.push(tempNode->left);
+                }
+
+                if(tempNode->right){
+                    mp[tempNode].push_back(tempNode->right);
+                    mp[tempNode->right].push_back(tempNode);
+                    q.push(tempNode->right);
+                }
+            }
+        }
+
+        queue<pair<Node*, int>> pq;
+        unordered_map<Node*, bool> visited;
+        pq.push({tgt, 0});
+        visited[tgt] = true;
+        int ans = 0;
+
+        while(!pq.empty()){
+            Node* node = pq.front().first;
+            int timeTaken = pq.front().second;
+            pq.pop();
+            
+            ans = max(ans, timeTaken);
+            
+            for(auto &it : mp[node]){
+                if(visited[it] == false){
+                    pq.push({it, timeTaken+1});
+                    visited[it] = true;
+                }
+            }
+        }
+
+        return ans;
+    }
+};

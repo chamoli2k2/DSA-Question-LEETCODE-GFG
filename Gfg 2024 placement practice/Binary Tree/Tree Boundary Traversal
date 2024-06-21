@@ -1,0 +1,63 @@
+class Solution {
+private:
+    void leftBoundary(Node* root, vector<int> &ans){
+        // Base case
+        if(root == NULL) return;
+        
+        if(root->left == NULL && root->right == NULL) return;
+        
+        ans.push_back(root->data);
+        if(root->left){
+            leftBoundary(root->left, ans);
+            return;
+        }
+        
+        leftBoundary(root->right, ans);
+    }
+    
+    void leafNodes(Node* root, vector<int> &ans){
+        // Base case
+        if(root == NULL) return;
+        
+        if(root->left == NULL && root->right == NULL){
+            ans.push_back(root->data);
+            return;
+        }
+        
+        leafNodes(root->left, ans);
+        leafNodes(root->right, ans);
+    }
+    
+    void rightBoundary(Node* root, vector<int> &ans){
+        // Base case
+        if(root == NULL) return;
+        
+        if(root->left == NULL && root->right == NULL) return;
+        
+        if(root->right){
+            rightBoundary(root->right, ans);
+        }
+        else{
+            rightBoundary(root->left, ans);
+        }
+        
+        ans.push_back(root->data);
+    }
+public:
+    vector <int> boundary(Node *root)
+    {
+        vector<int> ans;
+        ans.push_back(root->data);
+        // Left boundary
+        leftBoundary(root->left, ans);
+        
+        // Leaf Node
+        leafNodes(root->left, ans);
+        leafNodes(root->right, ans);
+        
+        // Right boundary
+        rightBoundary(root->right, ans);
+        
+        return ans;
+    }
+};

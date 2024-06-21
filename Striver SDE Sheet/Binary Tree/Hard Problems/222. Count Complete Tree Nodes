@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int findLeftHeight(TreeNode* root){
+        // Base case
+        if(root == NULL) return 0;
+
+        return 1 + findLeftHeight(root->left);
+    }
+
+    int findRightHeight(TreeNode* root){
+        // Base case
+        if(root == NULL) return 0;
+
+        return 1 + findRightHeight(root->right);
+    }
+public:
+    int countNodes(TreeNode* root) {
+        // Base case
+        if(root == NULL) return 0;
+
+        int leftHeight = findLeftHeight(root);
+        int rightHeight = findRightHeight(root);
+
+        if(leftHeight == rightHeight) return (1<<leftHeight)-1;
+
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+};

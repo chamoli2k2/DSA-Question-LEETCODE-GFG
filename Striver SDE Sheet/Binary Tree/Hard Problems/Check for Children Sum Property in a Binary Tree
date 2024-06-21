@@ -1,0 +1,20 @@
+class Solution{
+    private:
+    pair<int, bool> solve(Node* root){
+        if(root == NULL) return {0, true};
+        if(root->left == NULL && root->right == NULL) return {root->data, true};
+        
+        auto ls = solve(root->left);
+        auto rs = solve(root->right);
+        
+        if(ls.first+rs.first == root->data && ls.second && rs.second) return {root->data, true};
+        return {-1e5, false};
+    }
+    public:
+    //Function to check whether all nodes of a tree have the value 
+    //equal to the sum of their child nodes.
+    int isSumProperty(Node *root)
+    {
+        return solve(root).second;
+    }
+};
