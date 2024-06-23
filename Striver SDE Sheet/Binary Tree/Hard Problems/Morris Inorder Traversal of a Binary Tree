@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        TreeNode* curr = root;
+
+        while(curr){
+            // If curr ka left child exist nhi krta 
+            if(curr->left == NULL){
+                ans.push_back(curr->val);
+                curr = curr->right;
+            }
+            else{
+                // Current ke leftchild ke rightmost element ko curr se connect krna
+                TreeNode* leftChild = curr->left;
+
+                while(leftChild->right){
+                    leftChild = leftChild->right;
+                }
+
+                leftChild->right = curr;
+                TreeNode* ls = curr->left;
+                curr->left = NULL;
+                curr = ls;
+            }
+        }
+
+        return ans;
+    }
+};

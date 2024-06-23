@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minimumArea(vector<vector<int>>& nums) {
+        int n = nums.size(), m = nums[0].size();
+        int stcol = m, endcol = 0;
+        int strow = n, endrow = 0;
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(nums[i][j] == 1){
+                    stcol = min(stcol, j);
+                    endcol = max(endcol, j);
+                }
+            }
+        }
+        
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(nums[j][i] == 1){
+                    strow = min(strow, j);
+                    endrow = max(endrow, j);
+                }
+            }
+        }
+        
+        int area = (abs(endrow-strow)+1) * (abs(stcol-endcol)+1);
+        return area;
+    }
+};

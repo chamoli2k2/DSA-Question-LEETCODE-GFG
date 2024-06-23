@@ -1,0 +1,22 @@
+class Solution {
+public:
+    double minimumAverage(vector<int>& nums) {
+        double ans = 100000;
+        int n = nums.size();
+        priority_queue<int> pq1, pq2;
+        for(auto &it : nums){
+            pq1.push(it);
+            pq2.push(-it);
+        }
+        for(int i=0; i<n/2; i++){
+            double mini = 1.0*pq1.top();
+            pq1.pop();
+            double maxi = -1.0*pq2.top();
+            pq2.pop();
+      
+            ans = min(ans, (maxi+mini)/2);
+        }
+        
+        return ans;
+    }
+};

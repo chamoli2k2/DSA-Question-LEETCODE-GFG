@@ -1,0 +1,30 @@
+class Solution {
+private:
+    TreeNode* solve(TreeNode* root){
+        // Base case
+        if(root == NULL) return NULL;
+
+        TreeNode* leftFlatten = solve(root->left);
+        TreeNode* rightFlatten = solve(root->right);
+
+        TreeNode* tempNode = leftFlatten;
+        while(tempNode && tempNode->right){
+            tempNode = tempNode->right;
+        }
+
+        // Connecting tempNode with right
+        if(tempNode){
+            tempNode->right = rightFlatten;
+            root->right = leftFlatten;
+        }
+        
+        // Marking root left null
+        root->left = NULL;
+
+        return root;
+    }
+public:
+    void flatten(TreeNode* root) {
+        solve(root);
+    }
+};

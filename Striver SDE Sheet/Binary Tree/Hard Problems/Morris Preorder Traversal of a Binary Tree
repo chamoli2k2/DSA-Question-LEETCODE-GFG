@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        TreeNode* curr = root;
+
+        while (curr) {
+            if (curr->left == NULL) {
+                ans.push_back(curr->val);
+                curr = curr->right;
+            } else {
+                TreeNode* predecessor = curr->left;
+                // Find the rightmost node in the left subtree or the predecessor
+                while (predecessor->right != NULL && predecessor->right != curr) {
+                    predecessor = predecessor->right;
+                }
+
+                if (predecessor->right == NULL) {
+                    // Establish a temporary link to the current node
+                    ans.push_back(curr->val);
+                    predecessor->right = curr;
+                    curr = curr->left;
+                } else {
+                    // Remove the temporary link
+                    predecessor->right = NULL;
+                    curr = curr->right;
+                }
+            }
+        }
+
+        return ans;
+    }
+};

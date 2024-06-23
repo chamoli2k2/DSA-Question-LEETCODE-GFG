@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int n = nums.size(), oddChange = false;
+        vector<int> flip(n+1, 0);
+        
+         for(int i=0; i<n; i++){
+            if(oddChange == false){
+                if(nums[i] == 0){
+                    flip[i] += 1;
+                    flip[n] -= 1;
+                    oddChange = true;
+                }
+                
+            }
+            else{
+                if(nums[i] == 1){
+                    flip[i] += 1;
+                    flip[n] -= 1;
+                    oddChange = false;
+                }
+                
+            }
+        }
+        
+        for(int i=1; i<n; i++){
+            flip[i] = flip[i] + flip[i-1];
+        }
+        
+        for(int i=0; i<n; i++){
+            if(flip[i]&1){
+                if(nums[i] == 1){
+                    return -1;
+                }
+            }
+            else{
+                if(nums[i] == 0){
+                    return -1;
+                }
+            }
+        }
+        
+        return flip[n-1];
+    }
+};

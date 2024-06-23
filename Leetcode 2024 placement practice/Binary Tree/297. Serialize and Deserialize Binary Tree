@@ -1,0 +1,59 @@
+class Codec {
+private:
+    void makeSerialize(TreeNode* root, string &ans){
+        // Base case
+        if(root == NULL){
+            ans += 'N';
+            ans += '!';
+            return;
+        }
+
+        ans += to_string(root->val);
+        ans += '!';
+        makeSerialize(root->left, ans);
+        makeSerialize(root->right, ans);
+    }
+
+    TreeNode* solve(string &data, int &idx){
+        // Base case
+        int n = data.size();
+        if(idx == n) return NULL;
+        if(data[idx] == 'N'){
+            idx += 2;
+            return NULL;
+        }
+
+        int num = 0, flag = false;
+        if(data[idx] == '-'){
+            flag = true;
+            idx++;
+        }
+        while(idx < n && data[idx] != '!'){
+            num = num * 10 + data[idx++]-'0';
+        }
+
+        if(flag) num = -num;
+
+        TreeNode* root = new TreeNode(num);
+        idx++;
+
+        root->left = solve(data, idx);
+        root->right = solve(data, idx);
+
+        return root;
+    }
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string ans = "";
+        makeSerialize(root, ans);
+        return ans;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        int idx = 0;
+        return solve(data, idx);
+    }
+};

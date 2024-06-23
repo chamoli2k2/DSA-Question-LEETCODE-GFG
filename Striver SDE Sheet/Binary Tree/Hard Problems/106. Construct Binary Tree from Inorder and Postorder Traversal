@@ -1,0 +1,29 @@
+class Solution {
+private:
+    int findIdx(vector<int> &inorder, int s, int e, int target){
+        for(int i=s; i<=e; i++){
+            if(inorder[i] == target) return i;
+        }
+        return -1;
+    }
+    TreeNode* solve(vector<int> &postorder, vector<int> &inorder, int &postIdx, int sIdx, int eIdx){
+        // Base case
+        int n = inorder.size();
+        if(sIdx > eIdx) return NULL;
+
+        // Finding the target element in the inorder
+        int target = postorder[postIdx--];
+        int idx = findIdx(inorder, sIdx, eIdx, target);
+
+        TreeNode* root = new TreeNode(target);
+        root->right = solve(postorder, inorder, postIdx, idx+1, eIdx);
+        root->left = solve(postorder, inorder, postIdx, sIdx, idx-1);
+
+        return root;
+    }
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int postIdx = postorder.size()-1, sIdx = 0, eIdx = inorder.size()-1;
+        return solve(postorder, inorder, postIdx, sIdx, eIdx);
+    }
+};

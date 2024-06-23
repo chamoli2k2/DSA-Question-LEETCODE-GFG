@@ -1,0 +1,23 @@
+class Solution {
+private:
+    long long solve(vector<int> &nums, vector<vector<long long>> &dp, int idx, bool bkPoint){
+        int n = nums.size();
+        if(idx == n) return 0;
+        
+        if(dp[idx][bkPoint] != -1) return dp[idx][bkPoint];
+        
+        int sgn = bkPoint ? 1 : -1;
+        
+        // We have two cases
+        long long c1 = sgn * nums[idx] + solve(nums, dp, idx+1, !bkPoint);
+        long long c2 = nums[idx] + solve(nums, dp, idx+1, true);
+        
+        return dp[idx][bkPoint] = max(c1, c2);
+    }
+public:
+    long long maximumTotalCost(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<long long>> dp(n, vector<long long>(2, -1));
+        return solve(nums, dp, 0, true);
+    }
+};
