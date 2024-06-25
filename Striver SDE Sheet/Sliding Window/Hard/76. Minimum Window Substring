@@ -1,0 +1,46 @@
+class Solution {
+private:
+    bool check(unordered_map<char, int> &mp1, unordered_map<char, int> &mp2){
+        // Checking the string 
+        bool flag = true;
+        for(auto &[ch, fq] : mp2){
+            if(mp1[ch] < fq){
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+public:
+    string minWindow(string s, string t) {
+        int n = s.size(), m = t.size(), i = 0, j = 0, stIdx = -1, ans = INT_MAX;
+        // Base case
+        if(n < m) return "";
+        unordered_map<char, int> mp1, mp2;
+        for(auto &it : t) mp2[it]++;
+
+        while(j < n){
+            mp1[s[j]]++;
+
+            bool flag = check(mp1, mp2);
+            
+
+            while(flag && i <= j){
+                if(ans > j-i+1){
+                    stIdx = i;
+                    ans = j - i + 1;
+                }
+
+                mp1[s[i]]--;
+                flag = check(mp1, mp2);
+                i++;
+            }
+
+            j++;
+        }
+
+        if(stIdx == -1) return "";
+
+        return s.substr(stIdx, ans);
+    }
+};

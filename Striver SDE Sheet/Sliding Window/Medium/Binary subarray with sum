@@ -1,0 +1,23 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int k){
+        int n = nums.size(), i = 0, j = 0, ans = 0, sum = 0;
+
+        while(j < n){
+            sum += nums[j];
+
+            while(i <= j && sum > k){
+                sum -= nums[i++];
+            }
+
+            ans += j-i+1;
+            j++;
+        }
+
+        return ans;
+    }
+public:
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
+        return solve(nums, goal) - solve(nums, goal-1);
+    }
+};

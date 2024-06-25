@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    string minWindow(string s, string t) {
+        int n = s.size(), m = t.size(), minLen = INT_MAX, stIdx = -1;
+        
+        for(int i=0; i<=n-m; i++){
+            if(s[i] != t[0]) continue;
+            
+            int j = i, k = 0;
+            while(j < n && k < m){
+                if(s[j] == t[k]){
+                    k++;
+                }
+                j++;
+            }
+            
+            // If we reached at the end of the string t
+            if(k == m){
+                if(minLen > j-i){
+                    minLen = j-i;
+                    stIdx = i;
+                }
+            }
+        }
+        
+        if(stIdx == -1) return "";
+        
+        return s.substr(stIdx, minLen);
+    }
+};
