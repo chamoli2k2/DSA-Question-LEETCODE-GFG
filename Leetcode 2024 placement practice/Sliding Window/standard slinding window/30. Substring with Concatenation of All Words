@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        int n = s.size(), m = words[0].size(), j = 0;
+        unordered_map<string, int> mp1, mp2;
+        for(auto &it : words) mp1[it]++, mp2[it]++;
+        vector<int> ans;
+
+        int win = words.size() * m;
+        // Base case
+        if(win > n) return {};
+
+        for(int i=0; i<=n-win; i++){
+            string str = s.substr(i, m);
+
+            if(mp1.count(str) == 0) continue;
+
+            bool flag = true;
+            for(int j=i; j<i+win; j+=m){
+                string k = s.substr(j, m);
+                if(mp1[k]){
+                    mp1[k]--;
+                }
+                else{
+                    flag = false;
+                    break;
+                }
+            }
+
+            if(flag) ans.push_back(i);
+            mp1 = mp2;
+        }
+
+        return ans;
+    }
+};
