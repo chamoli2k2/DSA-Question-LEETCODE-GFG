@@ -1,0 +1,19 @@
+int ans = -1;
+
+void solve(Node* root, int X){
+    // Base case
+    if(root == NULL) return;
+    
+    if(root->data >= X){
+        ans = root->data;
+        solve(root->left, X);
+    }
+    else{
+        solve(root->right, X);
+    }
+    
+}
+int findCeil(Node* root, int input){
+    solve(root, input);
+    return ans;
+}

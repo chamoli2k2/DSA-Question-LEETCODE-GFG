@@ -1,0 +1,18 @@
+class Solution {
+private:
+    bool solve(TreeNode* root, long maxi, long mini){
+        // Base case
+        if(root == NULL) return true;
+
+        if(root->val >= maxi || root->val <= mini) return false;
+
+        bool ls = solve(root->left, root->val, mini);
+        bool rs = solve(root->right, maxi, root->val);
+
+        return ls && rs;
+    }
+public:
+    bool isValidBST(TreeNode* root) {
+        return solve(root, LONG_MAX, LONG_MIN);
+    }
+};

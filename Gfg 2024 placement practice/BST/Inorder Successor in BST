@@ -1,0 +1,35 @@
+class Solution{
+    private:
+    void solve(Node* root, Node* x){
+        // Base case
+        if(root == NULL) return;
+        
+        if(root->data < x->data){
+            solve(root->right, x);
+        }
+        else if(root->data > x->data){
+            ans = root;
+            solve(root->left, x);
+        }
+        else if(root->data == x->data){
+            if(root->right){
+                Node* tempNode = root->right;
+                while(tempNode->left){
+                    tempNode = tempNode->left;
+                }
+                ans = tempNode;
+            }
+        }
+        
+        return;
+    }
+  public:
+    Node* ans;
+    // returns the inorder successor of the Node x in BST (rooted at 'root')
+    Node * inOrderSuccessor(Node *root, Node *x)
+    {
+        ans = NULL;
+        solve(root, x);
+        return ans;
+    }
+};

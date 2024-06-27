@@ -1,0 +1,22 @@
+class Solution {
+private:
+    void solve(TreeNode* root, int k, int &count){
+        // Base case
+        if(root == NULL) return;
+
+        solve(root->left, k, count);
+        count++;
+        if(count == k){
+            ans = root->val;
+            return;
+        }
+        solve(root->right, k, count);
+    }
+public:
+    int ans = -1;
+    int kthSmallest(TreeNode* root, int k) {
+        int count = 0;
+        solve(root, k, count);
+        return ans;
+    }
+};

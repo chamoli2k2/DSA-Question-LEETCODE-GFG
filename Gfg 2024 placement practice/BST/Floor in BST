@@ -1,0 +1,21 @@
+class Solution{
+private:
+    void solve(Node* root, int x){
+        // Base case
+        if(root == NULL) return;
+        
+        if(root->data <= x){
+            ans = root->data;
+            solve(root->right, x);
+        }
+        else{
+            solve(root->left, x);
+        }
+    }
+public:
+    int ans = -1;
+    int floor(Node* root, int x) {
+        solve(root, x);
+        return ans;
+    }
+};

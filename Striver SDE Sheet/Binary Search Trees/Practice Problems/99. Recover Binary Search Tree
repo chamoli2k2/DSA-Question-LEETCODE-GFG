@@ -1,0 +1,46 @@
+class Solution {
+private:
+    TreeNode* prev, *first, *mid, *last;
+
+    void solve(TreeNode* root){
+        // Base case
+        if(root == NULL) return;
+
+        // Doing inorder traversal
+        solve(root->left);
+
+        if(prev->val > root->val){
+            // 1st violation
+            if(first == NULL){
+                first = prev;
+                mid = root;
+            }
+            // 2nd violation
+            else{
+                last = root;
+            }
+        }
+
+        // Setting new previous
+        prev = root;
+
+        solve(root->right);
+    }
+public:
+    void recoverTree(TreeNode* root) {
+        prev = new TreeNode(INT_MIN);
+        first = mid = last = NULL;
+        solve(root);
+
+        if(first && last){
+            int data = first->val;
+            first->val = last->val;
+            last->val = data;
+        }
+        else{
+            int data = mid->val;
+            mid->val = first->val;
+            first->val = data;
+        }
+    }
+};

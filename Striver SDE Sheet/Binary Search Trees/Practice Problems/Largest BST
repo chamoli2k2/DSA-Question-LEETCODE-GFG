@@ -1,0 +1,57 @@
+class info{
+    public:
+    int maxi;
+    int mini;
+    bool isBst;
+    int size;
+    
+    
+};
+
+
+class Solution{
+    private:
+    info solve(Node* root){
+        // Base case
+        if(root == NULL){
+            return {INT_MIN,INT_MAX,true,0};
+        }
+        
+        info ls = solve(root->left);
+        info rs = solve(root->right);
+        
+        info currentNode;
+        currentNode.maxi = max(root->data, rs.maxi);
+        currentNode.mini = min(root->data, ls.mini);
+        currentNode.size = ls.size + rs.size + 1;
+        currentNode.isBst = false;
+        
+        
+        // Checking if current node is bst
+        if(ls.isBst && rs.isBst && root->data > ls.maxi && root->data < rs.mini){
+            currentNode.isBst = true;
+        }
+        else{
+            currentNode.maxi = root->data;
+            currentNode.mini = root->data;
+            currentNode.size = 1;
+        }
+        
+        
+        if(currentNode.isBst){
+            ans = max(ans, currentNode.size);
+        }
+        
+        
+        return currentNode;
+    }
+    public:
+    /*You are required to complete this method */
+    // Return the size of the largest sub-tree which is also a BST
+    int ans = 0;
+    int largestBst(Node *root)
+    {
+        solve(root);
+        return ans;
+    }
+};
