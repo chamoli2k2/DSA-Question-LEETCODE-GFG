@@ -1,0 +1,25 @@
+class Solution{
+	public:
+	vector<int>AllPrimeFactors(int N) {
+	    vector<int> nums, prime(N+1, true), ans;
+	    prime[0] = 0, prime[1] = 0;
+	    
+	    for(int i=2; i<=sqrt(N); i++){
+	        if(prime[i]){
+	            for(int j=2*i; j<=N; j+=i){
+	                prime[j] = false;
+	            }
+	        }
+	    }
+	    
+	    for(int i=2; i<=N; i++){
+	        if(prime[i]) nums.push_back(i);
+	    }
+	    
+	    for(auto &it : nums){
+	        if(N%it == 0) ans.push_back(it);
+	    }
+	    
+	    return ans;
+	}
+};

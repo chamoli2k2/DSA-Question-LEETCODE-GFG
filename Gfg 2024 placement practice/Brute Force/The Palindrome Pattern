@@ -1,0 +1,40 @@
+class Solution {
+  public:
+
+    string pattern(vector<vector<int>> &arr) {
+        int n = arr.size();
+        
+        // Checking palindrome in row
+        for(int i=0; i<n; i++){
+            int j = 0, k = n-1, flag = 1;
+            while(j < k){
+                if(arr[i][j] != arr[i][k]){
+                    flag = 0;
+                    break;
+                }
+                j++, k--;
+            }
+            
+            if(flag){
+                return to_string(i) + " R";
+            }
+        }
+        
+        for(int i=0; i<n; i++){
+            int j = 0, k = n-1, flag = 1;
+            while(j < k){
+                if(arr[j][i] != arr[k][i]){
+                    flag = 0;
+                    break;
+                }
+                j++, k--;
+            }
+            
+            if(flag){
+                return to_string(i) + " C";
+            }
+        }
+        
+        return "-1";
+    }
+};

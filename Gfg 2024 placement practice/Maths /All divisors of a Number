@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    void print_divisors(int n) {
+        vector<int> divisor;
+        for(int i=1; i<=sqrt(n); i++){
+            if(n%i == 0){
+                divisor.push_back(i);
+                if(i != n/i)
+                    divisor.push_back(n/i);
+            }
+        }
+        
+        sort(begin(divisor), end(divisor));
+        for(auto &it : divisor) cout<<it<<" ";
+    }
+};
