@@ -1,0 +1,23 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int idx){
+        int n = nums.size();
+        if(idx >= n-1) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        int ans = 1e6;
+        for(int i=idx+1; i<=idx+nums[idx] && i<n; i++){
+            int tempAns = 1 + solve(nums, i);
+            ans = min(ans, tempAns);
+        }
+
+        return dp[idx] = ans;
+    }
+public:
+    int dp[10001];
+    int jump(vector<int>& nums) {
+        memset(dp, -1, sizeof(dp));
+        return solve(nums, 0);
+    }
+};

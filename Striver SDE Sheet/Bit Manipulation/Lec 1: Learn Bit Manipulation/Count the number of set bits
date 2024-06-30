@@ -1,0 +1,20 @@
+class Solution{
+    public:
+    // n: input to count the number of set bits
+    //Function to return sum of count of set bits in the integers from 1 to n.
+    int countSetBits(int n)
+    {
+        // Base case
+        if(n == 0 || n == 1) return n;
+        
+        // Finding the nearest power of 2
+        int nearPower2 = 0;
+        while((1<<nearPower2) <= n){
+            nearPower2++;
+        }
+        nearPower2--;
+        
+        int ans = nearPower2 * (1<<(nearPower2-1)) + 1 + (n - (1<<nearPower2));
+        return ans + countSetBits(n-(1<<nearPower2));
+    }
+};

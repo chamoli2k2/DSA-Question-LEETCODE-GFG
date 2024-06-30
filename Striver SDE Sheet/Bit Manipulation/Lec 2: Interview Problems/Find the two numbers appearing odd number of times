@@ -1,0 +1,32 @@
+class Solution{
+    public:
+    vector<long long int> twoOddNum(long long int arr[], long long int N)  
+    {
+        long long int XOR = 0;
+        for(int i=0; i<N; i++){
+            XOR = XOR ^ arr[i];
+        }
+        
+        int idx = 0;
+        while(idx < 64 && XOR){
+            if(XOR & 1){
+                break;
+            }
+            idx++;
+            XOR = XOR >> 1;
+        }
+        
+        long long int a = 0, b = 0;
+        for(int i=0; i<N; i++){
+            if(arr[i]&(1ll<<idx)){
+                a = a ^ arr[i];
+            }
+            else{
+                b = b ^ arr[i];
+            }
+        }
+        
+        if(a > b) return {a, b};
+        return {b, a};
+    }
+};

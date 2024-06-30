@@ -1,0 +1,17 @@
+class Solution {
+    private:
+    int findXorTillX(int x){
+        int xorTillX;
+        if(x%4 == 0) xorTillX = x;
+        if(x%4 == 3) xorTillX = 0;
+        if(x%4 == 2) xorTillX = x+1;
+        if(x%4 == 1) xorTillX = 1;
+        return xorTillX;
+    }
+  public:
+    int findXOR(int l, int r) {
+        int xorTillR = findXorTillX(r);
+        int xorTillL = findXorTillX(l-1);
+        return xorTillR ^ xorTillL;
+    }
+};

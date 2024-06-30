@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    Node* deleteNode(Node* head, int x) {
+        // Base case
+        if(x == 1){
+            Node* tempNodeNext = head->next;
+            tempNodeNext->prev = NULL;
+            delete head;
+            return tempNodeNext;
+        }
+        
+        int target = 1;
+        Node* tempNode = head;
+        while(target < x && tempNode){
+            tempNode = tempNode->next;
+            target++;
+        }
+        
+        Node* tempNodeNext = tempNode->next;
+        Node* tempNodePrev = tempNode->prev;
+        
+        tempNodePrev->next = tempNodeNext;
+        if(tempNodeNext)
+            tempNodeNext->prev = tempNodePrev;
+            
+        delete tempNode;
+        
+        return head;
+    }
+};

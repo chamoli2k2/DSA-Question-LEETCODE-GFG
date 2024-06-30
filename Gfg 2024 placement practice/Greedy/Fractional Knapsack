@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    // Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int w, Item arr[], int n) {
+        double ans = 0;
+        priority_queue<pair<double, int>> pq;
+        
+        for(int i=0; i<n; i++){
+            double val = 1.0*arr[i].value / arr[i].weight;
+            pq.push({val, i});
+        }
+        
+        while(w && !pq.empty()){
+            auto it = pq.top();
+            pq.pop();
+            
+            if(arr[it.second].weight <= w){
+                ans += 1.0*arr[it.second].value;
+                w -= arr[it.second].weight;
+            }
+            else{
+                ans += w*it.first;
+                w = 0;
+            }
+        }
+        
+        return ans;
+    }
+};

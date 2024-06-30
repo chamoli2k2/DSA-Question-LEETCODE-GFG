@@ -1,0 +1,28 @@
+class Solution {
+private:
+    void dfs(vector<int> adjList[], int node, int UP){
+
+        for(auto &it : adjList[node]){
+            if(ans[it].size() == 0 || ans[it].back() != UP){
+                ans[it].push_back(UP);
+                dfs(adjList, it, UP);
+            }
+        }
+
+    }
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        vector<int> adjList[n];
+        ans.resize(n);
+        for(auto &it : edges){
+            adjList[it[0]].push_back(it[1]);
+        }
+
+        for(int i=0; i<n; i++){
+            dfs(adjList, i, i);
+        }
+
+        return ans;
+    }
+};

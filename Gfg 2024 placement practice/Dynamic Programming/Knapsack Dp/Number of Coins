@@ -1,0 +1,30 @@
+class Solution{
+    private:
+    int solve(vector<int> &coins, int idx, int target){
+        // Base case
+        int n = coins.size();
+        if(idx == n || target == 0){
+            return target != 0 ? 1e6 : 0;
+        }
+        
+        if(dp[idx][target] != -1) return dp[idx][target];
+        
+        int c1 = 1e6, c2 = 0;
+        if(coins[idx] <= target){
+            c1 = 1 + solve(coins, idx, target-coins[idx]);
+        }
+        
+        c2 = solve(coins, idx+1, target);
+        
+        return dp[idx][target] = min(c1, c2);
+    }
+	public:
+	vector<vector<int>> dp;
+	int minCoins(vector<int> &coins, int M, int V) 
+	{ 
+	    dp.resize(M, vector<int>(V+1, -1));
+	    int ans = solve(coins, 0, V);
+	    return ans < 1e6 ? ans : -1;
+	} 
+	  
+};

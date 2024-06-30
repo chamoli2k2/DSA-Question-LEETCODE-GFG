@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        vector<int> adjList[n], inorder(n, 0);
+        ans.resize(n);
+        for(auto &it : edges){
+            adjList[it[0]].push_back(it[1]);
+            inorder[it[1]]++;
+        }
+
+        queue<int> q;
+        for(int i=0; i<n; i++){
+            if(inorder[i] == 0) q.push(i);
+        }
+
+        vector<int> topoSort;
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            topoSort.push_back(node);
+
+            for(auto &it : adjList[node]){
+                inorder[it]--;
+                if(inorder[it] == 0){
+                    q.push(it);
+                }
+            }
+        }
+
+        vector<set<int>> st(n);
+
+        for(auto &node : topoSort){
+            for(auto &it : adjList[node]){
+                st[it].insert(node); // Inserting node as parent of it
+                st[it].insert(st[node].begin(), st[node].end()); // Inserting parent of node also as parent of it
+            }
+        }
+
+        vector<vector<int>> ans(n);
+        for(int i=0; i<n; i++){
+            for(auto &it : st[i]){
+                ans[i].push_back(it);
+            }
+        }
+
+        return ans;
+    }
+};
