@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool checkValidString(string s) {
+        int n = s.size();
+        stack<int> openBracket, dot;
+
+        for(int i=0; i<n; i++){
+            if(s[i] == ')'){
+                if(!openBracket.empty()){
+                    openBracket.pop();
+                }
+                else if(!dot.empty()){
+                    dot.pop();
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(s[i] == '('){
+                openBracket.push(i);
+            }
+            else{
+                dot.push(i);
+            }
+        }
+
+        // If all the open Bracket empty
+        if(openBracket.empty()) return true;
+
+        while(!openBracket.empty() && !dot.empty()){
+            if(openBracket.top() > dot.top()) return false;
+            openBracket.pop();
+            dot.pop();
+        }
+
+        return openBracket.empty();
+    }
+};

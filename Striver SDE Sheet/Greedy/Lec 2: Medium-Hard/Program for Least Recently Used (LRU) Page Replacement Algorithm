@@ -1,0 +1,24 @@
+class Solution:
+    def pageFaults(self, N, C, pages):
+        mp = {}
+        lru = []
+        ans = 0
+        
+        for i in range(0, N):
+            if pages[i] in mp:
+                lru.remove(pages[i])
+                lru.append(pages[i])
+            else:
+                ans += 1
+                if len(mp) < C:
+                    mp[pages[i]] = 1
+                    lru.append(pages[i])
+                else:
+                    lruPage = lru.pop(0)
+                    del mp[lruPage]
+                    
+                    mp[pages[i]] = 1
+                    lru.append(pages[i])
+                    
+        
+        return ans  

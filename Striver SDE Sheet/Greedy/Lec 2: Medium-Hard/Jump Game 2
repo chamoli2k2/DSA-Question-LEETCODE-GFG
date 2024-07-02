@@ -1,0 +1,26 @@
+class Solution:
+    def __init__(self):
+        self.dp = []
+
+
+    def solve(self, nums, idx):
+        n = len(nums)
+        if idx >= n-1:
+            return 0
+
+        if self.dp[idx] != -1:
+            return self.dp[idx]
+
+        ans = 1e8
+        for i in range(1, nums[idx]+1):
+            tempAns = 1 + self.solve(nums, idx+i)
+            ans = min(ans, tempAns)
+
+        self.dp[idx] = ans
+        return self.dp[idx]
+
+    def jump(self, nums: List[int]) -> int:
+        n = len(nums)
+        self.dp = [-1] * n
+        
+        return self.solve(nums, 0)

@@ -1,0 +1,31 @@
+import heapq
+class Item:
+    def __init__(self,val,w):
+        self.value = val
+        self.weight = w
+        
+class Solution:    
+    #Function to get the maximum total value in the knapsack.
+    def fractionalknapsack(self, w,arr,n):
+        heap = []
+        
+        for i in range(0, n):
+            heapq.heappush(heap, (-arr[i].value/arr[i].weight, i))
+            
+        
+        ans = 0
+        
+        
+        while heap and w:
+            top = heapq.heappop(heap)
+            perKg, idx = -top[0], top[1]
+            
+            if arr[idx].weight <= w:
+                ans += arr[idx].value
+                w -= arr[idx].weight
+            else:
+                ans += perKg*w
+                w = 0
+             
+                
+        return ans

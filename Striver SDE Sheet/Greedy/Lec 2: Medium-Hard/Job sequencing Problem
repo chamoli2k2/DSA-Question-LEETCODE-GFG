@@ -1,0 +1,23 @@
+class Solution:
+    
+    def cmp(self, jobs):
+        return jobs.profit
+        
+    #Function to find the maximum profit and the number of jobs done.
+    def JobScheduling(self,Jobs,n):
+        Jobs.sort(key=self.cmp, reverse=True)
+        
+        totalProfit, totalJobs = 0, 0
+        jobs = [-1]*(n+1)
+        
+        for i in range(0, n):
+            dead = Jobs[i].deadline;
+            
+            for j in range(dead, 0, -1):
+                if (jobs[j] == -1):
+                    jobs[j] = Jobs[i].id
+                    totalProfit += Jobs[i].profit;
+                    totalJobs += 1
+                    break
+            
+        return [totalJobs, totalProfit]

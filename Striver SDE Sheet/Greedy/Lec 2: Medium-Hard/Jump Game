@@ -1,0 +1,14 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        n, jump = len(nums), 0
+
+        for i in range(n-2, -1, -1):
+            if(nums[i] <= jump):
+                jump += 1
+            else:
+                jump = 0
+
+        if jump == 0:
+            return True
+        
+        return False
