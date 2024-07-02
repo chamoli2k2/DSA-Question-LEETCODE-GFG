@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maximumLength(vector<int>& nums) {
+        int n = nums.size(), ans = 0;
+        for(int i=0; i<n; i++){
+            nums[i] = nums[i] % 2;
+        }
+        
+        int countOneZero = 0, countZeroOne = 0, countZero = 0, countOne = 0;
+        bool flag10 = true, flag01 = true;
+        
+        for(int i=0; i<n; i++){
+            if(nums[i] == 0) countZero++;
+            if(nums[i] == 1) countOne++;
+            
+            if(flag10 && nums[i] == 1){
+                countOneZero++;
+                flag10 = false;
+            }
+            else if(flag10 == false && nums[i] == 0){
+                countOneZero++;
+                flag10 = true;
+            }
+            
+            
+            if(flag01 && nums[i] == 0){
+                countZeroOne++;
+                flag01 = false;
+            }
+            else if(flag01 == false && nums[i] == 1){
+                countZeroOne++;
+                flag01 = true;
+            }
+        }
+        
+        return max({countOne, countZero, countOneZero, countZeroOne});
+    }
+};

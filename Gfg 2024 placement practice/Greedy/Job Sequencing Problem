@@ -1,0 +1,29 @@
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        sort(arr, arr+n, [&](Job &j1, Job &j2){
+           return j1.profit > j2.profit; 
+        });
+        
+        int totalJobs = 0, totalProfit = 0;
+        vector<int> job(n+1, -1);
+        
+        for(int i=0; i<n; i++){
+            int dead = arr[i].dead;
+            
+            for(int j=dead; j>0; j--){
+                if(job[j] == -1){
+                    totalProfit += arr[i].profit;
+                    job[j] = arr[i].id;
+                    totalJobs++;
+                    break;
+                }
+            }
+        }
+        
+        return {totalJobs, totalProfit};
+    } 
+};

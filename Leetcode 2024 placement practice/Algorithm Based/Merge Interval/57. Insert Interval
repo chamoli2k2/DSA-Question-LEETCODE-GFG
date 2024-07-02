@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        vector<vector<int>> ans;
+        intervals.push_back(newInterval);
+        sort(begin(intervals), end(intervals));
+        
+        vector<int> temp = intervals[0];
+        int end = temp[1], n = intervals.size();
+
+        for(int i=0; i<n; i++){
+            // checking if we get the interval
+            if(end < intervals[i][0]){
+                ans.push_back(temp);
+                temp[0] = intervals[i][0];
+                temp[1] = intervals[i][1];
+                end = temp[1];
+            }
+            else{
+                end = max(end, intervals[i][1]);
+                temp[1] = end;
+            }
+        }
+
+        ans.push_back(temp);
+        return ans;
+    }
+};

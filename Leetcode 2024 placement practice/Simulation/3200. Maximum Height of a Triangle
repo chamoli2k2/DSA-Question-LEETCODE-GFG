@@ -1,0 +1,34 @@
+class Solution {
+private:
+    int solve(int x, int y){
+        int height = 0, flag = true;
+        while(true){
+            if(flag){
+                if(x >= height+1){
+                    x -= height+1;
+                    height++;
+                }
+                else{
+                    break;
+                }
+            }
+            else{
+                if(y >= height+1){
+                    y -= height+1;
+                    height++;
+                }
+                else{
+                    break;
+                }
+            }
+
+            flag = !flag;
+        }
+
+        return height;
+    }
+public:
+    int maxHeightOfTriangle(int red, int blue) {
+        return max(solve(red, blue), solve(blue, red));
+    }
+};

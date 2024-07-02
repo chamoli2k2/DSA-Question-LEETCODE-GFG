@@ -1,0 +1,31 @@
+class Solution{
+public:
+    int pageFaults(int N, int C, int pages[]){
+        vector<int> lru;
+        unordered_map<int, int> mp;
+        int ans = 0;
+        
+        for(int i=0; i<N; i++){
+            if(mp.count(pages[i]) == 0){
+                ans++;
+                if(mp.size() < C){
+                    mp[pages[i]]++;
+                    lru.push_back(pages[i]);
+                }
+                else{
+                    mp[pages[i]]++;
+                    mp.erase(lru[0]);
+                    lru.erase(lru.begin()+0);
+                    lru.push_back(pages[i]);
+                }
+            }
+            else{
+                auto it = find(lru.begin(), lru.end(), pages[i]);
+                lru.erase(it);
+                lru.push_back(pages[i]);
+            }
+        }
+        
+        return ans;
+    }
+};

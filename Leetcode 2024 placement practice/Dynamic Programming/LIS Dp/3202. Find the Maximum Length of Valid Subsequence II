@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int maximumLength(vector<int>& nums, int k) {
+        int n = nums.size(), ans = 2;
+        vector<vector<int>> dp(n, vector<int> (1001, 0));
+
+        for(int i=1; i<n; i++){
+            for(int j=0; j<i; j++){
+                int modVal = (nums[i] + nums[j]) % k;
+
+                dp[i][modVal] = max({dp[i][modVal], dp[j][modVal]+1, 2});
+
+                ans = max(ans, dp[i][modVal]);
+            }
+        }
+
+        return ans;
+    }
+};
+
+
+class Solution {
+private:
+    int solve(vector<int> &nums, int idx, int modVal, int mod){
+        // Base case
+        int n = nums.size();
+        if(idx == n) return 0;
+
+        if(dp[idx][modVal] != -1) return dp[idx][modVal];
+
+        int ans = 0;
+        for(int k=idx+1; k<n; k++){
+            if((nums[k] + nums[idx]) % mod == modVal){
+                ans = max(ans, 1 + solve(nums, k, modVal, mod));
+            }
+        }
+
+        return dp[idx][modVal] = ans;
+    }
+public:
+    int dp[1001][1001];
+    int maximumLength(vector<int>& nums, int k) {
+        memset(dp, -1, sizeof(dp));
+        int n = nums.size(), ans = 2;
+
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                int modVal = (nums[j] + nums[i]) % k;
+                ans = max(ans, 2 + solve(nums, j, modVal, k));
+            }
+        }
+
+        return ans;
+    }
+};
