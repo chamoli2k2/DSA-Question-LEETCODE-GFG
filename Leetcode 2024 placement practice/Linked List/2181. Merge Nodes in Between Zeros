@@ -1,0 +1,17 @@
+class Solution {
+public:
+    ListNode* mergeNodes(ListNode* head) {
+        // Base case
+        if(head == NULL || head->next == NULL) return NULL;
+
+        ListNode* tempNode = head->next->next;
+        while(tempNode && tempNode->val != 0){
+            head->next->val += tempNode->val;
+            tempNode = tempNode->next;
+        }
+
+        head->next->next = mergeNodes(tempNode);
+
+        return head->next;
+    }
+};

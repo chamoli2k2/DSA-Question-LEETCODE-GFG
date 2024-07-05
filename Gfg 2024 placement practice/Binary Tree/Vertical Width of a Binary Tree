@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    // Function to find the vertical width of a Binary Tree.
+    int verticalWidth(Node* root) {
+        // Base case
+        if(root == NULL) return 0;
+        queue<pair<Node*, int>> q;
+        q.push({root, 0});
+        int ls = 0, rs = 0;
+        
+        while(!q.empty()){
+            int n = q.size();
+            
+            for(int i=0; i<n; i++){
+                Node* node = q.front().first;
+                int idx = q.front().second;
+                q.pop();
+                
+                ls = min(ls, idx);
+                rs = max(rs, idx);
+                
+                if(node->left) q.push({node->left, idx-1});
+                if(node->right) q.push({node->right, idx+1});
+            }
+        }
+        
+        return rs-ls+1;
+    }
+};

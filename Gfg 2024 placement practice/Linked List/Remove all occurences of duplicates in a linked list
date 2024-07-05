@@ -1,0 +1,24 @@
+class Solution {
+  public:
+    Node* removeAllDuplicates(struct Node* head) {
+        // Base case
+        if(head == NULL || head->next == NULL) return head;
+        
+        
+        Node* tempNode = head->next;
+        if(tempNode && head->data != tempNode->data){
+            head->next = removeAllDuplicates(tempNode);
+            return head;
+        }
+        
+        Node* dummyNode = new Node(-1);
+        while(tempNode && tempNode->data == head->data){
+            tempNode = tempNode->next;
+        }
+        
+        dummyNode->next = removeAllDuplicates(tempNode);
+        
+        if(dummyNode->next == NULL) return NULL;
+        return dummyNode->next;
+    }
+};

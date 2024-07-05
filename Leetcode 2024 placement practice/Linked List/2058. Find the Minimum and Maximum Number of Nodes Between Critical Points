@@ -1,0 +1,63 @@
+class Solution {
+public:
+    vector<int> nodesBetweenCriticalPoints(ListNode* head) {
+        vector<int> ans;
+        if(head == NULL || head->next == NULL || head->next->next == NULL) return {-1, -1};
+
+        ListNode* prev = head;
+        ListNode* curr = head->next;
+        ListNode* next = head->next->next;
+
+        // Defining
+        int firstMin = -1, firstMax = -1, currMin = -1, currMax = -1;
+        int low = INT_MAX, high = INT_MIN;
+        int idx = 2;
+        int prevMin = -1, prevMax = -1;
+
+        while(next){
+            // Checking if current is local maximum
+            if(curr->val > prev->val && curr->val > next->val){
+                if(firstMax == -1){
+                    firstMax = idx;
+                    currMax = idx;
+                }
+                else{
+                    prevMax = currMax;
+                    currMax = idx;
+                }
+            }
+
+            if(curr->val < prev->val && curr->val < next->val){
+                if(firstMin == -1){
+                    firstMin = idx;
+                    currMin = idx;
+                }
+                else{
+                    prevMin = currMin;
+                    currMin = idx;
+                }
+            }
+
+            if(firstMin != -1 && firstMax != -1){
+                low = min({low, abs(currMax-currMin)});
+                high = max({high, abs(currMax-firstMin), abs(currMin-firstMax), abs(currMin-firstMin), abs(currMax-firstMax)});
+            }
+            else if(firstMin != -1 && prevMin != -1){
+                low = min({low, abs(currMin-prevMin)});
+                high = max({high, abs(currMin-firstMin)});
+            }
+            else if(firstMax != -1 && prevMax != -1){
+                low = min({low, abs(currMax-prevMax)});
+                high = max({high, abs(currMax-firstMax)});
+            }
+
+            prev = curr;
+            curr = next;
+            next = next->next;
+            idx++;
+        }
+
+        if(low == INT_MAX || high == INT_MIN) return {-1, -1};
+        return {low, high};
+    }
+};
