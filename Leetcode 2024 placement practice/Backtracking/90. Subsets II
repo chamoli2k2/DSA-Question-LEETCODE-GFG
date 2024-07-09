@@ -1,0 +1,24 @@
+class Solution:
+    def __init__(self):
+        self.st = set()
+
+    def solve(self, nums, idx, li):
+        n = len(nums)
+        # Base case
+        if idx == n:
+            self.st.add(tuple(li))
+            return
+
+        li.append(nums[idx])
+        self.solve(nums, idx+1, li)
+        li.pop()
+
+        self.solve(nums, idx+1, li)
+
+    
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        li = []
+        nums.sort()
+        self.solve(nums, 0, li)
+        ans = [ list(tup) for tup in self.st]
+        return ans

@@ -1,0 +1,30 @@
+void placeInCorrect(stack<int> &st, int elem){
+    // Base case
+    if(st.empty()){
+        st.push(elem);
+        return;
+    }
+    
+    if(st.top() > elem){
+        int topElem = st.top();
+        st.pop();
+        
+        placeInCorrect(st, elem);
+        st.push(topElem);
+    }
+    else{
+        st.push(elem);
+    }
+}
+void SortedStack :: sort()
+{
+   // Base case
+   if(s.empty()) return;
+   
+   int topElem = s.top();
+   s.pop();
+   
+   sort();
+   
+   placeInCorrect(s, topElem);
+}

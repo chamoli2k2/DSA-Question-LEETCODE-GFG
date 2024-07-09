@@ -1,0 +1,19 @@
+class Solution:
+    def __init__(self):
+        self.ans = []
+        
+        
+    def solve(self, arr, n, idx, currSum):
+        # Base case
+        if idx == n:
+            self.ans.append(currSum)
+            return
+        
+        
+        self.solve(arr, n, idx+1, currSum+arr[idx])
+        
+        self.solve(arr, n, idx+1, currSum)
+        
+	def subsetSums(self, arr, n):
+	    self.solve(arr, n, 0, 0)
+	    return self.ans

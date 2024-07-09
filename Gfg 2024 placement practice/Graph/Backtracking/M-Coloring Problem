@@ -1,0 +1,34 @@
+class Solution{
+private:
+
+    bool isSafe(bool graph[101][101], vector<int> &colors, int node, int n, int clr){
+        // Checking if adjancent node of the current node has same colors as node
+        for(int i=0; i<n; i++){
+            if(i != node && graph[i][node] == 1 && colors[i] == clr) return false;
+        }
+        
+        return true;
+    }
+    bool solve(bool graph[101][101], vector<int> &colors, int m, int n, int node){
+        if(node == n) return true;
+        
+        for(int clr=0; clr<m; clr++){
+            if(isSafe(graph, colors, node, n, clr)){
+                colors[node] = clr;
+                if(solve(graph, colors, m, n, node+1)) return true;
+                colors[node] = -1;
+            }
+        }
+        
+        return false;
+    }
+public:
+    // Function to determine if graph can be coloured with at most M colours such
+    // that no two adjacent vertices of graph are coloured with same colour.
+    bool graphColoring(bool graph[101][101], int m, int n) {
+        // your code here
+        vector<int> colors(n, -1);
+        
+        return solve(graph, colors, m, n, 0);
+    }
+};

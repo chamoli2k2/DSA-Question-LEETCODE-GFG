@@ -1,0 +1,19 @@
+class Solution:
+    def maximumPoints(self, enemyEnergies: List[int], currentEnergy: int) -> int:
+        n, ans = len(enemyEnergies), 0
+        enemyEnergies.sort()
+        j = n-1
+
+        while j >= 0:
+            if currentEnergy < enemyEnergies[0] and ans == 0:
+                break
+            
+            if currentEnergy >= enemyEnergies[0]:
+                k = currentEnergy // enemyEnergies[0]
+                ans += k
+                currentEnergy -= k*enemyEnergies[0]
+            elif ans > 0:
+                currentEnergy += enemyEnergies[j]
+                j -= 1
+            
+        return ans

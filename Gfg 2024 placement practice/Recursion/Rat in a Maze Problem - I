@@ -1,0 +1,37 @@
+class Solution:
+    def __init__(self):
+        self.visited = []
+        self.ans = []
+        
+        
+    def solve(self, nums, i, j, n, s):
+        if i < 0 or j < 0 or i == n or j == n or self.visited[i][j] == 1 or nums[i][j] == 0:
+            return
+        
+        if i == n-1 and j == n-1:
+            self.ans.append(s)
+            return
+        
+        
+        self.visited[i][j] = 1
+        
+        self.solve(nums, i+1, j, n, s+'D')
+        self.solve(nums, i-1, j, n, s+'U')
+        self.solve(nums, i, j-1, n, s+'L')
+        self.solve(nums, i, j+1, n, s+'R')
+        
+        self.visited[i][j] = 0
+        
+        
+        
+        
+    def findPath(self, m, n):
+        # code here
+        if m[0][0] == 0 or m[n-1][n-1] == 0:
+            self.ans.append("-1")
+            return self.ans
+        
+        self.visited = [[0 for _ in range(n)] for _ in range(n)]
+        self.solve(m, 0, 0, n, "")
+        
+        return self.ans

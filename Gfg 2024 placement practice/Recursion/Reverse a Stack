@@ -1,0 +1,28 @@
+class Solution{
+private:
+    void putDown(stack<int> &st, int elem){
+        // Base case
+        if(st.empty()){
+            st.push(elem);
+            return;
+        }
+        
+        int topElem = st.top();
+        st.pop();
+        
+        putDown(st, elem);
+        
+        st.push(topElem);
+    }
+public:
+    void Reverse(stack<int> &st){
+        // Base case
+        if(st.empty()) return;
+        
+        int topElem = st.top();
+        st.pop();
+        Reverse(st);
+        
+        putDown(st, topElem);
+    }
+};

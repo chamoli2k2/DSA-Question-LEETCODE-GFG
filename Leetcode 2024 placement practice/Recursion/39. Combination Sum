@@ -1,0 +1,32 @@
+class Solution:
+    def __init__(self):
+        self.st = set()
+
+    def solve(self, candidates, idx, target, li):
+        n = len(candidates)
+        # Base case
+        if target == 0:
+            self.st.add(tuple(li))
+            return
+        
+        if idx == n:
+            return
+        
+        # taking the current element
+        if candidates[idx] <= target:
+            li.append(candidates[idx])
+            self.solve(candidates, idx, target-candidates[idx], li)
+            li.pop()
+
+        self.solve(candidates, idx+1, target, li)
+
+
+
+    
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        temp = []
+        self.solve(candidates, 0, target, temp)
+
+        ans = [list(tup) for tup in self.st]
+
+        return ans

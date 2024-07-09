@@ -1,0 +1,39 @@
+class Solution:
+    def __init__(self):
+        self.mp = defaultdict(int)
+
+    @lru_cache(None)
+    def solve(self, s, idx):
+        # Base case
+        n = len(s)
+        if idx == n:
+            return True
+
+        newStr = ""
+
+        for i in range(idx, n):
+            newStr += s[i]
+
+            if newStr in self.mp:
+                if self.solve(s, i + 1):
+                    return True
+
+        return False
+
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        n = len(s)
+        self.mp = defaultdict(int)
+
+        for st in wordDict:
+            self.mp[st] += 1
+
+        newStr = ""
+
+        for i in range(n):
+            newStr += s[i]
+
+            if newStr in self.mp:
+                if self.solve(s, i + 1):
+                    return True
+
+        return False

@@ -1,0 +1,36 @@
+class Solution {
+private:
+    bool check(int i, int j, int n){
+        if(col[j] == 1 || leftDiagonal[i+j] == 1 || rightDiagonal[i-j+n-1] == 1) return false;
+        return true;
+    }
+    void solve(vector<string> &board, int idx, int n){
+        // Base case
+        if(idx == n){
+            ans.push_back(board);
+            return;
+        }
+
+
+        // Checking the column where we can place the queen
+        for(int i=0; i<n; i++){
+            if(check(idx, i, n)){
+                board[idx][i] = 'Q';
+                col[i] = leftDiagonal[idx+i] = rightDiagonal[idx-i+n-1] = 1;
+                solve(board, idx+1, n);
+                board[idx][i] = '.';
+                col[i] = leftDiagonal[idx+i] = rightDiagonal[idx-i+n-1] = 0;
+            }
+        }
+    }
+public:
+    vector<vector<string>> ans;
+    vector<int> col, leftDiagonal, rightDiagonal;
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> board(n, string(n, '.'));
+        col.resize(n, 0);
+        leftDiagonal.resize(2*n, 0), rightDiagonal.resize(2*n, 0);
+        solve(board, 0, n);
+        return ans;
+    }
+};

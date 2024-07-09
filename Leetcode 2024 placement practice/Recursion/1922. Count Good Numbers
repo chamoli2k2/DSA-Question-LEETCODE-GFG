@@ -1,0 +1,25 @@
+class Solution {
+private:
+    long long solve(int a, long long b){
+        // Base case
+        if(b == 0) return 1;
+
+        long long halfAns = solve(a, b/2);
+
+        if(b&1){
+            return (halfAns%mod * halfAns%mod * a%mod) % mod;
+        }
+
+        return (halfAns%mod * halfAns%mod) % mod;
+    }
+public:
+    int mod = 1e9 + 7;
+    int countGoodNumbers(long long n) {
+        long long five = n / 2, four = n / 2;
+        if(n%2) five++;
+        long long p1 = solve(5, five);
+        long long p2 = solve(4, four);
+
+        return (p1%mod * p2%mod) % mod;
+    }
+};

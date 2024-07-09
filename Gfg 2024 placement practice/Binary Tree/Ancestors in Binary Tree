@@ -1,0 +1,25 @@
+class Solution {
+private:
+    Node* solve(Node* root, int target){
+        // Base case
+        if(root == NULL) return NULL;
+        
+        if(root->data == target) return root;
+        
+        auto ls = solve(root->left, target);
+        auto rs = solve(root->right, target);
+        
+        if(ls == NULL && rs == NULL) return NULL;
+        
+        ans.push_back(root->data);
+        
+        return root;
+    }
+  public:
+    // Function should return all the ancestor of the target node
+    vector<int> ans;
+    vector<int> Ancestors(struct Node *root, int target) {
+        solve(root, target);
+        return ans;
+    }
+};

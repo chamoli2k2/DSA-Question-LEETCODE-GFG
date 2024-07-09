@@ -1,0 +1,55 @@
+class Solution {
+private:
+    bool check(vector<vector<int>> &grid, int sr, int sc, int k){
+        unordered_map<int,int> mp;
+        for(int i=sr; i<sr+k; i++){
+            int sum = 0;
+            for(int j=sc; j<sc+k; j++){
+                sum += grid[i][j];
+            }
+            mp[sum]++;
+            if(mp.size() > 1) return false;
+        }
+
+        for(int j=sc; j<sc+k; j++){
+            int sum = 0;
+            for(int i=sr; i<sr+k; i++){
+                sum += grid[i][j];
+            }
+            mp[sum]++;
+            if(mp.size() > 1) return false;
+        }
+
+        int d1 = 0, d2 = 0, t = 0;
+        for(int i=sr; i<sr+k; i++){
+            d1 += grid[i][sc+t];
+            d2 += grid[i][sc+k-1-t];
+            t++;
+        }
+
+        mp[d1]++;
+        mp[d2]++;
+        return mp.size() == 1;
+    }
+public:
+    int largestMagicSquare(vector<vector<int>>& grid) {
+        int n = grid.size(), m = grid[0].size(), ans = 1, sz = min(n, m);
+
+        // Trying for every possible size
+        for(int k=2; k<=sz; k++){
+            // Traversing 
+
+            for(int i=0; i<=n-k; i++){
+                for(int j=0; j<=m-k; j++){
+                    // Checking for each starting column i and j is it a valid square
+                    if(check(grid, i, j, k)){
+                        ans = k;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+};

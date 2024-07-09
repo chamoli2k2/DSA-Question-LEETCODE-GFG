@@ -1,0 +1,23 @@
+class Solution {
+    private:
+    void solve(Node* root, Node* &parent){
+        // Base case
+        if(root == NULL) return;
+        
+        
+        solve(root->left, parent);
+        
+        if(parent != NULL) parent->next = root;
+        parent = root;
+        
+        solve(root->right, parent);
+        
+        return;
+    }
+  public:
+
+    void populateNext(Node *root) {
+        Node* parent = NULL;
+        solve(root, parent);
+    }
+};

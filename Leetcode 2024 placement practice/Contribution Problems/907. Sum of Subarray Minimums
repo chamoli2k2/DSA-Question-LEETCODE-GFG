@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        int n = arr.size(), ans = 0, mod = 1e9 + 7;
+        stack<pair<int,int>> st;
+        st.push({-1, -1});
+        vector<vector<int>> nums(n, vector<int> (3));
+
+        for(int i=0; i<n; i++){
+            while(st.top().first >= arr[i]){
+                st.pop();
+            }
+
+            nums[i][0] = arr[i];
+            nums[i][1] = st.top().second;
+            st.push({arr[i], i});
+        }
+
+        while(!st.empty()) st.pop();
+        st.push({-1, n});
+
+        for(int i=n-1; i>=0; i--){
+            // Imp step
+            while(st.top().first > arr[i]){
+                st.pop();
+            }
+            nums[i][2] = st.top().second;
+            st.push({arr[i], i});
+        }
+
+        for(int i=0; i<n; i++){
+            int ls = i - nums[i][1];
+            int rs = nums[i][2] - i;
+
+            ans = (ans%mod + (ls *1LL* rs *1LL* nums[i][0])%mod) % mod;
+        }
+
+        return ans;
+    }
+};

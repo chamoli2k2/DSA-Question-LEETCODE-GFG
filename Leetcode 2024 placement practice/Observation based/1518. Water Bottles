@@ -1,0 +1,14 @@
+class Solution:
+    def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
+        ans, empty = 0, 0
+
+        while numBottles:
+            ans += numBottles
+            empty += numBottles
+            numBottles = 0
+
+            if empty >= numExchange:
+                numBottles = empty // numExchange
+                empty -= (empty//numExchange)*numExchange
+
+        return ans

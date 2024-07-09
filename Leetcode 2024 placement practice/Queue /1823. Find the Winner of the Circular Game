@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        deque<int> dq;
+        for(int i=1; i<=n; i++) dq.push_back(i);
+
+        int count = 0;
+        while(dq.size() > 1){
+            count++;
+            if(count == k){
+                dq.pop_front();
+                count = 0;
+            }
+            else{
+                int elem = dq.front();
+                dq.pop_front();
+                dq.push_back(elem);
+            }
+        }
+
+        return dq.front();
+    }
+};

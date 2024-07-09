@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int passThePillow(int n, int time) {
+        int pos = 1, dir = 1;
+        while(time){
+            if(dir == 1){
+                pos++;
+                if(pos%n == 0){
+                    dir = 0;
+                }
+            }
+            else{
+                pos--;
+                if(pos == 1){
+                    dir = 1;
+                }
+            }
+
+            time--;
+        }
+
+        return pos;
+    }
+};
