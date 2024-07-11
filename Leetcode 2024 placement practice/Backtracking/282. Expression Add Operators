@@ -1,0 +1,37 @@
+class Solution {
+private:
+    void solve(string &s, int idx, string path, long result, long prevEval, int target){
+        // Base case
+        int n = s.size();
+        if(idx == n){
+            if(result == target){
+                ans.push_back(path);
+            }
+            return;
+        }
+
+        string newStr = "";
+        long currVal = 0;
+        for(int j=idx; j<n; j++){
+            if(j > idx && s[idx] == '0') break;
+            newStr += s[j];
+            currVal = currVal * 10 + (s[j]-'0');
+
+            if(idx == 0){
+                solve(s, j+1, path+newStr, currVal, currVal, target);
+            }
+            else{
+                solve(s, j+1, path + "+" + newStr, result + currVal, currVal, target);
+                solve(s, j+1, path + "-" + newStr, result - currVal, -currVal, target);
+                solve(s, j+1, path + "*" + newStr, result - prevEval + prevEval * currVal, prevEval*currVal, target);
+            }
+        }
+
+    }
+public:
+    vector<string> ans;
+    vector<string> addOperators(string s, int target) {
+        solve(s, 0, "", 0, 0, target);
+        return ans;
+    }
+};

@@ -1,0 +1,33 @@
+class Solution {
+private:
+    int mod = 1e9 + 7;
+    int findPow(int a, int b){
+        // Base case
+        if(b == 0) return 1;
+
+        int halfAns = findPow(a, b/2);
+
+        if(b&1){
+            return (halfAns%mod *1LL* halfAns%mod *1LL* a%mod) % mod;
+        }
+
+        return (halfAns%mod *1LL* halfAns%mod) % mod;
+    }
+public:
+    int sumSubseqWidths(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        long n = nums.size(), ans = 0;
+        vector<int> pow2(n+1);
+
+        for(int i=0; i<n; i++){
+            pow2[i] = findPow(2, i);
+        }
+
+        for(int i=0; i<n; i++){
+            int high = pow2[i], low = pow2[n-1-i];
+            ans = (ans % mod + ((high - low)*1LL*nums[i] % mod)) % mod;
+        }
+
+        return ans;
+    }
+};

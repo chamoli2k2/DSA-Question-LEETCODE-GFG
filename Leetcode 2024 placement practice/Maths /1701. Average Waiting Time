@@ -1,0 +1,22 @@
+class Solution {
+public:
+    double averageWaitingTime(vector<vector<int>>& nums) {
+        long total = nums[0][1], n = nums.size(), time = nums[0][0]+nums[0][1];
+
+        for(int i=1; i<n; i++){
+            // Waiting time for cooking
+            total += nums[i][1];
+
+            // If new customer come after the time than there is no waiting time
+            if(nums[i][0] > time){
+                time = nums[i][0] + nums[i][1];
+            }
+            else{
+                total += time - nums[i][0];
+                time += nums[i][1];
+            }
+        }
+
+        return 1.0*total/n;
+    }
+};

@@ -1,0 +1,15 @@
+//Function to push an element x in a queue.
+void MyQueue :: push(int x)
+{
+    arr[rear%100005] = x;
+    rear++;
+}
+
+//Function to pop an element from queue and return that element.
+int MyQueue :: pop()
+{
+        if(rear%100005 == front%100005) return -1;
+        int x = arr[front%100005];
+        front++;
+        return x;
+}

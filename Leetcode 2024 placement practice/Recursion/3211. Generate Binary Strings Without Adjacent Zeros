@@ -1,0 +1,22 @@
+class Solution {
+private:
+    void solve(int n, int flag, string temp){
+        // Base case
+        if(n == 0){
+            ans.push_back(temp);
+            return;
+        }
+
+        if(flag == false){
+            solve(n-1, true, temp+'0');
+        }
+
+        solve(n-1, false, temp+'1');
+    }
+public:
+    vector<string> ans;
+    vector<string> validStrings(int n) {
+        solve(n, false, "");
+        return ans;
+    }
+};

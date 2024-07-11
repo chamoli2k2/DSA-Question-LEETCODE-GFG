@@ -1,0 +1,112 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &nums, int x, int y){
+        int n = nums.size(), m = nums[0].size(), bound = m, ans = 0;
+
+        for(int i=x; i<n; i++){
+            for(int j=y; j<bound; j++){
+                if(nums[i][j] == 1){
+                    ans += 1;
+                }
+                else{
+                    bound = j;
+                }
+            }
+        }
+
+        return ans;
+    }
+public:
+    int numSubmat(vector<vector<int>>& mat) {
+        int n = mat.size(), m = mat[0].size(), ans = 0;
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] == 0) continue;
+                ans += solve(mat, i, j);
+            }
+        }
+
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    int numSubmat(vector<vector<int>>& mat) {
+        int n = mat.size(), m = mat[0].size(), ans = 0;
+        vector<int> height(m, 0);
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                height[j] = (mat[i][j] == 0) ? 0 : height[j]+1;
+            }
+
+            for(int j=0; j<m; j++){
+                if(height[j] > 0){
+                    int minHeight = height[j];
+                    for(int k=j; k<m; k++){
+                        if(height[k] == 0) break;
+                        minHeight = min(minHeight, height[k]);
+                        ans += minHeight;
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+};
+
+
+
+class Solution {
+public:
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        int n = matrix.size(), m = matrix[0].size(), ans = INT_MIN;
+        
+
+        for(int rw=0; rw<n; rw++){
+            vector<int> subSum(m, 0);
+            for(int i=rw; i<n; i++){
+                for(int j=0; j<m; j++){
+                    subSum[j] += matrix[i][j];
+                }
+
+                // Hash to lookup for value (cum_sum - K)
+                set<int> cum_set;
+                cum_set.insert(0);
+            
+                int max_sum = INT_MIN, cSum = 0;
+            
+                for (int j=0; j<m; j++) {
+            
+                    // getting cumulative sum from [0 to i]
+                    cSum += subSum[j];
+            
+                    // lookup for upperbound
+                    // of (cSum-K) in hash
+                    set<int>::iterator sit = cum_set.lower_bound(cSum - k);
+            
+                    // check if upper_bound
+                    // of (cSum-K) exists
+                    // then update max sum
+                    if (sit != cum_set.end())
+                        max_sum = max(max_sum, cSum - *sit);
+            
+                    // insert cumulative value in hash
+                    cum_set.insert(cSum);
+                }
+
+                ans = max(ans, max_sum);
+                if(ans == k) return k;
+            }
+        }
+
+        return ans;
+    }
+};
+
+
+
+

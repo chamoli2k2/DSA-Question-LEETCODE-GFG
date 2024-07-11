@@ -1,0 +1,91 @@
+class DSU{
+    public:
+    vector<int> size, parent;
+    
+    DSU(int n){
+        for(int i=0; i<n+3; i++){
+            size.push_back(1);
+            parent.push_back(i);
+        }
+    }
+    
+    int findParent(int x){
+        if(parent[x] == x) return x;
+        return parent[x] = findParent(parent[x]);
+    }
+    
+    
+    void findUnion(int u, int v){
+        int parentU = findParent(u);
+        int parentV = findParent(v);
+        
+        if(parentU == parentV) return;
+        
+        if(size[parentU] < size[parentV]){
+            parent[parentU] = parentV;
+            size[parentV] += size[parentU];
+        }
+        else{
+            parent[parentV] = parentU;
+            size[parentU] += size[parentV];
+        }
+    }
+};
+
+
+class Solution {
+  public:
+    int MaxConnection(vector<vector<int>>& grid) {
+        int n = grid.size(), m = grid[0].size(), ans = -1;
+        DSU ds(n*m+3);
+        
+        int dc[] = {1, -1, 0, 0};
+        int dr[] = {0, 0, 1, -1};
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] == 1){
+                    for(int k=0; k<4; k++){
+                        int row = i + dr[k];
+                        int col = j + dc[k];
+                        
+                        if(row >= 0 && row < n && col >= 0 && col < m && grid[row][col] == 1){
+                            int node2 = m*row + col;
+                            int node1 = m*i + j;
+                            
+                            ds.findUnion(node1, node2);
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] == 0){
+                    set<int> st;
+                    
+                    for(int k=0; k<4; k++){
+                        int row = i + dr[k];
+                        int col = j + dc[k];
+                        
+                        if(row >= 0 && row < n && col >= 0 && col < m && grid[row][col] == 1){
+                            int node = m*row + col;
+                            st.insert(ds.findParent(node));
+                        }
+                    }
+                    
+                    int area = 1;
+                    for(auto &it : st){
+                        area += ds.size[it];
+                    }
+                    
+                    ans = max(ans, area);
+                }
+            }
+        }
+        
+        return ans == -1 ? n*m : ans;
+    }
+};

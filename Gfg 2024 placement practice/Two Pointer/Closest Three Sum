@@ -1,0 +1,41 @@
+class Solution {
+  public:
+    int threeSumClosest(vector<int> arr, int target) {
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+        int mini = INT_MAX, ans = INT_MIN;
+        
+        for(int i=0; i<n-2; i++){
+            int j = i+1, k = n-1;
+            
+            while(j < k){
+                int sum = arr[i] + arr[j] + arr[k];
+                if(sum == target){
+                    return target;
+                }
+                else if(sum > target){
+                    if(mini > abs(sum-target)){
+                        mini = abs(sum-target);
+                        ans = sum;
+                    }
+                    else if(mini == abs(sum-target)){
+                        ans = max(ans, sum);
+                    }
+                    k--;
+                }
+                else{
+                    if(mini > abs(sum-target)){
+                        mini = abs(sum-target);
+                        ans = sum;
+                    }
+                    else if(mini == abs(sum-target)){
+                        ans = max(ans, sum);
+                    }
+                    j++;
+                }
+            }
+        }
+        
+        return ans;
+    }
+};

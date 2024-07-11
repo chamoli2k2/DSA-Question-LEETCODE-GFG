@@ -1,0 +1,16 @@
+class Solution:
+    def minOperations(self, logs: List[str]) -> int:
+        n, ans = len(logs), 0
+
+        for i in range(0, n):
+            if logs[i] == "../":
+                if ans > 0:
+                    ans -= 1
+            
+            elif logs[i] == "./":
+                continue
+            
+            else:
+                ans += 1
+
+        return ans

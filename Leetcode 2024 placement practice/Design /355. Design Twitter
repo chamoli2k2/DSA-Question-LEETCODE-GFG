@@ -1,0 +1,63 @@
+class Twitter {
+public:
+    unordered_map<int, vector<pair<int,int>>> tweets;
+    unordered_map<int, set<int>> followingList;
+    int timer = 0;
+    Twitter() {
+        
+    }
+    
+    void postTweet(int userId, int tweetId) {
+        timer++;
+        tweets[userId].push_back({timer,tweetId});
+    }
+    
+    vector<int> getNewsFeed(int userId) {
+        vector<int> ans;
+        int n = tweets[userId].size();
+        priority_queue<pair<int,int>> pq;
+
+        // Adding the user own tweet
+        for(int i=n-1; i>=max(0, n-10); i--){
+            pq.push({tweets[userId][i].first, tweets[userId][i].second});
+        }
+
+        // Adding the followers tweets
+        for(auto &it : followingList[userId]){
+            int m = tweets[it].size();
+
+            for(int i=m-1; i>=max(0, m-10); i--){
+                pq.push({tweets[it][i].first, tweets[it][i].second});
+            }
+        }
+
+        int idx = 0;
+        while(idx < 10 && !pq.empty()){
+            ans.push_back(pq.top().second);
+            pq.pop();
+            idx++;
+        }
+
+        return ans;
+    }
+    
+    void follow(int followerId, int followeeId) {
+        followingList[followerId].insert(followeeId);
+    }
+    
+    void unfollow(int followerId, int followeeId) {
+        auto it = followingList[followerId].find(followeeId);
+        if(it != followingList[followerId].end()){
+            followingList[followerId].erase(it);
+        }
+    }
+};
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter* obj = new Twitter();
+ * obj->postTweet(userId,tweetId);
+ * vector<int> param_2 = obj->getNewsFeed(userId);
+ * obj->follow(followerId,followeeId);
+ * obj->unfollow(followerId,followeeId);
+ */

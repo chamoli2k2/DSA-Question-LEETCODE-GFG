@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int largestSubmatrix(vector<vector<int>>& matrix) {
+        int n = matrix.size(), m = matrix[0].size(), ans = 0;
+        vector<int> height(m, 0);
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                height[j] = matrix[i][j] == 0 ? 0 : height[j]+1;
+            }
+
+            vector<int> nums = height;
+            sort(nums.rbegin(), nums.rend());
+            for(int j=0; j<m; j++){
+                if(nums[j] == 0) break;
+                ans = max(ans, nums[j] * (j+1));
+            }
+        }
+
+        return ans;
+    }
+};

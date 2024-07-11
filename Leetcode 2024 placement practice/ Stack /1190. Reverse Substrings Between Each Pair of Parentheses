@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string reverseParentheses(string s) {
+        int n = s.size();
+        string ans = "";
+        stack<char> st;
+
+        for(int i=0; i<n; i++){
+            if(s[i] == '('){
+                st.push('(');
+            }
+            else if(s[i] == ')'){
+                string t = "";
+                while(st.top() != '('){
+                    t += st.top();
+                    st.pop();
+                }
+                st.pop();
+                int m = t.size();
+                for(int j=0; j<m; j++) st.push(t[j]);
+            }
+            else{
+                st.push(s[i]);
+            }
+        }
+
+        while(!st.empty()){
+            ans += st.top();
+            st.pop();
+        }
+
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};

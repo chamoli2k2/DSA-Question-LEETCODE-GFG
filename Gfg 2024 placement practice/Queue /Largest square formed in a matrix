@@ -1,0 +1,56 @@
+class Solution {
+    private:
+        int findArea(vector<int> &nums){
+            int n = nums.size();
+            vector<int> ls(n), rs(n);
+            stack<pair<int,int>> st1, st2;
+            st1.push({-1, -1});
+            st2.push({-1, n});
+            
+            for(int i=0; i<n; i++){
+                int idx = n-1-i;
+                while(st1.top().first >= nums[i]){
+                    st1.pop();
+                }
+                
+                while(st2.top().first >= nums[idx]){
+                    st2.pop();
+                }
+                
+                ls[i] = st1.top().second;
+                rs[idx] = st2.top().second;
+                
+                st1.push({nums[i], i});
+                st2.push({nums[idx], idx});
+            }
+            
+            int ans = 0;
+            for(int i=0; i<n; i++){
+                int side = rs[i]-ls[i]-1, height = nums[i];
+                int k = min(side, height);
+                ans = max(ans, k);
+            }
+            
+            return ans;
+        }
+  public:
+    int maxSquare(int n, int m, vector<vector<int>> mat) {
+        vector<int> area(m, 0);
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] == 0){
+                    area[j] = 0;
+                }
+                else{
+                    area[j] += 1;
+                }
+            }
+            
+            int tempAns = findArea(area);
+            ans = max(ans, tempAns);
+        }
+        
+        return ans;
+    }
+};

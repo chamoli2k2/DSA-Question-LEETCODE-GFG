@@ -1,0 +1,64 @@
+class Solution {
+private:
+    int findAns(vector<vector<int>> &nums, int x, int y, int k){
+        int n = nums.size(), m = nums[0].size(), ans = INT_MIN;
+        vector<vector<int>> prefix(n, vector<int> (m, 0));
+
+        for(int i=x; i<n; i++){
+            if(i > 0){
+                prefix[i][y] = prefix[i-1][y] + nums[i][y];
+            }
+            else{
+                prefix[i][y] = nums[i][y];
+            }
+
+            if(prefix[i][y] <= k && ans < prefix[i][y]){
+                ans = prefix[i][y];
+                if(ans == k) return ans;
+            }
+        }
+
+        for(int j=y; j<m; j++){
+            if(j > 0){
+                prefix[x][j] = prefix[x][j-1] + nums[x][j];
+            }
+            else{
+                prefix[x][j] = nums[x][j];
+            }
+
+            if(prefix[x][j] <= k && ans < prefix[x][j]){
+                ans = prefix[x][j];
+                if(ans == k) return k;
+            }
+        }
+
+
+
+        for(int i=x+1; i<n; i++){
+            for(int j=y+1; j<m; j++){
+                int area = prefix[i-1][j] + prefix[i][j-1] - prefix[i-1][j-1] + nums[i][j];
+                prefix[i][j] = area;
+                if(area <= k && ans < area){
+                    ans = area;
+                    if(ans == k) return k;
+                }
+            }
+        }
+
+        return ans;
+    }
+public:
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        int n = matrix.size(), m = matrix[0].size(), ans = INT_MIN;
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                int tempAns = findAns(matrix, i, j, k);
+                ans = max(ans, tempAns);
+                if(ans == k) return k;
+            }
+        }
+
+        return ans;
+    }
+};
