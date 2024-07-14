@@ -1,0 +1,83 @@
+class Solution {
+public:
+    int maximumGain(string s, int x, int y) {
+        int n = s.size(), ans = 0;
+        bool flag = x > y ? true : false;
+        stack<char> st;
+
+        for(int i=0; i<n; i++){
+            int idx = i;
+            if(flag){
+                if(s[idx] != 'a' && s[idx] != 'b'){
+                    st.push(s[idx]);
+                }
+                else{
+                    if(!st.empty() && s[idx] == 'b' && st.top() == 'a'){
+                        ans += x;
+                        st.pop();
+                    }
+                    else{
+                        st.push(s[idx]);
+                    }
+                }
+            }
+            else{
+                if(s[idx] != 'a' && s[idx] != 'b'){
+                    st.push(s[idx]);
+                }
+                else{
+                    if(!st.empty() && st.top() == 'b' && s[idx] == 'a'){
+                        ans += y;
+                        st.pop();
+                    }
+                    else{
+                        st.push(s[idx]);
+                    }
+                }
+            }
+        }
+
+        string temp = "";
+        while(!st.empty()){
+            temp += st.top();
+            st.pop();
+        }
+
+        flag = !flag;
+        reverse(temp.begin(), temp.end());
+
+        for(int i=0; i<temp.size(); i++){
+            int idx = i;
+            if(flag){
+                if(temp[idx] != 'a' && temp[idx] != 'b'){
+                    st.push(temp[idx]);
+                }
+                else{
+                    if(!st.empty() && temp[idx] == 'b' && st.top() == 'a'){
+                        ans += x;
+                        st.pop();
+                    }
+                    else{
+                        st.push(temp[idx]);
+                    }
+                }
+            }
+            else{
+                if(temp[idx] != 'a' && temp[idx] != 'b'){
+                    st.push(temp[idx]);
+                }
+                else{
+                    if(!st.empty() && st.top() == 'b' && temp[idx] == 'a'){
+                        ans += y;
+                        st.pop();
+                    }
+                    else{
+                        st.push(temp[idx]);
+                    }
+                }
+            }
+        }
+        
+        return ans;
+    }
+};

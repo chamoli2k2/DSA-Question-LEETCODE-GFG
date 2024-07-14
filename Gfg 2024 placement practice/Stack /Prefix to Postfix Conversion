@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    string preToPost(string s) {
+        int n = s.size();
+        stack<string> st;
+        
+        for(int i=n-1; i>=0; i--){
+            string temp = "";
+            temp += s[i];
+            
+            if(s[i] == '/' || s[i] == '*' || s[i] == '+' || s[i] == '-' || s[i] == '^'){
+                string s1 = st.top();
+                st.pop();
+                string t = s1 + st.top() + temp;
+                st.pop();
+                st.push(t);
+            }
+            else{
+                st.push(temp);
+            }
+        }
+        
+        return st.top();
+    }
+};

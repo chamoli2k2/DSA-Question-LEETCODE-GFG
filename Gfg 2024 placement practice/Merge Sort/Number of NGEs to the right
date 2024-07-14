@@ -1,0 +1,61 @@
+class Solution{
+private:
+    void merge(vector<pair<int,int>> &nums, int s, int mid, int e){
+        vector<pair<int,int>> arr(e-s+1);
+        int i = s, j = mid+1, idx = 0;
+        
+        while(i <= mid && j <= e){
+            if(nums[i].first < nums[j].first){
+                count[nums[i].second] += e-j+1;
+                arr[idx++] = nums[i++];
+            }
+            else{
+                arr[idx++] = nums[j++];
+            }
+        }
+        
+        while(i <= mid){
+            arr[idx++] = nums[i++];
+        }
+        
+        while(j <= e) arr[idx++] = nums[j++];
+        
+        
+        idx = 0;
+        for(int k=s; k<=e; k++){
+            nums[k] = arr[idx++];
+        }
+    }
+private:
+    void Sort(vector<pair<int,int>> &nums, int s, int e){
+        // Base case
+        if(s >= e) return;
+        
+        int mid = s + (e - s) / 2;
+        
+        Sort(nums, s, mid);
+        Sort(nums, mid+1, e);
+        merge(nums, s, mid, e);
+    }
+public:
+    vector<int> count;
+    vector<int> count_NGE(int n, vector<int> &arr, int m, vector<int> &q){
+        count.resize(n, 0);
+        vector<pair<int,int>> nums;
+        for(int i=0; i<n; i++){
+            nums.push_back({arr[i], i});
+        }
+        
+        
+        Sort(nums, 0, n-1);
+        // for(auto &it : nums) cout<<it.first<<" ";
+        
+        vector<int> ans;
+        for(int i=0; i<m; i++){
+            ans.push_back(count[q[i]]);
+        }
+        
+        return ans;
+    }
+
+};

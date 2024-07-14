@@ -1,0 +1,58 @@
+class Solution {
+public:
+    vector<int> survivedRobotsHealths(vector<int>& positions, vector<int>& healths, string directions) {
+        int n = healths.size();
+        vector<int> ans;
+        stack<pair<int,pair<int,int>>> st;
+        vector<vector<int>> nums;
+
+        for(int i=0; i<n; i++){
+            int dir = directions[i] == 'L' ? 0 : 1;
+            nums.push_back({positions[i], healths[i], dir, i});
+        }
+
+        // sorting
+        sort(nums.begin(), nums.end());
+
+        for(int i=0; i<n; i++){
+            int flag = true;
+            while(!st.empty()){
+                // If robot is moving on the top of stack is going right and coming robot coming from left than collision occur
+                if((st.top().second.first == 1 && nums[i][2] == 0) && st.top().first < nums[i][1]){
+                    nums[i][1]--;
+                    st.pop();
+                }
+                else if((st.top().second.first == 1 && nums[i][2] == 0) && st.top().first > nums[i][1]){
+                    st.top().first--;
+                    if(st.top().first == 0) st.pop();
+                    flag = false;
+                    break;
+                }
+                else if((st.top().second.first == 1 && nums[i][2] == 0) && st.top().first == nums[i][1]){
+                    st.pop();
+                    flag = false;
+                    break;
+                }
+                else{
+                    break;
+                }
+            }
+
+            if(flag) st.push({nums[i][1], {nums[i][2], nums[i][3]}});
+        }
+
+        vector<pair<int,int>> arr;
+        while(!st.empty()){
+            arr.push_back({st.top().second.second, st.top().first});
+            st.pop();
+        }
+
+        sort(arr.begin(), arr.end());
+
+        for(auto &it : arr){
+            ans.push_back(it.second);
+        }
+
+        return ans;
+    }
+};

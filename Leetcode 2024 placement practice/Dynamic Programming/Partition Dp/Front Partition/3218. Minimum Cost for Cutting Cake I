@@ -1,0 +1,30 @@
+class Solution {
+private:
+    int solve(vector<int> &hCut, vector<int> &vCut, int rs, int re, int cs, int ce){
+        // Base case
+        if(re-rs == 0 && ce-cs == 0) return 0;
+        if(rs > re || cs > ce) return 0;
+
+        if(dp[rs][re][cs][ce] != -1) return dp[rs][re][cs][ce];
+
+        int ans = 1e8;
+
+        for(int i=rs; i<re; i++){
+            int cost = hCut[i] + solve(hCut, vCut, rs, i, cs, ce) + solve(hCut, vCut, i+1, re, cs, ce);
+            ans = min(ans, cost);
+        }
+
+        for(int i=cs; i<ce; i++){
+            int cost = vCut[i] + solve(hCut, vCut, rs, re, cs, i) + solve(hCut, vCut, rs, re, i+1, ce);
+            ans = min(ans, cost);
+        }
+
+        return dp[rs][re][cs][ce] = ans;
+    }
+public:
+    int dp[25][25][25][25];
+    int minimumCost(int m, int n, vector<int>& horizontalCut, vector<int>& verticalCut) {
+        memset(dp, -1, sizeof(dp));
+        return solve(horizontalCut, verticalCut, 0, m-1, 0, n-1);
+    }
+};

@@ -1,0 +1,29 @@
+class Solution {
+public:
+    long long minimumCost(int m, int n, vector<int>& horizontalCut, vector<int>& verticalCut) {
+        swap(n, m);
+        long long vt = 1, ht = 1;
+
+        sort(verticalCut.rbegin(), verticalCut.rend());
+        sort(horizontalCut.rbegin(), horizontalCut.rend());
+
+        long long i = 0, j = 0, ans = 0;
+        while(i < n-1 && j < m-1){
+            if(horizontalCut[i] >= verticalCut[j]){
+                ans += vt*1LL*horizontalCut[i];
+                i++;
+                ht++;
+            }
+            else{
+                ans += ht*1LL*verticalCut[j];
+                j++;
+                vt++;
+            }
+        }
+
+        while(i < n-1) ans += vt*1LL*horizontalCut[i++];
+        while(j < m-1) ans += ht*1LL*verticalCut[j++];
+        
+        return ans;
+    }
+};

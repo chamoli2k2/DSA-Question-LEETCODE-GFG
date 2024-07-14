@@ -1,0 +1,45 @@
+class Solution {
+  public:
+    vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+        vector<int> cost(n+1, 1e8), path(n+1, -1);
+        cost[1] = 0;
+        priority_queue<pair<int, int>> q;
+        q.push({0, 1});
+        vector<pair<int,int>> adj[n+1];
+        
+        for(auto &it : edges){
+            adj[it[0]].push_back({it[1], it[2]});
+            adj[it[1]].push_back({it[0], it[2]});
+        }
+        
+        
+        while(!q.empty()){
+            int currCost = -q.top().first;
+            int node = q.top().second;
+            q.pop();
+            
+            
+            for(auto &it : adj[node]){
+                int newCost = it.second, adjNode = it.first;
+                if(currCost+newCost < cost[adjNode]){
+                    cost[adjNode] = currCost+newCost;
+                    path[adjNode] = node;
+                    q.push({-cost[adjNode], adjNode});
+                }
+            }
+        }
+        
+        // Checking if we reached the end of the path
+        if(cost[n] == 1e8) return {-1};
+        vector<int> ans;
+        ans.push_back(cost[n]);
+        int node = n;
+        while(path[node] != -1){
+            ans.push_back(node);
+            node = path[node];
+        }
+        ans.push_back(1);
+        reverse(ans.begin()+1, ans.end());
+        return ans;
+    }
+};

@@ -1,0 +1,72 @@
+class Solution {
+  private:
+    int check(char ch){
+        // case 1 :
+        if(ch == '+' || ch == '-'){
+            return 1;
+        }
+        // case 2 :
+        else if(ch == '*' || ch == '/'){
+            return 2;
+        }
+        // case 3 : 
+        else if(ch == '^'){
+            return 3;
+        }
+        
+        return -1;
+    }
+  public:
+    // Function to convert an infix expression to a postfix expression.
+    string infixToPostfix(string s) {
+        string ans = "";
+        stack<char> st;
+        
+        int n = s.size();
+        for(int i=0;i<n;i++){
+            // case 1 : if found '(' just push it into stack
+            if(s[i] == '('){
+                st.push('(');
+            }else{
+                // Checking if s[i] is any operator or not
+                if(s[i] == '-' || s[i] == '+' || s[i] == '*' || s[i] == '/' || s[i] == '^'){
+                    // if stack is empty than push operand into stack directly
+                    if(st.empty()){
+                        st.push(s[i]);
+                    }
+                    else{
+                        // Now we need to check precedence
+                        char ch = s[i];
+                        
+                        while(!st.empty() && check(ch) <= check(st.top()) && st.top() != '('){
+                            ans += st.top();
+                            st.pop();
+                        }
+                        
+                        st.push(ch);
+                    }
+                }
+                // popout every element out from stack until you get '('
+                else if(s[i] == ')'){
+                    while(st.top() != '('){
+                        ans += st.top();
+                        st.pop();
+                    }
+                    st.pop();
+                }
+                // If s[i] is the operand 
+                else{
+                    ans += s[i];
+                }
+            }
+        }
+        
+        // Now if element is there in stack emptying it
+        while(!st.empty()){
+            ans += st.top();
+            st.pop();
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    bool hasPathSum(Node *root, int target) {
+        // Base case
+        if(root == NULL) return 0;
+        
+        if(root->left == NULL && root->right == NULL){
+            if(root->data == target) return true;
+            return false;
+        }
+        
+        bool ls = hasPathSum(root->left, target-root->data);
+        bool rs = hasPathSum(root->right, target-root->data);
+        
+        return ls || rs;
+    }
+};

@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    string postToInfix(string s) {
+        stack<string> st;
+        int n = s.size();
+        string ans;
+        
+        for(int i=0; i<n; i++){
+            string temp = "";
+            temp += s[i];
+            
+            if(s[i] == '*' || s[i] == '/' || s[i] == '+' || s[i] == '-' || s[i] == '^'){
+                string s1 = st.top();
+                st.pop();
+                
+                string newStr = "(" + st.top() + temp + s1 + ")";
+                st.pop();
+                st.push(newStr);
+            }
+            else{
+                st.push(temp);
+            }
+        }
+        
+        ans = st.top();
+        return ans;
+    }
+};
+

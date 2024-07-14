@@ -1,0 +1,45 @@
+class MinStack {
+private:
+    stack<int> st, minStack;
+public:
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+        // Pushing the value in stack
+        st.push(val);
+
+        // If minStack is empty or val is less than or equal to the top element of minStack,
+        // we push val onto minStack.
+        if (minStack.empty() || val <= minStack.top()) { // Mistake fixed here
+            minStack.push(val);
+        }
+    }
+    
+    void pop() {
+        // If the top element of both stacks is the same, pop from minStack.
+        if (st.top() == minStack.top()) { // Mistake fixed here
+            minStack.pop();
+        }
+        // Pop from the main stack.
+        st.pop();
+    }
+    
+    int top() {
+        return st.top();
+    }
+    
+    int getMin() {
+        return minStack.top();
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */

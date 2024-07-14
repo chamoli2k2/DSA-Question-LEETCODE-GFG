@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int nextGreaterElement(int m) {
+        vector<int> nums;
+        int temp = m;
+        
+        // Extract digits and store in nums vector
+        while(temp) {
+            nums.push_back(temp % 10);
+            temp /= 10;
+        }
+
+        // Reverse to get the original order of digits
+        reverse(nums.begin(), nums.end());
+        int n = nums.size();
+
+        if(n <= 1) return -1; // If the number has only one digit, no greater permutation exists
+
+        int idx = n - 2;
+
+        // Find the first decreasing element from the end
+        while(idx >= 0 && nums[idx] >= nums[idx + 1]) {
+            idx--;
+        }
+
+        // If no such element is found, it means the digits are in descending order
+        if(idx < 0) return -1;
+
+        int sIdx = n - 1;
+
+        // Find the smallest element greater than nums[idx] to the right of nums[idx]
+        while(nums[idx] >= nums[sIdx]) {
+            sIdx--;
+        }
+
+        // Swap elements at idx and sIdx
+        swap(nums[idx], nums[sIdx]);
+
+        // Reverse the elements to the right of idx to get the next greater permutation
+        reverse(nums.begin() + idx + 1, nums.end());
+
+        // Convert vector back to integer
+        long ans = 0;
+        for(int i = 0; i < n; i++) {
+            ans = ans * 10 + 1LL * nums[i];
+        }
+
+        // Ensure the result fits in the range of a 32-bit integer and is greater than the original number
+        return (ans > m && ans <= INT_MAX) ? ans : -1;
+    }
+};
