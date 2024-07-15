@@ -1,0 +1,81 @@
+#include <unordered_map>
+#include <list>
+using namespace std;
+
+class LFUCache {
+private:
+    // Frequency to list of (value, key) pairs
+    unordered_map<int, list<pair<int, int>>> freq;
+    // Key to (list iterator, frequency) pairs
+    unordered_map<int, pair<list<pair<int, int>>::iterator, int>> mp;
+    int n;
+
+public:
+    LFUCache(int capacity) {
+        n = capacity;
+    }
+    
+    int get(int key) {
+        if (mp.count(key)) {
+            // Get the iterator and current frequency
+            auto it = mp[key].first;
+            int currFreq = mp[key].second;
+            int val = it->first;
+
+            // Update the value in the list (correct value update)
+            freq[currFreq].erase(it); // Remove from current frequency list
+            freq[currFreq + 1].push_front({val, key}); // Add to next frequency list
+            mp[key].first = freq[currFreq + 1].begin(); // Update iterator in map
+            mp[key].second = currFreq + 1; // Update frequency in map
+
+            return val;
+        }
+        return -1; // Key not found
+    }
+    
+    void put(int key, int value) {
+        if (n == 0) return; // Capacity is zero, cannot add any item
+        
+        if (mp.count(key)) {
+            // Key exists, update the value and frequency
+            auto it = mp[key].first;
+            int currFreq = mp[key].second;
+
+            // Remove from current frequency list
+            freq[currFreq].erase(it);
+            // Add to next frequency list with updated value
+            freq[currFreq + 1].push_front({value, key});
+            // Update the map with new iterator and frequency
+            mp[key].first = freq[currFreq + 1].begin();
+            mp[key].second = currFreq + 1;
+        } else {
+            // Key does not exist, insert as new
+            if (mp.size() == n) {
+                // Cache is full, need to evict least frequently used item
+                int minFreq = 1;
+                // Find the smallest frequency with elements
+                while (freq[minFreq].empty()) minFreq++;
+                
+                // Remove the least recently used item from the smallest frequency list
+                auto last = freq[minFreq].back();
+                int oldKey = last.second;
+                freq[minFreq].pop_back(); // Remove the element from the list
+                
+                // Erase from map
+                mp.erase(oldKey);
+            }
+
+            // Insert the new key-value pair with frequency 1
+            freq[1].push_front({value, key});
+            // Update the map with iterator to the new element and frequency 1
+            mp[key] = {freq[1].begin(), 1};
+        }
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */

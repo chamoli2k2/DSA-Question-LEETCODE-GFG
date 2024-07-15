@@ -1,0 +1,10 @@
+class Solution {
+  public:
+    // Function to count nodes of a linked list.
+    bool searchKey(int n, struct Node* head, int key) {
+        if(head == NULL) return false;
+        if(head->data == key) return true;
+        
+        return searchKey(n, head->next, key);
+    }
+};

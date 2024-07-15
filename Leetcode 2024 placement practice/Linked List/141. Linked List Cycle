@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *slow = head, *fast = head;
+        bool flag = false;
+
+        while(fast && fast->next){
+            if(flag && slow == fast) return true;
+            flag = true;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        return false;
+    }
+};

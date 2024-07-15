@@ -1,0 +1,36 @@
+class Solution {
+private:
+    int findLen(ListNode *head){
+        // Base case
+        if(head == NULL) return 0;
+        return 1 + findLen(head->next);
+    }
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int len1 = findLen(headA);
+        int len2 = findLen(headB);
+
+        if(len1 >= len2){
+            int idx = 0;
+            while(idx < (len1-len2)){
+                headA = headA->next;
+                idx++;
+            }
+        }
+        else{
+            int idx = 0;
+            while(idx < (len2-len1)){
+                headB = headB->next;
+                idx++;
+            }
+        }
+
+        while(headA && headB){
+            if(headA == headB) return headB;
+            headA = headA->next;
+            headB = headB->next;
+        }
+
+        return NULL;
+    }
+};
