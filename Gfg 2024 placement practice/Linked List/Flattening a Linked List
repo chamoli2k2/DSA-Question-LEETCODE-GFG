@@ -1,0 +1,29 @@
+Node *flatten(Node *root) {
+    // Base case
+    if(root == NULL || root->next == NULL) return root;
+    
+    Node *flat = flatten(root->next);
+    root->next = NULL;
+    Node *small = root;
+    Node *large = flat;
+    
+    if(small->data > large->data){
+        small = flat;
+        large = root;
+    }
+    
+    Node *ans = small;
+    while(small && large){
+        Node *prev;
+        while(small && small->data <= large->data){
+            prev = small;
+            small = small->bottom;
+        }
+        prev->bottom = large;
+        large = small;
+        small = prev->bottom;
+    }
+
+    
+    return ans;
+}

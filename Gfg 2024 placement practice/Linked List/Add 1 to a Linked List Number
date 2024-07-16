@@ -1,0 +1,38 @@
+class Solution
+{
+    private:
+    Node* reverseList(Node *head){
+        Node *prev = NULL, *curr = head, *next;
+        
+        while(curr){
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        return prev;
+    }
+    public:
+    Node* addOne(Node *head) 
+    {
+        int carry = 1;
+        Node *curr = reverseList(head), *prev;
+        Node *newHead = curr;
+        while(curr){
+            int newData = curr->data + carry;
+            carry = newData/10;
+            newData = newData % 10;
+            
+            curr->data = newData;
+            prev = curr;
+            curr = curr->next;
+        }
+        
+        if(carry){
+            prev->next = new Node(carry);
+        }
+        
+        return reverseList(newHead);
+    }
+};

@@ -1,0 +1,37 @@
+class Solution
+{
+public:
+
+    Node * removeDuplicates(struct Node *head)
+    {
+        if(head == NULL || head->next == NULL) return head;
+        Node *dummyNode = new Node(INT_MAX);
+        dummyNode->next = head;
+        head->prev = dummyNode;
+        Node *prev = dummyNode;
+        Node *curr = head;
+        
+        while(curr){
+            if(curr->data == prev->data){
+                Node *nextNode = curr->next;
+                prev->next = nextNode;
+                
+                if(nextNode)
+                    nextNode->prev = prev;
+                Node *tempNode = curr;
+                curr = nextNode;
+                delete tempNode;
+            }
+            else{
+                prev = curr;
+                curr = curr->next;
+            }
+        }
+        
+        Node *ans = dummyNode->next;
+        if(ans) ans->prev = NULL;
+        delete dummyNode;
+        
+        return ans;
+    }
+};

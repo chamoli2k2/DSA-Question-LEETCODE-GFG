@@ -1,0 +1,45 @@
+class Solution {
+private:
+    int findLen(ListNode *head){
+        // Base case
+        if(head == NULL) return 0;
+        return 1 + findLen(head->next);
+    }
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        int len1 = findLen(l1), len2 = findLen(l2);
+        ListNode *small = l1, *large = l2;
+        if(len1 > len2){
+            small = l2;
+            large = l1;
+        }
+
+        ListNode *ans = large, *prev;
+        int carry = 0;
+
+        while(small && large){
+            int currVal = small->val + large->val + carry;
+            carry = currVal / 10;
+            currVal = currVal % 10;
+
+            large->val = currVal;
+            prev = large;
+            large = large->next;
+            small = small->next;
+        }
+
+        while(carry && large){
+            int currVal = large->val + carry;
+            carry = currVal / 10;
+            currVal = currVal % 10;
+
+            large->val = currVal;
+            prev = large;
+            large = large->next;
+        }
+
+        if(carry) prev->next = new ListNode(carry);
+
+        return ans;
+    }
+};

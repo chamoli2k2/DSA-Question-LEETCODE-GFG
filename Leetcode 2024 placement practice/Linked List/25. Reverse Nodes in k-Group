@@ -1,0 +1,31 @@
+class Solution {
+private:
+    int findLen(ListNode *head){
+        // Base case
+        if(head == NULL) return 0;
+        return 1 + findLen(head->next);
+    }
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        // Base case
+        if(head == NULL || head->next == NULL) return head;
+        int len = findLen(head);
+        if(len  < k) return head;
+
+        // Reversing the Node
+        ListNode *curr = head, *prev = NULL, *next;
+
+        int idx = 0;
+        while(curr && idx < k){
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+            idx++;
+        }
+
+        head->next = reverseKGroup(curr, k);
+
+        return prev;
+    }
+};

@@ -1,0 +1,38 @@
+class Solution {
+  public:
+    void deleteAllOccurOfX(struct Node** head_ref, int x) {
+        // Create a dummy node
+        Node *dummyNode = new Node();
+        dummyNode->data = -1;
+        dummyNode->next = *head_ref;
+        
+        // If the list is not empty, set the previous pointer of the head to the dummy node
+        if (*head_ref != nullptr) {
+            (*head_ref)->prev = dummyNode;
+        }
+
+        // Use current pointer to traverse the list
+        Node *curr = dummyNode;
+        
+        while(curr){
+            if(curr->data == x){
+                Node *prev = curr->prev;
+                Node *next = curr->next;
+                
+                if(prev) prev->next = next;
+                if(next) next->prev = prev;
+                
+            }
+            curr = curr->next;
+        }
+        
+        // Update the head_ref to the new head
+        *head_ref = dummyNode->next;
+        if (*head_ref != nullptr) {
+            (*head_ref)->prev = nullptr;
+        }
+
+        // Free the dummy node
+        delete dummyNode;
+    }
+};
