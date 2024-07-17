@@ -2,24 +2,18 @@ class Solution {
 public:
     bool isIsomorphic(string s, string t) {
         int n = s.size();
-        unordered_map<char,char> mp1, mp2;
+        unordered_map<char, char> mp1, mp2;
 
         for(int i=0; i<n; i++){
-            // There is case when both the char is 
             if(mp1.count(s[i]) == 0 && mp2.count(t[i]) == 0){
-                if(s[i] == t[i]){
-                    mp1[s[i]] = t[i];
-                    mp2[t[i]] = s[i];
-                }
-                else{
-                    mp1[s[i]] = t[i];
-                    mp2[t[i]] = s[i];
-                }
+                mp1[s[i]] = t[i];
+                mp2[t[i]] = s[i];
             }
             else if(mp1.count(s[i]) && mp2.count(t[i])){
-                if(mp1[s[i]] != t[i] || mp2[t[i]] != s[i]){
-                    return false;
-                }
+                char ch1 = mp1[s[i]];
+                char ch2 = mp2[t[i]];
+
+                if(ch1 != t[i] || ch2 != s[i]) return false;
             }
             else{
                 return false;

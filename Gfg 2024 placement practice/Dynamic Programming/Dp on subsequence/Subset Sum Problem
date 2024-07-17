@@ -1,0 +1,26 @@
+class Solution{ 
+private:
+    int solve(vector<int> &nums, vector<vector<int>> &dp, int idx, int target){
+        int n = nums.size();
+        // Base case
+        if(target == 0) return 1;
+        if(idx == n) return 0;
+        
+        if(dp[idx][target] != -1) return dp[idx][target];
+        
+        int c1 = 0;
+        if(nums[idx] <= target){
+            c1 = solve(nums, dp, idx+1, target-nums[idx]);
+        }
+        
+        int c2 = solve(nums, dp, idx+1, target);
+        
+        return dp[idx][target] = c1 || c2;
+    }
+public:
+    bool isSubsetSum(vector<int>arr, int sum){
+        int n = arr.size();
+        vector<vector<int>> dp(n, vector<int> (sum+1, -1));
+        return solve(arr, dp, 0, sum);
+    }
+};

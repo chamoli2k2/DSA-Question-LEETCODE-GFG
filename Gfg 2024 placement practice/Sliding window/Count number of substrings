@@ -1,0 +1,27 @@
+class Solution
+{
+    long long int solve(string &s, int k){
+        long long int n = s.size(), i = 0, j = 0, ans = 0;
+        int mp[26] = {0}, count = 0;
+        
+        while(j < n){
+            if(mp[s[j]-'a'] == 0) count++;
+            mp[s[j]-'a']++;
+            
+            while(i <= j && count > k){
+                mp[s[i]-'a']--;
+                if(mp[s[i]-'a'] == 0) count--;
+                i++;
+            }
+            
+            ans += j-i+1;
+            j++;
+        }
+        
+        return ans;
+    }
+  public:
+    long long int substrCount (string s, int k) {
+    	return solve(s, k) - solve(s, k-1);
+    }
+};

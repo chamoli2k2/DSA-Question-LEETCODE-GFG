@@ -1,0 +1,25 @@
+class Solution {
+private:
+    bool check(string &s, int idx, int len){
+        int i = idx, j = idx+len-1;
+        while(i < j){
+            if(s[i++] != s[j--]) return false;
+        }
+        return true;
+    }
+public:
+    string longestPalindrome(string s) {
+        int n = s.size(), idx = 0, maxLen = 1;
+        for(int len=2; len<=n; len++){
+            for(int i=0; i<n-len+1; i++){
+                if(check(s, i, len)){
+                    idx = i;
+                    maxLen = len;
+                    break;
+                }
+            }
+        }
+
+        return s.substr(idx, maxLen);
+    }
+};

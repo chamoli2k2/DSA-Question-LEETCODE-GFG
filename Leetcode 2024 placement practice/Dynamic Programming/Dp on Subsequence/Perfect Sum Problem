@@ -1,0 +1,28 @@
+class Solution{
+    private:
+    int solve(int arr[], vector<vector<int>> &dp, int idx, int n, int target){
+        // Base case
+ 
+        if(idx == n) return target == 0;
+        
+        if(dp[idx][target] != -1) return dp[idx][target];
+        
+        
+        int c1 = 0, c2 = 0;
+        if(arr[idx] <= target){
+            c1 = solve(arr, dp, idx+1, n, target-arr[idx]);
+        }
+        
+        c2 = solve(arr, dp, idx+1, n, target);
+        
+        return dp[idx][target] = (c1%mod + c2%mod) % mod;
+    }
+	public:
+	int mod = 1e9 + 7;
+	int perfectSum(int arr[], int n, int sum)
+	{
+        vector<vector<int>> dp(n+1, vector<int> (sum+1, -1));
+        return solve(arr, dp, 0, n, sum);
+	}
+	  
+};

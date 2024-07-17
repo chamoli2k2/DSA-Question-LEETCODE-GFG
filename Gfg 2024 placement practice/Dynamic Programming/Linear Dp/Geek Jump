@@ -1,0 +1,27 @@
+class Solution {
+    private:
+    int solve(vector<int> &height, int idx, int n){
+        // Base case
+        if(idx == n-1) return 0;
+        
+        if(dp[idx] != -1) return dp[idx];
+        
+        
+        int c1 = 1e8, c2 = 1e8;
+        if(idx+1 < n){
+            c1 = abs(height[idx+1]-height[idx]) + solve(height, idx+1, n);
+        }
+        
+        if(idx+2 < n){
+            c2 = abs(height[idx+2]-height[idx]) + solve(height, idx+2, n);
+        }
+        
+        return dp[idx] = min(c1, c2);
+    }
+  public:
+    int dp[100001];
+    int minimumEnergy(vector<int>& height, int n) {
+        memset(dp, -1, sizeof(dp));
+        return solve(height, 0, n);
+    }
+};

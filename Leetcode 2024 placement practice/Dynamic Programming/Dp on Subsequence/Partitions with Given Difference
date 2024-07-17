@@ -1,0 +1,34 @@
+class Solution {
+    private:
+    int solve(vector<int> &arr, vector<vector<int>> &dp, int idx, int target){
+        // Base case
+        int n = arr.size();
+        if(idx == n) return target == 0;
+        
+        if(dp[idx][target] != -1) return dp[idx][target];
+        
+        int c1 = 0;
+        if(arr[idx] <= target){
+            c1 = solve(arr, dp, idx+1, target-arr[idx]);
+        }
+        
+        int c2 = solve(arr, dp, idx+1, target);
+        
+        return dp[idx][target] = (c1%mod + c2%mod) % mod;
+    }
+  public:
+    int mod = 1e9 + 7;
+    int countPartitions(int n, int k, vector<int>& arr) {
+        // s1 + s2 = totalSum
+        // s1 - s2 = k
+        // 2s1 = totalSum + k
+        
+        int totalSum = accumulate(arr.begin(), arr.end(), 0);
+        if((totalSum+k)&1) return 0;
+        int target = (totalSum + k) / 2;
+        
+        vector<vector<int>> dp(n, vector<int> (target+1, -1));
+        
+        return solve(arr, dp, 0, target);
+    }
+};

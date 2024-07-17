@@ -1,0 +1,25 @@
+class Solution {
+    private:
+    int solve(vector<vector<int>> &nums, int idx, int prev){
+        // Base case
+        int n = nums.size();
+        if(idx == n) return 0;
+        
+        if(dp[idx][prev+1] != -1) return dp[idx][prev+1];
+        
+        int ans = -1e5;
+        for(int i=0; i<3; i++){
+            if(i != prev){
+                ans = max(ans, nums[idx][i] + solve(nums, idx+1, i));
+            }
+        }
+        
+        return dp[idx][prev+1] = ans;
+    }
+  public:
+    vector<vector<int>> dp;
+    int maximumPoints(vector<vector<int>>& points, int n) {
+        dp.resize(n+1, vector<int> (4, -1));
+        return solve(points, 0, -1);
+    }
+};

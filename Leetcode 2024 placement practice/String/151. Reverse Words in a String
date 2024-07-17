@@ -1,0 +1,26 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        int n = s.size(), idx = n-1;
+        string ans = "";
+
+        while(idx >= 0 && s[idx] == ' ') idx--;
+        string str = "";
+        while(idx >= 0){
+
+            if(s[idx] == ' ' && str.size() > 0){
+                ans += str + ' ';
+                str = "";
+            } 
+            else if(s[idx] != ' '){
+                str = s[idx]+str;
+            }
+
+            idx--;
+        }
+
+        if(str.size()) ans += str; 
+        while(ans.size() && ans.back() == ' ') ans.pop_back();
+        return ans;
+    }
+};

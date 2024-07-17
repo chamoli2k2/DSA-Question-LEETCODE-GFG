@@ -1,0 +1,31 @@
+class Solution {
+private:
+    bool solve(vector<int> &nums, vector<vector<int>> &dp, int idx, int target){
+        // Base case
+        int n = nums.size();
+        if(target == 0) return true;
+        if(idx == n) return false;
+
+
+        if(dp[idx][target] != -1) return dp[idx][target];
+
+        bool c1 = false;
+        if(nums[idx] <= target){
+            c1 = solve(nums, dp, idx+1, target-nums[idx]);
+        }
+
+        bool c2 = solve(nums, dp, idx+1, target);
+
+        return dp[idx][target] = c1 || c2;
+    }
+public:
+    bool canPartition(vector<int>& nums) {
+        int n = nums.size();
+        int totalSum = accumulate(nums.begin(), nums.end(), 0);
+        if(totalSum&1) return 0;
+
+        int target = totalSum / 2;
+        vector<vector<int>> dp(n, vector<int> (target+1, -1));
+        return solve(nums, dp, 0, target);
+    }
+};

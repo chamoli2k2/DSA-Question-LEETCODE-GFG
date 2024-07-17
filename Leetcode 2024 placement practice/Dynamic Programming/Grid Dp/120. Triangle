@@ -1,0 +1,25 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &nums, int i, int j){
+        // Base case
+        int n = nums.size(), m = nums[0].size();
+        if(i == n-1) return nums[i][j];
+
+        if(dp[i][j] != INT_MIN) return dp[i][j];
+
+        int c1 = solve(nums, i+1, j);
+        int c2 = solve(nums, i+1, j+1);
+
+        return dp[i][j] = nums[i][j] + min(c1, c2);
+    }
+public:
+    int dp[201][201];
+    int minimumTotal(vector<vector<int>>& triangle) {
+        for(int i=0; i<201; i++){
+            for(int j=0; j<201; j++){
+                dp[i][j] = INT_MIN;
+            }
+        }
+        return solve(triangle, 0, 0);
+    }
+};

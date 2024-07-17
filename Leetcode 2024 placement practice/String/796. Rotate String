@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+        int n = s.size(), m = goal.size();
+        if(n != m) return false;
+        
+        for(int i=n-1; i>=0; i--){
+            string str = "";
+
+            for(int j=i; j<i+n; j++){
+                int idx = j%n;
+                str += s[idx];
+            }
+
+            if(str == goal) return true;
+        }
+
+        return false;
+    }
+};

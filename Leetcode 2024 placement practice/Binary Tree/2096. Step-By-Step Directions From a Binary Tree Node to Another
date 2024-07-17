@@ -1,0 +1,48 @@
+class Solution {
+private:
+    bool find(TreeNode *root, string &s, int target){
+        // Base case
+        if(root == NULL) return false;
+        if(root->val == target) return true;
+
+        // Searching in left
+        s += 'L';
+        int f1 = find(root->left, s, target);
+        if(f1) return true;
+
+        s.pop_back();
+        s += 'R';
+        int f2 = find(root->right, s, target);
+        if(f2) return true;
+        s.pop_back();
+
+        return false;
+    }
+    TreeNode* findLCA(TreeNode *root, int st, int et){
+        // Base case
+        if(root == NULL) return NULL;
+
+        if(root->val == st || root->val == et) return root;
+
+        TreeNode *ls = findLCA(root->left, st, et);
+        TreeNode *rs = findLCA(root->right, st, et);
+
+        if(ls == NULL) return rs;
+        if(rs == NULL) return ls;
+
+        return root;
+    }
+public:
+    string getDirections(TreeNode* root, int startValue, int destValue) {
+        // Finding the LCA
+        TreeNode *lca = findLCA(root, startValue, destValue);
+
+        string lcaS = "", lcaE = "";
+        find(lca, lcaS, startValue);
+        find(lca, lcaE, destValue);
+
+        for(auto &it : lcaS) it = 'U';
+
+        return lcaS+lcaE;
+    }
+};

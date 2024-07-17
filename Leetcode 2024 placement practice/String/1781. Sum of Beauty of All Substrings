@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int beautySum(string s) {
+        int n = s.size(), ans = 0;
+
+        for(int i=0; i<n; i++){
+            int maxFreq = 0, mp[26] = {0};
+            for(int j=i; j<n; j++){
+                mp[s[j]-'a']++;
+                maxFreq = max(maxFreq, mp[s[j]-'a']);
+
+                int minFreq = 1000;
+                for(int k=0; k<26; k++){
+                    if(mp[k] > 0){
+                        minFreq = min(minFreq, mp[k]);
+                    }
+                }
+
+                ans += maxFreq-minFreq;
+            }
+        }
+
+        return ans;
+    }
+};

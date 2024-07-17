@@ -1,0 +1,27 @@
+class Solution {
+private:
+    int solve(vector<int> &coins, int idx, int target){
+        // Base case
+        int n = coins.size();
+        if(idx == n){
+            return target == 0;
+        }
+
+        if(dp[idx][target] != -1) return dp[idx][target];
+
+        int c1 = 0;
+        if(coins[idx] <= target){
+            c1 = solve(coins, idx, target-coins[idx]);
+        }
+
+        int c2 = solve(coins, idx+1, target);
+
+        return dp[idx][target] = c1 + c2;
+    }
+public:
+    int dp[301][5001];
+    int change(int amount, vector<int>& coins) {
+        memset(dp, -1, sizeof(dp));
+        return solve(coins, 0, amount);
+    }
+};
