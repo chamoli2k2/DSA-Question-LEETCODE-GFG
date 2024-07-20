@@ -1,0 +1,35 @@
+class Solution {
+private:
+    int solve(string &s1, string &s2, int i, int j){
+        // Base case
+        int n = s1.size(), m = s2.size();
+        if(i == n || j == m){
+            if(i != n) return false;
+            if(j == m) return true;
+            for(int k=j; k<m; k++){
+                if(s2[k] != '*') return false;
+            }
+            return true;
+        }
+
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int flag = false;
+        if(s1[i] == s2[j] || s2[j] == '?'){
+            flag = flag | solve(s1, s2, i+1, j+1);
+        }
+        else if(s2[j] == '*'){
+            flag = flag | solve(s1, s2, i+1, j);
+            flag = flag | solve(s1, s2, i, j+1);
+        }
+
+        return dp[i][j] = flag;
+    }
+public:
+    int dp[2001][2001];
+    bool isMatch(string s, string p) {
+        memset(dp, -1, sizeof(dp));
+        return solve(s, p, 0, 0);
+    }
+};

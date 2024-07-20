@@ -1,0 +1,29 @@
+class Solution {
+private:
+    long long solve(vector<int> &nums, int idx, int prev){
+        int n = nums.size();
+        // Base case
+        if(idx == n) return 0;
+
+
+        if(dp[idx][prev] != INT_MIN) return dp[idx][prev];
+
+        long long sign = 1;
+        if(prev%2 == 0) sign = -1;
+
+        long long take = sign*1LL*nums[idx] + solve(nums, idx+1, !prev);
+
+        long long notTake = solve(nums, idx+1, prev);
+
+        return dp[idx][prev] = max(take, notTake);
+    }
+public:
+    long long dp[100001][2];
+    long long maxAlternatingSum(vector<int>& nums) {
+        for(int i=0; i<100001; i++){
+            dp[i][0] = INT_MIN;
+            dp[i][1] = INT_MIN;
+        }
+        return solve(nums, 0, 1);
+    }
+};

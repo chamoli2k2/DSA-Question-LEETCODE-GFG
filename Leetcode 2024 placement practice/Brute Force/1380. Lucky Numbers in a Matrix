@@ -1,0 +1,31 @@
+class Solution {
+private:
+    bool check(vector<vector<int>> &matrix, int num, int row, int col, int n, int m){
+        int mini = INT_MAX, maxi = INT_MIN;
+
+        for(int j=0; j<m; j++){
+            mini = min(mini, matrix[row][j]);
+        }
+
+        for(int i=0; i<n; i++){
+            maxi = max(maxi, matrix[i][col]);
+        }
+
+        return (mini == num && maxi == num);
+    }
+public:
+    vector<int> luckyNumbers (vector<vector<int>>& matrix) {
+        int n = matrix.size(), m = matrix[0].size();
+        vector<int> ans;
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(check(matrix, matrix[i][j], i, j, n, m)){
+                    ans.push_back(matrix[i][j]);
+                }
+            }
+        }
+
+        return ans;
+    }
+};

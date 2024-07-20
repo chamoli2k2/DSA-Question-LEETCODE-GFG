@@ -1,0 +1,27 @@
+class Solution{
+private:
+    int solve(int val[], int wt[], int idx, int n, int target){
+        // Base case
+        if(idx == n) return 0;
+        
+        
+        if(dp[idx][target] != -1) return dp[idx][target];
+        
+        
+        int c1 = 0;
+        if(wt[idx] <= target){
+            c1 = val[idx] + solve(val, wt, idx, n, target-wt[idx]);
+        }
+        
+        int c2 = solve(val, wt, idx+1, n, target);
+        
+        return dp[idx][target] = max(c1, c2);
+    }
+public:
+    int dp[1001][1001];
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+        memset(dp, -1, sizeof(dp));
+        return solve(val, wt, 0, N, W);
+    }
+};

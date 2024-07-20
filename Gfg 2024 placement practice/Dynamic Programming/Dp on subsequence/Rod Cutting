@@ -1,0 +1,28 @@
+class Solution{
+    private:
+    int solve(int price[], int idx, int n, int target){
+        // Base case
+        if(idx == n){
+            return target == 0 ? 0 : -1e8;
+        }
+        
+        
+        if(dp[idx][target] != -1) return dp[idx][target];
+        
+        
+        int c1 = 0;
+        if(idx+1 <= target){
+            c1 = price[idx] + solve(price, idx, n, target-idx-1);
+        }
+        
+        int c2 = solve(price, idx+1, n, target);
+        
+        return dp[idx][target] = max(c1, c2);
+    }
+  public:
+    int dp[1001][1001];
+    int cutRod(int price[], int n) {
+        memset(dp, -1, sizeof(dp));
+        return solve(price, 0, n, n);
+    }
+};

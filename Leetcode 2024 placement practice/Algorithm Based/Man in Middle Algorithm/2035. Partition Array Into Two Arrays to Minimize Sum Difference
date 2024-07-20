@@ -1,0 +1,70 @@
+class Solution {
+public:
+    int minimumDifference(vector<int>& nums) {
+        int N = nums.size(), n = N/2;
+        int totalSum = accumulate(nums.begin(), nums.end(), 0);
+        vector<vector<int>> ls(n+1), rs(n+1);
+
+        // Generating the ls and rs
+        for(int mask=0; mask<(1<<n); mask++){
+            int sz = 0, lSum = 0, rSum = 0;
+
+            for(int i=0; i<n; i++){
+                if(mask&(1<<i)){
+                    sz++;
+                    lSum += nums[i];
+                    rSum += nums[i+n];
+                }
+            }
+
+            ls[sz].push_back(lSum);
+            rs[sz].push_back(rSum);
+        }
+
+
+        // Sorting the right 
+        for(int i=1; i<n; i++){
+            sort(rs[i].begin(), rs[i].end());
+        }
+
+
+        int ans = min(abs(totalSum-2*rs[n][0]), abs(totalSum-2*ls[n][0]));
+
+        for(int lsz=0; lsz<n; lsz++){
+            int rsz = n - lsz;
+            // What we want
+            // abs(part2 - part1) = ans
+            //  we know part1 + part2 = totalSum
+            // Substituting value
+            // totalSum - 2*part1 = ans     --------> This is our answer
+
+            // How we will find out the part1 sum
+            // We are creating Part1 sum using ls and rs
+            // a + b = part1
+
+            // We also know
+            // totalSum - 2*part1 >= 0
+            // totalSum - 2*(a+b) >= 0
+            // totalSum - 2*a >= 2*b
+            // (totalsum - 2*a)/2 >= b
+
+            // Trying for all the possibility of lsz sum
+            for(auto &a : ls[lsz]){
+                int b = (totalSum - 2*a) / 2;
+                
+                // Finding the b in the right array of size rsz
+                auto itr = lower_bound(rs[rsz].begin(), rs[rsz].end(), b);
+
+                if(itr != rs[rsz].end()) ans = min(ans, abs(totalSum - 2*(a + (*itr))));
+
+                if(itr != rs[rsz].begin()){
+                    auto it = itr;
+                    --it;
+                    ans = min(ans, abs(totalSum - 2*(a+(*it))));
+                }
+            }
+        }
+
+        return ans;
+    }
+};

@@ -1,0 +1,51 @@
+class Solution {
+    private:
+    void merge(vector<pair<int,int>> &nums, int s, int mid, int e){
+        vector<pair<int,int>> arr(e-s+1);
+        int i = s, j = mid + 1, idx = 0;
+        
+        while(i <= mid && j <= e){
+            if(nums[i].first > nums[j].first){
+                ans[nums[i].second] += e - j + 1;
+                arr[idx++] = nums[i++];
+            }
+            else{
+                arr[idx++] = nums[j++];
+            }
+        }
+        
+        while(i <= mid) arr[idx++] = nums[i++];
+        while(j <= e) arr[idx++] = nums[j++];
+        
+        idx = 0;
+        for(int k=s; k<=e; k++){
+            nums[k] = arr[idx++];
+        }
+    }
+     
+    void mergeSort(vector<pair<int,int>> &nums, int i, int j){
+        // Base case
+        if(i >= j) return;
+        
+        
+        int mid = i + (j - i) / 2;
+        
+        mergeSort(nums, i, mid);
+        mergeSort(nums, mid+1, j);
+        
+        merge(nums, i, mid, j);
+    }
+  public:
+    vector<int> ans;
+    vector<int> constructLowerArray(vector<int> &arr) {
+        int n = arr.size();
+        vector<pair<int,int>> nums;
+        ans.resize(n, 0);
+        for(int i=0; i<n; i++){
+            nums.push_back({arr[i], i});
+        }
+        
+        mergeSort(nums, 0, n-1);
+        return ans;
+    }
+};

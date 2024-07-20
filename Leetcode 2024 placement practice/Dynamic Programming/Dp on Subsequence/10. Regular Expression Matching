@@ -1,0 +1,38 @@
+class Solution {
+private:
+    // Recursive function to solve the matching problem
+    int solve(string &s1, string &s2, int i, int j) {
+        // Base case
+        int n = s1.size(), m = s2.size();
+
+        // If we have reached the end of s2
+        if (j == m) {
+            return i == n; // Check if we have also reached the end of s1
+        }
+
+        // Check if the result is already computed
+        if (dp[i][j] != -1) return dp[i][j];
+
+        // Check if the next character in s2 is '*'
+        bool match = (i < n) && (s1[i] == s2[j] || s2[j] == '.');
+        if (j + 1 < m && s2[j + 1] == '*') {
+            // Two cases:
+            // 1. We skip the '*' pattern (j+2)
+            // 2. We use the '*' pattern if there is a match (i+1)
+            dp[i][j] = solve(s1, s2, i, j + 2) || (match && solve(s1, s2, i + 1, j));
+        } else {
+            // If no '*' follows, we must match the current character and move to the next one
+            dp[i][j] = match && solve(s1, s2, i + 1, j + 1);
+        }
+
+        return dp[i][j];
+    }
+
+public:
+    int dp[30][30]; // Memoization table to store computed results
+
+    bool isMatch(string s, string p) {
+        memset(dp, -1, sizeof(dp)); // Initialize dp table with -1
+        return solve(s, p, 0, 0); // Start solving from the beginning of both strings
+    }
+};
