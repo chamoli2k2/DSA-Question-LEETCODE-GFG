@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(vector<int> &cuts, int i, int j){
+        // Base case
+        if(i == j) return 0;
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int ans = INT_MAX;
+        for(int k=i; k<j; k++){
+            int tempAns = solve(cuts, i, k) + solve(cuts, k+1, j) + cuts[j]-cuts[i-1];
+            ans = min(ans, tempAns);
+        }
+
+        return dp[i][j] = ans;
+    }
+public:
+    int dp[105][105];
+    int minCost(int n, vector<int>& cuts) {
+        memset(dp, -1, sizeof(dp));
+        cuts.push_back(0);
+        cuts.push_back(n);
+        int m = cuts.size();
+        sort(cuts.begin(), cuts.end());
+
+        return solve(cuts, 1, m-1);
+    }
+};

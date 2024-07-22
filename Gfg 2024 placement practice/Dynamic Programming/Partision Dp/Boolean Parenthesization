@@ -1,0 +1,55 @@
+class Solution{
+private:
+    long long solve(string &s, int i, int j, int isTrue){
+        // Base case
+        if(i == j){
+            if(isTrue) return s[i] == 'T';
+            return s[i] == 'F';
+        }
+        
+        if(dp[i][j][isTrue] != -1) return dp[i][j][isTrue];
+        
+        
+        long long ans = 0;
+        for(int k=i+1; k<j; k+=2){
+            long long LT = solve(s, i, k-1, true);
+            long long LF = solve(s, i, k-1, false);
+            long long RT = solve(s, k+1, j, true);
+            long long RF = solve(s, k+1, j, false);
+            
+            if(s[k] == '|'){
+                if(isTrue){
+                    ans += (LT*RT + LF*RT + LT*RF);
+                }
+                else{
+                    ans += (LF*RF);
+                }
+            }
+            else if(s[k] == '&'){
+                if(isTrue){
+                    ans += (LT*RT);
+                }
+                else{
+                    ans += (LF*RT + LF*RF + LT*RF);
+                }
+            }
+            else if(s[k] == '^'){
+                if(isTrue){
+                    ans += (LF*RT + LT*RF);
+                }
+                else{
+                    ans += (LF*RF + LT*RT);
+                }
+            }
+        }
+        
+        return dp[i][j][isTrue] = ans%mod;
+    }
+public:
+    long long dp[201][201][2];
+    int mod = 1003;
+    int countWays(int n, string s){
+        memset(dp, -1, sizeof(dp));
+        return solve(s, 0, n-1, true);
+    }
+};

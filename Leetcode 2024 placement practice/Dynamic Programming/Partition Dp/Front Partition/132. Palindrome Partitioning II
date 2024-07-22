@@ -1,0 +1,32 @@
+class Solution {
+private:
+    bool check(string &s, int i, int j){
+        while(i < j){
+            if(s[i++] != s[j--]) return false;
+        }
+        return true;
+    }
+    int solve(string &s, int idx){
+        // Base case
+        int n = s.size();
+        if(idx == n) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        int ans = INT_MAX;
+        for(int k=idx; k<n; k++){
+            if(check(s, idx, k)){
+                int tempAns = 1 + solve(s, k+1);
+                ans = min(ans, tempAns);
+            }
+        }
+
+        return dp[idx] = ans;
+    }
+public:
+    int dp[2001];
+    int minCut(string s) {
+        memset(dp, -1, sizeof(dp));
+        return solve(s, 0) - 1;
+    }
+};

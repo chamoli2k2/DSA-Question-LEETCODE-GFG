@@ -1,0 +1,26 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int i, int j){
+        // Base case
+        if(i > j) return 0;
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int ans = INT_MIN;
+        for(int k=i; k<=j; k++){
+            int tempAns = solve(nums, i, k-1) + solve(nums, k+1, j) + nums[i-1] * nums[k] * nums[j+1];
+            ans = max(ans, tempAns);
+        }
+
+        return dp[i][j] = ans;
+    }
+public:
+    int dp[301][301];
+    int maxCoins(vector<int>& nums) {
+        int n = nums.size();
+        memset(dp, -1, sizeof(dp));
+        nums.insert(nums.begin(), 1);
+        nums.push_back(1);
+        return solve(nums, 1, n);   
+    }
+};
