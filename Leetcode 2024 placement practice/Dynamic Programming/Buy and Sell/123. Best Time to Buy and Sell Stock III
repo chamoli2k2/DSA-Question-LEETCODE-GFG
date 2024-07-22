@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int idx, int buy, int tr){
+        int n = nums.size();
+        // Base case
+        if(idx == n || tr == 2) return 0;
+
+        if(dp[idx][buy][tr] != -1) return dp[idx][buy][tr];
+
+        int take = 0, notTake = 0;
+        if(buy){
+            take = -nums[idx] + solve(nums, idx+1, !buy, tr);
+        }
+        else{
+            take = nums[idx] + solve(nums, idx+1, !buy, tr+1);
+        }
+
+        notTake = solve(nums, idx+1, buy, tr);
+
+        return dp[idx][buy][tr] = max(take, notTake);
+    }
+public:
+    int dp[100001][2][3];
+    int maxProfit(vector<int>& prices) {
+        memset(dp, -1, sizeof(dp));
+        return solve(prices, 0, 1, 0);
+    }
+};

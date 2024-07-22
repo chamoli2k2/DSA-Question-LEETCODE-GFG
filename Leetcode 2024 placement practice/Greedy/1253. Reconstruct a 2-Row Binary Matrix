@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<vector<int>> reconstructMatrix(int upper, int lower, vector<int>& colsum) {
+        int n = colsum.size();
+        int sum0 = 0, sum1 = 0, sum2 = 0;
+        for(int i=0; i<n; i++){
+            if(colsum[i] == 0) sum0++;
+            if(colsum[i] == 1) sum1++;
+            if(colsum[i] == 2) sum2++;
+        }
+
+        // Removing the contribution of colsum == 2
+        int count1 = upper-sum2, count2 = lower-sum2;
+
+        // Base case
+        if(count1 < 0 || count2 < 0 || count1+count2 != sum1) return {};
+
+        vector<vector<int>> ans(2, vector<int>(n));
+
+        for(int i=0; i<n; i++){
+            if(colsum[i] == 0){
+                ans[0][i] = 0, ans[1][i] = 0;
+            }
+            else if(colsum[i] == 2){
+                ans[0][i] = 1, ans[1][i] = 1;
+            }
+            else{
+                if(count1 > 0){
+                    ans[0][i] = 1;
+                    ans[1][i] = 0;
+                    count1--;
+                }
+                else{
+                    ans[1][i] = 1;
+                    ans[0][i] = 0;
+                }
+            }
+        }
+
+        return ans;
+    }
+};

@@ -1,0 +1,29 @@
+class Solution {
+private:
+    static const int N = 5e4+1;
+    int solve(vector<int> &nums, int idx, int buy, int fee){
+        int n = nums.size();
+        // Base case
+        if(idx >= n) return 0;
+
+        if(dp[idx][buy] != -1) return dp[idx][buy];
+
+        int take = 0, notTake = 0;
+        if(buy){
+            take = -nums[idx] + solve(nums, idx+1, !buy, fee);
+        }
+        else{
+            take = nums[idx] - fee + solve(nums, idx+1, !buy, fee);
+        }
+
+        notTake = solve(nums, idx+1, buy, fee);
+
+        return dp[idx][buy] = max(take, notTake);
+    }
+public:
+    int dp[N][2];
+    int maxProfit(vector<int>& prices, int fee) {
+        memset(dp, -1, sizeof(dp));
+        return solve(prices, 0, 1, fee);
+    }
+};

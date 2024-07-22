@@ -1,0 +1,30 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int idx, int buy, int tr, int k){
+        // Base case
+        int n = nums.size();
+        if(idx == n || tr == k) return 0;
+
+        if(dp[idx][tr][buy] != -1) return dp[idx][tr][buy];
+
+        int take = 0, notTake = 0;
+
+        if(buy){
+            take = -nums[idx] + solve(nums, idx+1, !buy, tr, k);
+        }
+        else{
+            take = nums[idx] + solve(nums, idx+1, !buy, tr+1, k);
+        }
+
+
+        notTake = solve(nums, idx+1, buy, tr, k);
+
+        return dp[idx][tr][buy] = max(take, notTake);
+    }
+public:
+    int dp[1001][101][2];
+    int maxProfit(int k, vector<int>& prices) {
+        memset(dp, -1, sizeof(dp));
+        return solve(prices, 0, 1, 0, k);
+    }
+};

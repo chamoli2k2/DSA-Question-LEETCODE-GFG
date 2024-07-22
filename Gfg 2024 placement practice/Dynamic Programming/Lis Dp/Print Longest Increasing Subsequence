@@ -1,0 +1,34 @@
+class Solution {
+  public:
+    vector<int> longestIncreasingSubsequence(int n, vector<int>& arr) {
+        // Base case
+        if(n == 1) return arr;
+        
+        vector<int> ans, dp(n, 1), parent(n, -1);
+        int maxLen = 1, maxIdx = -1;
+        
+        for(int i=1; i<n; i++){
+            for(int j=0; j<i; j++){
+                if(arr[i] > arr[j] && dp[i] < dp[j]+1){
+                    dp[i] = 1 + dp[j];
+                    parent[i] = j;
+                }
+            }
+            
+            if(dp[i] > maxLen){
+                maxLen = dp[i];
+                maxIdx = i;
+            }
+        }
+        
+        while(parent[maxIdx] != -1){
+            ans.push_back(arr[maxIdx]);
+            maxIdx = parent[maxIdx];
+        }
+        
+        ans.push_back(arr[maxIdx]);
+        reverse(ans.begin(), ans.end());
+        
+        return ans;
+    }
+};

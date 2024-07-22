@@ -1,0 +1,27 @@
+class Solution {
+  public:
+    long long int findMaxProduct(vector<int>& arr) {
+        // base case
+        if(arr.size() == 1) return arr[0];
+        
+        long long count = 0, ans = 0, n = arr.size();
+        long long pdt = 1, maxNeg = INT_MIN, mod = 1e9 + 7;
+        
+        for(int i=0; i<n; i++){
+            if(arr[i] == 0){
+                count++;
+            }
+            else{
+                pdt = (pdt%mod *1LL* arr[i]%mod)%mod;
+                
+                if(arr[i] < 0) maxNeg = max(maxNeg, 1LL*arr[i]);
+            }
+        }
+        
+        
+        if(count == n) return 0;
+        if(count == n-1) return pdt < 0 ? 0 : pdt;
+        
+        return pdt > 0 ? pdt : (pdt / maxNeg);
+    }
+};

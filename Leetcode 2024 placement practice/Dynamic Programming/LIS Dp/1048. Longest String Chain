@@ -1,0 +1,43 @@
+class Solution {
+private:
+    bool check(vector<string> &words, int idx, int prev){
+        if(words[idx].size() != words[prev].size()+1) return false;
+
+        int n = words[idx].size(), j = 0;
+        for(int i=0; i<n; i++){
+            if(words[idx][i] == words[prev][j]){
+                j++;
+            }
+
+            if(j == n-1) break;
+        }
+
+        return j == n-1 ? true : false;
+    }
+    int solve(vector<string> &words, int idx, int prev){
+        // Base case
+        int n = words.size();
+        if(idx == n) return 0;
+
+        if(dp[idx][prev+1] != -1) return dp[idx][prev+1];
+
+        int take = 0;
+        if(prev == -1 || check(words, idx, prev)){
+            take = 1 + solve(words, idx+1, idx);
+        }
+
+        int notTake = solve(words, idx+1, prev);
+
+        return dp[idx][prev+1] = max(take, notTake);
+    }
+public:
+    int dp[1001][1001];
+    int longestStrChain(vector<string>& words) {
+        memset(dp, -1, sizeof(dp));
+        sort(words.begin(), words.end(), [&](string &s1, string &s2){
+            return s1.size() < s2.size();
+        });
+        int ans = solve(words, 0, -1);
+        return ans;
+    }
+};
