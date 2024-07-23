@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string losingPlayer(int x, int y) {
+        int totalVal = 0, flag = 1;
+        while(true){
+            if(flag){
+                if(x > 0 && y >= 4){
+                    flag = 0;
+                    x -= 1;
+                    y -= 4;
+                }
+                else{
+                    return "Bob";
+                }
+            }
+            else{
+                if(x > 0 && y >= 4){
+                    flag = 1;
+                    x -= 1;
+                    y -= 4;
+                }
+                else{
+                    return "Alice";
+                }
+            }
+        }
+
+        return "";
+    }
+};

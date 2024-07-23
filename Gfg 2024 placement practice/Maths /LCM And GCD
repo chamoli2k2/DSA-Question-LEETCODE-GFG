@@ -1,0 +1,16 @@
+class Solution {
+    private:
+    long long findGCD(long long a, long long b){
+        // Base case
+        if(a == 0) return b;
+        
+        return findGCD(b%a, a);
+    }
+  public:
+    vector<long long> lcmAndGcd(long long A , long long B) {
+        long long hcf = findGCD(A, B);
+        long long lcm = A * B / hcf;
+        
+        return {lcm, hcf};
+    }
+};

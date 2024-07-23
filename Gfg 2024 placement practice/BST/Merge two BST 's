@@ -1,0 +1,21 @@
+class Solution {
+    private:
+    void solve(Node *root){
+        // Base case
+        if(root == NULL) return;
+        
+        solve(root->left);
+        ans.push_back(root->data);
+        solve(root->right);
+    }
+  public:
+    vector<int> ans;
+    // Function to return a list of integers denoting the node
+    // values of both the BST in a sorted order.
+    vector<int> merge(Node *root1, Node *root2) {
+        solve(root1);
+        solve(root2);
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
+};

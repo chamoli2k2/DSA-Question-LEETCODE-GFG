@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minChanges(int n, int k) {
+        int ans = 0;
+        for(int i=0; i<32; i++){
+            if(n & (1<<i)){
+                bool bit = (k & (1<<i));
+                if(bit == false){
+                    int mask = ~(1<<i);
+                    n = n & mask;
+                    ans++;
+                }
+            }
+        }
+
+        return n == k ? ans : -1;
+    }
+};

@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minimumLength(string s) {
+        int n = s.size(), ans = 0;
+        unordered_map<char,int> mp;
+        for(auto &it : s) mp[it]++;
+
+        for(auto &[ch, fq] : mp){
+            if(fq & 1){
+                ans++;
+            }
+            else{
+                ans += 2;
+            }
+        }
+
+        return ans;
+    }
+};
