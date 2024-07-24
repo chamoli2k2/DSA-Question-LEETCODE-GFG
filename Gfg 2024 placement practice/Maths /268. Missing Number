@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+        int observedSum = accumulate(nums.begin(), nums.end(), 0);
+        int theoryticalSum = (n * (n + 1)) / 2;
+
+        if(observedSum == theoryticalSum) return 0;
+        return theoryticalSum - observedSum;
+    }
+};

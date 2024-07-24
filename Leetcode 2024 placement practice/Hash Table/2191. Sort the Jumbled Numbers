@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> sortJumbled(vector<int>& mp, vector<int>& nums) {
+        vector<int> ans;
+        vector<pair<int,int>> arr;
+
+        for(int i=0; i<nums.size(); i++){
+            string s = to_string(nums[i]);
+            int newNum = 0;
+            for(auto &it : s){
+                newNum = newNum * 10 + mp[(it-'0')%10];
+            }
+            
+            arr.push_back({newNum, i});
+        }
+
+        sort(arr.begin(), arr.end());
+        for(auto &it : arr) ans.push_back(nums[it.second]);
+        return ans;
+    }
+};

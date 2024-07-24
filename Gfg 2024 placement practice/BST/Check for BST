@@ -1,0 +1,21 @@
+class Solution {
+    private:
+    bool solve(Node *root, int mini, int maxi){
+        if(root == NULL) return true;
+        
+        
+        bool ls = solve(root->left, mini, root->data);
+        bool rs = solve(root->right, root->data, maxi);
+        
+        if(ls && rs && root->data < maxi && root->data > mini){
+            return true;
+        }
+        
+        return false;
+    }
+  public:
+    // Function to check whether a Binary Tree is BST or not.
+    bool isBST(Node* root) {
+        return solve(root, INT_MIN, INT_MAX);
+    }
+};
