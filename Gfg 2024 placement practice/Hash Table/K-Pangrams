@@ -1,0 +1,28 @@
+class Solution {
+  public:
+
+    bool kPangram(string str, int k) {
+        unordered_map<char,int> mp;
+        
+        for(auto &it : str){
+            if(it >= 'a' && it <= 'z'){
+                mp[it]++;
+            }
+        }
+        
+        if(mp.size() == 26) return true;
+        
+        int extra = 0;
+        for(auto &it : mp){
+            if(it.second > 1){
+                extra += it.second-1;
+            }
+        }
+        
+        int remaining = 26-mp.size();
+
+        if(extra >= remaining && k >= remaining) return true;
+        
+        return false;
+    }
+};
