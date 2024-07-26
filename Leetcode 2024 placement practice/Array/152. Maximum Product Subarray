@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        double n = nums.size(), pdt1 = 1, pdt2 = 1, ans = INT_MIN, prev1 = 1, prev2 = 1;
+        for(int i=0; i<n; i++){
+            pdt1 = pdt1 *1LL* nums[i];
+            pdt2 = pdt2 *1LL* nums[n-i-1];
+            ans = max({ans, pdt1, pdt2});
+
+            if(pdt1 == 0) pdt1 = 1;
+            if(pdt2 == 0) pdt2 = 1;
+        }
+
+        return ans;
+    }
+};

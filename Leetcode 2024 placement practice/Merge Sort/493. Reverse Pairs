@@ -1,0 +1,49 @@
+class Solution {
+private:
+    void merge(vector<int> &nums, int s, int mid, int e){
+        vector<int> arr(e-s+1);
+        int i = s, j = mid+1, k = 0;
+
+        for(int idx=s; idx<=mid; idx++){
+            while(j <= e && nums[idx] > 2*1LL*nums[j]) j++;
+
+            ans += (j-mid-1);
+        }
+
+        i = s, j = mid + 1;
+
+        while(i <= mid && j <= e){
+            if(nums[i] <= nums[j]){
+                arr[k++] = nums[i++];
+            }
+            else{
+                arr[k++] = nums[j++];
+            }
+        }
+
+        while(i <= mid) arr[k++] = nums[i++];
+        while(j <= e) arr[k++] = nums[j++];
+
+        k = 0;
+        for(int idx=s; idx<=e; idx++){
+            nums[idx] = arr[k++];
+        }
+    }
+    void mergeSort(vector<int> &nums, int i, int j){
+        // Base case
+        if(i >= j) return;
+
+        int mid = i + (j - i) / 2;
+
+        mergeSort(nums, i, mid);
+        mergeSort(nums, mid+1, j);
+        merge(nums, i, mid, j);
+    }
+public:
+    int ans = 0;
+    int reversePairs(vector<int>& nums) {
+        int n = nums.size();
+        mergeSort(nums, 0, n-1);
+        return ans;
+    }
+};

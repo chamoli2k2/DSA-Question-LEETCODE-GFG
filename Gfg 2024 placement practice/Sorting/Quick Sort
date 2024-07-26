@@ -1,0 +1,41 @@
+class Solution
+{
+    public:
+    //Function to sort an array using quick sort algorithm.
+    void quickSort(int arr[], int low, int high)
+    {
+        // Base case
+        if(low >= high) return;
+        
+        int pIdx = partition(arr, low, high);
+        
+        quickSort(arr, low, pIdx-1);
+        quickSort(arr, pIdx+1, high);
+    }
+    
+    public:
+    int partition (int arr[], int low, int high)
+    {
+       int elem = arr[low];
+   
+       int ls = low, rs = high;
+       
+       while(ls <= rs){
+           // Finding the greater than elem
+           while(ls <= rs && arr[ls] <= elem){
+               ls++;
+           }
+           
+           while(rs >= ls && arr[rs] >= elem){
+               rs--;
+           }
+           
+           if(ls < rs) swap(arr[ls], arr[rs]);
+       }
+       
+       // Placing the element at it's right index
+       swap(arr[low], arr[rs]);
+       
+       return rs;
+    }
+};
