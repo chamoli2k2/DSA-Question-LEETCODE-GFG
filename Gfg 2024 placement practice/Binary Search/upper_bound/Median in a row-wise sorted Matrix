@@ -1,0 +1,42 @@
+class Solution{   
+private:
+    int findCount(vector<vector<int>> &nums, int target){
+        int n = nums.size(), m = nums[0].size();
+        int count = 0;
+        
+        for(int i=0; i<n; i++){
+            int t = upper_bound(nums[i].begin(), nums[i].end(), target) - nums[i].begin();
+            count += t;
+        }
+        
+        return count;
+    }
+public:
+    int median(vector<vector<int>> &matrix, int R, int C){
+        int n = matrix.size(), m = matrix[0].size();
+        int s = INT_MAX, e = INT_MIN;
+        int k = (n*m+1) /2;
+        int ans = -1;
+        
+        for(int i=0; i<n; i++){
+            s = min(s, matrix[i][0]);
+            e = max(e, matrix[i][m-1]);
+        }
+        
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            
+            int count = findCount(matrix, mid);
+            
+            if(count >= k){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+        
+        return ans;
+    }
+};

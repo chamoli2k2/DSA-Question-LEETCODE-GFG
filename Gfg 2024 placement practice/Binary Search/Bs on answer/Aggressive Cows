@@ -1,0 +1,35 @@
+class Solution {
+private:
+    bool check(vector<int> &nums, int k, int target){
+        int count = 1, prev = nums[0], n = nums.size();
+        
+        for(int i=1; i<n; i++){
+            if(nums[i]-prev >= k){
+                prev = nums[i];
+                count++;
+            }
+        }
+        
+        return count >= target;
+    }
+public:
+
+    int solve(int n, int k, vector<int> &stalls) {
+        sort(stalls.begin(), stalls.end());
+        int s = 0, e = stalls[n-1]-stalls[0], ans = -1;
+        
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+            
+            if(check(stalls, mid, k)){
+                ans = mid;
+                s = mid + 1;
+            }
+            else{
+                e = mid - 1;
+            }
+        }
+        
+        return ans;
+    }
+};

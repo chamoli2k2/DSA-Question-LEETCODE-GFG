@@ -1,13 +1,17 @@
 class Solution {
     private:
-    int check(vector<int> &stations, double maxDist){
-        int count = 0, n = stations.size();
+    int countStations(vector<int> &nums, double diff){
+        int n = nums.size(), count = 0;
         
         for(int i=0; i<n-1; i++){
-            double diff = stations[i+1]-stations[i];
-            if(diff > maxDist){
-                count += (int)(diff/maxDist);
+            double currDiff = 1.0*(nums[i+1] - nums[i]);
+            int numStations = currDiff / diff;
+            
+            if((numStations*diff) == currDiff){
+                numStations--;
             }
+            
+            count += numStations;
         }
         
         return count;
@@ -15,22 +19,29 @@ class Solution {
   public:
     double findSmallestMaxDist(vector<int> &stations, int k) {
         int n = stations.size();
-        double s = 0, e = 1e6, ans, mid;
+        double s = 0, e = 0;
+        for(int i=0; i<n-1; i++){
+            double diff = 1.0*(stations[i+1] - stations[i]);
+            e = max(e, diff);
+        }
         
-        while(s <= e){
-            mid = s + (e - s) / 2;
+        double diff = 1e-6, ans;
+        
+        while((e-s) > diff){
+            double mid = s + (e - s) / 2;
             
-            int Count_Stations = check(stations, mid);
+            int count = countStations(stations, mid);
             
-            if(Count_Stations <= k){
-                ans = mid;
-                e = mid - 0.00001;
+            if(count > k){
+                s = mid;
             }
             else{
-                s = mid + 0.00001;
+                ans = mid;
+                e = mid;
             }
         }
         
         return ans;
+        
     }
 };

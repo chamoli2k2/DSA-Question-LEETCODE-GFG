@@ -1,0 +1,44 @@
+class Solution {
+private:
+    int find(vector<vector<int>> &mat, int col){
+        int n = mat.size();
+        int maxi = INT_MIN, idx = -1;
+        for(int i=0; i<n; i++){
+            if(maxi < mat[i][col]){
+                maxi = mat[i][col];
+                idx = i;
+            }
+        }
+        return idx;
+    }
+public:
+    vector<int> findPeakGrid(vector<vector<int>>& mat) {
+        int n = mat.size(), m = mat[0].size();
+        int s = 0, e = m-1;
+
+        while(s <= e){
+            int j = s + (e - s) / 2;
+            int i = find(mat, j);
+            
+            // finding the top, bottom, left, right
+            int top = i-1 >= 0 ? mat[i-1][j] : -1;
+            int bottom = i+1 < n ? mat[i+1][j] : -1;
+            int left = j-1 >= 0 ? mat[i][j-1] : -1;
+            int right = j+1 < m ? mat[i][j+1] : -1;
+
+            int elem = mat[i][j];
+
+            if(elem > top && elem > bottom && elem > left && elem > right){
+                return {i, j};
+            }
+            else if(elem < left){
+                e = j - 1;
+            }
+            else{
+                s = j + 1;
+            }
+        }
+
+        return {-1, -1};
+    }
+};

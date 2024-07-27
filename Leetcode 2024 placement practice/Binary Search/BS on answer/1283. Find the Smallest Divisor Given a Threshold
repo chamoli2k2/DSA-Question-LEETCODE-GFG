@@ -1,0 +1,30 @@
+class Solution {
+private:
+    int check(vector<int> &nums, int div, int target){
+        long n = nums.size(), sum = 0;
+
+        for(int i=0; i<n; i++){
+            sum += ceil(1.0*nums[i]/div);
+        }
+
+        return sum <= target;
+    }
+public:
+    int smallestDivisor(vector<int>& nums, int threshold) {
+        int n = nums.size(), s = 1, e = *max_element(nums.begin(), nums.end()), ans = -1;
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+
+            if(check(nums, mid, threshold)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};

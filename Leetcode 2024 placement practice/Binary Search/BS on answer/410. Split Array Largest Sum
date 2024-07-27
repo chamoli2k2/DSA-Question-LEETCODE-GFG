@@ -1,0 +1,36 @@
+class Solution {
+private:
+    bool check(vector<int> &nums, int k, int target){
+        int n = nums.size(), sum = 0, count = 1;
+        for(int i=0; i<n; i++){
+            if(sum+nums[i] <= k){
+                sum += nums[i];
+            }
+            else{
+                if(nums[i] > k) return false;
+                sum = nums[i];
+                count++;
+            }
+        }
+
+        return count <= target;
+    }
+public:
+    int splitArray(vector<int>& nums, int k) {
+        int n = nums.size(), s = 0, e = accumulate(nums.begin(), nums.end(), 0)+1, ans;
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+
+            if(check(nums, mid, k)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};

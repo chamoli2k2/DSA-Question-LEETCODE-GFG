@@ -1,0 +1,39 @@
+class Solution {
+public:
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
+        long long n = source.size(), m = original.size();
+        vector<vector<long long>> mp(26, vector<long long> (26, 1e9));
+        for(int i=0; i<26; i++) mp[i][i] = 0;
+
+        for(int i=0; i<m; i++){
+            int a = original[i] - 'a';
+            int b = changed[i] - 'a';
+            mp[a][b] = min(mp[a][b], 1LL*cost[i]);
+        }
+
+
+        for(int via=0; via<26; via++){
+            for(int i=0; i<26; i++){
+                for(int j=0; j<26; j++){
+                    mp[i][j] = min(mp[i][j], mp[i][via] + mp[via][j]);
+                }
+            }
+        }
+
+
+        long long ans = 0;
+        for(int i=0; i<n; i++){
+            if(source[i] != target[i]){
+                int s = source[i]-'a';
+                int e = target[i]-'a';
+
+                // Base case
+                if(mp[s][e] == 1e9) return -1;  
+                ans += mp[s][e];
+            }
+        }
+
+
+        return ans;
+    }
+};

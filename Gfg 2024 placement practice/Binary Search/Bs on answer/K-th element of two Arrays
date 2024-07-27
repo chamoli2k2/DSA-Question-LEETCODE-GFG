@@ -1,0 +1,37 @@
+class Solution{
+    public:
+    int kthElement(int nums1[], int nums2[], int n, int m, int k)
+    {
+
+        if(n > m){
+            return kthElement(nums2, nums1, m, n, k);
+        }
+
+        int s = max(0, k-m), e = min(k, n);
+        double ans;
+
+        while(s <= e){
+            int count1 = s + (e - s) / 2;
+            int count2 = k - count1;
+
+            int ls1 = count1 == 0 ? INT_MIN : nums1[count1-1];
+            int ls2 = count1 == n ? INT_MAX : nums1[count1];
+            int rs1 = count2 == 0 ? INT_MIN : nums2[count2-1];
+            int rs2 = count2 == m ? INT_MAX : nums2[count2];
+
+
+            if(ls1 <= rs2 && rs1 <= ls2){
+                ans = max(ls1, rs1);
+                break;
+            }
+            else if(ls1 > rs2){
+                e = count1 - 1;
+            }
+            else{
+                s = count1 + 1;
+            }
+        }
+
+        return ans;
+    }
+};

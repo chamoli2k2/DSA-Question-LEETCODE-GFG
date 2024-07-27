@@ -1,0 +1,26 @@
+class Solution {
+  public:
+    double findSmallestMaxDist(vector<int> &stations, int k) {
+        int n = stations.size();
+        vector<int> howMany(n-1, 0);
+        priority_queue<pair<double,int>> pq;
+        for(int i=0; i<n-1; i++){
+            double diff = 1.000000*(stations[i+1]-stations[i]);
+            pq.push({diff, i});
+        }
+        
+        for(int i=0; i<k; i++){
+            
+            int idx = pq.top().second;
+            pq.pop();
+            
+            howMany[idx]++;
+            double diff = 1.00000*(stations[idx+1]-stations[idx]);
+            double sectionalLength = diff / (howMany[idx]+1);
+            pq.push({sectionalLength, idx});
+        }
+        
+    
+        return pq.top().first;
+    }
+};

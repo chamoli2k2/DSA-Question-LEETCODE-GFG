@@ -1,0 +1,29 @@
+class Solution{
+    private:
+    int solve(string &s, int i, int j){
+        // Base case
+        if(i > j) return 0;
+        if(i == j) return s[i] == s[j];
+        
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+
+        if(s[i] == s[j]){
+            return dp[i][j] = 2 + solve(s, i+1, j-1);
+        }
+
+        int c1 = solve(s, i+1, j);
+        int c2 = solve(s, i, j-1);
+
+        return dp[i][j] = max(c1, c2);
+    }
+  public:
+    int dp[501][501];
+    int countMin(string str){
+        int n = str.size();
+        memset(dp, -1, sizeof(dp));
+        int len = solve(str, 0, n-1);
+        return n-len;
+    }
+};
