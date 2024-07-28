@@ -1,0 +1,25 @@
+class Solution{
+public:
+
+    vector<int> replaceWithRank(vector<int> &arr, int N){
+        vector<pair<int,int>> nums;
+        for(int i=0; i<N; i++){
+            nums.push_back({arr[i], i});
+        }
+        sort(begin(nums), end(nums));
+        vector<int> ans(N);
+        ans[nums[0].second] = 1;
+        
+        for(int i=1; i<N; i++){
+            if(nums[i].first == nums[i-1].first){
+                ans[nums[i].second] = ans[nums[i-1].second];
+            }
+            else{
+                ans[nums[i].second] = ans[nums[i-1].second]+1;
+            }
+        }
+        
+        return ans;
+    }
+
+};

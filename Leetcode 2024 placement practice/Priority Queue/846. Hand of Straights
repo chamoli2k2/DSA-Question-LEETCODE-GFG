@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& nums, int groupSize) {
+        // Base case
+        int n = nums.size();
+        if(n%groupSize != 0) return false;
+
+        priority_queue<pair<int,int>> pq;
+        unordered_map<int,int> mp;
+        for(auto &it : nums) mp[it]++;
+
+        for(auto &[num, freq] : mp){
+            pq.push({-num, freq});
+        }
+
+        while(!pq.empty()){
+            int elem = -pq.top().first, fq = mp[elem];
+            pq.pop();
+            if(fq == 0) continue;
+
+            while(fq--){
+                mp[elem]--;
+                for(int i=1; i<groupSize; i++){
+                    if(mp[elem+i] > 0){
+                        mp[elem+i]--;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+};
