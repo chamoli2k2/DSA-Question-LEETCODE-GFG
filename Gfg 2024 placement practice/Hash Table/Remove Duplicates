@@ -1,0 +1,17 @@
+class Solution {
+  public:
+
+    string removeDups(string str) {
+        string ans = "";
+        int mp[26] = {0};
+        
+        for(auto &it : str){
+            if(mp[it-'a'] == 0){
+                ans += it;
+                mp[it-'a'] = 1;
+            }
+        }
+        
+        return ans;
+    }
+};

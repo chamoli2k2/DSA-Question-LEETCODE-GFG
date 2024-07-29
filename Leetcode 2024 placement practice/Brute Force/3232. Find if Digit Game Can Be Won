@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool canAliceWin(vector<int>& nums) {
+        int sum1 = 0, sum2 = 0;
+        for(auto &it : nums){
+            string s = to_string(it);
+            if(s.size() == 1){
+                sum1 += stoi(s);
+            }
+            else{
+                sum2 += stoi(s);
+            }
+        }
+
+        if(sum1 == sum2) return false;
+        return true;
+    }
+};

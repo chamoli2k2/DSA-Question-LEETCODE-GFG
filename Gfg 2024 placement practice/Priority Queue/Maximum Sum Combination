@@ -1,0 +1,40 @@
+class Solution {
+  public:
+    vector<int> maxCombinations(int N, int k, vector<int> &nums1, vector<int> &nums2) {
+        int n = nums1.size(), m = nums2.size();
+        vector<int> ans;
+        sort(nums1.rbegin(), nums1.rend());
+        sort(nums2.rbegin(), nums2.rend());
+        priority_queue<pair<int,pair<int,int>>> pq;
+
+        pq.push({(nums1[0]+nums2[0]), {0, 0}});
+        map<pair<int,int>, bool> mp;
+        mp[{0, 0}] = true;
+
+        while(k-- && !pq.empty()){
+            int i = pq.top().second.first;
+            int j = pq.top().second.second;
+            int sum = pq.top().first;
+            pq.pop();
+
+            ans.push_back(sum);
+
+            if(j+1 < m && mp.count({i, j+1}) == 0){
+                mp[{i, j+1}] = true;
+                pq.push({(nums1[i]+nums2[j+1]), {i, j+1}});
+            }
+
+            if(i+1 < n && mp.count({i+1, j}) == 0){
+                mp[{i+1, j}] = true;
+                pq.push({(nums1[i+1]+nums2[j]), {i+1, j}});
+            }
+
+            if(i+1 < n && j+1 < m && mp.count({i+1, j+1}) == 0){
+                mp[{i+1, j+1}] = true;
+                pq.push({(nums1[i+1]+nums2[j+1]), {i+1, j+1}});
+            }
+        }
+
+        return ans;
+    }
+};

@@ -1,0 +1,121 @@
+class DisJointSet {
+private:
+    vector<int> rank, parent;
+public:
+    // Constructor
+    DisJointSet(int n) {
+        rank.resize(n + 1, 0); // Initialize rank to 0
+        parent.resize(n + 1);
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    // Finding ultimate parent of node
+    int findUPar(int node) {
+        // Finding Parent
+        if (node == parent[node]) return node;
+
+        // Path compression
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    // Union by rank 
+    void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+
+        if (ulp_u == ulp_v) return;
+        if (rank[ulp_u] < rank[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_u] > rank[ulp_v]) {
+            parent[ulp_v] = ulp_u;
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+};
+
+class Solution {
+public:
+    bool canReachCorner(int X, int Y, vector<vector<int>>& circles) {
+        int n = circles.size();
+        DisJointSet ds(n+4);
+
+        // Build adjacency list for circle intersections and borders
+        for (int i = 0; i < n; i++) {
+            int x1 = circles[i][0], y1 = circles[i][1], r1 = circles[i][2];
+            for (int j = i + 1; j < n; j++) {
+                int x2 = circles[j][0], y2 = circles[j][1], r2 = circles[j][2];
+
+                // If the distance between the centers of the circles is less than or equal to r1 + r2, they intersect
+                double dist=sqrt(pow(x1-x2,2)+pow(y1-y2,2));
+                if (dist <= (r1+r2)){
+                    int ulpi = ds.findUPar(i);
+                    int ulpj = ds.findUPar(j);
+
+                    if(ulpi != ulpj){
+                        ds.unionByRank(i, j);
+                    }
+                }
+            }
+        }
+
+        // Check if nodes have an edge with the rectangle borders
+        // Check if the path from (0, 0) to (X, Y) is blocked
+        bool isBlocked = false;
+
+        for (int i = 0; i < n; i++) {
+            int x = circles[i][0], y = circles[i][1], r = circles[i][2];
+
+            // Left side
+            if (r >= x) {
+                int ulpi = ds.findUPar(i);
+                int side = ds.findUPar(n);
+                if(ulpi != side){
+                    ds.unionByRank(i, n);
+                }
+            }
+
+            // Up
+            if (y + r >= Y) {
+                int ulpi = ds.findUPar(i);
+                int side = ds.findUPar(n+1);
+                if(ulpi != side){
+                    ds.unionByRank(i, n+1);
+                }
+            }
+
+            // Right
+            if (x + r >= X) {
+                int ulpi = ds.findUPar(i);
+                int side = ds.findUPar(n+2);
+                if(ulpi != side){
+                    ds.unionByRank(i, n+2);
+                }
+            }
+
+            // Down
+            if (r >= y) {
+                int ulpi = ds.findUPar(i);
+                int side = ds.findUPar(n+3);
+                if(ulpi != side){
+                    ds.unionByRank(i, n+3);
+                }
+            }
+
+            int s1 = ds.findUPar(n), s2 = ds.findUPar(n+1), s3 = ds.findUPar(n+2), s4 = ds.findUPar(n+3);
+            if((s1 == s3 || s1 == s4) || (s2 == s3 || s2 == s4)){
+                isBlocked = true;
+                break;
+            }
+        }
+
+        
+
+        return isBlocked ? false : true; // Return true if not blocked
+    }
+};

@@ -1,0 +1,81 @@
+class Solution {
+private:
+    // BFS to check if there's a path between two nodes
+    bool solve(vector<int> adj[], int node, int n){
+        vector<bool> visited(n + 4, 0); // n+4 for extra nodes representing borders
+        queue<int> q;
+        q.push(node);
+        visited[node] = 1;
+
+        while (!q.empty()) {
+            int nd = q.front();
+            q.pop();
+
+            if (nd == n + 2 || nd == n + 3) return true; // If we reach n+2 (right) or n+3 (bottom) return true
+
+            for (auto &it : adj[nd]) {
+                if (!visited[it]) {
+                    visited[it] = 1;
+                    q.push(it);
+                }
+            }
+        }
+
+        return false; // Return false if no path is found
+    }
+
+public:
+    bool canReachCorner(int X, int Y, vector<vector<int>>& circles) {
+        int n = circles.size();
+        vector<int> adj[n + 4]; // n+4 for extra nodes representing borders
+
+        // Build adjacency list for circle intersections and borders
+        for (int i = 0; i < n; i++) {
+            int x1 = circles[i][0], y1 = circles[i][1], r1 = circles[i][2];
+            for (int j = i + 1; j < n; j++) {
+                int x2 = circles[j][0], y2 = circles[j][1], r2 = circles[j][2];
+
+                // If the distance between the centers of the circles is less than or equal to r1 + r2, they intersect
+                double dist=sqrt(pow(x1-x2,2)+pow(y1-y2,2));
+                if (dist <= (r1+r2)){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+
+        // Check if nodes have an edge with the rectangle borders
+        for (int i = 0; i < n; i++) {
+            int x = circles[i][0], y = circles[i][1], r = circles[i][2];
+
+            // Left side
+            if (r >= x) {
+                adj[n].push_back(i);
+                adj[i].push_back(n);
+            }
+
+            // Up
+            if (y + r >= Y) {
+                adj[n + 1].push_back(i);
+                adj[i].push_back(n + 1);
+            }
+
+            // Right
+            if (x + r >= X) {
+                adj[n + 2].push_back(i);
+                adj[i].push_back(n + 2);
+            }
+
+            // Down
+            if (r >= y) {
+                adj[n + 3].push_back(i);
+                adj[i].push_back(n + 3);
+            }
+        }
+
+        // Check if the path from (0, 0) to (X, Y) is blocked
+        bool isBlocked = solve(adj, n, n) || solve(adj, n + 1, n);
+
+        return isBlocked ? false : true; // Return true if not blocked
+    }
+};
