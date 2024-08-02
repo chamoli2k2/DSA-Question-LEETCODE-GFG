@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    vector<int> spirallyTraverse(vector<vector<int> > &matrix) {
+        vector<int> ans;
+        int n = matrix.size(), m = matrix[0].size();
+        int rowSt = 0, rowEd = n-1, colSt = 0, colEd = m-1;
+        int flag = 0;
+        
+        while(rowSt <= rowEd && colSt <= colEd){
+            if(flag == 0){
+                for(int i=colSt; i<=colEd; i++){
+                    ans.push_back(matrix[rowSt][i]);
+                }
+                rowSt++;
+                flag = 1;
+            }
+            else if(flag == 1){
+                for(int i=rowSt; i<=rowEd; i++){
+                    ans.push_back(matrix[i][colEd]);
+                }
+                colEd--;
+                flag = 2;
+            }
+            else if(flag == 2){
+                for(int i=colEd; i>=colSt; i--){
+                    ans.push_back(matrix[rowEd][i]);
+                }
+                rowEd--;
+                flag = 3;
+            }
+            else{
+                for(int i=rowEd; i>=rowSt; i--){
+                    ans.push_back(matrix[i][colSt]);
+                }
+                colSt++;
+                flag = 0;
+            }
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int solve(string &s){
+    int n = s.size(), ans = 0;
+    
+    stack<pair<int,int>> st;
+    
+    for(int i=0; i<n; i++){
+        if(!st.empty()){
+            if(st.top().first == '(' && s[i] == '_'){
+                ans += i-st.top().second;
+                st.pop();
+            }
+            else if(st.top().first == '_' && s[i] == ')'){
+                ans += i-st.top().second;
+                st.pop();
+            }
+            else if(st.top().first == '(' && s[i] == ')'){
+                ans += i-st.top().second;
+                st.pop();
+            }
+            else{
+                st.push({s[i], i});
+            }
+        }
+        else{
+            st.push({s[i], i});
+        }
+    }
+    
+    return ans;
+}
+ 
+ 
+int main()
+{
+    int t;
+    cin>>t;
+    
+    while(t--){
+        string s;
+        int n;
+        cin>>n;
+        cin>>s;
+        int ans = solve(s);
+        cout<<ans<<endl;
+    }
+ 
+    return 0;
+}

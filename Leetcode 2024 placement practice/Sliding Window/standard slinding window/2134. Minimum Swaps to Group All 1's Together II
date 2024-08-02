@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minSwaps(vector<int>& nums) {
+        int n = nums.size(), totalOne = 0;
+        for(int i=0; i<n; i++) if(nums[i] == 1) totalOne++;
+
+        // Base case
+        if(totalOne == n) return 0;
+
+        int currCountZero = 0, swapCount;
+        for(int i=0; i<totalOne; i++){
+            if(nums[i] == 0) currCountZero++;
+        }
+
+        swapCount = currCountZero;
+
+        for(int i=totalOne; i<2*n; i++){
+            int idx = i%n;
+            int prev = ((idx-totalOne)%n + n)%n;
+            if(nums[prev] == 0) currCountZero--;
+            if(nums[idx] == 0) currCountZero++;
+
+            swapCount = min(swapCount, currCountZero);
+        }
+
+        return swapCount;
+    }
+};

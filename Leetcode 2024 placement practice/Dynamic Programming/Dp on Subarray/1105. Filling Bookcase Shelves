@@ -1,0 +1,26 @@
+class Solution {
+private:
+    int solve(vector<vector<int>>  &books, int idx, int currWidth, int maxLimit, int maxHeight){
+        // Base case
+        int n = books.size();
+        if(idx == n) return maxHeight;
+
+        if(dp[idx][currWidth] != -1) return dp[idx][currWidth];
+
+        int take = INT_MAX;
+
+        if(currWidth+books[idx][0] <= maxLimit){
+            take = solve(books, idx+1, currWidth+books[idx][0], maxLimit, max(maxHeight, books[idx][1]));
+        }
+
+        int notTake = maxHeight + solve(books, idx+1, books[idx][0], maxLimit, books[idx][1]);
+
+        return dp[idx][currWidth] = min(take, notTake);
+    }
+public:
+    int dp[1001][1002];
+    int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
+        memset(dp, -1, sizeof(dp));
+        return solve(books, 0, 0, shelfWidth, 0);
+    }
+};

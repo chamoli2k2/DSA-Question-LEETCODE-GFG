@@ -1,0 +1,29 @@
+class Solution {
+private:
+    int solve(vector<vector<int>> &books, int idx, int target) {
+        int n = books.size();
+        // Base case
+        if (idx == n) return 0;
+
+        if (dp[idx] != -1) return dp[idx];
+
+        int maxWidth = 0, maxHeight = 0, ans = INT_MAX;
+        for (int i = idx; i < n; i++) {
+            if (maxWidth + books[i][0] <= target) {
+                maxWidth += books[i][0];
+                maxHeight = max(maxHeight, books[i][1]);
+                ans = min(ans, maxHeight + solve(books, i + 1, target));
+            } else {
+                break;
+            }
+        }
+
+        return dp[idx] = ans;
+    }
+public:
+    int dp[1001];
+    int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
+        memset(dp, -1, sizeof(dp));
+        return solve(books, 0, shelfWidth);
+    }
+};

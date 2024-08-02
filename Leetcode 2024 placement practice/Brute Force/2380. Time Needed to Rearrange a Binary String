@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int secondsToRemoveOccurrences(string s) {
+        int n = s.size(), ans = 0;
+        while(true){
+            int idx = 0, flag = false;
+            while(idx < n-1){
+                if(s[idx] == '0' && s[idx+1] == '1'){
+                    swap(s[idx], s[idx+1]);
+                    idx += 2;
+                    flag = true;
+                }
+                else{
+                    idx++;
+                }
+            }
+
+            if(flag){
+                ans++;
+            }
+            else{
+                break;
+            }
+        }
+
+        return ans;
+    }
+};

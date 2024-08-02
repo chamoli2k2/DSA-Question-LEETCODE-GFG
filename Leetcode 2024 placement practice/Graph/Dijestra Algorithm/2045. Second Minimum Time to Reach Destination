@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int secondMinimum(int n, vector<vector<int>>& edges, int time, int change) {
+        vector<int> adj[n+1];
+        for(auto &it : edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+
+        vector<int> dist1(n+1, INT_MAX), dist2(n+1, INT_MAX);
+        dist1[1] = 0;
+
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>> > pq;
+        pq.push({0, 1});
+
+        while(!pq.empty()){
+            auto [timePassed, node] = pq.top();
+            pq.pop();
+
+
+            if(node == n && dist2[node] != INT_MAX){
+                return dist2[node];
+            }
+
+            // Let's check do we need to wait for red light or not
+            int currDiv = timePassed / change;
+            if(currDiv&1){
+                timePassed = (currDiv+1) * change;
+            }
+
+            for(auto &adjNode : adj[node]){
+                if(dist1[adjNode] > timePassed+time){
+                    dist2[adjNode] = dist1[adjNode];
+                    dist1[adjNode]= timePassed+time;
+                    pq.push({timePassed+time, adjNode});
+                }
+                else if(dist2[adjNode] > timePassed+time && dist1[adjNode] != timePassed+time){
+                    dist2[adjNode] = timePassed+time;
+                    pq.push({timePassed+time, adjNode});
+                }
+            }
+        }
+
+        return -1;
+    }
+};
