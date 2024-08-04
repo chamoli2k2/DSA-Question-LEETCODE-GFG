@@ -1,0 +1,56 @@
+class neighborSum {
+public:
+    vector<vector<int>> nums;
+    int n, m;
+    neighborSum(vector<vector<int>>& grid) {
+        n = grid.size();
+        m = grid[0].size();
+        nums = grid;
+    }
+    
+    int adjacentSum(int value) {
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            int flag = false;
+            for(int j=0; j<m; j++){
+                if(nums[i][j] == value){
+                    if(j-1 >= 0) ans += nums[i][j-1];
+                    if(j+1 < n) ans += nums[i][j+1];
+                    if(i-1 >= 0) ans += nums[i-1][j];
+                    if(i+1 < n) ans += nums[i+1][j];
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag) break;
+        }
+        return ans;
+    }
+    
+    int diagonalSum(int value) {
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            int flag = false;
+            for(int j=0; j<m; j++){
+                if(nums[i][j] == value){
+                    if(j-1 >= 0 && i-1 >= 0) ans += nums[i-1][j-1];
+                    if(j+1 < n && i+1 < n) ans += nums[i+1][j+1];
+                    if(i-1 >= 0 && j+1 < n) ans += nums[i-1][j+1];
+                    if(i+1 < n && j-1 >= 0) ans += nums[i+1][j-1];
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag) break;
+        }
+
+        return ans;
+    }
+};
+
+/**
+ * Your neighborSum object will be instantiated and called as such:
+ * neighborSum* obj = new neighborSum(grid);
+ * int param_1 = obj->adjacentSum(value);
+ * int param_2 = obj->diagonalSum(value);
+ */

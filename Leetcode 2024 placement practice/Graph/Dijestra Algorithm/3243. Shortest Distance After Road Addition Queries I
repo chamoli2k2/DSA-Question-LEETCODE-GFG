@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<int> shortestDistanceAfterQueries(int n, vector<vector<int>>& queries) {
+        vector<int> ans, dist(n, INT_MAX);
+        vector<vector<int>> adj(n);
+
+        for(int i=0; i<n-1; i++){
+            adj[i].push_back(i+1);
+        }
+
+        int idx = 0, m = queries.size();
+        ans.resize(m);
+        for(auto &it : queries) {
+            int u = it[0], v = it[1];
+            
+            adj[u].push_back(v);
+            fill(dist.begin(), dist.end(), INT_MAX);
+            priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+            
+            pq.push({0, 0});
+            dist[0] = 0;
+            
+            while(!pq.empty()) {
+                int currDist = pq.top().first;
+                int node = pq.top().second;
+                pq.pop();
+
+                if(node == n-1) {
+                    break;
+                }
+
+                for(int adjNode : adj[node]) {
+                    if(dist[adjNode] > currDist+1) {
+                        dist[adjNode] = currDist+1;
+                        pq.push({dist[adjNode], adjNode});
+                    }
+                }
+            }
+
+            ans[idx++] = dist[n-1];
+        }
+
+        return ans;
+    }
+};
