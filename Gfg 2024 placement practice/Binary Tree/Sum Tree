@@ -1,0 +1,20 @@
+class Solution {
+    private:
+    pair<int,bool> solve(Node *root){
+        // Base case
+        if(root == NULL) return {0, true};
+        
+        if(root->left == NULL && root->right == NULL) return {root->data, true};
+        
+        auto ls = solve(root->left);
+        auto rs = solve(root->right);
+        
+        if(ls.second && rs.second && rs.first+ls.first == root->data) return {2*root->data, true};
+        
+        return {-1, false};
+    }
+  public:
+    bool isSumTree(Node* root) {
+        return solve(root).second;
+    }
+};
