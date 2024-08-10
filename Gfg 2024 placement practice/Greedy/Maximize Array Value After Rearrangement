@@ -1,0 +1,13 @@
+class Solution {
+  public:
+    int Maximize(vector<int> arr) {
+        int n = arr.size(), mod = 1e9 + 7, ans = 0;
+        sort(arr.begin(), arr.end());
+        
+        for(int i=0; i<n; i++){
+            ans = (ans % mod + (arr[i]*1LL*i) % mod) % mod;
+        }
+        
+        return ans;
+    }
+};

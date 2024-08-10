@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    // Function to rotate a linked list.
+    Node* rotate(Node* head, int k) {
+        function<int(Node*)> findLen = [&](Node *head) -> int{
+            if(head == NULL) return 0;
+            return 1 + findLen(head->next);
+        };
+
+
+        
+        int len = findLen(head);
+        // Base case
+        if(len == k) return head;
+        int ptr = 1;
+        Node *temp = head;
+        
+        while(ptr < k){
+            temp = temp->next;
+            ptr++;
+        }
+        
+        Node *newHead = temp->next;
+        temp->next = NULL;
+        temp = newHead;
+        
+        while(temp->next) temp = temp->next;
+        temp->next = head;
+        
+        return newHead;
+    }
+};
