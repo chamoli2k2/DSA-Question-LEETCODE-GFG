@@ -1,0 +1,23 @@
+class Solution {
+    private:
+    long long solve(vector<int> &nums, long long limit, int n){
+        long long ans = 0, i = 0, j = 0, sum = 0;
+        
+        while(j < n){
+            sum += 1LL*nums[j];
+            
+            while(i <= j && sum > limit){
+                sum -= nums[i++];
+            }
+            
+            ans += j-i+1;
+            j++;
+        }
+        
+        return ans;
+    }
+  public:
+    long long countSubarray(int N,vector<int> A,long long L,long long R) {
+        return solve(A, R, N) - solve(A, L-1, N);
+    }
+};
