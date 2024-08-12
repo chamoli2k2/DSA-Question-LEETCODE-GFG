@@ -1,0 +1,35 @@
+class Solution {
+private:
+    int dfs(unordered_map<int, vector<int>> &adj, vector<int> &visited, int node){
+        visited[node] = 1;
+
+        int totalChild = 0;
+        set<int> st;
+        for(auto &it : adj[node]){
+            if(visited[it] == 0){
+                int childN = dfs(adj, visited, it);
+                st.insert(childN);
+                totalChild += childN;
+            }
+        }
+
+        if(st.size() <= 1) ans++;
+
+        return totalChild + 1;
+    }
+public:
+    int ans = 0;
+    int countGoodNodes(vector<vector<int>>& edges) {
+        unordered_map<int,vector<int>> mp;
+        for(auto &it : edges){
+            mp[it[0]].push_back(it[1]);
+            mp[it[1]].push_back(it[0]);
+        }
+
+        int m = mp.size();
+        vector<int> visited(m, 0);
+        dfs(mp, visited, 0);
+
+        return ans;
+    }
+};

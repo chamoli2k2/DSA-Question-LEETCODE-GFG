@@ -1,0 +1,35 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int a, int b, int idx, int n){
+        // Base case
+        if(idx == n) return 1;
+
+        if(dp[idx][a][b] != -1) return dp[idx][a][b];
+
+        int ans = 0;
+        for(int k=0; k<=nums[idx]; k++){
+            int x = k, y = nums[idx] - k;
+            if(a >= x && b <= y){
+                ans = (ans%mod + solve(nums, x, y, idx+1, n)%mod) % mod;
+            }
+        }
+
+        return dp[idx][a][b] = ans;
+    }
+public:
+    int mod = 1e9 + 7;
+    int dp[2002][52][52];
+    int countOfPairs(vector<int>& nums) {
+        int n = nums.size(), ans = 0;
+
+        memset(dp, -1, sizeof(dp));
+        
+        for(int k=0; k<=nums[0]; k++){
+            int a = k, b = nums[0]-k;
+
+            ans = (ans%mod + solve(nums, a, b, 1, n)%mod) % mod;
+        }
+
+        return ans;
+    }
+};
