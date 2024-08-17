@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int smallestDistancePair(vector<int>& nums, int k) {
+        int n = nums.size(), ans = 0;
+        sort(nums.begin(), nums.end());
+
+        int s = 0, e = nums[n-1] - nums[0];
+
+        auto findCount = [&](int target) -> int {
+            int i = 0, j = 1, pairs = 0;
+
+            while (j < n) {
+                while (nums[j] - nums[i] > target) {
+                    i++;
+                }
+
+                pairs += j - i;
+                j++;
+            }
+
+            return pairs;
+        };
+
+        while(s <= e){
+            int mid = s + (e - s) / 2;
+
+            int count = findCount(mid);
+
+            if(count >= k){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};

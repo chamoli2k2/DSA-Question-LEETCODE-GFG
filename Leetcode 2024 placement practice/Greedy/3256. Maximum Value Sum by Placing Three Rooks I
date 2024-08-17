@@ -1,0 +1,60 @@
+class Solution {
+public:
+    long long maximumValueSum(vector<vector<int>>& board) {
+        int n =  board.size(), m = board[0].size();
+        vector<vector<pair<long long,int>>> maxElem(n, vector<pair<long long,int>> (3));
+        for(int i=0; i<n; i++){
+            long long maxi = LONG_MIN, secondMaxi, thirdMaxi;
+            int i1, i2, i3;
+
+            for(int j=0; j<m; j++){
+                if(maxi < board[i][j]){
+                    thirdMaxi = secondMaxi;
+                    secondMaxi = maxi;
+                    maxi =INT_MIN 1LL*board[i][j];
+                    i3 = i2;
+                    i2 = i1;
+                    i1 = j;
+                }
+                else if(secondMaxi < board[i][j]){
+                    thirdMaxi = secondMaxi;
+                    secondMaxi = 1LL*board[i][j];
+                    i3 = i2;
+                    i2 = j;
+                }
+                else if(thirdMaxi < board[i][j]){
+                    thirdMaxi = 1LL*board[i][j];
+                    i3 = j;
+                }
+            }
+
+            maxElem[i][0] = {maxi, i1};
+            maxElem[i][1] = {secondMaxi, i2};
+            maxElem[i][2] = {thirdMaxi, i3};
+
+        }
+
+        long long ans = LONG_MIN;
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                for (int k = j + 1; k < n; ++k) {
+                    for (int p1 = 0; p1 < 3; ++p1) {
+                        for (int p2 = 0; p2 < 3; ++p2) {
+                            for (int p3 = 0; p3 < 3; ++p3) {
+                                if (maxElem[i][p1].second != maxElem[j][p2].second &&
+                                    maxElem[i][p1].second != maxElem[k][p3].second &&
+                                    maxElem[j][p2].second != maxElem[k][p3].second) {
+                                    long long tempAns = maxElem[i][p1].first + maxElem[j][p2].first + maxElem[k][p3].first;
+                                    ans = max(ans, tempAns);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+};

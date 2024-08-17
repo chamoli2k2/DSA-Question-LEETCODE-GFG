@@ -1,0 +1,47 @@
+class Solution
+{
+    private:
+    int solve(int n,vector<vector<int>> &dp,vector<int> &cut,int i){
+        // base case
+        if(n == 0){
+            return 0;
+        }
+        
+        if(i == 0){
+            if(n % cut[0] == 0){
+                return n / cut[0];
+            }
+            
+            return -1e8;
+        }
+        
+        if(dp[i][n] != -1){
+            return dp[i][n];
+        }
+        
+        int take = -1e8;
+        if(cut[i] <= n){
+            take = 1 + solve(n-cut[i],dp,cut,i);
+        }
+        int notTake = solve(n,dp,cut,i-1);
+        
+        dp[i][n] = max(take,notTake);
+        
+        return dp[i][n];
+    }
+    public:
+    //Function to find the maximum number of cuts.
+    int maximizeTheCuts(int n, int x, int y, int z)
+    {
+        vector<vector<int>> dp(3,vector<int>(n+1,-1));
+        vector<int> cut(3,0);
+        cut[0] = x;
+        cut[1] = y;
+        cut[2] = z;
+        int ans = solve(n,dp,cut,2);
+        if(ans < 0){
+            return 0;
+        }
+        return ans;
+    }
+};
