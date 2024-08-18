@@ -1,0 +1,63 @@
+class Solution {
+public:
+    string largestPalindrome(int n, int k) {
+        string ans(n, '9');
+        if(k == 1 || k == 3 || k == 9) return ans;
+        if(k == 2){
+            ans[0] = ans[n-1] = '8';
+            return ans;
+        }
+        else if(k == 4){
+            if(n == 1) return "8";
+            ans[0] = ans[1] = ans[n-1] = ans[n-2] = '8';
+            return ans;
+        }
+        else if(k == 5){
+            ans[0] = ans[n-1] = '5';
+            return ans;
+        }
+        else if(k == 6){
+            if(n == 1) return "6";
+            if(n == 2) return "66";
+            if(n == 3) return "888";
+
+            ans[0] = ans[n-1] = '8';
+            for(int i=1; i<n-1; i++) ans[i] = '9';
+
+            if(n%2 == 0){
+                int m = n/2;
+                ans[m] = ans[m-1] = '7';
+            }
+            else{
+                int m = n/2;
+                ans[m] = '8';
+            }
+
+            return ans;
+        }
+        else if(k == 7){
+            unordered_map<int, string> dic = {
+                {0, ""}, {1, "7"}, {2, "77"}, {3, "959"}, {4, "9779"}, 
+                {5, "99799"}, {6, "999999"}, {7, "9994999"},
+                {8, "99944999"}, {9, "999969999"}, {10, "9999449999"}, {11, "99999499999"}
+            };
+
+            int l = n / 12; //This gives the number of complete "999999" segments that can be placed on both side of the palindrome. eg: 999999_999999 (six 9s in both side = 12 six, how many 9's we can place in both side then? it's n/12)
+            int r = n % 12; //representing the number of characters left after accounting for the complete segments. The remainder helps in determining the middle part of the palindrome.
+            
+            string nines = "";
+            while(l--) {
+                nines += "999999";
+            }
+
+            return nines + dic[r] + nines;
+        }
+        else if(k == 8){
+            for(int i=0; i<n && i<3; i++) ans[i] = '8';
+            for(int i=n-1; i>=0 && i>=n-3; i--) ans[i] = '8';
+            return ans;
+        }
+
+        return "";
+    }
+};
