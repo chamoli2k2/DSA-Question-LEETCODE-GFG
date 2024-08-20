@@ -1,0 +1,31 @@
+class Solution {
+private:
+    private:
+    int solve(vector<int>& nums, int i, int j) {
+        // Base case
+        if (i == j) return 0;
+
+        if (dp[i][j] != -1) return dp[i][j];
+
+        int total = (i == 0) ? prefix[j] : prefix[j] - prefix[i-1];
+        
+        // Player 1's turn: maximize the score difference
+        int start = total - nums[i] - solve(nums, i + 1, j);
+        int end = total - nums[j] - solve(nums, i, j - 1);
+        dp[i][j] = max(start, end);
+
+        return dp[i][j];
+    }
+
+public:
+    int dp[1001][1001];
+    vector<int> prefix;
+    int stoneGameVII(vector<int>& stones) {
+        memset(dp, -1, sizeof(dp));
+        int n = stones.size();
+        prefix.resize(n, 0);
+        prefix[0] = stones[0];
+        for(int i=1; i<n; i++) prefix[i] = prefix[i-1] + stones[i];
+        return solve(stones, 0, n-1);
+    }
+};

@@ -1,0 +1,25 @@
+class Solution {
+private:
+    int solve(vector<int> &prefix, int idx){
+        // Base case
+        int n = prefix.size();
+        if(idx == n-1) return prefix[idx];
+
+        if(dp[idx] != INT_MIN) return dp[idx];
+
+        int take = prefix[idx] - solve(prefix, idx+1);
+        int notTake = solve(prefix, idx+1);
+
+        return dp[idx] = max(take, notTake);
+    }
+public:
+    int dp[100001];
+    int stoneGameVIII(vector<int>& stones) {
+        int n = stones.size();
+        for(int i=0; i<100001; i++) dp[i] = INT_MIN;
+        vector<int> prefix(n);
+        prefix[0] = stones[0];
+        for(int i=1; i<n; i++) prefix[i] = prefix[i-1] + stones[i];
+        return solve(prefix, 1);
+    }
+};
