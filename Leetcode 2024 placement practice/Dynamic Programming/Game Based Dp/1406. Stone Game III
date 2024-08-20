@@ -1,0 +1,28 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int idx){
+        int n = nums.size();
+        // Base case
+        if(idx >= n) return 0;
+
+
+        if(dp[idx] != -1) return dp[idx];
+
+        // We have three cases
+        int ans = INT_MIN, sum = 0;
+        for(int i=idx; i<idx+3 && i<n; i++){
+            sum += nums[i];
+            int tempAns = sum - solve(nums, i+1);
+            ans = max(ans, tempAns);
+        }
+
+        return dp[idx] = ans;
+    }
+public:
+    int dp[50001];
+    string stoneGameIII(vector<int>& stoneValue) {
+        memset(dp, -1, sizeof(dp));
+        int diff = solve(stoneValue, 0);
+        return diff == 0 ? "Tie" : (diff > 0) ? "Alice" : "Bob";
+    }
+};

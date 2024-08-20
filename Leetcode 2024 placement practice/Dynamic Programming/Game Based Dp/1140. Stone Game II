@@ -1,0 +1,38 @@
+class Solution {
+private:
+    int solve(vector<int> &nums, int idx, int m){
+        int n = nums.size();
+        // Base case
+        if(idx == n) return 0;
+
+
+        if(dp[idx][m] != -1) return dp[idx][m];
+
+        int ans = INT_MIN, prefixSum = 0;
+        for(int x=0; x<2*m && idx+x<n; x++){
+            int newIdx = idx + x;
+            int newM = max(m, x+1);
+
+            prefixSum += nums[newIdx];
+            int tempAns = prefixSum - solve(nums, newIdx+1, newM);
+
+            ans = max(ans, tempAns);
+        }
+
+        return dp[idx][m] = ans;
+    }
+public:
+    int dp[101][102];
+    int stoneGameII(vector<int>& piles) {
+        int n = piles.size();
+        int totalSum = accumulate(piles.begin(), piles.end(), 0);
+        memset(dp, -1, sizeof(dp));
+        int diff = solve(piles, 0, 1);
+
+        // a - b = diff
+        // a + b = totalSum
+        // 2a = totalSum + diff
+
+        return (totalSum + diff) / 2;
+    }
+};

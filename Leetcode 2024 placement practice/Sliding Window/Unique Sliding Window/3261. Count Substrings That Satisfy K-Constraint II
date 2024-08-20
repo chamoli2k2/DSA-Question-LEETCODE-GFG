@@ -1,0 +1,64 @@
+class Solution {
+public:
+    vector<long long> countKConstraintSubstrings(string s, int k, vector<vector<int>>& queries) {
+        long long n = s.size(), count = 0, i = 0, j = 0, count1 = 0, count0 = 0;
+        vector<long long> subStringEndingAtI(n);
+
+        // First pass: calculate valid substrings ending at each position
+        while (j < n) {
+            if (s[j] == '0') count0++;
+            if (s[j] == '1') count1++;
+
+            // Adjust the window if constraints are exceeded
+            while (count1 > k && count0 > k) {
+                if (s[i] == '0') count0--;
+                if (s[i] == '1') count1--;
+                i++;
+            }
+
+            count += (j - i + 1);
+            subStringEndingAtI[j] = count;
+            j++;
+        }
+
+        // Second pass: calculate the valid range for each starting position
+        vector<long long> validTillIdx(n);
+        i = n - 1, j = n - 1;
+        count1 = count0 = 0;
+
+        while (j >= 0) {
+            if (s[j] == '0') count0++;
+            if (s[j] == '1') count1++;
+
+            // Adjust the window if constraints are exceeded
+            while (count1 > k && count0 > k) {
+                if (s[i] == '0') count0--;
+                if (s[i] == '1') count1--;
+                i--;
+            }
+
+            validTillIdx[j] = i;
+            j--;
+        }
+
+        // Process each query
+        vector<long long> ans;
+        for (auto &it : queries) {
+            long long idx1 = it[0], idx2 = it[1], idx3 = validTillIdx[idx1];
+            long long subStr = 0;
+
+            if (idx3 >= idx2) {
+                // If the valid range extends beyond the query range
+                subStr = (idx2 - idx1 + 1) * (idx2 - idx1 + 2) / 2;
+            } else {
+                // Otherwise, calculate the substrings in parts
+                subStr = (idx3 - idx1 + 1) * (idx3 - idx1 + 2) / 2;
+                subStr += (subStringEndingAtI[idx2] - subStringEndingAtI[idx3]);
+            }
+
+            ans.push_back(subStr);
+        }
+
+        return ans;
+    }
+};

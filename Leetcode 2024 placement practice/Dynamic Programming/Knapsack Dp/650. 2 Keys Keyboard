@@ -1,0 +1,27 @@
+int dp[1001][1001];
+class Solution {
+private:
+    int solve(int len, int prev, int n){
+        // Base case
+        if(len > n) return 1e8;
+        if(len == n) return 0;
+
+        if(dp[len][prev] != -1) return dp[len][prev];
+
+        int copy = 1e8, paste = 1e8;
+        // We can copy the current string if we didn't previously copies
+        if(prev != len){
+            copy = solve(len, len, n);
+        }
+
+        if(prev != 0)
+            paste = solve(len+prev, prev, n);
+
+        return dp[len][prev] = 1 + min(copy, paste);
+    }
+public:
+    int minSteps(int n) {
+        memset(dp, -1, sizeof(dp));
+        return solve(1, 0, n);
+    }
+};
