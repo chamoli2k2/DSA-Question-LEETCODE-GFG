@@ -1,0 +1,22 @@
+vector<int> ans;
+
+void solve(Node* root, int lvl){
+    // Base case
+    if(root == NULL) return;
+    
+    if(ans.size() == lvl){
+        ans.push_back(root->data);
+    }
+    
+    solve(root->left, lvl+1);
+    solve(root->right, lvl+1);
+}
+
+//Function to return a list containing elements of left view of the binary tree.
+vector<int> leftView(Node *root)
+{
+    int lvl = 0;
+    ans.clear();
+   solve(root, lvl);
+   return ans;
+}

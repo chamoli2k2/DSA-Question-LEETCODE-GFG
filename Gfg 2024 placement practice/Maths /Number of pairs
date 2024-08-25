@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    long long countPairs(vector<int> &arr, vector<int> &brr) {
+        int n = arr.size(), m = brr.size();
+        long long ans = 0, count1 = 0, count2 = 0, count34 = 0;
+        sort(brr.begin(), brr.end());
+        
+        for(int i=0; i<m; i++){
+            if(brr[i] == 1) count1++;
+            if(brr[i] == 2) count2++;
+            if(brr[i] == 3 || brr[i] == 4) count34++;
+        }
+        
+        
+        for(int i=0; i<n; i++){
+            int count = upper_bound(brr.begin(), brr.end(), arr[i]) - brr.begin();
+            
+            if(arr[i] != 1){
+                ans += count1;
+                if(arr[i] == 2) ans -= count34;
+                if(arr[i] == 3) ans += count2;
+                ans += m-count;
+            }
+        }
+        
+        
+        return ans;
+    }
+};

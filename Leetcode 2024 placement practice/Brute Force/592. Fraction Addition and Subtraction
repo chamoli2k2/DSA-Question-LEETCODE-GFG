@@ -1,0 +1,54 @@
+class Solution {
+public:
+    string fractionAddition(string s) {
+        vector<int> deno, num;
+        int n = s.size();
+
+        for(int i=0; i<n; i++){
+            if(i+1 < n && s[i+1] == '/'){
+                int nums = 1;
+                if(i-2 >= 0 && s[i-1] == '1' && s[i-2] == '-'){
+                    nums = -10;
+                }
+                else if(i-1 >= 0 && s[i-1] == '1'){
+                    nums = 10;
+                }
+                else if(i-1 >= 0 && s[i-1] == '-'){
+                    nums = -1 * (s[i]-'0');
+                }
+                else{
+                    nums = 1 * (s[i]-'0');
+                }
+
+                num.push_back(nums);
+            }
+            else if(s[i] == '/'){
+                if(i+2 < n && s[i+2] == '0'){
+                    deno.push_back(10);
+                }
+                else{
+                    deno.push_back(s[i+1]-'0');
+                }
+            }
+        }
+
+        int lc = 1, m = num.size();
+        for(auto &it : deno) lc = lcm(lc, it);
+
+        int sum = 0;
+        for(int i=0; i<m; i++){
+            int t = lc / deno[i];
+            sum += num[i]*t;
+        }
+
+        int gc = gcd(sum, lc);
+        while(gc != 1){
+            sum /= gc;
+            lc /= gc;
+            gc = gcd(sum, lc);
+        }
+
+        string ans = to_string(sum) + "/" + to_string(lc);
+        return ans;
+    }
+};
