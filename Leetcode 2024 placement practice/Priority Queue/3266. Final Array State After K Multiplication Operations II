@@ -1,0 +1,53 @@
+class Solution {
+private:
+    int pMod(int a, int b){
+        // base case
+        if(b == 0) return 1;
+
+        int half = pMod(a, b/2);
+
+        if(b&1){
+            return ((half%mod *1LL* half%mod)%mod *1LL* a%mod) % mod;
+        }
+
+        return (half%mod *1LL* half%mod) % mod;
+    }
+public:
+    int mod = 1e9 + 7;
+    vector<int> getFinalState(vector<int>& nums, int k, int mult) {
+        // Base case
+        if(mult == 1) return nums;
+        int n = nums.size();
+        int mx = *max_element(nums.begin(), nums.end());
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+        for(int i=0; i<n; i++) pq.push({nums[i], i});
+
+
+        while(k && pq.top().first*1LL*mult <= mx){
+            int topElem = pq.top().first;
+            int idx = pq.top().second;
+            pq.pop();
+
+            pq.push({(topElem%mod*1LL*mult%mod)%mod, idx});
+            k--;
+        }
+
+        int pVal = pMod(mult, k/n);
+
+        while(!pq.empty()){
+            int topElem = pq.top().first;
+            int idx = pq.top().second;
+            pq.pop();
+
+            if(k%n != 0){
+                k--;
+                nums[idx] = ((mult *1LL* pVal)%mod *1LL* topElem%mod) % mod;
+            }
+            else{
+                nums[idx] = (pVal%mod *1LL* topElem%mod) % mod;
+            }
+        }
+
+        return nums;
+    }
+};

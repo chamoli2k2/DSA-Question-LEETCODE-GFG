@@ -1,0 +1,57 @@
+class Solution {
+private:
+    string modi(int num, int n){
+        string s = to_string(num);
+        for(int i=0; i<s.size()-n; i++){
+            s = "0" + s;
+        }
+        return s;
+    }
+
+    unordered_set<string> makeSwap(string s){
+        int n = s.size();
+        unordered_set<string> st;
+        st.insert(s);
+
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                // Swapping
+                swap(s[i], s[j]);
+                st.insert(s);
+
+                for(int i1=0; i1<n; i1++){
+                    for(int j1=i1+1; j1<n; j1++){
+                        if(s[i1] == s[j1]) continue;
+                        swap(s[i1], s[j1]);
+                        st.insert(s);
+                        swap(s[i1], s[j1]);
+                    }
+                }
+                swap(s[i], s[j]);
+            }
+        }
+
+        return st;
+    }
+public:
+    int countPairs(vector<int>& nums) {
+        int n = nums.size(), ans = 0;
+        int maxi = *max_element(nums.begin(), nums.end());
+        int m = (to_string(maxi)).size();
+        unordered_map<string, int> mp;
+
+        for(int i=0; i<n; i++){
+            string digit = modi(nums[i], m);
+            unordered_set<string> st = makeSwap(digit);
+            for(auto &it : st){
+                if(mp.count(it)){
+                    ans += mp[it];
+                }
+            }
+
+            mp[digit]++;
+        }
+
+        return ans;
+    }
+};
