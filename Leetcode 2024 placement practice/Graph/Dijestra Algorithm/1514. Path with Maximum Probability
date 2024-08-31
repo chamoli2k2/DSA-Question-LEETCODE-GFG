@@ -1,0 +1,41 @@
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        // Base case
+        if(start_node == end_node) return 1.0;
+        vector<pair<int,double>> adj[n];
+        int m = edges.size();
+
+        for(int i=0; i<m; i++){
+            int u = edges[i][0], v = edges[i][1];
+            adj[u].push_back({v, succProb[i]});
+            adj[v].push_back({u, succProb[i]});
+        }
+
+        priority_queue<pair<double, int>> pq;
+        pq.push({1.0, start_node});
+        vector<double> prob(n, 0.0);
+        prob[start_node] = 1.0;
+
+        while(!pq.empty()){
+            double currProb = pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+
+            if(node == end_node){
+                return currProb;
+            }
+
+            for(auto &it : adj[node]){
+                double newProb = it.second, adjNode = it.first;
+
+                if(newProb*currProb > prob[adjNode]){
+                    prob[adjNode] = newProb*currProb;
+                    pq.push({prob[adjNode], adjNode});
+                }
+            }
+        }
+
+        return 0.0;
+    }
+};
