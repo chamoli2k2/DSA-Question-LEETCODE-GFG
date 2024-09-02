@@ -1,0 +1,18 @@
+class Solution {
+public:
+    string stringHash(string s, int k) {
+        int n = s.size();
+        string ans = "";
+        for(int i=0; i<n; i+=k){
+            string s1 = s.substr(i, k);
+            int sum = 0;
+            for(auto &it : s1){
+                sum += (it-'a');
+            }
+            
+            ans += ('a' + (sum%26));
+        }
+        
+        return ans;
+    }
+};

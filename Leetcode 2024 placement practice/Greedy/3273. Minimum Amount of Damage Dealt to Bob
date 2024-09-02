@@ -1,0 +1,32 @@
+class Solution {
+public:
+    long long minDamage(int power, vector<int>& damage, vector<int>& health) {
+        long long n = damage.size(), sum = 0;
+        vector<pair<int,int>> nums;
+
+        for(int i=0; i<n; i++){
+            // Damage , time
+            sum += 1LL*damage[i];
+            nums.push_back({damage[i], ceil(1.0*health[i]/power)});
+        }
+
+        sort(begin(nums), end(nums), [&](pair<int,int> &p1, pair<int,int> &p2){
+            double d1 = 1.0*p1.first, t1 = p1.second;
+            double d2 = 1.0*p2.first, t2 = p2.second;
+
+            return (d1/t1) > (d2/t2);
+        });
+
+        long long ans = 0;
+
+        for(int i=0; i<n; i++){
+            int d = nums[i].first;
+            int t = nums[i].second;
+
+            ans += sum*1LL*t;
+            sum -= d;
+        }
+
+        return ans;
+    }
+};
