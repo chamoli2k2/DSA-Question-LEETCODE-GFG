@@ -1,0 +1,32 @@
+class Solution {
+private:
+    int solve(int n1, string c1){
+        int cl1;
+        
+        if(n1%2 == 0){
+            if((c1[1]-'0')%2 == 0){
+                cl1 = 1;
+            }
+            else{
+                cl1 = 0;
+            }
+        }
+        else{
+            if((c1[1]-'0')%2 == 0){
+                cl1 = 0;
+            }
+            else{
+                cl1 = 1;
+            }
+        }
+        return cl1;
+    }
+public:
+    bool checkTwoChessboards(string c1, string c2) {
+        int n1 = c1[0]-'0', n2 = c2[0]-'0';
+        int k1 = solve(n1, c1);
+        int k2 = solve(n2, c2);
+        
+        return k1 == k2 ? true : false;
+    }
+};

@@ -1,0 +1,40 @@
+class Solution {
+private:
+    int solve(int idx, int mask){
+        // Base case
+        if(idx == 0) return 0;
+
+        if(dp[idx][mask] != -1) return dp[idx][mask];
+
+        // Not take
+        int res = solve(idx-1, mask);
+
+        // Take
+        for(auto &it : mp[idx]){
+            if((mask & (1<<it)) == 0){
+                int newMask = mask;
+                newMask = newMask | (1<<it);
+                res = max(res, idx + solve(idx-1, newMask));
+            }
+        }
+
+        return dp[idx][mask] = res;
+    }
+public:
+    map<int, vector<int>> mp;
+    int ans;
+    int dp[101][(1<<10)+1];
+    int maxScore(vector<vector<int>>& grid) {
+        mp.clear();
+        int n = grid.size(), m = grid[0].size();
+        ans = 0;
+        memset(dp, -1, sizeof(dp));
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                mp[grid[i][j]].push_back(i);
+            }
+        }
+
+        return solve(100, 0);
+    }
+};

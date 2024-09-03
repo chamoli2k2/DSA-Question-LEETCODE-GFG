@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> resultsArray(vector<vector<int>>& queries, int k) {
+        vector<int> ans;
+        priority_queue<int> pq;
+        
+        for(auto &it : queries){
+            int dist = abs(it[0]) + abs(it[1]);
+            
+            pq.push(dist);
+            
+            if(pq.size() > k) pq.pop();
+            
+            if(pq.size() == k){
+                ans.push_back(pq.top());
+            }
+            else{
+                ans.push_back(-1);
+            }
+        }
+        
+        return ans;
+    }
+};
