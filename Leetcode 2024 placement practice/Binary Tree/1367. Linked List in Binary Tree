@@ -1,0 +1,23 @@
+
+class Solution {
+private:
+    bool solve(ListNode *head, TreeNode *root){
+        // Base case
+        if(head == NULL) return true;
+        if(root == NULL) return false;
+
+        bool c1 = false, c2 = false;
+        if(head->val == root->val){
+            c1 = solve(head->next, root->left);
+            c2 = solve(head->next, root->right);
+        }
+
+        return c1 || c2;
+    }
+public:
+    bool isSubPath(ListNode* head, TreeNode* root) {
+        // Base case
+        if(head == NULL || root == NULL) return false;
+        return solve(head, root) || isSubPath(head, root->left) || isSubPath(head, root->right);
+    }
+};

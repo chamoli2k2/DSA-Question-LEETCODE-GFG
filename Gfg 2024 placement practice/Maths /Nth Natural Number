@@ -1,0 +1,12 @@
+class Solution {
+  public:
+    long long findNth(long long n) {
+        long long ans = 0, base = 1;
+        while(n){
+            ans = ans + (n%9)*base;
+            n /= 9;
+            base *= 10;
+        }
+        return ans;
+    }
+};
