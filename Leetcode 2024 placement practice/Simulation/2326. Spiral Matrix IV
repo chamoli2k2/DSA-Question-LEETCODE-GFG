@@ -1,0 +1,74 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> spiralMatrix(int n, int m, ListNode* head) {
+        vector<vector<int>> ans(n, vector<int> (m, -1));
+        int dir = 0, lr = 0, rl = m-1, ud =0, du = n-1;
+
+        while(lr <= rl && ud <= du && head){
+            if(dir == 0){
+                for(int i=lr; i<=rl; i++){
+                    if(head){
+                        ans[ud][i] = head->val;
+                        head = head->next;
+                    }
+                    else{
+                        return ans;
+                    }
+                }
+                ud++;
+                dir = 1;
+            }
+            else if(dir == 1){
+                for(int i=ud; i<=du; i++){
+                    if(head){
+                        ans[i][rl] = head->val;
+                        head = head->next;
+                    }
+                    else{
+                        return ans;
+                    }
+                }
+                rl--;
+                dir = 2;
+            }
+            else if(dir == 2){
+                for(int i=rl; i>=lr; i--){
+                    if(head){
+                        ans[du][i] = head->val;
+                        head = head->next;
+                    }
+                    else{
+                        return ans;
+                    }
+                }
+                du--;
+                dir = 3;
+            }
+            else{
+                for(int i=du; i>=ud; i--){
+                    if(head){
+                        ans[i][lr] = head->val;
+                        head = head->next;
+                    }
+                    else{
+                        return ans;
+                    }
+                }
+                lr++;
+                dir = 0;
+            }
+        }
+
+        return ans;
+    }
+};
