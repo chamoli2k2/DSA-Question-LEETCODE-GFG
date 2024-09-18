@@ -1,0 +1,19 @@
+class Solution {
+public:
+    string largestNumber(vector<int>& a) {
+        vector<string> nums;
+        for(auto &it : a) nums.push_back(to_string(it));
+
+        sort(nums.begin(),nums.end(),[&](string &a, string &b){
+            return (a+b) > (b+a);
+        });
+
+        // Base case
+        if(nums[0] == "0") return "0";
+
+        string ans = "";
+        for(auto &it : nums) ans += it;
+
+        return ans;
+    }
+};
