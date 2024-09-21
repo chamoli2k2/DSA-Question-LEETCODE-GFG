@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string s) {
+        vector<int> ans;
+        int n = s.size();
+
+        for(int i=0; i<n; i++){
+            if(s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/'){
+                vector<int> ls = diffWaysToCompute(s.substr(0, i));
+                vector<int> rs = diffWaysToCompute(s.substr(i+1));
+
+                for(auto &it : ls){
+                    for(auto &jt : rs){
+                        if(s[i] == '+') ans.push_back(it+jt);
+                        if(s[i] == '-') ans.push_back(it-jt);
+                        if(s[i] == '*') ans.push_back(it*jt);
+                        if(s[i] == '/') ans.push_back(it/jt);
+                    }
+                }
+            }
+        }
+
+        if(ans.size() == 0) ans.push_back(stoi(s));
+
+        return ans;
+    }
+};

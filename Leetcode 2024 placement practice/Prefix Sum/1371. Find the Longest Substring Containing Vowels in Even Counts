@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int findTheLongestSubstring(string s) {
+        int n = s.size(), ans = 0;
+        vector<int> countV(5, 0);
+        unordered_map<string,int> mp;
+        mp["00000"] = -1;
+
+        for(int i=0; i<n; i++){
+            if(s[i] == 'a') countV[0] ^= 1;
+            if(s[i] == 'e') countV[1] ^= 1;
+            if(s[i] == 'i') countV[2] ^= 1;
+            if(s[i] == 'o') countV[3] ^= 1;
+            if(s[i] == 'u') countV[4] ^= 1;
+
+            string currState = "";
+            for(int i=0; i<5; i++){
+                currState += (countV[i]+'0');
+            }
+
+            if(mp.count(currState)){
+                ans = max(ans, i-mp[currState]);
+            }
+            else{
+                mp[currState] = i;
+            }
+        }
+
+        return ans;
+    }
+};
